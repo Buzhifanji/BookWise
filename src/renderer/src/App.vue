@@ -1,28 +1,41 @@
 <script setup lang="ts">
-import Versions from './components/Versions.vue';
+import { useWindowSize } from '@vueuse/core';
+import { ref } from 'vue';
+import Menu from './layout/Menu.vue';
+import Navbar from './layout/Navbar.vue';
 
-const ipcHandle = () => window.electron.ipcRenderer.send('ping')
+const lgMenu = ref(false);
+
+function toggleMenu() {
+  const { width } = useWindowSize();
+  if (width.value >= 1024) {
+    lgMenu.value = !lgMenu.value;
+  }
+}
+
 </script>
 
 <template>
-  <h1 class="text-3xl font-bold underline">
-    Hello world!
-  </h1>
-  <div class="creator">Powered by electron-vite</div>
-  <div class="text">
-    Build an Electron app with
-    <span class="vue">Vue</span>
-    and
-    <span class="ts">TypeScript</span>
-  </div>
-  <p class="tip">Please try pressing <code>F12</code> to open the devTool</p>
-  <div class="actions">
-    <div class="action">
-      <a href="https://electron-vite.org/" target="_blank" rel="noreferrer">Documentation</a>
+  <div class="size-full">
+    <div class="flex overflow-hidden">
+      <div class="block lg:hidden">
+        <div class="drawer z-20">
+          <input aria-label="Drawer handler" id="sidbar-drawer" class="drawer-toggle" type="checkbox">
+          <div class="drawer-content"></div>
+          <div class="drawer-side">
+            <label class="drawer-overlay" for="sidbar-drawer" aria-label="close sidebar"></label>
+            <Menu />
+          </div>
+        </div>
+      </div>
+      <div class="hidden lg:block">
+        <Menu :class="{ 'hide': lgMenu }" />
+      </div>
+      <div class="w-full max-w-full h-screen overflow-auto">
+        <div class="flex h-full flex-col ">
+          <Navbar @toggle-sidebar="toggleMenu" />
+        </div>
+      </div>
     </div>
-    <div class="action">
-      <a target="_blank" rel="noreferrer" @click="ipcHandle">Send IPC</a>
-    </div>
   </div>
-  <Versions />
 </template>
