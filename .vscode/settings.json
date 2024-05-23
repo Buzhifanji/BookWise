@@ -7,5 +7,18 @@
   },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "i18n-ally.localesPaths": ["src/renderer/src/assets/locales"], //  翻译文件路径
+  "i18n-ally.sourceLanguage": "zh-CN", // 根据此语言文件翻译其他语言文件的变量和内容
+  "i18n-ally.displayLanguage": "zh-CN", //显示语言， 这里也可以设置显示英文为en
+  "i18n-ally.keystyle": "nested", // 翻译后变量格式 nested：嵌套式  flat:扁平式
+  "i18n-ally.extract.keygenStyle": "camelCase", // 翻译字段命名样式采用驼峰
+  "i18n-ally.keysInUse": [
+    "view.progress_submenu.translated_keys",
+    "view.progress_submenu.missing_keys",
+    "view.progress_submenu.empty_keys"
+  ],
+  "i18n-ally.enabledParsers": ["json", "yaml", "ts"],
+  "i18n-ally.enabledFrameworks": ["vue"],
+  "i18n-ally.extract.autoDetect": true
 }
