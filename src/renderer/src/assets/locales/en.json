@@ -1,5 +1,7 @@
 {
   "menu": {
-    "book": "books"
+    "book": "books",
+    "note": "notes",
+    "setting": "set up"
   }
 }

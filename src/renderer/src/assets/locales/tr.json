@@ -1,5 +1,7 @@
 {
   "menu": {
-    "book": "kitabın"
+    "book": "kitabın",
+    "note": "notlar",
+    "setting": "kurmak"
   }
 }

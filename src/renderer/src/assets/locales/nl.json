@@ -1,5 +1,7 @@
 {
   "menu": {
-    "book": "boeken"
+    "book": "boeken",
+    "note": "notities",
+    "setting": "opgericht"
   }
 }

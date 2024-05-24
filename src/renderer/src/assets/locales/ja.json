@@ -1,5 +1,7 @@
 {
   "menu": {
-    "book": "本"
+    "book": "本",
+    "note": "ノート",
+    "setting": "設定"
   }
 }

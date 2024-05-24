@@ -1,5 +1,7 @@
 {
   "menu": {
-    "book": "böcker"
+    "book": "böcker",
+    "note": "anteckningar",
+    "setting": "uppstart"
   }
 }

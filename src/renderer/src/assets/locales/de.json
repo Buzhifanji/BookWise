@@ -1,5 +1,7 @@
 {
   "menu": {
-    "book": "Bücher"
+    "book": "Bücher",
+    "note": "Anmerkungen",
+    "setting": "aufstellen"
   }
 }

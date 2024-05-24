@@ -1,5 +1,7 @@
 {
   "menu": {
-    "book": "livres"
+    "book": "livres",
+    "note": "Remarques",
+    "setting": "installation"
   }
 }
