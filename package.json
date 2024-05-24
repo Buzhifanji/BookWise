@@ -26,7 +26,8 @@
     "@vueuse/core": "^10.9.0",
     "electron-updater": "^6.1.7",
     "lucide-vue-next": "^0.379.0",
-    "vue-i18n": "9"
+    "vue-i18n": "9",
+    "vue-router": "4"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config": "^1.0.2",

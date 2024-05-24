@@ -3,7 +3,7 @@ import { Book } from 'lucide-vue-next';
 
 
 const menus = [
-  { name: 'menu.book', path: '/books', icon: Book }
+  { name: 'menu.book', path: '/book', icon: Book }
 ]
 
 </script>
@@ -14,12 +14,12 @@ const menus = [
     <div data-simplebar="init" class="h-[calc(100vh-64px)] lg:h-[calc(100vh-230px)]">
       <ul class="menu mb-6">
         <li class="mb-0.5" v-for="item in menus">
-          <a :href="item.path" class="hover:bg-base-content/15">
+          <RouterLink :to="item.path" class="hover:bg-base-content/15">
             <div class="flex items-center gap-2">
               <component :is="item.icon" class="w-4 h-4" />
               {{ $t(item.name) }}
             </div>
-          </a>
+          </RouterLink>
         </li>
       </ul>
     </div>

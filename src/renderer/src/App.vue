@@ -34,6 +34,9 @@ function toggleMenu() {
       <div class="w-full max-w-full h-screen overflow-auto">
         <div class="flex h-full flex-col ">
           <Navbar @toggle-sidebar="toggleMenu" />
+          <div>
+            <router-view></router-view>
+          </div>
         </div>
       </div>
     </div>
