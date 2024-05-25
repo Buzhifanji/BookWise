@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useWindowSize } from '@vueuse/core';
 import { AlignJustify, Search } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { computed , ref} from 'vue';
+import { FileUploadView } from '@renderer/components/upload'
 
 const emit = defineEmits<{
   (e: 'toggleSidebar', payload: string): void;
@@ -12,11 +13,18 @@ const toggleSidebar = () => emit('toggleSidebar', '');
 const { width } = useWindowSize();
 
 const isSM = computed(() => width.value < 1024);
+
+const dialogRef = ref<InstanceType<typeof FileUploadView> | null>(null);
+
+function uploadAction() {
+  dialogRef.value?.open()
+}
 </script>
 
 <template>
   <div role="navigation" aria-label="Navbar" class="navbar z-10 border-b border-base-200 px-3">
     <div class="gap-3 navbar-start">
+      <!-- 打开搜索框按钮 -->
       <label for="sidbar-drawer" v-if="isSM">
         <AlignJustify class="w-5 h-5" />
       </label>
@@ -29,5 +37,9 @@ const isSM = computed(() => width.value < 1024);
       </button>
     </div>
     <div class="navbar-center"></div>
+    <div class="navbar-end gap-4">
+      <button class="btn btn-sm btn-neutral btn-active" @click="uploadAction()">上传</button>
+      <FileUploadView ref="dialogRef" />
+    </div>
   </div>
 </template>
