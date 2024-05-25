@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { ref, computed ,onMounted} from 'vue'
-import { useWindowVirtualizer, useVirtualizer } from '@tanstack/vue-virtual'
+import { useVirtualizer } from '@tanstack/vue-virtual'
 import { chuankArray } from '@renderer/shared'
 import { useContentCantianerStore } from '@renderer/store'
 
@@ -23,9 +23,7 @@ onMounted(() => {
 })
 
 const list = computed(() => {
-    console.log('wdith is ', store.width)
     const count = parseInt((store.width / (WIDTH + PADDING)).toString())
-    console.log('count is ', count)
     return chuankArray(props.data || [], count)
 })
 
@@ -34,26 +32,37 @@ const rowVirtualizerOptions = computed(() => {
     count: list.value.length,
     estimateSize: () => 350,
     overscan: 5,
-    scrollMargin: parentOffsetRef.value,
+    getScrollElement: () => parentRef.value,
   }
 })
 
-const rowVirtualizer = useWindowVirtualizer(rowVirtualizerOptions)
+const rowVirtualizer = useVirtualizer(rowVirtualizerOptions)
 
 const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems())
 
 const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
+
+const measureElement = (el) => {
+  if (!el) {
+    return
+  }
+
+  rowVirtualizer.value.measureElement(el)
+
+  return undefined
+}
 </script>
 
 <template>
-  <div ref="parentRef">
-    <div class="relative"
+  <div ref="parentRef" class="p-6 flex h-full overflow-auto">
+    <div class="relative w-full"
       :style="{
         height: `${totalSize}px`,
       }"
     >
-    <template v-for="virtualRow in virtualRows" :key="virtualRow.key">
-        <div :data-index="virtualRow.index" class="absolute top-0 left-0 flex  justify-center w-full gap-10" :style="{transform: `translateY(${
+      <template v-for="virtualRow in virtualRows" :key="virtualRow.key"> 
+        <div :ref="measureElement"  :data-index="virtualRow.index" class="absolute top-0 left-0 flex pb-6  justify-center w-full gap-10" 
+        :style="{transform: `translateY(${
               virtualRow.start - rowVirtualizer.options.scrollMargin
             }px)`,}">
             <div  v-for="item in list[virtualRow.index]" class="card bg-base-100" :style="{width: `${WIDTH}px`, height: `${HEIGHT}px`}">

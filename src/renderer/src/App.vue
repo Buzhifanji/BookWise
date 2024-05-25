@@ -42,10 +42,10 @@ function toggleMenu() {
       <div class="hidden lg:block">
         <Menu :class="{ 'hide': lgMenu }" />
       </div>
-      <div class="w-full max-w-full h-screen overflow-auto">
+      <div class="w-full max-w-full h-screen ">
         <div class="flex h-full flex-col ">
           <Navbar @toggle-sidebar="toggleMenu" />
-          <div ref="contentRef" class="flex-1 p-6 bg-base-200">
+          <div ref="contentRef" class="flex-1 bg-base-200 overflow-hidden">
             <router-view></router-view>
           </div>
         </div>
