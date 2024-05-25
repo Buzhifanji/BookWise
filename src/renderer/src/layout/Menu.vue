@@ -4,7 +4,7 @@ import { Book, PencilLine, Settings } from 'lucide-vue-next';
 
 
 const menus = [
-  { name: 'menu.book', path: RouterName.Home, icon: Book },
+  { name: 'menu.book', path: RouterName.Book, icon: Book },
   { name: 'menu.note', path: RouterName.Note, icon: PencilLine },
   { name: 'menu.setting', path: RouterName.Setting, icon: Settings },
 ]

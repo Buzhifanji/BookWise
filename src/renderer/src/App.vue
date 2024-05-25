@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useWindowSize } from '@vueuse/core';
-import { ref ,computed} from 'vue';
+import { ref ,watchEffect} from 'vue';
 import Menu from './layout/Menu.vue';
 import Navbar from './layout/Navbar.vue';
 import { useElementSize } from '@vueuse/core'
@@ -13,8 +13,8 @@ const { width } = useElementSize(contentRef)
 
 const store = useContentCantianerStore()
 
-computed(() => {
-  store.setWidth(width)
+watchEffect(() => {
+    store.setWidth(width.value)
 })
 
 function toggleMenu() {
@@ -45,7 +45,7 @@ function toggleMenu() {
       <div class="w-full max-w-full h-screen overflow-auto">
         <div class="flex h-full flex-col ">
           <Navbar @toggle-sidebar="toggleMenu" />
-          <div ref="contentRef">
+          <div ref="contentRef" class="flex-1 p-6 bg-base-200">
             <router-view></router-view>
           </div>
         </div>

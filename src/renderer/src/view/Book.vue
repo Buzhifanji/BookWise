@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import {BookListView} from '@renderer/components/book'
+
+const data = new Array(100).fill(0).map((_, i) => `Column ${i}`)
+
 
 </script>
 
 <template>
-  <div>Book</div>
+  <BookListView :data="data" />
 </template>
