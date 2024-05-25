@@ -15,8 +15,21 @@ defineExpose({open})
 <template>
  <dialog  class="modal" ref="dialogRef">
   <div class="modal-box">
-    <h3 class="font-bold text-lg">Hello!</h3>
-    <p class="py-4">Press ESC key or click outside to close</p>
+    <h3 class="font-bold text-lg flex justify-between mb-4">
+        <span>上传文件</span>
+        <kbd class="kbd kbd-sm">ESC</kbd>
+    </h3>
+    <div class="flex items-center justify-center w-full">
+                            <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center">
+                                <div class="h-full w-full text-center flex flex-col items-center justify-center items-center  ">
+                                    <div class="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
+                                    <!-- <img class="has-mask h-36 object-center" src="https://img.freepik.com/free-vector/image-upload-concept-landing-page_52683-27130.jpg?size=338&ext=jpg" alt="freepik image"> -->
+                                    </div>
+                                    <p class="pointer-none text-neutral "><span class="text-sm">Drag and drop</span> files here <br /> or <a href="" id="" class="text-blue-600 hover:underline">select a file</a> from your computer</p>
+                                </div>
+                                <input type="file" class="hidden">
+                            </label>
+                        </div>
   </div>
   <form method="dialog" class="modal-backdrop">
     <button>close</button>
