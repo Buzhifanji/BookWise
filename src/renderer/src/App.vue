@@ -1,10 +1,21 @@
 <script setup lang="ts">
 import { useWindowSize } from '@vueuse/core';
-import { ref } from 'vue';
+import { ref ,computed} from 'vue';
 import Menu from './layout/Menu.vue';
 import Navbar from './layout/Navbar.vue';
+import { useElementSize } from '@vueuse/core'
+import { useContentCantianerStore } from '@renderer/store'
 
+const contentRef = ref<HTMLElement | null>(null)
 const lgMenu = ref(false);
+
+const { width } = useElementSize(contentRef)
+
+const store = useContentCantianerStore()
+
+computed(() => {
+  store.setWidth(width)
+})
 
 function toggleMenu() {
   const { width } = useWindowSize();
@@ -34,7 +45,7 @@ function toggleMenu() {
       <div class="w-full max-w-full h-screen overflow-auto">
         <div class="flex h-full flex-col ">
           <Navbar @toggle-sidebar="toggleMenu" />
-          <div>
+          <div ref="contentRef">
             <router-view></router-view>
           </div>
         </div>
