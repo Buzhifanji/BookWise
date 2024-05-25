@@ -19,6 +19,9 @@ import { createApp } from 'vue'
 import { createI18n } from 'vue-i18n'
 import App from './App.vue'
 import { router } from './route/router'
+import { createPinia } from 'pinia'
+
+const pinia = createPinia()
 
 const i18n = createI18n({
   legacy: false, // 设置为false以使用Composition API
@@ -27,4 +30,4 @@ const i18n = createI18n({
   messages: { ar, de, en, es, fr, ja, ko, nl, no, pt, ru, sv, tr, 'zh-CN': zhCN, 'zh-HK': zhHK }
 })
 
-createApp(App).use(i18n).use(router).mount('#app')
+createApp(App).use(pinia).use(i18n).use(router).mount('#app')
