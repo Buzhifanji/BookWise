@@ -48,4 +48,4 @@ import { Select } from '@renderer/headless';
       </div>
     </div>
   </div>
-</template>@renderer/headless
+</template>
