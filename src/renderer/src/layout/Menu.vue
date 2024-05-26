@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterName } from '@renderer/route/router';
+import { RouterName } from '@renderer/route';
 import { Book, PencilLine, Settings } from 'lucide-vue-next';
 
 

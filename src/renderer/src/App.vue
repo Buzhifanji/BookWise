@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { useWindowSize } from '@vueuse/core';
-import { ref ,watchEffect} from 'vue';
+import { useContentCantianerStore } from '@renderer/store';
+import { useElementSize, useWindowSize } from '@vueuse/core';
+import { ref, watchEffect } from 'vue';
 import Menu from './layout/Menu.vue';
 import Navbar from './layout/Navbar.vue';
-import { useElementSize } from '@vueuse/core'
-import { useContentCantianerStore } from '@renderer/store'
 
 const contentRef = ref<HTMLElement | null>(null)
 const lgMenu = ref(false);
@@ -14,7 +13,7 @@ const { width } = useElementSize(contentRef)
 const store = useContentCantianerStore()
 
 watchEffect(() => {
-    store.setWidth(width.value)
+  store.setWidth(width.value)
 })
 
 function toggleMenu() {

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { Select } from '@renderer/headlessui'
+import { Select } from '@renderer/headless';
 </script>
 
 <template>
   <div class="p-6 grid grid-cols-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
     <div class="col-span-full">
-    <h2 class="font-bold text-lg ">
-      用户设置
+      <h2 class="font-bold text-lg ">
+        用户设置
       </h2>
     </div>
     <div class="col-span-full lg:col-auto">
@@ -41,11 +41,11 @@ import { Select } from '@renderer/headlessui'
           </label>
           <div>
 
-          <Select />
-        </div>
+            <Select />
+          </div>
 
         </div>
       </div>
     </div>
   </div>
-</template>
+</template>@renderer/headless

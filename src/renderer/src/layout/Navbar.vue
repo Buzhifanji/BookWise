@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { FileUploadView } from '@renderer/components';
 import { useWindowSize } from '@vueuse/core';
 import { AlignJustify, Search } from 'lucide-vue-next';
-import { computed , ref} from 'vue';
-import { FileUploadView } from '@renderer/components/upload'
+import { computed, ref } from 'vue';
 
 const emit = defineEmits<{
   (e: 'toggleSidebar', payload: string): void;

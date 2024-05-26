@@ -1,9 +1,9 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
-import BookView from '../view/Book.vue'
-import HomeView from '../view/Home.vue'
-import NoteView from '../view/Note.vue'
-import SettingView from '../view/Setting.vue'
+import BookView from '@renderer/view/Book.vue'
+import HomeView from '@renderer/view/Home.vue'
+import NoteView from '@renderer/view/Note.vue'
+import SettingView from '@renderer/view/Setting.vue'
 
 export const RouterName = {
   Home: '/',

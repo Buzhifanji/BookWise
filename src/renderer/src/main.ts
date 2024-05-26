@@ -15,11 +15,11 @@ import zhCN from './assets/locales/zh-CN.json'
 import zhHK from './assets/locales/zh-HK.json'
 import './assets/main.css'
 
+import { router } from '@renderer/route'
+import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import { createI18n } from 'vue-i18n'
 import App from './App.vue'
-import { router } from './route/router'
-import { createPinia } from 'pinia'
 
 const pinia = createPinia()
 
