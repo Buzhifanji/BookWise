@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+import { Select } from '@renderer/headlessui'
 </script>
 
 <template>
@@ -39,6 +39,11 @@
               <option>Star Trek</option>
             </select>
           </label>
+          <div>
+
+          <Select />
+        </div>
+
         </div>
       </div>
     </div>
