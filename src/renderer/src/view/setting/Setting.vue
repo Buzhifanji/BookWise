@@ -10,7 +10,9 @@ const selectedLang = ref(languageStore.getDefault(languageStore.list[0]))
 </script>
 
 <template>
-  <div class="p-6 grid grid-cols-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  <div class="p-6 grid grid-cols-4 sm:grid-cols-
+  
+  1 md:grid-cols-2 lg:grid-cols-3 gap-4">
     <div class="col-span-full">
       <h2 class="font-bold text-lg ">
         用户设置
