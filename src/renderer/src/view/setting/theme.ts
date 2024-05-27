@@ -1,26 +1,11 @@
 import { SelectItem } from '@renderer/components'
-import { ref } from 'vue'
+import { StorageSelect } from '@renderer/shared'
 
 const key = 'book—wise__theme'
 
-function getDefaultTheme() {
-  const cache = localStorage.getItem(key)
-  let result = themes[0]
-  if (cache) {
-    for (const item of themes) {
-      if (item.value === cache) {
-        result = item
-        break
-      }
-    }
-  }
+const update = (value: string) => document.querySelector('html')?.setAttribute('data-theme', value)
 
-  console.log('result', result)
-
-  return result
-}
-
-export const themes: SelectItem[] = [
+const themes: SelectItem[] = [
   { value: 'light' },
   { value: 'dark' },
   { value: 'cupcake' },
@@ -55,14 +40,4 @@ export const themes: SelectItem[] = [
   { value: 'sunset' }
 ]
 
-export function initTheme() {
-  const value = localStorage.getItem(key) || 'light'
-  setTheme({ value })
-}
-
-export function setTheme({ value }: SelectItem) {
-  localStorage.setItem(key, value)
-  document.querySelector('html')?.setAttribute('data-theme', value)
-}
-
-export const selectedTheme = ref(getDefaultTheme())
+export const themeStore = new StorageSelect(key, themes, update)

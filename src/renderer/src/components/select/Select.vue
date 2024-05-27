@@ -17,8 +17,8 @@ const emit = defineEmits(['update:modelValue'])
 const detailsRef = ref<HTMLDetailsElement | null>(null)
 
 const toggle = () => {
-  if (detailsRef.value) {
-    detailsRef.value.open = !detailsRef.value.open
+  if (detailsRef.value && detailsRef.value.open) {
+    detailsRef.value.open = false
   }
 }
 
@@ -36,7 +36,7 @@ function onClick(value: SelectItem) {
       {{ modelValue?.value }}
     </summary>
     <ul
-      class="p-2  mt-2  dropdown-content z-[1] max-h-96 w-full overflow-auto rounded-md menu flex-nowrap bg-base-100 shadow-lg ring-1 gap-1 scrollbar-thin ">
+      class="p-2  mt-2  dropdown-content z-[10] max-h-96 w-full overflow-auto rounded-md menu flex-nowrap bg-base-100 shadow-lg ring-1 gap-1 scrollbar-thin ">
       <li v-for="item in list" :key="item.value" @click="onClick(item)">
         <a :class="{ 'active': modelValue?.value === item.value }">
           {{ item.value }}

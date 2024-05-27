@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { Select } from '@renderer/components';
-import { selectedTheme, setTheme, themes } from './theme';
+import { ref } from 'vue';
+import { themeStore } from './theme';
 
+const selectedTheme = ref(themeStore.getDefault(themeStore.list[0]));
 
 </script>
 
@@ -33,7 +35,7 @@ import { selectedTheme, setTheme, themes } from './theme';
             <div class="label">
               <span class="label-text">选择主题</span>
             </div>
-            <Select v-model="selectedTheme" :list="themes" @update:model-value="setTheme" />
+            <Select v-model="selectedTheme" :list="themeStore.list" @update:model-value="themeStore.set" />
           </label>
         </div>
       </div>
