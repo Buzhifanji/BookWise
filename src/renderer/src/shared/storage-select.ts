@@ -1,8 +1,9 @@
 interface Data {
   value: string
+  id: string
 }
 
-type Callback = (value: string) => void
+type Callback = (value: Data) => void
 
 /**
  * 本地存储选择器
@@ -42,8 +43,8 @@ export class StorageSelect {
    * 更新数据
    * @param param0
    */
-  set = ({ value }: Data) => {
-    localStorage.setItem(this.key, value)
+  set = (value: Data) => {
+    localStorage.setItem(this.key, value.value)
     this.updateCallback(value)
   }
 
@@ -53,6 +54,17 @@ export class StorageSelect {
    */
   init = (defaultValue: string) => {
     const value = localStorage.getItem(this.key) || defaultValue
-    this.set({ value })
+    let data: Data | null = null
+    for (const item of this.list) {
+      if (item.value === value) {
+        data = item
+      }
+    }
+
+    if (data) {
+      this.set(data)
+    } else {
+      throw new Error(`${value} is not in list`)
+    }
   }
 }

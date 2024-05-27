@@ -3,41 +3,44 @@ import { StorageSelect } from '@renderer/shared'
 
 const key = 'book—wise__theme'
 
-const update = (value: string) => document.querySelector('html')?.setAttribute('data-theme', value)
+const update = (value: SelectItem) =>
+  document.querySelector('html')?.setAttribute('data-theme', value.value)
 
-const themes: SelectItem[] = [
-  { value: 'light' },
-  { value: 'dark' },
-  { value: 'cupcake' },
-  { value: 'bumblebee' },
-  { value: 'emerald' },
-  { value: 'corporate' },
-  { value: 'synthwave' },
-  { value: 'retro' },
-  { value: 'cyberpunk' },
-  { value: 'valentine' },
-  { value: 'halloween' },
-  { value: 'garden' },
-  { value: 'forest' },
-  { value: 'aqua' },
-  { value: 'lofi' },
-  { value: 'pastel' },
-  { value: 'fantasy' },
-  { value: 'wireframe' },
-  { value: 'black' },
-  { value: 'luxury' },
-  { value: 'dracula' },
-  { value: 'cmyk' },
-  { value: 'autumn' },
-  { value: 'business' },
-  { value: 'acid' },
-  { value: 'lemonade' },
-  { value: 'night' },
-  { value: 'coffee' },
-  { value: 'winter' },
-  { value: 'dim' },
-  { value: 'nord' },
-  { value: 'sunset' }
+const data = [
+  'light',
+  'dark',
+  'cupcake',
+  'bumblebee',
+  'emerald',
+  'corporate',
+  'synthwave',
+  'retro',
+  'cyberpunk',
+  'valentine',
+  'halloween',
+  'garden',
+  'forest',
+  'aqua',
+  'lofi',
+  'pastel',
+  'fantasy',
+  'wireframe',
+  'black',
+  'luxury',
+  'dracula',
+  'cmyk',
+  'autumn',
+  'business',
+  'acid',
+  'lemonade',
+  'night',
+  'coffee',
+  'winter',
+  'dim',
+  'nord',
+  'sunset'
 ]
+
+const themes: SelectItem[] = data.map((item) => ({ id: item, value: item }))
 
 export const themeStore = new StorageSelect(key, themes, update)

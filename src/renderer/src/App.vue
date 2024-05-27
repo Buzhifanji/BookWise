@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useContentCantianerStore } from '@renderer/store';
-import { themeStore } from '@renderer/view/setting';
+import { languageStore, themeStore } from '@renderer/view/setting';
 import { useElementSize, useWindowSize } from '@vueuse/core';
 import { ref, watchEffect } from 'vue';
 import Menu from './layout/Menu.vue';
@@ -26,6 +26,9 @@ function toggleMenu() {
 
 // 初始化主题
 themeStore.init('light');
+
+// 初始化语言
+languageStore.init('English');
 </script>
 
 <template>

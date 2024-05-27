@@ -38,7 +38,8 @@ function onClick(value: SelectItem) {
     <ul
       class="p-2  mt-2  dropdown-content z-[10] max-h-96 w-full overflow-auto rounded-md menu flex-nowrap bg-base-100 shadow-lg ring-1 gap-1 scrollbar-thin ">
       <li v-for="item in list" :key="item.value" @click="onClick(item)">
-        <a :class="{ 'active': modelValue?.value === item.value }">
+        <slot v-if="$slots.default" :data="item"></slot>
+        <a :class="{ 'active': modelValue?.value === item.value }" v-else>
           {{ item.value }}
         </a>
       </li>

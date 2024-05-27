@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { Select } from '@renderer/components';
 import { ref } from 'vue';
+import { languageStore } from './language';
 import { themeStore } from './theme';
 
 const selectedTheme = ref(themeStore.getDefault(themeStore.list[0]));
+const selectedLang = ref(languageStore.getDefault(languageStore.list[0]))
 
 </script>
 
@@ -22,14 +24,7 @@ const selectedTheme = ref(themeStore.getDefault(themeStore.list[0]));
             <div class="label">
               <span class="label-text">选择语言</span>
             </div>
-            <select class="select select-bordered">
-              <option disabled selected>Pick one</option>
-              <option>Star Wars</option>
-              <option>Harry Potter</option>
-              <option>Lord of the Rings</option>
-              <option>Planet of the Apes</option>
-              <option>Star Trek</option>
-            </select>
+            <Select v-model="selectedLang" :list="languageStore.list" @update:model-value="languageStore.set" />
           </label>
           <label class="form-control w-full max-w-xs">
             <div class="label">
