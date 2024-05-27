@@ -3,7 +3,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import BookView from '@renderer/view/Book.vue'
 import HomeView from '@renderer/view/Home.vue'
 import NoteView from '@renderer/view/Note.vue'
-import SettingView from '@renderer/view/Setting.vue'
+import { SettingView } from '@renderer/view/setting'
 
 export const RouterName = {
   Home: '/',

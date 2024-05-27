@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { Select } from '@renderer/headless';
+import { Select } from '@renderer/components';
+import { selectedTheme, setTheme, themes } from './theme';
+
+
 </script>
 
 <template>
@@ -30,20 +33,8 @@ import { Select } from '@renderer/headless';
             <div class="label">
               <span class="label-text">选择主题</span>
             </div>
-            <select class="select select-bordered">
-              <option disabled selected>Pick one</option>
-              <option>Star Wars</option>
-              <option>Harry Potter</option>
-              <option>Lord of the Rings</option>
-              <option>Planet of the Apes</option>
-              <option>Star Trek</option>
-            </select>
+            <Select v-model="selectedTheme" :list="themes" @update:model-value="setTheme" />
           </label>
-          <div>
-
-            <Select />
-          </div>
-
         </div>
       </div>
     </div>

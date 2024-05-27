@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useContentCantianerStore } from '@renderer/store';
+import { initTheme } from '@renderer/view/setting';
 import { useElementSize, useWindowSize } from '@vueuse/core';
 import { ref, watchEffect } from 'vue';
 import Menu from './layout/Menu.vue';
@@ -23,6 +24,8 @@ function toggleMenu() {
   }
 }
 
+// 初始化主题
+initTheme();
 </script>
 
 <template>
