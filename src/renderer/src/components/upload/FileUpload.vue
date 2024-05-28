@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Toast } from '@renderer/components/toast';
 import { defineExpose, ref } from 'vue';
 import { readFiles } from './read-file';
 
@@ -14,7 +15,15 @@ async function uploadFile(event: Event) {
     const files = (event.target as HTMLInputElement).files;
     if (files === null) return
 
-    await readFiles(Array.from(files))
+    try {
+        const result = await readFiles(Array.from(files))
+        if (result.length === 0) return
+
+        Toast({ message: '上传成功', type: 'alert-success' })
+
+    } catch (error) {
+    }
+
 }
 
 </script>
