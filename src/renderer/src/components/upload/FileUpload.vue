@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineExpose, ref } from 'vue';
+import { readFiles } from './read-file';
 
 const dialogRef = ref<HTMLDialogElement | null>(null)
 
@@ -8,6 +9,13 @@ function open() {
 }
 
 defineExpose({ open })
+
+async function uploadFile(event: Event) {
+    const files = (event.target as HTMLInputElement).files;
+    if (files === null) return
+
+    await readFiles(Array.from(files))
+}
 
 </script>
 
@@ -29,7 +37,7 @@ defineExpose({ open })
                             computer
                         </p>
                     </div>
-                    <input type="file" class="hidden">
+                    <input type="file" multiple class="hidden" @change="uploadFile">
                 </label>
             </div>
         </div>
