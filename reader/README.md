@@ -1,0 +1,1 @@
+# 该包的代码主要来源：https://github.com/johnfactotum/foliate-js.git

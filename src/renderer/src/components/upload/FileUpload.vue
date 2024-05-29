@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Reader } from '@book-wise/reader';
 import { Toast } from '@renderer/components/toast';
 import { defineExpose, ref } from 'vue';
 import { readFiles } from './read-file';
@@ -18,6 +19,13 @@ async function uploadFile(event: Event) {
     try {
         const result = await readFiles(Array.from(files))
         if (result.length === 0) return
+
+
+
+        const reader = new Reader()
+        reader.open(new File([result[0].data], 'haha'))
+
+        console.log(reader.book)
 
         Toast({ message: '上传成功', type: 'alert-success' })
 
