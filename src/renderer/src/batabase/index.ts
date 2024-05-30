@@ -11,7 +11,7 @@ const version = 1
 
 db.version(version).stores({
   books: schemaBook,
-  bookContent: schemaBookContent // 书本内容
+  bookContents: schemaBookContent // 书本内容
 })
 
 export { db }

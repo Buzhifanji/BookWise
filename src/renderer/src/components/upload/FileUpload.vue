@@ -2,7 +2,7 @@
 import { Reader } from '@book-wise/reader';
 import { Book, db } from '@renderer/batabase';
 import { Toast } from '@renderer/components/toast';
-import { convertBlobToUint8Array } from '@renderer/shared';
+import { convertBlobToUint8Array, isElectron } from '@renderer/shared';
 import { v4 as uuidv4 } from 'uuid';
 import { defineExpose, ref } from 'vue';
 import { readFiles } from './read-file';
@@ -44,7 +44,7 @@ async function uploadFile(event: Event) {
             const reader = new Reader()
             await reader.open(new File([data], ''))
             const cover = await reader.getCover()
-            return { ...reader.getMetadata(), md5: hash, cover: await convertBlobToUint8Array(cover), path: file.path || '' }
+            return { ...reader.getMetadata(), md5: hash, cover: await convertBlobToUint8Array(cover), path: file.path || '', data }
         }))
 
         const newBook: Book[] = bookMetadata.map(item => {
@@ -70,8 +70,22 @@ async function uploadFile(event: Event) {
             }
         })
 
+
+
         if (newBook.length) {
             db.books.bulkAdd(newBook)
+
+            // 网页版,不能获取文件路径，需要保存上传内容
+            if (!isElectron) {
+                db.bookContents.bulkAdd(bookMetadata.map(item => {
+                    return {
+                        bookId: newBook.find(e => e.md5 === item.md5)!.id,
+                        content: item.data,
+                        id: uuidv4(),
+                    }
+                }))
+            }
+
             newBook.map(item => Toast({ message: `上传成功：${item.name}`, type: 'alert-success' }))
         }
 

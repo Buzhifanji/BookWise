@@ -1,7 +1,7 @@
 export interface BookContent {
-  id: number
+  id: string
   bookId: string
   content: Uint8Array
 }
 
-export const schemaBookContent = '++id, bookId, content'
+export const schemaBookContent = '&id, &bookId, content'
