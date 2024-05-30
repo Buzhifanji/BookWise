@@ -10,5 +10,10 @@
     "language": "język",
     "theme": "temat",
     "userSetting": "ustawienia użytkownika"
+  },
+  "unfound": {
+    "desc": "Przepraszamy, nie możemy znaleźć strony. \nNa stronie głównej znajdziesz wiele do odkrycia.",
+    "tip": "powrót do strony głównej",
+    "title": "Brakuje strony"
   }
 }

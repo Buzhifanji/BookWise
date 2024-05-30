@@ -10,5 +10,10 @@
     "language": "taal",
     "theme": "thema",
     "userSetting": "gebruikersinstellingen"
+  },
+  "unfound": {
+    "desc": "Sorry, we kunnen de pagina niet vinden. \nOp de startpagina valt veel te ontdekken.",
+    "tip": "terug naar de startpagina",
+    "title": "De pagina ontbreekt"
   }
 }

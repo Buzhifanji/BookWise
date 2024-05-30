@@ -10,5 +10,10 @@
     "language": "bahasa",
     "theme": "tema",
     "userSetting": "tetapan pengguna"
+  },
+  "unfound": {
+    "desc": "Maaf, kami tidak dapat mencari halaman. \nAnda akan temui banyak perkara untuk diterokai di halaman utama.",
+    "tip": "kembali ke laman utama",
+    "title": "Halaman itu tiada"
   }
 }

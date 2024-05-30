@@ -10,5 +10,10 @@
     "language": "language",
     "theme": "theme",
     "userSetting": "user settings"
+  },
+  "unfound": {
+    "desc": "Sorry, we can't find the page. \nYou'll find a lot to explore on the home page.",
+    "tip": "back to the homepage",
+    "title": "The page is missing"
   }
 }

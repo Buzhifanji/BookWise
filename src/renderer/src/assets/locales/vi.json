@@ -10,5 +10,10 @@
     "language": "ngôn ngữ",
     "theme": "chủ đề",
     "userSetting": "thiết lập người dùng"
+  },
+  "unfound": {
+    "desc": "Xin lỗi, chúng tôi không thể tìm thấy trang này. \nBạn sẽ tìm thấy rất nhiều điều để khám phá trên trang chủ.",
+    "tip": "Quay lại trang chủ",
+    "title": "Trang này bị thiếu"
   }
 }

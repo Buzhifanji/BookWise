@@ -10,5 +10,10 @@
     "language": "Språk",
     "theme": "tema",
     "userSetting": "brukerinstillinger"
+  },
+  "unfound": {
+    "desc": "Beklager, vi finner ikke siden. \nDu finner mye å utforske på hjemmesiden.",
+    "tip": "tilbake til hjemmesiden",
+    "title": "Siden mangler"
   }
 }

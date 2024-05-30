@@ -10,5 +10,10 @@
     "language": "dil",
     "theme": "tema",
     "userSetting": "Kullanıcı ayarları"
+  },
+  "unfound": {
+    "desc": "Üzgünüz, sayfayı bulamıyoruz. \nAna sayfada keşfedecek çok şey bulacaksınız.",
+    "tip": "ana sayfaya dön",
+    "title": "Sayfa eksik"
   }
 }

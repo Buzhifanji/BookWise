@@ -10,5 +10,10 @@
     "language": "idioma",
     "theme": "tema",
     "userSetting": "ajustes de usuario"
+  },
+  "unfound": {
+    "desc": "Lo sentimos, no podemos encontrar la página. \nEncontrarás mucho para explorar en la página de inicio.",
+    "tip": "volver a la página de inicio",
+    "title": "falta la pagina"
   }
 }

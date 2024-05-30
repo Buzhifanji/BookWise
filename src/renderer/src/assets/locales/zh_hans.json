@@ -10,5 +10,10 @@
     "theme": "主题",
     "chooseLanguage": "选择语言",
     "chooseTheme": "选择主题"
+  },
+  "unfound": {
+    "title": "页面不见了",
+    "desc": "抱歉，我们找不到该页面。您会在主页上发现很多值得探索的内容。",
+    "tip": "回到首页"
   }
 }
