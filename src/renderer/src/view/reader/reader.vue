@@ -15,6 +15,8 @@ const props = defineProps({
 
 const book = ref<Book>()
 const bookContent = ref<BookContent>()
+const isLoading = ref(false)
+
 
 const { isLG: isCatalog, toggleDrawer: toggleCatalog } = useToggleDrawer();
 const { isLG: isNote, toggleDrawer: toggleNote } = useToggleDrawer()
@@ -37,6 +39,8 @@ async function getBookContent(bookId: string, url: string) {
 }
 
 async function loadData() {
+  isLoading.value = true
+
   const bookId = props.id
   if (!bookId) return
 
@@ -55,59 +59,68 @@ async function loadData() {
 
 }
 
-loadData()
+loadData().then(() => isLoading.value = false)
 
 const { width } = useWindowSize();
 const isSM = computed(() => width.value < 1024);
 </script>
 
 <template>
-  <template v-if="false">
-    <div class="block lg:hidden">
-      <Drawer :id="CETALOG_DRAWER">
-        <CatalogView />
-      </Drawer>
-    </div>
-    <div class="hidden lg:block">
-      <CatalogView :class="{ 'hide': isCatalog }" />
-    </div>
-    <div class="w-full max-w-full h-screen ">
-      <div class="flex h-full flex-col ">
-        <div role="navigation" aria-label="Navbar" class="navbar z-10 border-b border-base-200 px-3">
-          <div class="gap-3 navbar-start">
-            <!-- 控制侧边栏菜单栏 -->
-            <label :for="CETALOG_DRAWER" class="cursor-pointer " v-if="isSM">
-              <AlignJustify class="w-5 h-5" />
-            </label>
-            <button aria-label="Leftmenu toggle" @click="toggleCatalog" class="btn btn-sm btn-square btn-ghost" v-else>
-              <AlignJustify class="w-5 h-5" />
-            </button>
-            <!-- 打开搜索框按钮 -->
-            <button aria-label="Search button"
-              class="btn hidden h-9 w-48 items-center justify-start gap-3 border-base-content/20 hover:border-transparent hover:bg-base-content/20 sm:flex btn-sm btn-outline">
-              <Search class="w-4 h-4" />
-            </button>
-          </div>
-          <div class="navbar-center"></div>
-          <div class="navbar-end gap-4">
-            <label :for="NOTE_DRAWER" class="cursor-pointer " v-if="isSM">
-              <AlignJustify class="w-5 h-5" />
-            </label>
-            <button aria-label="Leftmenu toggle" @click="toggleNote" class="btn btn-sm btn-square btn-ghost" v-else>
-              <AlignJustify class="w-5 h-5" />
-            </button>
+  <div v-if="isLoading" class="hero min-h-screen bg-base-100">
+    <span class="loading loading-ring loading-xs"></span>
+    <span class="loading loading-ring loading-sm"></span>
+    <span class="loading loading-ring loading-md"></span>
+    <span class="loading loading-ring loading-lg"></span>
+  </div>
+  <template v-else>
+    <template v-if="book && bookContent">
+      <div class="block lg:hidden">
+        <Drawer :id="CETALOG_DRAWER">
+          <CatalogView />
+        </Drawer>
+      </div>
+      <div class="hidden lg:block">
+        <CatalogView :class="{ 'hide': isCatalog }" />
+      </div>
+      <div class="w-full max-w-full h-screen ">
+        <div class="flex h-full flex-col ">
+          <div role="navigation" aria-label="Navbar" class="navbar z-10 border-b border-base-200 px-3">
+            <div class="gap-3 navbar-start">
+              <!-- 控制侧边栏菜单栏 -->
+              <label :for="CETALOG_DRAWER" class="cursor-pointer " v-if="isSM">
+                <AlignJustify class="w-5 h-5" />
+              </label>
+              <button aria-label="Leftmenu toggle" @click="toggleCatalog" class="btn btn-sm btn-square btn-ghost"
+                v-else>
+                <AlignJustify class="w-5 h-5" />
+              </button>
+              <!-- 打开搜索框按钮 -->
+              <button aria-label="Search button"
+                class="btn hidden h-9 w-48 items-center justify-start gap-3 border-base-content/20 hover:border-transparent hover:bg-base-content/20 sm:flex btn-sm btn-outline">
+                <Search class="w-4 h-4" />
+              </button>
+            </div>
+            <div class="navbar-center"></div>
+            <div class="navbar-end gap-4">
+              <label :for="NOTE_DRAWER" class="cursor-pointer " v-if="isSM">
+                <AlignJustify class="w-5 h-5" />
+              </label>
+              <button aria-label="Leftmenu toggle" @click="toggleNote" class="btn btn-sm btn-square btn-ghost" v-else>
+                <AlignJustify class="w-5 h-5" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="block lg:hidden">
-      <Drawer :id="NOTE_DRAWER" :is-right="true">
-        <NoteView />
-      </Drawer>
-    </div>
-    <div class="hidden lg:block">
-      <NoteView :class="{ 'hide': isNote }" />
-    </div>
+      <div class="block lg:hidden">
+        <Drawer :id="NOTE_DRAWER" :is-right="true">
+          <NoteView />
+        </Drawer>
+      </div>
+      <div class="hidden lg:block">
+        <NoteView :class="{ 'hide': isNote }" />
+      </div>
+    </template>
+    <UnfoundView v-else />
   </template>
-  <UnfoundView v-else />
 </template>
