@@ -2,7 +2,7 @@
 
 interface Props {
   id: string
-  isRight: boolean
+  isRight?: boolean
 }
 
 defineProps<Props>()
