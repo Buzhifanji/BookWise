@@ -1,6 +1,6 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { electronApp, is, optimizer } from '@electron-toolkit/utils'
+import { BrowserWindow, app, ipcMain } from 'electron'
 import { join } from 'path'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
 function createWindow(): void {
@@ -17,12 +17,34 @@ function createWindow(): void {
     }
   })
 
+  const openWindows = new Map<String, number>() // 记录打开过的窗口，防止重复打开
+
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
   })
 
-  mainWindow.webContents.setWindowOpenHandler((details) => {
-    shell.openExternal(details.url)
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    // shell.openExternal(details.url)
+    // https://www.electronjs.org/zh/docs/latest/api/window-open
+
+    if (openWindows.has(url)) {
+      const windowId = openWindows.get(url)!
+      const win = BrowserWindow.fromId(windowId)
+      if (win) {
+        win.focus()
+      }
+    } else {
+      const newWindow = new BrowserWindow({
+        width: 800,
+        height: 600
+      })
+      newWindow.loadURL(url)
+      openWindows.set(url, newWindow.id)
+      newWindow.on('closed', () => {
+        openWindows.delete(url)
+      })
+    }
+
     return { action: 'deny' }
   })
 

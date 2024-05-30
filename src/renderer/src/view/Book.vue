@@ -15,18 +15,23 @@ const router = useRouter()
 const bookList = useObservable<Book[], Book[]>((liveQuery(async () => await db.books.toArray())) as any)
 
 
-function onClick(value: Book) {
+async function onClick({ id }: Book) {
   const isBlank = settingStore.value.isOpenNew;
-  router.push({ name: RouterName.Reader, params: { id: value.id } })
   if (isElectron) {
     // 桌面版
-
+    if (isBlank) {
+      const { href } = router.resolve({ name: RouterName.Reader, params: { id } });
+      window.open(href, '_blank');
+    } else {
+      router.push({ name: RouterName.Reader, params: { id } })
+    }
   } else {
     // 网页版
     if (isBlank) {
-
+      const { href } = router.resolve({ name: RouterName.Reader, params: { id } });
+      window.open(href, '_blank');
     } else {
-
+      router.push({ name: RouterName.Reader, params: { id } })
     }
   }
 }
