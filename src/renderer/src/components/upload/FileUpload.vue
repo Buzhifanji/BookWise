@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { Reader } from '@book-wise/reader';
+import { Book, db } from '@renderer/batabase';
 import { Toast } from '@renderer/components/toast';
+import { convertBlobToUint8Array } from '@renderer/shared';
+import { v4 as uuidv4 } from 'uuid';
 import { defineExpose, ref } from 'vue';
 import { readFiles } from './read-file';
 
@@ -20,16 +23,61 @@ async function uploadFile(event: Event) {
         const result = await readFiles(Array.from(files))
         if (result.length === 0) return
 
+        const books = await db.books.toArray()
 
+        const md5Set = new Set(books.map(book => book.md5));
 
-        const reader = new Reader()
-        reader.open(new File([result[0].data], 'haha'))
+        // 过滤重复添加的文件
+        const newBookData = result.filter(({ hash }) => {
+            if (md5Set.has(hash)) {
+                console.log(hash)
+                Toast({ message: '文件已存在', type: 'alert-warning' })
+                return false
+            } else {
+                md5Set.add(hash)
+                return true
+            }
+        })
 
-        console.log(reader.book)
+        // 获取书本的元数据
+        const bookMetadata = await Promise.all(newBookData.map(async ({ data, hash, file }) => {
+            const reader = new Reader()
+            await reader.open(new File([data], ''))
+            const cover = await reader.getCover()
+            return { ...reader.getMetadata(), md5: hash, cover: await convertBlobToUint8Array(cover), path: file.path || '' }
+        }))
 
-        Toast({ message: '上传成功', type: 'alert-success' })
+        const newBook: Book[] = bookMetadata.map(item => {
+            const { author, description, language, published, publisher, title, md5, cover, path } = item
+            return {
+                id: uuidv4(),
+                md5: md5,
+                name: title,
+                author: Reader.handleAuthor(author),
+                description: description || '',
+                language: Reader.handleAuthor(language),
+                publishTime: published || '',
+                publisher: publisher || '',
+                cover: cover,
+                path: path,
+                size: 0,
+                pages: 0,
+                status: 0,
+                category: 0,
+                createTime: new Date().getTime(),
+                updateTime: new Date().getTime(),
+                isDelete: null,
+            }
+        })
 
-    } catch (error) {
+        if (newBook.length) {
+            db.books.bulkAdd(newBook)
+            newBook.map(item => Toast({ message: `上传成功：${item.name}`, type: 'alert-success' }))
+        }
+
+    } catch (error: any) {
+        Toast({ message: error, type: 'alert-warning' })
+        console.log(error)
     }
 
 }

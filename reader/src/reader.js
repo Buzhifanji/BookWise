@@ -3,7 +3,7 @@ import { makeComicBook } from './comic-book.js'
 import { EPUB } from './epub.js'
 import { makeFB2 } from './fb2.js'
 import { isMOBI, MOBI } from './mobi.js'
-import fflate from './vendor/fflate.js'
+import * as fflate from './vendor/fflate.js'
 
 const isZip = async (file) => {
   const arr = new Uint8Array(await file.slice(0, 4).arrayBuffer())
@@ -141,10 +141,11 @@ export class Reader {
   book
 
   constructor() {}
+
   async open(file) {
     this.book = await getBook(file)
-
-    console.log('book: ', this.book)
+    // this.book = result
+    // return result
   }
 
   /**
@@ -173,7 +174,25 @@ export class Reader {
     return this.book.metadata
   }
 
+  /**
+   * 获取封面
+   * @returns
+   */
+  getCover = async () => {
+    return await Promise.resolve(this.book.getCover?.())
+  }
+
   destroy() {
     this.book.destroy()
+  }
+
+  static handleAuthor = (author) => {
+    return typeof author === 'string'
+      ? author
+      : author?.map((author) => (typeof author === 'string' ? author : author.name))?.join(', ') ??
+          ''
+  }
+  static handleLanguage = (language) => {
+    return typeof language === 'string' ? language : language?.join(', ') ?? ''
   }
 }

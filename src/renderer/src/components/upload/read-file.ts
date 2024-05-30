@@ -6,7 +6,7 @@ const chunkSize = 1024 * 1024 * 10 // 每个分片的大小，以每片10MB大�
  * 读取单个文件
  * @param file
  */
-export function readFile(file: File): Promise<{ data: ArrayBuffer; hash: string }> {
+export function readFile(file: File): Promise<{ data: ArrayBuffer; hash: string; file: File }> {
   return new Promise((resolve, reject) => {
     let offset = 0
     const spark = new SparkMD5.ArrayBuffer() //创建SparkMD5的实例
@@ -25,7 +25,7 @@ export function readFile(file: File): Promise<{ data: ArrayBuffer; hash: string 
       } else {
         const hash = spark.end()
         console.log('finished loading。computed hash is: ', hash)
-        resolve({ data, hash })
+        resolve({ data, hash, file })
       }
     }
 

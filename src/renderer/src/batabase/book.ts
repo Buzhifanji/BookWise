@@ -1,28 +1,22 @@
-import Dexie, { type EntityTable } from 'dexie'
-
 export interface Book {
-  id: number
-  title: string
-  author: string
+  id: string
+  name: string // 书名
+  author: string // 作者
+  cover: Uint8Array // 封面
+  description: string // 描述
+  category: number // 分类
+  status: number // 状态
+  size: number // 文件大小
+  pages: number // 页数
+  path: string // 文件路径
+  language: string // 语言
+  publisher: string // 出版商
+  publishTime: string // 出版时间
+  createTime: number // 创建时间
+  updateTime: number // 更新时间
+  isDelete: number | null // 是否删除（记录删除时间）
+  md5: string // 文件md5
 }
 
-export interface Friend {
-  id: number
-  name: string
-  age: number
-}
-
-const db = new Dexie('FriendsDatabase') as Dexie & {
-  friends: EntityTable<
-    Friend,
-    'id' // primary key "id" (for the typings only)
-  >
-}
-
-// Schema declaration:
-db.version(1).stores({
-  friends: '++id, name, age' // primary key "id" (for the runtime!)
-})
-
-export { db }
-// export type { Friend }
+export const schemaBook =
+  '&id, name, author, cover, description, category, size, pages, path, language, publisher, publishTime, createTime, updateTime, isDelete, &md5'
