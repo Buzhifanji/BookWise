@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { FileUploadView } from '@renderer/components';
+import { MENU_DRAWER } from '@renderer/shared';
 import { useWindowSize } from '@vueuse/core';
 import { AlignJustify, Search } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
@@ -24,13 +25,14 @@ function uploadAction() {
 <template>
   <div role="navigation" aria-label="Navbar" class="navbar z-10 border-b border-base-200 px-3">
     <div class="gap-3 navbar-start">
-      <!-- 打开搜索框按钮 -->
-      <label for="sidbar-drawer" v-if="isSM">
+      <!-- 控制侧边栏菜单栏 -->
+      <label :for="MENU_DRAWER" class="cursor-pointer " v-if="isSM">
         <AlignJustify class="w-5 h-5" />
       </label>
       <button aria-label="Leftmenu toggle" class="btn btn-sm btn-square btn-ghost" v-on:click="toggleSidebar" v-else>
         <AlignJustify class="w-5 h-5" />
       </button>
+      <!-- 打开搜索框按钮 -->
       <button aria-label="Search button"
         class="btn hidden h-9 w-48 items-center justify-start gap-3 border-base-content/20 hover:border-transparent hover:bg-base-content/20 sm:flex btn-sm btn-outline">
         <Search class="w-4 h-4" />

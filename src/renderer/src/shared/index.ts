@@ -1,4 +1,5 @@
 export * from './array'
 export * from './blob'
+export * from './const'
 export * from './platform'
 export * from './storage-select'
