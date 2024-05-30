@@ -3,5 +3,12 @@
     "book": "boeken",
     "note": "notities",
     "setting": "opgericht"
+  },
+  "setting": {
+    "chooseLanguage": "Kies een taal",
+    "chooseTheme": "Selecteer thema",
+    "language": "taal",
+    "theme": "thema",
+    "userSetting": "gebruikersinstellingen"
   }
 }

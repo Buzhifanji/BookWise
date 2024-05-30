@@ -3,5 +3,12 @@
     "book": "图书",
     "note": "笔记",
     "setting": "设置"
+  },
+  "setting": {
+    "userSetting": "用户设置",
+    "language": "语言",
+    "theme": "主题",
+    "chooseLanguage": "选择语言",
+    "chooseTheme": "选择主题"
   }
 }

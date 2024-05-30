@@ -3,5 +3,12 @@
     "book": "libri",
     "note": "Appunti",
     "setting": "Impostazioni"
+  },
+  "setting": {
+    "chooseLanguage": "Scegli una lingua",
+    "chooseTheme": "Seleziona il tema",
+    "language": "lingua",
+    "theme": "tema",
+    "userSetting": "impostazioni utente"
   }
 }

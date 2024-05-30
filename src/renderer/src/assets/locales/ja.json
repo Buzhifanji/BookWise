@@ -3,5 +3,12 @@
     "book": "本",
     "note": "ノート",
     "setting": "設定"
+  },
+  "setting": {
+    "chooseLanguage": "言語を選択してください",
+    "chooseTheme": "テーマの選択",
+    "language": "言語",
+    "theme": "テーマ",
+    "userSetting": "ユーザー設定"
   }
 }

@@ -3,5 +3,12 @@
     "book": "كتب",
     "note": "ملحوظات",
     "setting": "يثبت"
+  },
+  "setting": {
+    "chooseLanguage": "اختر لغة",
+    "chooseTheme": "اختر نمطا",
+    "language": "لغة",
+    "theme": "سمة",
+    "userSetting": "إعدادات المستخدم"
   }
 }

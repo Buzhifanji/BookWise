@@ -3,5 +3,12 @@
     "book": "buku",
     "note": "Nota",
     "setting": "tetapan"
+  },
+  "setting": {
+    "chooseLanguage": "Pilih bahasa",
+    "chooseTheme": "Pilih tema",
+    "language": "bahasa",
+    "theme": "tema",
+    "userSetting": "tetapan pengguna"
   }
 }

@@ -3,5 +3,12 @@
     "book": "books",
     "note": "notes",
     "setting": "set up"
+  },
+  "setting": {
+    "chooseLanguage": "Choose a language",
+    "chooseTheme": "Select theme",
+    "language": "language",
+    "theme": "theme",
+    "userSetting": "user settings"
   }
 }

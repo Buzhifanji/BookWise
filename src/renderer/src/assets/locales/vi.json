@@ -3,5 +3,12 @@
     "book": "sách",
     "note": "Ghi chú",
     "setting": "Cài đặt"
+  },
+  "setting": {
+    "chooseLanguage": "Chọn một ngôn ngữ",
+    "chooseTheme": "Chọn chủ đề",
+    "language": "ngôn ngữ",
+    "theme": "chủ đề",
+    "userSetting": "thiết lập người dùng"
   }
 }

@@ -3,5 +3,12 @@
     "book": "bøker",
     "note": "notater",
     "setting": "sette opp"
+  },
+  "setting": {
+    "chooseLanguage": "Velg et språk",
+    "chooseTheme": "Velg tema",
+    "language": "Språk",
+    "theme": "tema",
+    "userSetting": "brukerinstillinger"
   }
 }

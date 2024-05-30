@@ -3,5 +3,12 @@
     "book": "kitabın",
     "note": "notlar",
     "setting": "kurmak"
+  },
+  "setting": {
+    "chooseLanguage": "Bir dil seçin",
+    "chooseTheme": "Tema seçin",
+    "language": "dil",
+    "theme": "tema",
+    "userSetting": "Kullanıcı ayarları"
   }
 }

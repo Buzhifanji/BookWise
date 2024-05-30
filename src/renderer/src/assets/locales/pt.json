@@ -3,5 +3,12 @@
     "book": "livros",
     "note": "notas",
     "setting": "configurar"
+  },
+  "setting": {
+    "chooseLanguage": "Escolha um idioma",
+    "chooseTheme": "Selecione o tema",
+    "language": "linguagem",
+    "theme": "tema",
+    "userSetting": "Configurações do Usuário"
   }
 }

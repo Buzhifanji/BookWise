@@ -3,5 +3,12 @@
     "book": "книги",
     "note": "Примітки",
     "setting": "Налаштування"
+  },
+  "setting": {
+    "chooseLanguage": "Виберіть мову",
+    "chooseTheme": "Виберіть тему",
+    "language": "мова",
+    "theme": "тема",
+    "userSetting": "налаштування користувача"
   }
 }

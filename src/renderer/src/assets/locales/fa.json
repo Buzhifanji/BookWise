@@ -3,5 +3,12 @@
     "book": "کتاب ها",
     "note": "یادداشت",
     "setting": "تنظیمات"
+  },
+  "setting": {
+    "chooseLanguage": "یک زبان را انتخاب کنید",
+    "chooseTheme": "انتخاب قالب",
+    "language": "زبان",
+    "theme": "موضوع",
+    "userSetting": "تنظیمات کاربر"
   }
 }
