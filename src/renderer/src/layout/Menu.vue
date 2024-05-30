@@ -32,7 +32,7 @@ watchEffect(() => {
 
 <template>
   <div class="leftmenu-wrapper bg-base-100">
-    <a :href="RouterName.Home" class="flex h-16 items-center justify-center">BookWise</a>
+    <a href="/" class="flex h-16 items-center justify-center">BookWise</a>
     <div data-simplebar="init" class="h-[calc(100vh-64px)] lg:h-[calc(100vh-230px)]">
       <ul class="menu mb-6">
         <li class="mb-0.5" v-for="(item, index) in menus">

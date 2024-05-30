@@ -3,11 +3,16 @@ import { Book } from '@renderer/batabase';
 import { chuankArray } from '@renderer/shared';
 import { useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, toRaw } from 'vue';
 
 const props = defineProps<{
   data: Book[]
 }>()
+
+const emit = defineEmits<{
+  (e: 'click', payload: Book): void;
+}>();
+
 
 const WIDTH = 200
 const HEIGHT = 300
@@ -24,7 +29,8 @@ onMounted(() => {
 
 const list = computed(() => {
   const count = parseInt((store.width / (WIDTH + PADDING)).toString())
-  return chuankArray(props.data || [], count)
+  console.log(toRaw(props.data))
+  return chuankArray(toRaw(props.data) || [], count)
 })
 
 const rowVirtualizerOptions = computed(() => {
@@ -64,7 +70,7 @@ const measureElement = (el) => {
       transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin
         }px)`,
     }">
-          <div v-for="item in list[virtualRow.index]" class="card bg-base-100"
+          <div v-for="item in list[virtualRow.index]" class="card bg-base-100" @click="emit('click', item)"
             :style="{ width: `${WIDTH}px`, height: `${HEIGHT}px` }">
             {{ item.name }}
           </div>
