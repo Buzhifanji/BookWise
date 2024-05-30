@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { Book } from '@renderer/batabase';
 import { chuankArray } from '@renderer/shared';
 import { useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { computed, onMounted, ref } from 'vue';
 
 const props = defineProps<{
-  data: any[]
+  data: Book[]
 }>()
 
 const WIDTH = 200
@@ -59,13 +60,13 @@ const measureElement = (el) => {
     }">
       <template v-for="virtualRow in virtualRows" :key="virtualRow.key">
         <div :ref="measureElement" :data-index="virtualRow.index"
-          class="absolute top-0 left-0 flex pb-6  justify-center w-full gap-10" :style="{
+          class="absolute top-0 left-0 flex pb-6  justify-start w-full gap-10" :style="{
       transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin
         }px)`,
     }">
           <div v-for="item in list[virtualRow.index]" class="card bg-base-100"
             :style="{ width: `${WIDTH}px`, height: `${HEIGHT}px` }">
-            {{ item }}
+            {{ item.name }}
           </div>
         </div>
       </template>

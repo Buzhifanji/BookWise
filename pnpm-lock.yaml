@@ -23,6 +23,9 @@ importers:
       '@vueuse/core':
         specifier: ^10.10.0
         version: 10.10.0(vue@3.4.27(typescript@5.4.5))
+      '@vueuse/rxjs':
+        specifier: ^10.10.0
+        version: 10.10.0(rxjs@7.8.1)(vue@3.4.27(typescript@5.4.5))
       dexie:
         specifier: ^4.0.7
         version: 4.0.7
@@ -35,6 +38,9 @@ importers:
       pinia:
         specifier: ^2.1.7
         version: 2.1.7(typescript@5.4.5)(vue@3.4.27(typescript@5.4.5))
+      rxjs:
+        specifier: ^7.8.1
+        version: 7.8.1
       spark-md5:
         specifier: ^3.0.2
         version: 3.0.2
@@ -983,6 +989,11 @@ packages:
 
   '@vueuse/metadata@10.10.0':
     resolution: {integrity: sha512-UNAo2sTCAW5ge6OErPEHb5z7NEAg3XcO9Cj7OK45aZXfLLH1QkexDcZD77HBi5zvEiLOm1An+p/4b5K3Worpug==}
+
+  '@vueuse/rxjs@10.10.0':
+    resolution: {integrity: sha512-gGziL1ImRb6M6P7BIPIWg9bk0qbZWIdSmXNwUlwlPi/tu6c4bBa4tfz4jqaL3ayQ2jOj8GTYea2Kg/8Afp+/ew==}
+    peerDependencies:
+      rxjs: '>=6.0.0'
 
   '@vueuse/shared@10.10.0':
     resolution: {integrity: sha512-2aW33Ac0Uk0U+9yo3Ypg9s5KcR42cuehRWl7vnUHadQyFvCktseyxxEPBi1Eiq4D2yBGACOnqLZpx1eMc7g5Og==}
@@ -2541,6 +2552,9 @@ packages:
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
 
+  rxjs@7.8.1:
+    resolution: {integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==}
+
   safe-buffer@5.1.2:
     resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==}
 
@@ -3802,6 +3816,15 @@ snapshots:
       - vue
 
   '@vueuse/metadata@10.10.0': {}
+
+  '@vueuse/rxjs@10.10.0(rxjs@7.8.1)(vue@3.4.27(typescript@5.4.5))':
+    dependencies:
+      '@vueuse/shared': 10.10.0(vue@3.4.27(typescript@5.4.5))
+      rxjs: 7.8.1
+      vue-demi: 0.14.7(vue@3.4.27(typescript@5.4.5))
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
 
   '@vueuse/shared@10.10.0(vue@3.4.27(typescript@5.4.5))':
     dependencies:
@@ -5628,6 +5651,10 @@ snapshots:
   run-parallel@1.2.0:
     dependencies:
       queue-microtask: 1.2.3
+
+  rxjs@7.8.1:
+    dependencies:
+      tslib: 2.6.2
 
   safe-buffer@5.1.2: {}
 
