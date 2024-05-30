@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Select } from '@renderer/components';
+import { settingStore } from '@renderer/store';
 import { ref } from 'vue';
 import { languageStore } from './language';
 import { themeStore } from './theme';
@@ -7,7 +8,9 @@ import { themeStore } from './theme';
 const selectedTheme = ref(themeStore.getDefault(themeStore.list[0]));
 const selectedLang = ref(languageStore.getDefault(languageStore.list[0]))
 
+
 const textOpacity = { '--tw-text-opacity': 0.6 };
+
 
 </script>
 
@@ -43,10 +46,10 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
           <div class="form-control">
             <label class="cursor-pointer label">
               <div>
-                <h3 class="font-bold text-xl">sssss</h3>
-                <p class="label-text font-normal" :style="textOpacity">Remember me</p>
+                <h3 class="font-bold text-xl">阅读器是否打开新页面</h3>
+                <p class="label-text font-normal" :style="textOpacity">如果是否，将阅读器只会在当前页面。</p>
               </div>
-              <input type="checkbox" checked="checked" class="checkbox checkbox-info" />
+              <input type="checkbox" v-model="settingStore.isOpenNew" class="checkbox checkbox-info" />
             </label>
           </div>
         </div>
