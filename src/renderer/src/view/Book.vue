@@ -11,5 +11,5 @@ const bookList = useObservable<Book[], Book[]>((liveQuery(() => db.books.toArray
 </script>
 
 <template>
-  <BookListView :data="bookList" />
-</template>@renderer/components/book
+  <BookListView :data="bookList || []" />
+</template>
