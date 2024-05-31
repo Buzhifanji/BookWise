@@ -143,9 +143,9 @@ export class Reader {
   constructor() {}
 
   async open(file) {
-    this.book = await getBook(file)
-    // this.book = result
-    // return result
+    const result = await getBook(file)
+    this.book = result
+    return result
   }
 
   /**

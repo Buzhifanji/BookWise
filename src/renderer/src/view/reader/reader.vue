@@ -3,11 +3,13 @@ import { Book, BookContent, db } from '@renderer/batabase';
 import { Drawer, useToggleDrawer } from '@renderer/components/drawer';
 import UnfoundView from '@renderer/components/error/404.vue';
 import { CETALOG_DRAWER, NOTE_DRAWER, isElectron } from '@renderer/shared';
+import { useVirtualizer } from '@tanstack/vue-virtual';
 import { useWindowSize } from '@vueuse/core';
 import { AlignJustify, Search } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import CatalogView from './Catalog.vue';
 import NoteView from './Note.vue';
+import { render } from './render';
 
 const props = defineProps({
   id: String,
@@ -16,11 +18,41 @@ const props = defineProps({
 const book = ref<Book>()
 const bookContent = ref<BookContent>()
 const isLoading = ref(false)
+const section = ref<any[]>([]) // 章节内容
 
+const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
+
+const { width } = useWindowSize(); // 适配不能尺寸窗口
+const isSM = computed(() => width.value < 1024);
 
 const { isLG: isCatalog, toggleDrawer: toggleCatalog } = useToggleDrawer();
 const { isLG: isNote, toggleDrawer: toggleNote } = useToggleDrawer()
 
+
+// 虚拟列表
+const rowVirtualizerOptions = computed(() => {
+  return {
+    count: section.value.length,
+    overscan: 5,
+    getScrollElement: () => containerRef.value,
+    estimateSize: () => 1024,
+  }
+})
+const rowVirtualizer = useVirtualizer(rowVirtualizerOptions)
+
+const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems())
+
+const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
+
+const measureElement = (el) => {
+  if (!el) {
+    return
+  }
+
+  rowVirtualizer.value.measureElement(el)
+
+  return undefined
+}
 
 async function getBookContent(bookId: string, url: string) {
   try {
@@ -49,20 +81,18 @@ async function loadData() {
 
   const content = await getBookContent(bookId, info.path)
 
-  console.log(content)
   if (!content) return
 
-  console.log(info)
+  const { sections } = await render(content.content)
+  section.value = sections
 
   book.value = info
   bookContent.value = content
-
 }
 
 loadData().then(() => isLoading.value = false)
 
-const { width } = useWindowSize();
-const isSM = computed(() => width.value < 1024);
+
 </script>
 
 <template>
@@ -74,6 +104,7 @@ const isSM = computed(() => width.value < 1024);
   </div>
   <template v-else>
     <template v-if="book && bookContent">
+      <!-- 目录 -->
       <div class="block lg:hidden">
         <Drawer :id="CETALOG_DRAWER">
           <CatalogView />
@@ -84,6 +115,7 @@ const isSM = computed(() => width.value < 1024);
       </div>
       <div class="w-full max-w-full h-screen ">
         <div class="flex h-full flex-col ">
+          <!-- 头部 -->
           <div role="navigation" aria-label="Navbar" class="navbar z-10 border-b border-base-200 px-3">
             <div class="gap-3 navbar-start">
               <!-- 控制侧边栏菜单栏 -->
@@ -110,8 +142,21 @@ const isSM = computed(() => width.value < 1024);
               </button>
             </div>
           </div>
+          <!-- 书籍内容 -->
+          <div class="flex-1 bg-base-100 h-full  overflow-auto" ref="containerRef">
+            <div class="relative w-full" :style="{ height: `${totalSize}px` }">
+              <div class="absolute top-0 left-0 w-full "
+                :style="{ transform: `translateY(${virtualRows[0]?.start ?? 0}px)` }">
+                <div v-for="virtualRow in virtualRows" :key="virtualRow.key" :data-index="virtualRow.index"
+                  :ref="measureElement" class="prose mx-auto my-0">
+                  <div v-html="section[virtualRow.index].doc"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+      <!-- 笔记 -->
       <div class="block lg:hidden">
         <Drawer :id="NOTE_DRAWER" :is-right="true">
           <NoteView />
