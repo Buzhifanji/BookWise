@@ -8,11 +8,11 @@ export const render = async (data: ArrayBuffer) => {
   const reader = new Reader()
   const book = await reader.open(new File([data], ''))
   const sections = book.sections
-
+  const toc = book.toc || []
   await handleSection(sections)
 
   console.log(book)
-  return { book, sections }
+  return { book, sections, toc }
 }
 
 async function handleSection(sections: any[]) {

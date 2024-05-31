@@ -19,6 +19,7 @@ const book = ref<Book>()
 const bookContent = ref<BookContent>()
 const isLoading = ref(false)
 const section = ref<any[]>([]) // 章节内容
+const tocList = ref<any[]>([]) // 目录
 
 const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
 
@@ -83,8 +84,9 @@ async function loadData() {
 
   if (!content) return
 
-  const { sections } = await render(content.content)
+  const { sections, toc } = await render(content.content)
   section.value = sections
+  tocList.value = toc
 
   book.value = info
   bookContent.value = content
@@ -107,11 +109,11 @@ loadData().then(() => isLoading.value = false)
       <!-- 目录 -->
       <div class="block lg:hidden">
         <Drawer :id="CETALOG_DRAWER">
-          <CatalogView />
+          <CatalogView :data="tocList" />
         </Drawer>
       </div>
       <div class="hidden lg:block">
-        <CatalogView :class="{ 'hide': isCatalog }" />
+        <CatalogView :class="{ 'hide': isCatalog }" :data="tocList" />
       </div>
       <div class="w-full max-w-full h-screen ">
         <div class="flex h-full flex-col ">
@@ -169,3 +171,14 @@ loadData().then(() => isLoading.value = false)
     <UnfoundView v-else />
   </template>
 </template>
+
+<style scoped>
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-align: center;
+}
+</style>

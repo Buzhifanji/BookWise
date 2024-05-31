@@ -1,14 +1,26 @@
 <script setup lang="ts">
+import { settingStore } from '@renderer/store';
 
+interface Props {
+  data: any[],
+}
+
+withDefaults(defineProps<Props>(), {
+  data: () => [],
+})
 </script>
 
 <template>
-  <div class="leftmenu-wrapper bg-base-100">目录</div>
+  <div class="catalog-wrapper bg-base-100 overflow-auto scrollbar-thin ">
+    <FoldTree :data="data" v-if="settingStore.isFoldCatalog" />
+    <ExpandTree :data="data" v-else />
+  </div>
 </template>
 
 <style scoped>
-.leftmenu-wrapper {
-  width: var(--leftbar-width);
+.catalog-wrapper {
+  --catalog-bar-width: 448px;
+  width: var(--catalog-bar-width);
   transition: all .3s;
   position: sticky;
   bottom: 0;
@@ -20,7 +32,7 @@
   border-color: var(--fallback-b2, oklch(var(--b2) / var(--tw-border-opacity)));
 }
 
-.leftmenu-wrapper.hide {
-  margin-inline-start: calc(var(--leftbar-width)* -1);
+.catalog-wrapper.hide {
+  margin-inline-start: calc(var(--catalog-bar-width)* -1);
 }
 </style>
