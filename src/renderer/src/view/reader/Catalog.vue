@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { settingStore } from '@renderer/store';
 
 interface Props {
   data: any[],
@@ -8,18 +7,24 @@ interface Props {
 withDefaults(defineProps<Props>(), {
   data: () => [],
 })
+
+const emit = defineEmits(['click'])
+
+const handleClick = (e: any) => {
+  emit('click', e)
+}
 </script>
 
 <template>
-  <div class="catalog-wrapper bg-base-100 overflow-auto scrollbar-thin ">
-    <FoldTree :data="data" v-if="settingStore.isFoldCatalog" />
-    <ExpandTree :data="data" v-else />
+  <div class="catalog-wrapper bg-base-100 overflow-auto hover:scrollbar-thin scrollbar-none">
+    <!-- <FoldTree :data="data" v-if="settingStore.isFoldCatalog" /> -->
+    <ExpandTree :data="data" @click="handleClick" />
   </div>
 </template>
 
 <style scoped>
 .catalog-wrapper {
-  --catalog-bar-width: 448px;
+  --catalog-bar-width: 400px;
   width: var(--catalog-bar-width);
   transition: all .3s;
   position: sticky;

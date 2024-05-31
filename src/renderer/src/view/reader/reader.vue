@@ -20,6 +20,7 @@ const bookContent = ref<BookContent>()
 const isLoading = ref(false)
 const section = ref<any[]>([]) // 章节内容
 const tocList = ref<any[]>([]) // 目录
+let bookRender: any = null;
 
 const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
 
@@ -61,6 +62,8 @@ async function getBookContent(bookId: string, url: string) {
       // 桌面从路径中获取文件
       const fs = await import('fs')
       const content = await fs.promises.readFile(url, 'binary')
+      console.log('sssss')
+      console.log(content)
       return JSON.parse(content)
     } else {
       // 网页从数据库中获取
@@ -84,12 +87,25 @@ async function loadData() {
 
   if (!content) return
 
-  const { sections, toc } = await render(content.content)
+  const { book: _book, sections, toc } = await render(content.content)
+  bookRender = _book
+
   section.value = sections
   tocList.value = toc
-
   book.value = info
   bookContent.value = content
+  console.log(info)
+  console.log(content)
+}
+
+function catalogJump(e: any) {
+  if (bookRender) {
+    const data = bookRender.resolveHref(e.href)
+    if (data && typeof data.index === 'number') {
+      console.log(data)
+      rowVirtualizer.value.scrollToIndex(data.index, { align: 'start', behavior: 'smooth' })
+    }
+  }
 }
 
 loadData().then(() => isLoading.value = false)
@@ -109,11 +125,11 @@ loadData().then(() => isLoading.value = false)
       <!-- 目录 -->
       <div class="block lg:hidden">
         <Drawer :id="CETALOG_DRAWER">
-          <CatalogView :data="tocList" />
+          <CatalogView :data="tocList" @click="catalogJump" />
         </Drawer>
       </div>
       <div class="hidden lg:block">
-        <CatalogView :class="{ 'hide': isCatalog }" :data="tocList" />
+        <CatalogView :class="{ 'hide': isCatalog }" :data="tocList" @click="catalogJump" />
       </div>
       <div class="w-full max-w-full h-screen ">
         <div class="flex h-full flex-col ">
@@ -145,13 +161,13 @@ loadData().then(() => isLoading.value = false)
             </div>
           </div>
           <!-- 书籍内容 -->
-          <div class="flex-1 bg-base-100 h-full  overflow-auto" ref="containerRef">
+          <div class="flex-1 bg-base-100 h-full  overflow-auto hover:scrollbar-thin scrollbar-none" ref="containerRef">
             <div class="relative w-full" :style="{ height: `${totalSize}px` }">
               <div class="absolute top-0 left-0 w-full "
                 :style="{ transform: `translateY(${virtualRows[0]?.start ?? 0}px)` }">
                 <div v-for="virtualRow in virtualRows" :key="virtualRow.key" :data-index="virtualRow.index"
                   :ref="measureElement" class="prose mx-auto my-0">
-                  <div v-html="section[virtualRow.index].doc"></div>
+                  <div v-html="section[virtualRow.index]"></div>
                 </div>
               </div>
             </div>

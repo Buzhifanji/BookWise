@@ -19,7 +19,7 @@ withDefaults(defineProps<Props>(), {
       <template v-if="item.subitems && item.subitems.length > 0">
         <details>
           <summary>{{ item.label }}</summary>
-          <FoldTree :data="item.subitems" :deps="deps + 1" />
+          <Doc :data="item.subitems" :deps="deps + 1" />
         </details>
       </template>
       <template v-else>
