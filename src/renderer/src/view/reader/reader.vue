@@ -9,6 +9,7 @@ import { AlignJustify, Search } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import CatalogView from './Catalog.vue';
 import NoteView from './Note.vue';
+import SectionView from './Section.vue';
 import { render } from './render';
 
 const props = defineProps({
@@ -87,8 +88,8 @@ async function loadData() {
 
   if (!content) return
 
-  const { book: _book, sections, toc } = await render(content.content)
-  bookRender = _book
+  const { bookReader: _bookReader, sections, toc } = await render(content.content)
+  bookRender = _bookReader
 
   section.value = sections
   tocList.value = toc
@@ -161,13 +162,15 @@ loadData().then(() => isLoading.value = false)
             </div>
           </div>
           <!-- 书籍内容 -->
-          <div class="flex-1 bg-base-100 h-full  overflow-auto hover:scrollbar-thin scrollbar-none" ref="containerRef">
+          <div class="flex-1 bg-base-100 h-full cursor-pointer  overflow-auto hover:scrollbar-thin scrollbar-none"
+            ref="containerRef">
             <div class="relative w-full" :style="{ height: `${totalSize}px` }">
               <div class="absolute top-0 left-0 w-full "
                 :style="{ transform: `translateY(${virtualRows[0]?.start ?? 0}px)` }">
                 <div v-for="virtualRow in virtualRows" :key="virtualRow.key" :data-index="virtualRow.index"
-                  :ref="measureElement" class="prose mx-auto my-0">
-                  <div v-html="section[virtualRow.index]"></div>
+                  :ref="measureElement" class="prose mx-auto my-0 ">
+                  <SectionView :data="section[virtualRow.index]"></SectionView>
+                  <!-- <div v-html="section[virtualRow.index]"></div> -->
                 </div>
               </div>
             </div>

@@ -4,7 +4,7 @@
  * @returns
  */
 export const convertBlobToBase64 = (blob: Blob) => {
-  return new Promise((resolve) => {
+  return new Promise<string>((resolve) => {
     const reader = new FileReader()
     reader.onload = () => {
       if (reader.result) {
