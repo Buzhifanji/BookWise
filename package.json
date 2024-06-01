@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@book-wise/reader": "workspace:^",
+    "@book-wise/web-highlight": "workspace:^",
     "@electron-toolkit/eslint-config": "^1.0.2",
     "@electron-toolkit/eslint-config-ts": "^2.0.0",
     "@electron-toolkit/tsconfig": "^1.0.1",
