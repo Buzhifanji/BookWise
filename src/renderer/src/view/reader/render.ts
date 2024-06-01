@@ -27,7 +27,7 @@ async function handleSection(sections: any[], bookReader: any) {
     if (section.id.includes('page')) continue // 过滤掉封面
     const doc = await section.createDocument()
     const body = doc.querySelector('body')
-    handleLinks(body)
+    handleLinks(body, section)
     await handleImg(body, section, bookReader)
     result.push(body.innerHTML)
   }
@@ -36,16 +36,22 @@ async function handleSection(sections: any[], bookReader: any) {
 
 /**
  * 处理书本链接
- * 由于书本内容是按需加载的，而加载的内容是通过v-html绑定dom的，v-html这种方式不能绑定事件
- * 因此，目前处理比较粗暴，禁止所有链接
  */
-function handleLinks(dom: HTMLElement) {
+function handleLinks(dom: HTMLElement, section: any) {
   const links = dom.querySelectorAll('a[href]')
   for (const item of links) {
-    item.setAttribute('href', 'javascript:void(0)')
+    const href_ = item.getAttribute('href')
+    const href = section?.resolveHref?.(href_) ?? href_
+    item.setAttribute('href', href)
   }
 }
 
+/**
+ * 处理图片
+ * @param dom
+ * @param section
+ * @param bookReader
+ */
 async function handleImg(dom: HTMLElement, section: any, bookReader: any) {
   const imgs = dom.querySelectorAll('img[src]')
   try {

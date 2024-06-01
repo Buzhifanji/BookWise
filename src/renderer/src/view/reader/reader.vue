@@ -16,20 +16,20 @@ const props = defineProps({
   id: String,
 })
 
-const book = ref<Book>()
-const bookContent = ref<BookContent>()
+const book = ref<Book>() // 书籍信息
+const bookContent = ref<BookContent>() // 书籍内容
 const isLoading = ref(false)
 const section = ref<any[]>([]) // 章节内容
 const tocList = ref<any[]>([]) // 目录
-let bookRender: any = null;
+let bookRender: any = null; // 书本渲染器
 
 const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
 
 const { width } = useWindowSize(); // 适配不能尺寸窗口
 const isSM = computed(() => width.value < 1024);
 
-const { isLG: isCatalog, toggleDrawer: toggleCatalog } = useToggleDrawer();
-const { isLG: isNote, toggleDrawer: toggleNote } = useToggleDrawer()
+const { isLG: isCatalog, toggleDrawer: toggleCatalog } = useToggleDrawer(); // 控制目录是否显示
+const { isLG: isNote, toggleDrawer: toggleNote } = useToggleDrawer() // 控制笔记是否显示
 
 
 // 虚拟列表
@@ -57,6 +57,7 @@ const measureElement = (el) => {
   return undefined
 }
 
+// 获取书本内容
 async function getBookContent(bookId: string, url: string) {
   try {
     if (isElectron) {
@@ -99,13 +100,30 @@ async function loadData() {
   console.log(content)
 }
 
+// 目录跳转
 function catalogJump(e: any) {
-  if (bookRender) {
-    const data = bookRender.resolveHref(e.href)
-    if (data && typeof data.index === 'number') {
-      console.log(data)
-      rowVirtualizer.value.scrollToIndex(data.index, { align: 'start', behavior: 'smooth' })
+  if (!bookRender) return
+
+  const data = bookRender.resolveHref(e.href)
+  if (data && typeof data.index === 'number') {
+    rowVirtualizer.value.scrollToIndex(data.index, { align: 'start', behavior: 'smooth' })
+  }
+}
+
+// 点击书本链接
+function linkClick(href: string) {
+  if (!bookRender) return
+
+  if (bookRender?.isExternal?.(href)) {
+    // 外部链接，需要通知上层自行处理
+    if (isElectron) {
+      // todo 桌面外链
+    } else {
+      // 网页打开
+      window.open(href, '_blank')
     }
+  } else {
+    catalogJump({ href });
   }
 }
 
@@ -169,7 +187,7 @@ loadData().then(() => isLoading.value = false)
                 :style="{ transform: `translateY(${virtualRows[0]?.start ?? 0}px)` }">
                 <div v-for="virtualRow in virtualRows" :key="virtualRow.key" :data-index="virtualRow.index"
                   :ref="measureElement" class="prose mx-auto my-0 ">
-                  <SectionView :data="section[virtualRow.index]"></SectionView>
+                  <SectionView :data="section[virtualRow.index]" @link-click="linkClick"></SectionView>
                   <!-- <div v-html="section[virtualRow.index]"></div> -->
                 </div>
               </div>
