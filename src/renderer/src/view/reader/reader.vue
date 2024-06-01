@@ -2,7 +2,9 @@
 import { Book, BookContent, db } from '@renderer/batabase';
 import { Drawer, useToggleDrawer } from '@renderer/components/drawer';
 import UnfoundView from '@renderer/components/error/404.vue';
+import { ReadMode } from '@renderer/enum';
 import { CETALOG_DRAWER, NOTE_DRAWER, isElectron } from '@renderer/shared';
+import { settingStore } from '@renderer/store';
 import { useWindowSize } from '@vueuse/core';
 import { AlignJustify, Search } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
@@ -10,9 +12,9 @@ import '../../assets/reader.css';
 import CatalogView from './Catalog.vue';
 import NoteView from './Note.vue';
 import ScrollView from './ScrollReader.vue';
+import SectionView from './SectionReader.vue';
 import { initWebHighlight } from './highlight';
 import { bookCatalogJump, render } from './render';
-
 
 const props = defineProps({
   id: String,
@@ -33,6 +35,7 @@ const { isLG: isNote, toggleDrawer: toggleNote } = useToggleDrawer() // 控制�
 
 
 const scrollViewRef = ref<InstanceType<typeof ScrollView>>() // 滚动视图
+const sectionViewRef = ref<InstanceType<typeof SectionView>>() // 滚动视图
 
 
 // 获取书本内容
@@ -143,7 +146,8 @@ loadData().then(() => isLoading.value = false)
             </div>
           </div>
           <!-- 书籍内容 -->
-          <ScrollView :section="section" ref="scrollViewRef" </ScrollView>
+          <ScrollView :section="section" ref="scrollViewRef" v-if="settingStore.readMode === ReadMode.sroll" />
+          <SectionView :section="section" ref="sectionViewRef" v-if="settingStore.readMode === ReadMode.section" />
         </div>
       </div>
       <!-- 笔记 -->

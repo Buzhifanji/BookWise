@@ -4,11 +4,11 @@ import { defineEmits, defineProps, ref } from 'vue';
 import { SelectItem } from './type';
 
 interface Props {
-  modelValue?: SelectItem
+  modelValue?: SelectItem | string
   list: SelectItem[]
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   list: () => []
 })
 
@@ -25,7 +25,18 @@ const toggle = () => {
 onClickOutside(detailsRef, toggle)
 
 function onClick(value: SelectItem) {
-  emit('update:modelValue', value)
+  const data = (props.modelValue as SelectItem).id ? value : value.id
+  emit('update:modelValue', data)
+}
+
+function getModelValue(modelValue: SelectItem | string) {
+  if (!modelValue) return ''
+
+  if ((modelValue as SelectItem).id) {
+    return (modelValue as SelectItem).value
+  } else {
+    return props.list.find(item => item.id === modelValue)?.value
+  }
 }
 
 </script>
@@ -33,13 +44,13 @@ function onClick(value: SelectItem) {
 <template>
   <details class="dropdown" ref="detailsRef">
     <summary class=" cursor-pointer select select-bordered items-center w-full">
-      {{ modelValue?.value }}
+      {{ getModelValue(modelValue!) }}
     </summary>
     <ul
       class="p-2  mt-2  dropdown-content z-[10] max-h-96 w-full overflow-auto rounded-md menu flex-nowrap bg-base-100 shadow-lg ring-1 gap-1 scrollbar-thin ">
       <li v-for="item in list" :key="item.value" @click="onClick(item)">
         <slot v-if="$slots.default" :data="item"></slot>
-        <a :class="{ 'active': modelValue?.value === item.value }" v-else>
+        <a :class="{ 'active': ((modelValue as SelectItem)?.id || modelValue) === item.id }" v-else>
           {{ item.value }}
         </a>
       </li>
