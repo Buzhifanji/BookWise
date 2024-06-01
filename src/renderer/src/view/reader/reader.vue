@@ -7,6 +7,7 @@ import { useVirtualizer } from '@tanstack/vue-virtual';
 import { useWindowSize } from '@vueuse/core';
 import { AlignJustify, Search } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
+import '../../assets/reader.css';
 import CatalogView from './Catalog.vue';
 import NoteView from './Note.vue';
 import SectionView from './Section.vue';

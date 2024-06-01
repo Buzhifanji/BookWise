@@ -29,7 +29,8 @@ async function handleSection(sections: any[], bookReader: any) {
     const body = doc.querySelector('body')
     handleLinks(body, section)
     await handleImg(body, section, bookReader)
-    result.push(body.innerHTML)
+    const html = body.innerHTML.replace(/xmlns=".*?"/g, '')
+    result.push(html)
   }
   return result
 }
