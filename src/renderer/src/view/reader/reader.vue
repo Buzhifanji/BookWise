@@ -3,16 +3,16 @@ import { Book, BookContent, db } from '@renderer/batabase';
 import { Drawer, useToggleDrawer } from '@renderer/components/drawer';
 import UnfoundView from '@renderer/components/error/404.vue';
 import { CETALOG_DRAWER, NOTE_DRAWER, isElectron } from '@renderer/shared';
-import { useVirtualizer } from '@tanstack/vue-virtual';
 import { useWindowSize } from '@vueuse/core';
 import { AlignJustify, Search } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import '../../assets/reader.css';
 import CatalogView from './Catalog.vue';
 import NoteView from './Note.vue';
-import SectionView from './Section.vue';
+import ScrollView from './ScrollReader.vue';
 import { initWebHighlight } from './highlight';
-import { render } from './render';
+import { bookCatalogJump, render } from './render';
+
 
 const props = defineProps({
   id: String,
@@ -23,9 +23,7 @@ const bookContent = ref<BookContent>() // 书籍内容
 const isLoading = ref(false)
 const section = ref<any[]>([]) // 章节内容
 const tocList = ref<any[]>([]) // 目录
-let bookRender: any = null; // 书本渲染器
 
-const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
 
 const { width } = useWindowSize(); // 适配不能尺寸窗口
 const isSM = computed(() => width.value < 1024);
@@ -34,30 +32,8 @@ const { isLG: isCatalog, toggleDrawer: toggleCatalog } = useToggleDrawer(); // �
 const { isLG: isNote, toggleDrawer: toggleNote } = useToggleDrawer() // 控制笔记是否显示
 
 
-// 虚拟列表
-const rowVirtualizerOptions = computed(() => {
-  return {
-    count: section.value.length,
-    overscan: 5,
-    getScrollElement: () => containerRef.value,
-    estimateSize: () => 1024,
-  }
-})
-const rowVirtualizer = useVirtualizer(rowVirtualizerOptions)
+const scrollViewRef = ref<InstanceType<typeof ScrollView>>() // 滚动视图
 
-const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems())
-
-const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
-
-const measureElement = (el) => {
-  if (!el) {
-    return
-  }
-
-  rowVirtualizer.value.measureElement(el)
-
-  return undefined
-}
 
 // 获取书本内容
 async function getBookContent(bookId: string, url: string) {
@@ -94,11 +70,10 @@ async function loadData() {
   if (!content) return
 
   // 获取书本渲染器
-  const { bookReader: _bookReader, sections, toc } = await render(content.content)
+  const { sections, toc } = await render(content.content)
 
   // 初始化高亮
   initWebHighlight();
-  bookRender = _bookReader
 
   section.value = sections
   tocList.value = toc
@@ -110,30 +85,10 @@ async function loadData() {
 
 // 目录跳转
 function catalogJump(e: any) {
-  if (!bookRender) return
-
-  const data = bookRender.resolveHref(e.href)
-  if (data && typeof data.index === 'number') {
-    rowVirtualizer.value.scrollToIndex(data.index, { align: 'start', behavior: 'smooth' })
-  }
+  bookCatalogJump(e.href, (index: number) => scrollViewRef.value?.jump(index))
 }
 
-// 点击书本链接
-function linkClick(href: string) {
-  if (!bookRender) return
 
-  if (bookRender?.isExternal?.(href)) {
-    // 外部链接，需要通知上层自行处理
-    if (isElectron) {
-      // todo 桌面外链
-    } else {
-      // 网页打开
-      window.open(href, '_blank')
-    }
-  } else {
-    catalogJump({ href });
-  }
-}
 
 loadData().then(() => isLoading.value = false)
 
@@ -188,19 +143,7 @@ loadData().then(() => isLoading.value = false)
             </div>
           </div>
           <!-- 书籍内容 -->
-          <div class="flex-1 bg-base-100 h-full cursor-pointer  overflow-auto hover:scrollbar-thin scrollbar-none"
-            ref="containerRef">
-            <div class="relative w-full" :style="{ height: `${totalSize}px` }">
-              <div class="absolute top-0 left-0 w-full "
-                :style="{ transform: `translateY(${virtualRows[0]?.start ?? 0}px)` }">
-                <div v-for="virtualRow in virtualRows" :key="virtualRow.key" :data-index="virtualRow.index"
-                  :ref="measureElement" class="prose mx-auto my-0 ">
-                  <SectionView :data="section[virtualRow.index]" @link-click="linkClick"></SectionView>
-                  <!-- <div v-html="section[virtualRow.index]"></div> -->
-                </div>
-              </div>
-            </div>
-          </div>
+          <ScrollView :section="section" ref="scrollViewRef" </ScrollView>
         </div>
       </div>
       <!-- 笔记 -->
@@ -216,14 +159,3 @@ loadData().then(() => isLoading.value = false)
     <UnfoundView v-else />
   </template>
 </template>
-
-<style scoped>
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  text-align: center;
-}
-</style>
