@@ -88,7 +88,11 @@ async function loadData() {
 
 // 目录跳转
 function catalogJump(e: any) {
-  bookCatalogJump(e.href, (index: number) => scrollViewRef.value?.jump(index))
+  if (settingStore.value.readMode === ReadMode.sroll) {
+    bookCatalogJump(e.href, (index: number) => scrollViewRef.value?.jump(index))
+  } else if (settingStore.value.readMode === ReadMode.section) {
+    bookCatalogJump(e.href, (index: number) => sectionViewRef.value?.jump(index))
+  }
 }
 
 

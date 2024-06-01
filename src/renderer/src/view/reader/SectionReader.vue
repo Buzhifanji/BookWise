@@ -24,7 +24,18 @@ const section = computed(() => props.section[index.value])
 // 目录跳转
 function jump(i: number) {
   index.value = i
-  // rowVirtualizer.value.scrollToIndex(index, { align: 'start', behavior: 'smooth' })
+}
+
+function prev() {
+  if (index.value > 0) {
+    index.value -= 1
+  }
+}
+
+function next() {
+  if (index.value < props.section.length - 1) {
+    index.value += 1
+  }
 }
 
 // 点击书本链接
@@ -39,6 +50,14 @@ function linkClick(href: string) {
   <!-- 书籍内容 -->
   <div class="flex-1 bg-base-100 h-full cursor-pointer  overflow-auto hover:scrollbar-thin scrollbar-none"
     ref="containerRef">
-    <SectionView :data="section" @link-click="linkClick"></SectionView>
+    <div class="prose mx-auto my-0 ">
+      <div class="py-8">
+        <button class="btn btn-active btn-neutral" @click="prev">上一章</button>
+      </div>
+      <SectionView :data="section" @link-click="linkClick"></SectionView>
+      <div class="text-center py-10">
+        <button class="btn  btn-active  btn-primary btn-wide" @click="next">下一章</button>
+      </div>
+    </div>
   </div>
 </template>

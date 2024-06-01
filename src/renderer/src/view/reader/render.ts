@@ -92,7 +92,6 @@ export function bookCatalogJump(href: string, callback: CB) {
   if (!bookRender) return
 
   const data = bookRender.resolveHref(href)
-  console.log(data)
   if (data && typeof data.index === 'number') {
     callback(data.index)
   }
