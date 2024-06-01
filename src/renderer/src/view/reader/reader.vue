@@ -11,6 +11,7 @@ import '../../assets/reader.css';
 import CatalogView from './Catalog.vue';
 import NoteView from './Note.vue';
 import SectionView from './Section.vue';
+import { initWebHighlight } from './highlight';
 import { render } from './render';
 
 const props = defineProps({
@@ -83,14 +84,20 @@ async function loadData() {
   const bookId = props.id
   if (!bookId) return
 
+  // 获取书本信息
   const info = await db.books.get(bookId)
   if (!info) return
 
+  // 获取书本内容
   const content = await getBookContent(bookId, info.path)
 
   if (!content) return
 
+  // 获取书本渲染器
   const { bookReader: _bookReader, sections, toc } = await render(content.content)
+
+  // 初始化高亮
+  initWebHighlight();
   bookRender = _bookReader
 
   section.value = sections
