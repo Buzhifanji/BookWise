@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { blobStore } from './render';
+import { blobStore } from '../render';
 
 interface Props {
   data: any,

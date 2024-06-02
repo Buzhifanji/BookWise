@@ -1,24 +1,22 @@
 export class Reader {
-  style: {
-    spacing: number
-    justify: boolean
-    hyphenate: boolean
-  }
+  blobs: Map<string, Blob>
+  book: any
 
-  annotations: Map<any, any>
+  open(file: any): Promise<void>
 
-  annotationsByValue: Map<any, any>
-
-  open(file: any): Promise<any>
-
-  getToc(): any[]
-
-  goTo(href: string): void
+  getImgBlob(href: string): null | Blob
 
   getMetadata(): any
 
+  getCover(): Promise<Blob | undefined>
+
+  getSections(): Promise<string[]>
+
+  resolveNavigation(value: any): { index: number }
+
+  isExternal(value: string): boolean
+
   destroy(): void
-  getCover(): Blob | undefined
 
   static handleAuthor(author: any): string
   static handleLanguage(author: any): string

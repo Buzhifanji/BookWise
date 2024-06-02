@@ -11,12 +11,12 @@ import { AlignJustify, Search } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import '../../assets/reader.css';
 import CatalogView from './Catalog.vue';
-import DoubleReaderView from './DoubleReader.vue';
 import NoteView from './Note.vue';
-import ScrollReaderView from './ScrollReader.vue';
-import SectionReaderView from './SectionReader.vue';
 import { initWebHighlight } from './highlight';
-import { bookCatalogJump, render } from './render';
+import DoubleReaderView from './mode/DoubleReader.vue';
+import ScrollReaderView from './mode/ScrollReader.vue';
+import SectionReaderView from './mode/SectionReader.vue';
+import { getBookHref, render } from './render';
 
 
 const props = defineProps({
@@ -93,12 +93,15 @@ async function loadData() {
 
 // 目录跳转
 function catalogJump(e: any) {
+  const value = getBookHref(e.href)
+  if (!value) return
+  const index = value.index
   if (settingStore.value.readMode === ReadMode.sroll) {
-    bookCatalogJump(e.href, (index: number) => scrollReaderViewRef.value?.jump(index))
+    scrollReaderViewRef.value?.jump(index)
   } else if (settingStore.value.readMode === ReadMode.section) {
-    bookCatalogJump(e.href, (index: number) => sectionReaderViewRef.value?.jump(index))
+    sectionReaderViewRef.value?.jump(index)
   } else {
-    bookCatalogJump(e.href, (index: number) => doubleReaderViewRef.value?.jump(index))
+    doubleReaderViewRef.value?.jump(index)
   }
 }
 

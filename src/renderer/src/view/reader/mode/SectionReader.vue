@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import '../../assets/reader.css';
+import '../../../assets/reader.css';
+import { getBookHref, isExternal, openExternal } from '../render';
 import SectionView from './Section.vue';
-import { bookLinkClick } from './render';
 
 interface Props {
   section: any[]
@@ -40,7 +40,14 @@ function next() {
 
 // 点击书本链接
 function linkClick(href: string) {
-  bookLinkClick(href, jump)
+  if (isExternal(href)) {
+    openExternal(href)
+  } else {
+    const value = getBookHref(href)
+    if (value) {
+      jump(value.index)
+    }
+  }
 }
 
 

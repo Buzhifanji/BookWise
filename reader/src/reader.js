@@ -1,6 +1,7 @@
 // import './view.js'
 import { makeComicBook } from './comic-book.js'
 import { EPUB } from './epub.js'
+import * as CFI from './epubcfi.js'
 import { makeFB2 } from './fb2.js'
 import { isMOBI, MOBI } from './mobi.js'
 import * as fflate from './vendor/fflate.js'
@@ -114,63 +115,43 @@ const getBook = async (file) => {
   return book
 }
 
-let tocId = 0
-const handleToc = (toc) => {
-  toc.forEach((item) => {
-    const subitems = item.subitems
-
-    tocId += 1
-    item.tocId = tocId.toString()
-
-    if (Array.isArray(subitems)) {
-      handleToc(subitems)
-    }
-  })
-}
-
 export class Reader {
-  #tocView
-  style = {
-    spacing: 1.4,
-    justify: true,
-    hyphenate: true
-  }
-  annotations = new Map()
-  annotationsByValue = new Map()
-
+  blobs = new Map() // 保存图片 blob内容
   book
 
-  constructor() {}
-
-  async open(file) {
-    const result = await getBook(file)
-    this.book = result
-    return result
+  constructor() {
+    this.#handleImg.bind(this)
+    this.#handleLinks.bind(this)
+    this.#resolveCFI.bind(this)
   }
 
   /**
-   * 获取目录
+   * 打开文件渲染器
+   * @param {*} file 文件内容
+   * @param {*} isHandle 是否对章节额外处理，比如处理图片链接。如果只是读取文件信息，则不需要处理
    * @returns
    */
-  getToc() {
-    // 处理一次即可
-    const toc = this.book.toc
-    if (!toc[0]?.tocId) {
-      if (Array.isArray(toc)) {
-        handleToc(toc)
-      }
-    }
-    return Array.isArray(toc) ? toc : []
+  open = async (file) => {
+    this.book = await getBook(file)
   }
 
-  goTo(href) {
-    // this.render.goTo(href)
+  /**
+   * 根据href 获取blob格式的图片内容
+   * @param {*} href
+   * @returns
+   */
+  getImgBlob = (href) => {
+    let result = null
+    if (href && this.blobs.has(href)) {
+      result = this.blobs.get(href)
+    }
+    return result
   }
 
   /**
    * 获取元信息
    */
-  getMetadata() {
+  getMetadata = () => {
     return this.book.metadata
   }
 
@@ -182,16 +163,121 @@ export class Reader {
     return await Promise.resolve(this.book.getCover?.())
   }
 
-  destroy() {
-    this.book.destroy()
+  getSections = async () => {
+    const result = []
+    for (const section of this.book.sections) {
+      if (section.id.includes('page')) continue // 过滤掉封面
+      const doc = await section.createDocument()
+      const body = doc.querySelector('body')
+      this.#handleLinks(body, section)
+      await this.#handleImg(body, section)
+      const html = body.innerHTML.replace(/xmlns=".*?"/g, '')
+      result.push(html)
+    }
+
+    return result
   }
 
+  /**
+   * 判断书本内容里的链接是否是外部链接
+   * @param {*} href
+   * @returns
+   */
+  isExternal = (href) => {
+    return this.book.isExternal?.(href)
+  }
+
+  resolveNavigation = (target) => {
+    try {
+      if (typeof target === 'number') return { index: target }
+      if (CFI.isCFI.test(target)) return this.resolveCFI(target)
+      return this.book.resolveHref(target)
+    } catch (e) {
+      console.error(e)
+      console.error(`Could not resolve target ${target}`)
+    }
+  }
+
+  destroy = () => {
+    this.book.destroy()
+    this.blobs.clear()
+  }
+
+  #resolveCFI(cfi) {
+    if (this.book.resolveCFI) return this.book.resolveCFI(cfi)
+    else {
+      const parts = CFI.parse(cfi)
+      const index = CFI.fake.toIndex((parts.parent ?? parts).shift())
+      const anchor = (doc) => CFI.toRange(doc, parts)
+      return { index, anchor }
+    }
+  }
+
+  /**
+   * 处理书本链接
+   */
+  #handleLinks(dom, section) {
+    const links = dom.querySelectorAll('a[href]')
+    for (const item of links) {
+      const href_ = item.getAttribute('href')
+      const href = section?.resolveHref?.(href_) ?? href_
+      item.setAttribute('href', href)
+    }
+  }
+
+  /**
+   * 处理图片
+   * @param dom
+   * @param section
+   */
+  async #handleImg(dom, section) {
+    const imgs = dom.querySelectorAll('img[src]')
+    try {
+      for (const img of imgs) {
+        const src = img.getAttribute('src')
+        const href = section?.resolveHref?.(src) ?? src
+        if (href) {
+          if (this.book.loadBlob) {
+            // epub commic
+            const blob = await this.book.loadBlob(href)
+            if (blob) {
+              this.blobs.set(href, blob)
+              img.setAttribute('src', href)
+            }
+          } else if (this.book.loadResourceBlob) {
+            // mobi azw3
+            const blob = await this.book.loadResourceBlob(href)
+            if (blob) {
+              this.blobs.set(href, blob)
+              img.setAttribute('src', href)
+            }
+          } else {
+            console.log('todo handle imgae resource')
+          }
+        }
+      }
+    } catch (e) {
+      console.error('handle img to bloe error: ', e)
+    }
+  }
+
+  /**
+   * 获取字符串形式的作者
+   * @param {*} author
+   * @returns
+   */
   static handleAuthor = (author) => {
     return typeof author === 'string'
       ? author
       : author?.map((author) => (typeof author === 'string' ? author : author.name))?.join(', ') ??
           ''
   }
+
+  /**
+   * 获取字符串形式的语言
+   * @param {*} language
+   * @returns
+   */
   static handleLanguage = (language) => {
     return typeof language === 'string' ? language : language?.join(', ') ?? ''
   }

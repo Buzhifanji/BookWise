@@ -4,9 +4,9 @@ import { Toast } from '@renderer/components/toast';
 import { wait } from '@renderer/shared';
 import { useDebounceFn, useResizeObserver, useThrottleFn, useToggle } from '@vueuse/core';
 import { nextTick, onMounted, ref } from 'vue';
-import '../../assets/reader.css';
+import '../../../assets/reader.css';
+import { getBookHref, isExternal, openExternal } from '../render';
 import SectionView from './Section.vue';
-import { bookLinkClick } from './render';
 
 interface Props {
   section: any[]
@@ -42,7 +42,7 @@ const section = ref<string>(props.section[0] || '')
 async function updateSection() {
   setLoading(true)
   currentIndex = 0
-  section.value = props.section[index.value]
+  section.value = props.section[index.value] || ''
   await wait(200)
   setLoading(false)
 }
@@ -169,7 +169,14 @@ const nextView = useThrottleFn(() => {
 
 // 点击书本链接
 function linkClick(href: string) {
-  bookLinkClick(href, jump)
+  if (isExternal(href)) {
+    openExternal(href)
+  } else {
+    const value = getBookHref(href)
+    if (value) {
+      jump(value.index)
+    }
+  }
 }
 
 
