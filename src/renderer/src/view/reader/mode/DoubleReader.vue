@@ -51,7 +51,6 @@ async function updateSection() {
 function setHeight() {
   const dom = containerRef.value
   if (dom) {
-    console.log(dom.scrollWidth, dom.offsetWidth)
     let result = 0;
     const { scrollWidth, offsetWidth } = dom
     if (scrollWidth > offsetWidth) {
@@ -187,7 +186,7 @@ function linkClick(href: string) {
   <div class="flex-1 bg-base-300 h-full cursor-pointer p-10 overflow-hidden">
     <div class="prose max-w-screen-2xl mx-auto my-0 bg-base-100 rounded-3xl h-full relative">
       <div class="absolute inset-0">
-        <RingLoadingView v-if="isLoading" />
+        <RingLoadingView v-if="isLoading" class="rounded-3xl" />
         <template v-else>
           <div ref="containerRef"
             class="columns-1 lg:columns-2 gap-x-16 h-full overflow-auto scrollbar-none p-8 pb-12 double-container relative">
