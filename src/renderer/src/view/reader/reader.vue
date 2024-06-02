@@ -10,9 +10,10 @@ import { AlignJustify, Search } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import '../../assets/reader.css';
 import CatalogView from './Catalog.vue';
+import DoubleReaderView from './DoubleReader.vue';
 import NoteView from './Note.vue';
-import ScrollView from './ScrollReader.vue';
-import SectionView from './SectionReader.vue';
+import ScrollReaderView from './ScrollReader.vue';
+import SectionReaderView from './SectionReader.vue';
 import { initWebHighlight } from './highlight';
 import { bookCatalogJump, render } from './render';
 
@@ -34,8 +35,9 @@ const { isLG: isCatalog, toggleDrawer: toggleCatalog } = useToggleDrawer(); // �
 const { isLG: isNote, toggleDrawer: toggleNote } = useToggleDrawer() // 控制笔记是否显示
 
 
-const scrollViewRef = ref<InstanceType<typeof ScrollView>>() // 滚动视图
-const sectionViewRef = ref<InstanceType<typeof SectionView>>() // 滚动视图
+const scrollReaderViewRef = ref<InstanceType<typeof ScrollReaderView>>() // 滚动视图
+const sectionReaderViewRef = ref<InstanceType<typeof SectionReaderView>>() // 章节视图
+const doubleReaderViewRef = ref<InstanceType<typeof DoubleReaderView>>() // 双栏视图
 
 
 // 获取书本内容
@@ -89,13 +91,13 @@ async function loadData() {
 // 目录跳转
 function catalogJump(e: any) {
   if (settingStore.value.readMode === ReadMode.sroll) {
-    bookCatalogJump(e.href, (index: number) => scrollViewRef.value?.jump(index))
+    bookCatalogJump(e.href, (index: number) => scrollReaderViewRef.value?.jump(index))
   } else if (settingStore.value.readMode === ReadMode.section) {
-    bookCatalogJump(e.href, (index: number) => sectionViewRef.value?.jump(index))
+    bookCatalogJump(e.href, (index: number) => sectionReaderViewRef.value?.jump(index))
+  } else {
+    bookCatalogJump(e.href, (index: number) => doubleReaderViewRef.value?.jump(index))
   }
 }
-
-
 
 loadData().then(() => isLoading.value = false)
 
@@ -123,7 +125,8 @@ loadData().then(() => isLoading.value = false)
       <div class="w-full max-w-full h-screen ">
         <div class="flex h-full flex-col ">
           <!-- 头部 -->
-          <div role="navigation" aria-label="Navbar" class="navbar z-10 border-b border-base-200 px-3">
+          <div role="navigation" id="book-view_nav_bar" aria-label="Navbar"
+            class="navbar z-10 border-b border-base-200 px-3">
             <div class="gap-3 navbar-start">
               <!-- 控制侧边栏菜单栏 -->
               <label :for="CETALOG_DRAWER" class="cursor-pointer " v-if="isSM">
@@ -150,8 +153,11 @@ loadData().then(() => isLoading.value = false)
             </div>
           </div>
           <!-- 书籍内容 -->
-          <ScrollView :section="section" ref="scrollViewRef" v-if="settingStore.readMode === ReadMode.sroll" />
-          <SectionView :section="section" ref="sectionViewRef" v-if="settingStore.readMode === ReadMode.section" />
+          <ScrollReaderView :section="section" ref="scrollReaderViewRef"
+            v-if="settingStore.readMode === ReadMode.sroll" />
+          <SectionReaderView :section="section" ref="sectionReaderViewRef"
+            v-if="settingStore.readMode === ReadMode.section" />
+          <DoubleReaderView :section="section" ref="doubleReaderViewRef" v-else />
         </div>
       </div>
       <!-- 笔记 -->
