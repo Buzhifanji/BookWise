@@ -1,5 +1,7 @@
 export * from './array'
 export * from './blob'
 export * from './const'
+export * from './dom'
 export * from './platform'
 export * from './storage-select'
+export * from './timer'

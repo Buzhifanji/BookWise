@@ -2,10 +2,11 @@
 import { Book, BookContent, db } from '@renderer/batabase';
 import { Drawer, useToggleDrawer } from '@renderer/components/drawer';
 import UnfoundView from '@renderer/components/error/404.vue';
+import RingLoadingView from '@renderer/components/loading/RingLoading.vue';
 import { ReadMode } from '@renderer/enum';
 import { CETALOG_DRAWER, NOTE_DRAWER, isElectron } from '@renderer/shared';
 import { settingStore } from '@renderer/store';
-import { useWindowSize } from '@vueuse/core';
+import { useToggle, useWindowSize } from '@vueuse/core';
 import { AlignJustify, Search } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import '../../assets/reader.css';
@@ -17,13 +18,15 @@ import SectionReaderView from './SectionReader.vue';
 import { initWebHighlight } from './highlight';
 import { bookCatalogJump, render } from './render';
 
+
 const props = defineProps({
   id: String,
 })
 
 const book = ref<Book>() // 书籍信息
 const bookContent = ref<BookContent>() // 书籍内容
-const isLoading = ref(false)
+
+const [isLoading, setLoading] = useToggle(false)
 const section = ref<any[]>([]) // 章节内容
 const tocList = ref<any[]>([]) // 目录
 
@@ -60,7 +63,7 @@ async function getBookContent(bookId: string, url: string) {
 }
 
 async function loadData() {
-  isLoading.value = true
+  setLoading(true)
 
   const bookId = props.id
   if (!bookId) return
@@ -99,18 +102,13 @@ function catalogJump(e: any) {
   }
 }
 
-loadData().then(() => isLoading.value = false)
+loadData().then(() => setLoading(false))
 
 
 </script>
 
 <template>
-  <div v-if="isLoading" class="hero min-h-screen bg-base-100">
-    <span class="loading loading-ring loading-xs"></span>
-    <span class="loading loading-ring loading-sm"></span>
-    <span class="loading loading-ring loading-md"></span>
-    <span class="loading loading-ring loading-lg"></span>
-  </div>
+  <RingLoadingView class="min-h-screen" v-if="isLoading" />
   <template v-else>
     <template v-if="book && bookContent">
       <!-- 目录 -->
@@ -153,10 +151,14 @@ loadData().then(() => isLoading.value = false)
             </div>
           </div>
           <!-- 书籍内容 -->
+
+          <!-- 滚动条模式 -->
           <ScrollReaderView :section="section" ref="scrollReaderViewRef"
             v-if="settingStore.readMode === ReadMode.sroll" />
+          <!-- 章节模式 -->
           <SectionReaderView :section="section" ref="sectionReaderViewRef"
             v-if="settingStore.readMode === ReadMode.section" />
+          <!-- 双栏模式 -->
           <DoubleReaderView :section="section" ref="doubleReaderViewRef" v-else />
         </div>
       </div>
