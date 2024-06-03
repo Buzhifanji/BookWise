@@ -70,7 +70,8 @@ const measureElement = (el) => {
       transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin
         }px)`,
     }">
-          <div v-for="item in list[virtualRow.index]" class="card bg-base-100 rounded shadow cursor-pointer gap-2"
+          <div v-for="item in list[virtualRow.index]"
+            class="card bg-base-100 transition duration-150 ease-in-out hover:scale-105  rounded shadow cursor-pointer gap-2"
             @click="emit('click', item)" :style="{ width: `${WIDTH}px`, height: `${HEIGHT}px` }">
             <img :src="convertUint8ArrayToURL(item.cover)" alt="书籍封面">
             <div class="line-clamp-2 mx-1 mb-1 text-sm">{{ item.name }}</div>
