@@ -18,12 +18,12 @@ withDefaults(defineProps<Props>(), {
     <li v-for="item in data" :key="item.herf">
       <template v-if="item.subitems && item.subitems.length > 0">
         <details>
-          <summary>{{ item.label }}</summary>
+          <summary class="whitespace-normal">{{ item.label }}</summary>
           <Doc :data="item.subitems" :deps="deps + 1" />
         </details>
       </template>
       <template v-else>
-        <a>{{ item.label }}</a>
+        <a class="whitespace-normal">{{ item.label }}</a>
       </template>
     </li>
   </ul>
