@@ -2,7 +2,8 @@
   "menu": {
     "book": "کتاب ها",
     "note": "یادداشت",
-    "setting": "تنظیمات"
+    "setting": "تنظیمات",
+    "recycleBin": "سطل بازیافت"
   },
   "setting": {
     "chooseLanguage": "یک زبان را انتخاب کنید",

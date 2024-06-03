@@ -2,7 +2,8 @@
   "menu": {
     "book": "libros",
     "note": "notas",
-    "setting": "configuración"
+    "setting": "configuración",
+    "recycleBin": "papelera de reciclaje"
   },
   "setting": {
     "chooseLanguage": "Elige un idioma",

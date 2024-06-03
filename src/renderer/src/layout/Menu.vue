@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterName } from '@renderer/route';
-import { Book, PencilLine, Settings } from 'lucide-vue-next';
+import { Book, PencilLine, Settings, Trash2 } from 'lucide-vue-next';
 import { ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -9,6 +9,7 @@ const router = useRouter()
 const menus = [
   { name: 'menu.book', path: RouterName.Book, icon: Book },
   { name: 'menu.note', path: RouterName.Note, icon: PencilLine },
+  { name: 'menu.recycleBin', path: RouterName.RecycleBin, icon: Trash2 },
   { name: 'menu.setting', path: RouterName.Setting, icon: Settings },
 ]
 

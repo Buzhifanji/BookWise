@@ -2,7 +2,8 @@
   "menu": {
     "book": "books",
     "note": "notes",
-    "setting": "set up"
+    "setting": "set up",
+    "recycleBin": "recycle bin"
   },
   "setting": {
     "chooseLanguage": "Choose a language",

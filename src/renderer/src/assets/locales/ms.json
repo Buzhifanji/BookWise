@@ -2,7 +2,8 @@
   "menu": {
     "book": "buku",
     "note": "Nota",
-    "setting": "tetapan"
+    "setting": "tetapan",
+    "recycleBin": "tong kitar semula"
   },
   "setting": {
     "chooseLanguage": "Pilih bahasa",

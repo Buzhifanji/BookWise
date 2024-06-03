@@ -2,7 +2,8 @@
   "menu": {
     "book": "libri",
     "note": "Appunti",
-    "setting": "Impostazioni"
+    "setting": "Impostazioni",
+    "recycleBin": "cestino"
   },
   "setting": {
     "chooseLanguage": "Scegli una lingua",

@@ -2,7 +2,7 @@
 import { Book } from '@renderer/batabase';
 import { useRightClick } from '@renderer/hooks';
 import { chuankArray, convertUint8ArrayToURL } from '@renderer/shared';
-import { settingStore, useContentCantianerStore } from '@renderer/store';
+import { useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
 import { Trash2 } from 'lucide-vue-next';
@@ -66,12 +66,6 @@ const measureElement = (el) => {
 
 // 右键
 const { rightEvent, closeRight, rightInfo, selectData } = useRightClick<Book>()
-
-function removeAction() {
-  if (settingStore.value.isOpenRecyleBin) {
-
-  }
-}
 
 </script>
 

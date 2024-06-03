@@ -4,6 +4,7 @@ import LayoutView from '@renderer/layout/Layout.vue'
 import BookView from '@renderer/view/Book.vue'
 import HomeView from '@renderer/view/Home.vue'
 import NoteView from '@renderer/view/Note.vue'
+import RecycleBinView from '@renderer/view/RecycleBin.vue'
 import ReaderView from '@renderer/view/reader/reader.vue'
 import { SettingView } from '@renderer/view/setting'
 
@@ -13,7 +14,8 @@ export const RouterName = {
   Note: 'note',
   Setting: 'setting',
   Reader: 'reader',
-  Layout: 'layout'
+  Layout: 'layout',
+  RecycleBin: 'recycle-bin'
 }
 
 const routes = [
@@ -27,6 +29,7 @@ const routes = [
       { path: 'home', name: RouterName.Home, component: HomeView },
       { path: 'book', name: RouterName.Book, component: BookView },
       { path: 'note', name: RouterName.Note, component: NoteView },
+      { path: 'recycle-bin', name: RouterName.RecycleBin, component: RecycleBinView },
       { path: 'setting', name: RouterName.Setting, component: SettingView }
     ]
   },

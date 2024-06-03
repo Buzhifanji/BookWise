@@ -2,7 +2,8 @@
   "menu": {
     "book": "книги",
     "note": "Примітки",
-    "setting": "Налаштування"
+    "setting": "Налаштування",
+    "recycleBin": "кошик"
   },
   "setting": {
     "chooseLanguage": "Виберіть мову",

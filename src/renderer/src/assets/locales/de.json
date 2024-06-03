@@ -2,7 +2,8 @@
   "menu": {
     "book": "Bücher",
     "note": "Anmerkungen",
-    "setting": "aufstellen"
+    "setting": "aufstellen",
+    "recycleBin": "Papierkorb"
   },
   "setting": {
     "chooseLanguage": "Wählen Sie eine Sprache",

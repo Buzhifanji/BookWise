@@ -2,7 +2,8 @@
   "menu": {
     "book": "böcker",
     "note": "anteckningar",
-    "setting": "uppstart"
+    "setting": "uppstart",
+    "recycleBin": "papperskorgen"
   },
   "setting": {
     "chooseLanguage": "Välj ett språk",

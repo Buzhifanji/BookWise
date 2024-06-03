@@ -2,7 +2,8 @@
   "menu": {
     "book": "bøker",
     "note": "notater",
-    "setting": "sette opp"
+    "setting": "sette opp",
+    "recycleBin": "papirkurven"
   },
   "setting": {
     "chooseLanguage": "Velg et språk",

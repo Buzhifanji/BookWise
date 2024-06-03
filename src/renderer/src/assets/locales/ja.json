@@ -2,7 +2,8 @@
   "menu": {
     "book": "本",
     "note": "ノート",
-    "setting": "設定"
+    "setting": "設定",
+    "recycleBin": "ゴミ箱"
   },
   "setting": {
     "chooseLanguage": "言語を選択してください",

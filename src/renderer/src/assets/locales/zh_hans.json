@@ -2,7 +2,8 @@
   "menu": {
     "book": "图书",
     "note": "笔记",
-    "setting": "设置"
+    "setting": "设置",
+    "recycleBin": "回收站"
   },
   "setting": {
     "userSetting": "用户设置",

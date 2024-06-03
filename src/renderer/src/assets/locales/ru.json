@@ -2,7 +2,8 @@
   "menu": {
     "book": "книги",
     "note": "примечания",
-    "setting": "настраивать"
+    "setting": "настраивать",
+    "recycleBin": "корзина"
   },
   "setting": {
     "chooseLanguage": "Выберите язык",

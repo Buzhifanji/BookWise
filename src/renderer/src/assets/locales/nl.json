@@ -2,7 +2,8 @@
   "menu": {
     "book": "boeken",
     "note": "notities",
-    "setting": "opgericht"
+    "setting": "opgericht",
+    "recycleBin": "prullenbak"
   },
   "setting": {
     "chooseLanguage": "Kies een taal",

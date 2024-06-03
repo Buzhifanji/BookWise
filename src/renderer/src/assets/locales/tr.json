@@ -2,7 +2,8 @@
   "menu": {
     "book": "kitabın",
     "note": "notlar",
-    "setting": "kurmak"
+    "setting": "kurmak",
+    "recycleBin": "geridönüşüm kutusu"
   },
   "setting": {
     "chooseLanguage": "Bir dil seçin",

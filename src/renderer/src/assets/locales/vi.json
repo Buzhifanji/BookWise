@@ -2,7 +2,8 @@
   "menu": {
     "book": "sách",
     "note": "Ghi chú",
-    "setting": "Cài đặt"
+    "setting": "Cài đặt",
+    "recycleBin": "thùng rác"
   },
   "setting": {
     "chooseLanguage": "Chọn một ngôn ngữ",

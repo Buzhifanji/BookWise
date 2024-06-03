@@ -2,7 +2,8 @@
   "menu": {
     "book": "كتب",
     "note": "ملحوظات",
-    "setting": "يثبت"
+    "setting": "يثبت",
+    "recycleBin": "سلة المهملات"
   },
   "setting": {
     "chooseLanguage": "اختر لغة",
