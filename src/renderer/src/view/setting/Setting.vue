@@ -64,6 +64,15 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
           <div class="form-control">
             <label class="cursor-pointer label">
               <div>
+                <h3 class="font-bold text-xl">开启回收站功能</h3>
+                <p class="label-text font-normal" :style="textOpacity">关闭回收站，删除图片的时候，将会被永久删除，而不是移到回收站</p>
+              </div>
+              <input type="checkbox" v-model="settingStore.isOpenRecyleBin" class="checkbox checkbox-info" />
+            </label>
+          </div>
+          <div class="form-control">
+            <label class="cursor-pointer label">
+              <div>
                 <h3 class="font-bold text-xl">阅读模式</h3>
               </div>
               <Select v-model="settingStore.readMode" :list="readModeList" />

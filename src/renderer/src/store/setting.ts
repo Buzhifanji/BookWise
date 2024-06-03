@@ -5,12 +5,14 @@ interface SettingState {
   isOpenNew: boolean // 是否打开新页面
   isFoldCatalog: boolean // 目录是显示折叠效果，还是全面展开
   readMode: ReadMode // 阅读模式
+  isOpenRecyleBin: boolean // 是否打开回收站
 }
 
 const defaultState: SettingState = {
   isOpenNew: true,
   isFoldCatalog: false,
-  readMode: ReadMode.sroll
+  readMode: ReadMode.sroll,
+  isOpenRecyleBin: true
 }
 
 /**
