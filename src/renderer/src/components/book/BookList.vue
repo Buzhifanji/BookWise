@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
-import { chuankArray } from '@renderer/shared';
+import { chuankArray, convertUint8ArrayToURL } from '@renderer/shared';
 import { useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { computed, onMounted, ref, toRaw } from 'vue';
@@ -14,8 +14,8 @@ const emit = defineEmits<{
 }>();
 
 
-const WIDTH = 200
-const HEIGHT = 300
+const WIDTH = 128
+const HEIGHT = 225
 const PADDING = 20
 const store = useContentCantianerStore()
 
@@ -70,9 +70,10 @@ const measureElement = (el) => {
       transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin
         }px)`,
     }">
-          <div v-for="item in list[virtualRow.index]" class="card bg-base-100" @click="emit('click', item)"
-            :style="{ width: `${WIDTH}px`, height: `${HEIGHT}px` }">
-            {{ item.name }}
+          <div v-for="item in list[virtualRow.index]" class="card bg-base-100 rounded shadow cursor-pointer gap-2"
+            @click="emit('click', item)" :style="{ width: `${WIDTH}px`, height: `${HEIGHT}px` }">
+            <img :src="convertUint8ArrayToURL(item.cover)" alt="书籍封面">
+            <div class="line-clamp-2 mx-1 mb-1 text-sm">{{ item.name }}</div>
           </div>
         </div>
       </template>
