@@ -13,5 +13,5 @@ async function onClick({ id }: Book) {
 </script>
 
 <template>
-  <BookListView :data="bookList || []" @click="onClick" />
+  <BookListView :data="bookList || []" @click="onClick" :isRecycleBin="true" />
 </template>

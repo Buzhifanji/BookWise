@@ -2,18 +2,16 @@
 import { Reader } from '@book-wise/reader';
 import { Book, db } from '@renderer/batabase';
 import { Toast } from '@renderer/components/toast';
+import { useDialog } from '@renderer/hooks';
 import { convertBlobToUint8Array, isElectron } from '@renderer/shared';
 import { v4 as uuidv4 } from 'uuid';
-import { defineExpose, ref } from 'vue';
+import { defineExpose } from 'vue';
 import { readFiles } from './read-file';
 
-const dialogRef = ref<HTMLDialogElement | null>(null)
+const { dialogRef, openDialog, } = useDialog();
 
-function open() {
-    dialogRef.value?.showModal()
-}
 
-defineExpose({ open })
+defineExpose({ open: openDialog })
 
 async function uploadFile(event: Event) {
     const files = (event.target as HTMLInputElement).files;
