@@ -9,7 +9,7 @@ languageStore.init('English');
 </script>
 
 <template>
-  <div class="size-full">
+  <div class="size-full" @contextmenu.prevent>
     <div class="flex overflow-hidden">
       <router-view v-slot="{ Component }">
         <template v-if="Component">

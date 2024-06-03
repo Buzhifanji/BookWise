@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
+import { useRightClick } from '@renderer/hooks';
 import { chuankArray, convertUint8ArrayToURL } from '@renderer/shared';
 import { useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
+import { vOnClickOutside } from '@vueuse/components';
+import { Trash2 } from 'lucide-vue-next';
 import { computed, onMounted, ref, toRaw } from 'vue';
 
 const props = defineProps<{
@@ -21,6 +24,7 @@ const store = useContentCantianerStore()
 
 const parentRef = ref<HTMLElement | null>(null)
 
+
 const parentOffsetRef = ref(0)
 
 onMounted(() => {
@@ -33,6 +37,7 @@ const list = computed(() => {
   return chuankArray(toRaw(props.data) || [], count)
 })
 
+// 虚拟列表
 const rowVirtualizerOptions = computed(() => {
   return {
     count: list.value.length,
@@ -57,6 +62,10 @@ const measureElement = (el) => {
 
   return undefined
 }
+
+// 右键
+const { rightEvent, closeRight, rightInfo } = useRightClick()
+
 </script>
 
 <template>
@@ -72,12 +81,34 @@ const measureElement = (el) => {
     }">
           <div v-for="item in list[virtualRow.index]"
             class="card bg-base-100 transition duration-150 ease-in-out hover:scale-105  rounded shadow cursor-pointer gap-2"
-            @click="emit('click', item)" :style="{ width: `${WIDTH}px`, height: `${HEIGHT}px` }">
+            @click="emit('click', item)" :style="{ width: `${WIDTH}px`, height: `${HEIGHT}px` }" ref=""
+            @contextmenu="rightEvent($event)">
             <img :src="convertUint8ArrayToURL(item.cover)" alt="书籍封面">
             <div class="line-clamp-2 mx-1 mb-1 text-sm">{{ item.name }}</div>
           </div>
         </div>
+
       </template>
     </div>
+
+    <!-- 右键 -->
+    <ul class="fixed menu bg-base-100 rounded-md shadow-2xl w-40 z-[99]" v-on-click-outside="closeRight"
+      v-if="rightInfo.show" :style="{ top: rightInfo.top, left: rightInfo.left }">
+      <li>
+        <a class="text-error">
+          <Trash2 class="h-5 w-5" />删除
+        </a>
+      </li>
+      <li>
+        <a>
+          <Trash2 class="h-5 w-5" />编辑
+        </a>
+      </li>
+      <li>
+        <a>
+          <Trash2 class="h-5 w-5" />详情
+        </a>
+      </li>
+    </ul>
   </div>
 </template>
