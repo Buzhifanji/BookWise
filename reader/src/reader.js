@@ -166,7 +166,7 @@ export class Reader {
   getSections = async () => {
     const result = []
     for (const section of this.book.sections) {
-      // if (section.id.includes('page')) continue // 过滤掉封面
+      if (section.id.includes('page')) continue // 过滤掉封面
       const doc = await section.createDocument()
       const body = doc.querySelector('body')
       this.#handleLinks(body, section)
