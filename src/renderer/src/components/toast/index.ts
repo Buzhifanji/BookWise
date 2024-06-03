@@ -1,16 +1,11 @@
+import { $, createElement } from '@renderer/shared'
 import { Position, ToastOptions } from './type'
 
 let id = 0
 
-function createElement<K extends keyof HTMLElementTagNameMap>(
-  tagName: K
-): HTMLElementTagNameMap[K] {
-  return document.createElement(tagName)
-}
-
 function createToastConatiner(position: Position[]) {
   const className = (position.length > 0 ? '.toast.' : '.toast') + position.join('.')
-  const conatiner = document.querySelector(className)
+  const conatiner = $(className)
   if (conatiner) {
     return conatiner
   }
@@ -49,7 +44,7 @@ function createCloseButton(id: string) {
 }
 
 function remove(id: string) {
-  const toast = document.getElementById(id)
+  const toast = $(`#${id}`)
   if (toast) {
     toast.remove()
   }

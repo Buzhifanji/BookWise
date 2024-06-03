@@ -6,6 +6,7 @@ themeStore.init('light');
 
 // 初始化语言
 languageStore.init('English');
+
 </script>
 
 <template>

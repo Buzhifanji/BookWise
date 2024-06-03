@@ -26,7 +26,7 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
 <template>
   <div class="p-6 grid grid-cols-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-screen-2xl">
     <div class="col-span-full">
-      <h2 class="font-bold text-lg ">
+      <h2 class="font-bold text-2xl ">
         {{ $t('setting.userSetting') }}
       </h2>
     </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
 import { useDialog, useRightClick } from '@renderer/hooks';
-import { chuankArray, convertUint8ArrayToURL } from '@renderer/shared';
+import { chuankArray, convertUint8ArrayToURL, remToPx } from '@renderer/shared';
 import { settingStore, useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
@@ -25,8 +25,8 @@ const emit = defineEmits<{
 }>();
 
 
-const WIDTH = 128
-const HEIGHT = 225
+const WIDTH = 6.5
+const HEIGHT = 12
 const PADDING = 20
 const store = useContentCantianerStore()
 
@@ -39,7 +39,7 @@ onMounted(() => {
 })
 
 const list = computed(() => {
-  const count = parseInt((store.width / (WIDTH + PADDING)).toString())
+  const count = parseInt((store.width / (remToPx(WIDTH) + PADDING)).toString())
   return chuankArray(toRaw(props.data) || [], count)
 })
 
@@ -124,7 +124,7 @@ function restoreOneBook() {
     }">
           <div v-for="item in list[virtualRow.index]"
             class="card bg-base-100 transition duration-150 ease-in-out hover:scale-105  rounded shadow cursor-pointer gap-2"
-            @click="emit('click', item)" :style="{ width: `${WIDTH}px`, height: `${HEIGHT}px` }" ref=""
+            @click="emit('click', item)" :style="{ width: `${WIDTH}rem`, height: `${HEIGHT}rem` }" ref=""
             @contextmenu="rightEvent($event, item)">
             <img :src="convertUint8ArrayToURL(item.cover)" alt="书籍封面">
             <div class="line-clamp-2 mx-1 mb-1 text-sm">{{ item.name }}</div>
@@ -135,7 +135,7 @@ function restoreOneBook() {
     </div>
 
     <!-- 右键 -->
-    <ul class="fixed menu bg-base-100 rounded-md shadow-2xl w-40 z-[99]" v-on-click-outside="closeRight"
+    <ul class="fixed menu bg-base-100 rounded-md shadow-2xl gap-1 w-40 z-[99]" v-on-click-outside="closeRight"
       v-if="rightInfo.show" :style="{ top: rightInfo.top, left: rightInfo.left }">
       <template v-if="isRecycleBin">
         <li @click="restoreOneBook()">
