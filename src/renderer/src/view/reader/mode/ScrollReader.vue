@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { computed, ref } from 'vue';
-import '../../../assets/reader.css';
 import { getBookHref, isExternal, openExternal } from '../render';
 import SectionView from './Section.vue';
 

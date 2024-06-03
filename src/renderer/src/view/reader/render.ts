@@ -1,11 +1,6 @@
 import { Reader } from '@book-wise/reader'
 import { isElectron } from '@renderer/shared'
 
-/**
- * 保存图片 blob内容
- */
-export const blobStore = new Map<string, Blob>()
-
 export let bookRender: Reader | null = null
 
 /**
@@ -17,7 +12,7 @@ export const render = async (data: ArrayBuffer) => {
   await bookRender.open(new File([data], ''))
   const sections = await bookRender.getSections()
   const toc = bookRender.book.toc || []
-
+  console.log(bookRender)
   return { sections, toc }
 }
 
@@ -32,6 +27,10 @@ export function getBookHref(href: string) {
 
 export function isExternal(href: string) {
   return bookRender!.isExternal(href)
+}
+
+export function getImgBlob(href: string) {
+  return bookRender?.getImgBlob(href) || null
 }
 
 /**

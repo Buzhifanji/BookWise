@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import '../../../assets/reader.css';
 import { getBookHref, isExternal, openExternal } from '../render';
 import SectionView from './Section.vue';
 
@@ -23,6 +22,10 @@ const section = computed(() => props.section[index.value])
 
 // 目录跳转
 function jump(i: number) {
+  if (containerRef.value) {
+    containerRef.value.scrollTop = 0
+  }
+
   index.value = i
 }
 

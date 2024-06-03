@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { blobStore } from '../render';
+import { getImgBlob } from '../render';
 
 interface Props {
   data: any,
@@ -16,14 +16,10 @@ const contianer = ref<HTMLElement | null>(null)
 // 图片绑定blob
 function mountBlobToImg() {
   const imgs = contianer.value?.querySelectorAll<HTMLImageElement>('img[src]') || []
-  console.log(imgs)
   for (const img of imgs) {
-    const href = img.getAttribute('src')
-    if (href && blobStore.has(href)) {
-      const blob = blobStore.get(href)
-      if (blob) {
-        img.setAttribute('src', URL.createObjectURL(blob))
-      }
+    const blob = getImgBlob(img.getAttribute('src') || '')
+    if (blob) {
+      img.setAttribute('src', URL.createObjectURL(blob))
     }
   }
 }

@@ -4,7 +4,6 @@ import { Toast } from '@renderer/components/toast';
 import { wait } from '@renderer/shared';
 import { useDebounceFn, useResizeObserver, useThrottleFn, useToggle } from '@vueuse/core';
 import { nextTick, onMounted, ref } from 'vue';
-import '../../../assets/reader.css';
 import { getBookHref, isExternal, openExternal } from '../render';
 import SectionView from './Section.vue';
 
