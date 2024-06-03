@@ -16,6 +16,7 @@ const contianer = ref<HTMLElement | null>(null)
 // 图片绑定blob
 function mountBlobToImg() {
   const imgs = contianer.value?.querySelectorAll<HTMLImageElement>('img[src]') || []
+  console.log(imgs)
   for (const img of imgs) {
     const href = img.getAttribute('src')
     if (href && blobStore.has(href)) {

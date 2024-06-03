@@ -33,6 +33,14 @@ function prev() {
 }
 
 function next() {
+  // 滚动到顶部
+  if (containerRef.value) {
+    containerRef.value.scroll({
+      top: 0,
+      behavior: 'smooth'
+    })
+    containerRef.value.scrollTop = 0
+  }
   if (index.value < props.section.length - 1) {
     index.value += 1
   }

@@ -9,8 +9,6 @@ import { settingStore } from '@renderer/store';
 import { useToggle, useWindowSize } from '@vueuse/core';
 import { AlignJustify, Search } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
-import '../../assets/calibre.css';
-import '../../assets/reader.css';
 import CatalogView from './Catalog.vue';
 import NoteView from './Note.vue';
 import { initWebHighlight } from './highlight';
