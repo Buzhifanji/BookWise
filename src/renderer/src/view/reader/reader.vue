@@ -131,8 +131,8 @@ loadData().then(() => setLoading(false))
         <div class="flex h-full flex-col ">
           <!-- 头部 -->
           <div role="navigation" id="book-view_nav_bar" aria-label="Navbar"
-            class="navbar z-10 border-b border-base-200 px-3">
-            <div class="gap-3 navbar-start">
+            class="navbar justify-between z-10 border-b border-base-200 px-3">
+            <div class="gap-3 flex">
               <!-- 控制侧边栏菜单栏 -->
               <label :for="CETALOG_DRAWER" class="cursor-pointer " v-if="isSM">
                 <AlignJustify class="w-5 h-5" />
@@ -147,8 +147,13 @@ loadData().then(() => setLoading(false))
                 <Search class="w-4 h-4" />
               </button>
             </div>
-            <div class="navbar-center"></div>
-            <div class="navbar-end gap-4">
+            <div>
+              <!-- 文章标题 -->
+              <div class="tooltip tooltip-bottom" :data-tip="book.name">
+                <p class="text-lg font-bold line-clamp-1">{{ book.name }}</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
               <label :for="NOTE_DRAWER" class="cursor-pointer " v-if="isSM">
                 <AlignJustify class="w-5 h-5" />
               </label>
