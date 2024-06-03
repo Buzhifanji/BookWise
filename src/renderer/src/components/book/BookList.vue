@@ -2,11 +2,12 @@
 import { Book } from '@renderer/batabase';
 import { useRightClick } from '@renderer/hooks';
 import { chuankArray, convertUint8ArrayToURL } from '@renderer/shared';
-import { useContentCantianerStore } from '@renderer/store';
+import { settingStore, useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
 import { Trash2 } from 'lucide-vue-next';
 import { computed, onMounted, ref, toRaw } from 'vue';
+import { removeOneBook } from './book-action';
 
 const props = defineProps<{
   data: Book[]
@@ -64,7 +65,13 @@ const measureElement = (el) => {
 }
 
 // 右键
-const { rightEvent, closeRight, rightInfo } = useRightClick()
+const { rightEvent, closeRight, rightInfo, selectData } = useRightClick<Book>()
+
+function removeAction() {
+  if (settingStore.value.isOpenRecyleBin) {
+
+  }
+}
 
 </script>
 
@@ -82,7 +89,7 @@ const { rightEvent, closeRight, rightInfo } = useRightClick()
           <div v-for="item in list[virtualRow.index]"
             class="card bg-base-100 transition duration-150 ease-in-out hover:scale-105  rounded shadow cursor-pointer gap-2"
             @click="emit('click', item)" :style="{ width: `${WIDTH}px`, height: `${HEIGHT}px` }" ref=""
-            @contextmenu="rightEvent($event)">
+            @contextmenu="rightEvent($event, item)">
             <img :src="convertUint8ArrayToURL(item.cover)" alt="书籍封面">
             <div class="line-clamp-2 mx-1 mb-1 text-sm">{{ item.name }}</div>
           </div>
@@ -94,7 +101,7 @@ const { rightEvent, closeRight, rightInfo } = useRightClick()
     <!-- 右键 -->
     <ul class="fixed menu bg-base-100 rounded-md shadow-2xl w-40 z-[99]" v-on-click-outside="closeRight"
       v-if="rightInfo.show" :style="{ top: rightInfo.top, left: rightInfo.left }">
-      <li>
+      <li @click="removeOneBook(selectData)">
         <a class="text-error">
           <Trash2 class="h-5 w-5" />删除
         </a>

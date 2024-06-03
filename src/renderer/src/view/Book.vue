@@ -12,8 +12,7 @@ const router = useRouter()
 
 // 不知道如何 ts 报错：Observable<Book[]>”缺少类型“Observable<Book[]>”的以下属性: source, operator, lift, forEach 及其他 2 项
 // 暂时用 any 替代
-const bookList = useObservable<Book[], Book[]>((liveQuery(async () => await db.books.toArray())) as any)
-
+const bookList = useObservable<Book[], Book[]>((liveQuery(async () => (await db.books.toArray()).filter(item => !item.isDelete))) as any)
 
 async function onClick({ id }: Book) {
   const isBlank = settingStore.value.isOpenNew;
