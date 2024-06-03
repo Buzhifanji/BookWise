@@ -9,6 +9,7 @@ import { settingStore } from '@renderer/store';
 import { useToggle, useWindowSize } from '@vueuse/core';
 import { AlignJustify, Search } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
+import '../../assets/calibre.css';
 import '../../assets/reader.css';
 import CatalogView from './Catalog.vue';
 import NoteView from './Note.vue';
@@ -92,10 +93,15 @@ async function loadData() {
 }
 
 // 目录跳转
-function catalogJump(e: any) {
-  const value = getBookHref(e.href)
-  if (!value) return
-  const index = value.index
+function catalogJump({ href }: any) {
+  let index = 0;
+  if (href) {
+    const value = getBookHref(href)
+    if (value) {
+      index = value.index
+    }
+  }
+
   if (settingStore.value.readMode === ReadMode.sroll) {
     scrollReaderViewRef.value?.jump(index)
   } else if (settingStore.value.readMode === ReadMode.section) {
@@ -120,7 +126,7 @@ loadData().then(() => setLoading(false))
           <CatalogView :data="tocList" @click="catalogJump" />
         </Drawer>
       </div>
-      <div class="hidden lg:block">
+      <div class="hidden lg:block ">
         <CatalogView :class="{ 'hide': isCatalog }" :data="tocList" @click="catalogJump" />
       </div>
       <div class="w-full max-w-full h-screen ">
@@ -162,7 +168,8 @@ loadData().then(() => setLoading(false))
           <SectionReaderView :section="section" ref="sectionReaderViewRef"
             v-if="settingStore.readMode === ReadMode.section" />
           <!-- 双栏模式 -->
-          <DoubleReaderView :section="section" ref="doubleReaderViewRef" v-else />
+          <DoubleReaderView :section="section" ref="doubleReaderViewRef"
+            v-if="settingStore.readMode === ReadMode.double" />
         </div>
       </div>
       <!-- 笔记 -->
