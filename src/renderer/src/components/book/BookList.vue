@@ -40,7 +40,6 @@ onMounted(() => {
 
 const list = computed(() => {
   const count = parseInt((store.width / (WIDTH + PADDING)).toString())
-  console.log(toRaw(props.data))
   return chuankArray(toRaw(props.data) || [], count)
 })
 

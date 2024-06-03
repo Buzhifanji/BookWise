@@ -4,21 +4,22 @@ import Menu from '@renderer/layout/Menu.vue';
 import Navbar from '@renderer/layout/Navbar.vue';
 import { MENU_DRAWER } from '@renderer/shared';
 import { useContentCantianerStore } from '@renderer/store';
-import { useElementSize } from '@vueuse/core';
-import { ref, watchEffect } from 'vue';
+import { useDebounceFn, useElementSize, useResizeObserver } from '@vueuse/core';
+import { ref } from 'vue';
 
 const contentRef = ref<HTMLElement | null>(null)
 
 const { isLG, toggleDrawer } = useToggleDrawer();
 
-const { width } = useElementSize(contentRef)
-
 const store = useContentCantianerStore()
 
-watchEffect(() => {
-  store.setWidth(width.value)
-})
+const { width } = useElementSize(contentRef)
 
+const debouncedFn = useDebounceFn(async () => {
+  store.setWidth(width.value)
+}, 300)
+
+useResizeObserver(contentRef, debouncedFn)
 
 </script>
 
