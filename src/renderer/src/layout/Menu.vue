@@ -19,7 +19,7 @@ watchEffect(() => {
   const path = router.currentRoute.value.path
   let has = false;
   menus.forEach((item, index) => {
-    if (path === item.path) {
+    if (path === `/${item.path}`) {
       activeIndex.value = index
       has = true
     }
