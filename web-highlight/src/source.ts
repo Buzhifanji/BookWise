@@ -50,7 +50,7 @@ const getRangeDoms = (startDom: HTMLElement, endDom: HTMLElement) => {
   return result
 }
 
-const getlastElementChild = (node: HTMLElement) => {
+const getlastTextNode = (node: HTMLElement) => {
   let result = node.lastElementChild as HTMLElement
   while (result?.lastElementChild) {
     result = result.lastElementChild as HTMLElement
@@ -65,8 +65,8 @@ const setRange = ({
   startOffset,
   endOffset
 }: {
-  startDom: HTMLElement
-  endDom: HTMLElement
+  startDom: Node
+  endDom: Node
   startOffset?: number
   endOffset?: number
 }) => {
@@ -89,9 +89,13 @@ const setRange = ({
 const oneRangeToSource = (range: Range, id: string, page: string) => {
   const { className, tagName } = getOption()
   const { startContainer, startOffset, endContainer, endOffset } = range
-  const startDomMeta = getDomMeta(startContainer as HTMLElement, startOffset)
-  const endDomMeta = getDomMeta(endContainer as HTMLElement, endOffset)
+  const startDomMeta = getDomMeta(startContainer as HTMLElement, startOffset, page)
+  const endDomMeta = getDomMeta(endContainer as HTMLElement, endOffset, page)
   const text = range.toString()
+  // console.log('startContainer', startContainer)
+  // console.log('endContainer', endContainer)
+  // console.log('startDomMeta: ', startDomMeta)
+  // console.log('endDomMeta: ', endDomMeta)
   return { startDomMeta, endDomMeta, className, tagName, text, id, page }
 }
 
@@ -101,30 +105,44 @@ const handleSectionSource = (startSection: HTMLElement, endSection: HTMLElement,
 
   const id = createUUID()
   if (startSection === endSection) {
+    console.log(range)
     const page = findPageIndex(startSection)
     result.push(oneRangeToSource(range, id, page))
   } else {
     const doms = getRangeDoms(startSection, endSection)
     const { startContainer, endContainer, startOffset, endOffset } = range
+
     for (let i = 0; i < doms.length; i++) {
       const dom = doms[i]
       const page = findPageIndex(dom)
       let range: Range
       if (i === 0) {
-        const endDom = getlastElementChild(dom)
-        range = setRange({ startDom: startContainer as HTMLElement, startOffset, endDom })
+        const endDom = getlastTextNode(dom)
+        range = setRange({
+          startDom: startContainer,
+          startOffset,
+          endDom: endDom.lastChild!,
+          endOffset: endDom.textContent?.length || 0
+        })
       } else if (i === doms.length - 1) {
         const startDom = getfirstElementChild(dom)
-        range = setRange({ startDom, endDom: endContainer as HTMLElement, endOffset })
+        // console.log(startDom.lastChild)
+        // console.log(startDom)
+        range = setRange({
+          startDom: startDom.lastChild!,
+          startOffset: 0,
+          endDom: endContainer,
+          endOffset
+        })
       } else {
         const startDom = getfirstElementChild(dom)
-        const endDom = getlastElementChild(dom)
+        const endDom = getlastTextNode(dom)
         range = setRange({ startDom, endDom })
       }
-      const data = oneRangeToSource(range, id, page)
-      result.push(data)
+      result.push(oneRangeToSource(range, id, page))
     }
   }
+  console.log(result)
   return { id, source: result }
 }
 

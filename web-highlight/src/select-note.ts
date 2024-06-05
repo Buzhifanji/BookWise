@@ -1,7 +1,6 @@
 import { INTERNAL_ERROR_EVENT, errorEventEimtter } from './event'
 import { DomSource } from './interface'
-import { DomMeta } from './meta'
-import { getOption } from './option'
+import { DomMeta, getSectionConatiner } from './meta'
 import { selctorAll } from './util/dom'
 import { ERROR } from './util/err'
 import { isNull, isTextNode } from './util/is'
@@ -19,8 +18,16 @@ export interface SelectNode {
 
 const getTextLen = (node: Node) => node!.textContent!.length
 
-const getDomByTagNameIndex = (tagName: string, index: number) => {
-  const root = getOption().root
+const getDomByTagNameIndex = (tagName: string, index: number, page: string) => {
+  const root = getSectionConatiner(page)
+  if (!root) {
+    errorEventEimtter.emit(INTERNAL_ERROR_EVENT, {
+      type: ERROR.HIGHLIGHT_SOURCE_DOM_META_INDEX,
+      error: `cann't find element by 【 tagName: ${tagName} 】 and  【 index: ${index} 】, because can't the page: ${page} conatiner`
+    })
+    return null
+  }
+
   const doms = selctorAll(tagName, root)
   if (index < 0 || index > doms.length) {
     errorEventEimtter.emit(INTERNAL_ERROR_EVENT, {
@@ -64,8 +71,8 @@ const getTextNodeByOffset = (parent: HTMLElement, offset: number, isStart = true
   return { node: currentNode, offset: startOffset }
 }
 
-const getDomNode = ({ tagName, index, offset }: DomMeta, isStart = true) => {
-  const dom = getDomByTagNameIndex(tagName, index)
+const getDomNode = ({ tagName, index, offset }: DomMeta, page: string, isStart = true) => {
+  const dom = getDomByTagNameIndex(tagName, index, page)
   if (isNull(dom)) {
     return dom
   }
@@ -98,7 +105,7 @@ const findFirstSameParentNode = (start: HTMLElement, end: HTMLElement) => {
     result = result.parentElement
   }
 
-  return
+  return result
 }
 
 const spaceTextNode = (node: HTMLElement, start: SelectTextNode, end: SelectTextNode) => {
@@ -179,13 +186,13 @@ const getAllSelectDom = (start: SelectTextNode, end: SelectTextNode) => {
 }
 
 export function getSelectNodes(source: DomSource) {
-  const { startDomMeta, endDomMeta } = source
-  const startNode = getDomNode(startDomMeta)
+  const { startDomMeta, endDomMeta, page } = source
+  const startNode = getDomNode(startDomMeta, page)
   if (!startNode) {
     return startNode
   }
 
-  const endNode = getDomNode(endDomMeta, false)
+  const endNode = getDomNode(endDomMeta, page, false)
   if (!endNode) {
     return endNode
   }

@@ -173,7 +173,9 @@ export class Reader {
       const body = doc.querySelector('body')
       this.#handleLinks(body, section)
       await this.#handleImg(body, section)
-      const html = body.innerHTML.replace(/xmlns=".*?"/g, '')
+      const html = body.innerHTML
+        .replace(/xmlns=".*?"/g, '')
+        .replace(/<([a-zA-Z0-9]+)(\s[^>]*)?>\s*<\/\1>/g, '') // 过滤掉空节点
       result.push(html)
     }
 

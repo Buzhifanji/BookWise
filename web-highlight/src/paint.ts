@@ -1,16 +1,12 @@
 import { INTERNAL_ERROR_EVENT, errorEventEimtter } from './event'
 import { DomSource } from './interface'
+import { getSectionConatiner } from './meta'
 import { Mode } from './mode'
 import { getOption } from './option'
 import { SelectNode, getSelectNodes } from './select-note'
 import { Store } from './store'
 import { isLen } from './util/array'
-import {
-  DATA_WEB_HIGHLIGHT,
-  DATA_WEB_HIGHLIGHT_EXTRA,
-  ID_DIVIDION,
-  UNKNOWN_INDEX
-} from './util/const'
+import { DATA_WEB_HIGHLIGHT, DATA_WEB_HIGHLIGHT_EXTRA, ID_DIVIDION } from './util/const'
 import {
   addClass,
   appendChild,
@@ -40,20 +36,13 @@ const getAllDom = (tagName: string, dataId: string) => {
 }
 
 const hasPainted = (tagName: string, dataId: string, page: string) => {
-  const { root, pageAttribateName } = getOption()
+  const root = getSectionConatiner(page)
 
-  const data = `${tagName}[${DATA_WEB_HIGHLIGHT}='${dataId}']`
-
-  if (page !== `${UNKNOWN_INDEX}`) {
-    const sectionContainer = selector(`[${pageAttribateName}='${page}]'`, root)
-    if (sectionContainer) {
-      return selector(data, sectionContainer)
-    } else {
-      return null
-    }
-  } else {
-    return selector(data, root)
+  if (root) {
+    return selector(`${tagName}[${DATA_WEB_HIGHLIGHT}='${dataId}']`, root)
   }
+
+  return null
 }
 
 const getPaintedIds = (selectNodes: SelectNode[]) => {
@@ -397,10 +386,8 @@ export class PaintUntil {
 
   private paintAction(selectNodes: SelectNode[], source: DomSource) {
     const { id, tagName, className } = source
-
     return selectNodes.map((select) => {
-      let res = paintItemNode({ node: select.node, id, className, tagName })
-      return res
+      return paintItemNode({ node: select.node, id, className, tagName })
     })
   }
 }

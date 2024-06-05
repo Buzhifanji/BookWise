@@ -1,7 +1,7 @@
 import { Mode } from './mode'
 import { getOption } from './option'
-import { ROOT_INDEX } from './util/const'
-import { queryDomIndex } from './util/dom'
+import { ROOT_INDEX, UNKNOWN_INDEX } from './util/const'
+import { queryDomIndex, selector } from './util/dom'
 import { isHighlightWrapNode, isTextNode } from './util/is'
 
 const getOrinalParent = (node: Node): HTMLElement => {
@@ -56,8 +56,15 @@ export interface DomMeta {
   offset: number // 文本的偏移量
 }
 
-export function getDomMeta(node: Node, offset: number) {
-  const { root, mode } = getOption()
+export const getSectionConatiner = (page: string) => {
+  const { root, pageAttribateName } = getOption()
+  return page === `${UNKNOWN_INDEX}` ? root : selector(`[${pageAttribateName}='${page}']`, root)
+}
+
+export function getDomMeta(node: Node, offset: number, page: string) {
+  const { mode } = getOption()
+  const root = getSectionConatiner(page)!
+
   const orinalParent = mode === Mode.reserve ? getOrinalParent(node) : getSingleOrinalParent(node)
   const preOffset = getTextPreOffset(orinalParent, node)
   const index = orinalParent === root ? ROOT_INDEX : queryDomIndex(orinalParent, root)
