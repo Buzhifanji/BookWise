@@ -102,6 +102,14 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
         return painted
       })
 
+      // 替换不同章节内容还未替换掉的旧wrap
+      if (removeIds.size) {
+        removeIds.forEach((id) => {
+          this._paint.replaceExtraOldWrap(id, source[0].id)
+          this._store.remove(id)
+        })
+      }
+
       if (isPainted) {
         this._store.save(id, sources)
         this.emit(

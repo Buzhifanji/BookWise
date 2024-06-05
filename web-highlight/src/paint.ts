@@ -281,36 +281,35 @@ export class PaintUntil {
     return result
   }
 
-  private paintSingle(selectNodes: SelectNode[], source: DomSource) {
-    // 处理边界：判断首位是否有交集，有的话就需要把旧和新的合并
-
-    // 处理开始节点是否有交集
-    const startNodeSource = this.getOldWrapSource(selectNodes[0], true)
-    if (startNodeSource) {
-      source.startDomMeta = startNodeSource.startDomMeta
+  replaceExtraOldWrap(oldId: string, newId: string) {
+    const source = this.store.get(oldId)
+    if (source && isLen(source)) {
+      source.forEach((item) => {
+        const oldDoms = getAllDom(item.tagName, oldId)
+        oldDoms.forEach((note) => setAttr(note, DATA_WEB_HIGHLIGHT, newId))
+      })
     }
+  }
+
+  private paintSingle(selectNodes: SelectNode[], source: DomSource) {
+    // // 处理边界：判断首位是否有交集，有的话就需要把旧和新的合并
+
+    const page = source.page
+    // 处理开始节点是否有交集
+    const startNodeSource = this.getOldWrapSource(selectNodes[0], page)
+    source.startDomMeta = startNodeSource?.startDomMeta || source.startDomMeta
 
     // 处理结束节点是否有交集
-    let endNodeSource: DomSource | null = null
-    const endNode = selectNodes[selectNodes.length - 1]
-    if (endNode) {
-      endNodeSource = this.getOldWrapSource(endNode, false)
-      if (endNodeSource) {
-        source.endDomMeta = endNodeSource.endDomMeta
-      }
-    }
+    const endNodeSource = this.getOldWrapSource(selectNodes[selectNodes.length - 1], page)
+    source.endDomMeta = endNodeSource?.endDomMeta || source.endDomMeta
 
     const oldIds = getPaintedIds(selectNodes)
-
     // 删除旧的高亮节点
-    this.removeOldWrap(oldIds)
+    this.removeOldWrap(oldIds, source.page)
 
     // 整合好source和dom后，重新获取selectNodes 数据
     if (startNodeSource || endNodeSource) {
-      const newSelectNodes = getSelectNodes(source)
-      if (newSelectNodes) {
-        selectNodes = newSelectNodes
-      }
+      selectNodes = getSelectNodes(source) || selectNodes
     }
 
     const res = this.paintAction(selectNodes, source)
@@ -329,52 +328,49 @@ export class PaintUntil {
     return { wrap: res, ids: [...oldIds] }
   }
 
-  private getOldWrapSource(selectNode: SelectNode, isStart: boolean) {
-    let result: DomSource | null = null
-    const { tagName, pageAttribateName } = getOption()
-
+  private getOldWrapSource(selectNode: SelectNode, page: string) {
     const id = getWrapId(selectNode)
 
-    if (!id) return result
-
-    const oldDom = getAllDom(tagName, id)
-    if (!isLen(oldDom)) return result
-
-    const dom = isStart ? oldDom[0] : oldDom[oldDom.length - 1]
-
-    const page = getAttr(dom, pageAttribateName)
+    if (!id) return null
 
     const sources = this.store.get(id)
     if (!sources) {
-      console.warn(
-        `Can't find the source in the cache store by the id 【${id}】.it happened at the getOldWrapSource function execute.`
-      )
-      return result
+      errorEventEimtter.emit(INTERNAL_ERROR_EVENT, {
+        type: ERROR.HIGHLIGHT_SOURCE_DOM_META_INDEX,
+        error: `Can't find the source in the cache store by the id 【${id}】.it happened at the getOldWrapSource function execute.`
+      })
+
+      return null
     }
 
     const source = sources.find((source) => source.page === page)
     if (!source) {
-      console.warn(
-        `Can't find the source in the cache store by the id 【${id}】 and the page 【${page}】.it happened at the getOldWrapSource function execute.`
-      )
-      return result
+      errorEventEimtter.emit(INTERNAL_ERROR_EVENT, {
+        type: ERROR.HIGHLIGHT_SOURCE_DOM_META_INDEX,
+        error: `Can't find the source in the cache store by the id 【${id}】 and the page 【${page}】.it happened at the getOldWrapSource function execute.`
+      })
+
+      return null
     }
 
-    result = source
-
-    return result
+    return source
   }
 
-  private removeOldWrap(ids: Set<string>) {
+  private removeOldWrap(ids: Set<string>, page: string) {
     const removeDoms: HTMLElement[] = []
+    const root = getSectionConatiner(page)
+
     ids.forEach((id) => {
       const source = this.store.get(id)
       if (source && isLen(source)) {
-        const doms = getAllDom(source[0].tagName, id)
+        const data = `${source[0].tagName}[${DATA_WEB_HIGHLIGHT}='${id}']`
 
-        removeDoms.push(...doms)
+        const doms = selctorAll(data, root!)
 
-        this.store.remove(id)
+        if (doms) {
+          removeDoms.push(...doms)
+          this.store.removeOneSource(id, page)
+        }
       } else {
         errorEventEimtter.emit(INTERNAL_ERROR_EVENT, {
           type: ERROR.HIGHLIGHT_SOURCE_STORE_NOT_FOUND,
@@ -382,6 +378,8 @@ export class PaintUntil {
         })
       }
     })
+
+    warpToRemove(removeDoms)
   }
 
   private paintAction(selectNodes: SelectNode[], source: DomSource) {
