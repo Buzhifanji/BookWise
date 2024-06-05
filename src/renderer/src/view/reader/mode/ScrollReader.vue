@@ -32,12 +32,16 @@ const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems())
 
 const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
 
-const measureElement = (el) => {
-  if (!el) {
+const measureElement = (element: any) => {
+  if (!element) {
     return
   }
 
-  rowVirtualizer.value.measureElement(el)
+
+  setTimeout(() => {
+    rowVirtualizer.value.measureElement(element)
+  })
+
 
   return undefined
 }
