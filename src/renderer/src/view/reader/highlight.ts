@@ -1,23 +1,33 @@
-import { EventTypeEnum, HMode, WebHighlight } from '@book-wise/web-highlight'
-import { getTextColor } from './highlight-color'
+import { CreateFrom, EventTypeEnum, WebHighlight } from '@book-wise/web-highlight'
+import { Book, db } from '@renderer/batabase'
+import { highlightColor } from './highlight-color'
 
 // todo bug 合并高亮内容存在bug
-export let webHighlight: WebHighlight
+export let highlighter: WebHighlight
 
-export function initWebHighlight() {
-  webHighlight = new WebHighlight({
-    className: getTextColor(),
+export function initHighlight(book: Book) {
+  highlighter = new WebHighlight({
+    tagName: 'span',
+    className: highlightColor.getSelectionClassName(),
     showError: true,
-    auto: true,
-    mode: HMode.single
+    auto: true
   })
 
-  webHighlight.on(EventTypeEnum.SOURCE, ({ isPainted, range, source, removeIds }) => {})
+  highlighter.on(EventTypeEnum.SOURCE, ({ isPainted, range, source, removeIds }) => {})
 
   // 创建高亮笔记
-  webHighlight.on(EventTypeEnum.CREATE, ({ sources, type, removeIds }) => {
+  highlighter.on(EventTypeEnum.CREATE, ({ id, sources, type, removeIds }) => {
+    if (type === CreateFrom.rang) {
+      // 删除重叠的笔记
+      if (removeIds && removeIds.length > 0) {
+        db.notes.bulkDelete(removeIds)
+      }
+
+      // 新建笔记
+      // NoteAction.create({ sources, eBookId: book.id })
+    }
     console.log('sources', sources)
   })
 
-  webHighlight.on(EventTypeEnum.CLICK, ({ id, target, source }) => {})
+  highlighter.on(EventTypeEnum.CLICK, ({ id, target, source }) => {})
 }

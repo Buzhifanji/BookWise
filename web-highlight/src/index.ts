@@ -11,12 +11,13 @@ import {
 import { CreateFrom } from './event/enum'
 import { HookMap, getHooks, handleHookCall } from './hook'
 import { DomMeta, DomSource } from './interface'
-import { Mode, Options, getDefaultOption } from './option'
-import { getSourceRemvoeIds, paint, removeAllPainted, removePainted } from './paint'
-import { getDomNode } from './paint/dom'
-import { getRange, getSourceFromRange, removeAllRanges } from './source'
+import { Mode } from './mode'
+import { Options, getOption, setOption } from './option'
+import { PaintUntil } from './paint'
+import { rangeUtil } from './range'
+import { rangeToSource } from './source'
 import { Store } from './store'
-import { isArray, isLen } from './util/array'
+import { isLen } from './util/array'
 import { DATA_WEB_HIGHLIGHT } from './util/const'
 import {
   addClass,
@@ -40,8 +41,6 @@ export {
 }
 
 export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
-  private _option: Options = getDefaultOption()
-
   private _store: Store
 
   private _hooks: HookMap
@@ -50,18 +49,22 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
 
   private readonly _event = getInteraction()
 
+  private _paint: PaintUntil
+
   constructor(option?: Partial<Options>) {
     super()
 
     // 合并配置
     if (option) {
       // TODO 待实现 忽略的标签列表
-      this.setOption(option)
+      setOption(option)
     }
 
     this._store = new Store()
 
     this._hooks = getHooks()
+
+    this._paint = new PaintUntil(this._store)
 
     this.addListener()
 
@@ -73,7 +76,7 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
       this.removeListener()
     }
 
-    Object.assign(this._option, option)
+    setOption(option)
 
     if (option.root) {
       this.addListener()
@@ -81,78 +84,81 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
   }
 
   fromRange = (range: Range) => {
-    const { className, tagName, root, auto, mode, context } = this._option
-    let source = getSourceFromRange({
-      range,
-      root,
-      className,
-      tagName,
-      mode,
-      idHook: this._hooks.render.UUID
-    })
-
+    const res = rangeToSource(range)
+    if (!res) return
+    const removeIds = new Set<string>()
+    const { id, source } = res
     let isPainted = false
 
-    let removeIds: string[] = []
+    // 选区后就高亮划线
+    if (getOption().auto) {
+      const sources = source.filter((item) => {
+        const [painted, ids] = this._handlePaintWrap(item)
+        if (painted) {
+          isPainted = true
+          ids.forEach((id) => removeIds.add(id))
+        }
 
-    if (auto) {
-      let [res, removeIds] = this._handlePaintWrap(source, range)
-
-      isPainted = res
+        return painted
+      })
 
       if (isPainted) {
-        this.emit(EventTypeEnum.CREATE, { sources: source, type: CreateFrom.rang, removeIds }, this)
-
-        removeAllRanges(context)
-      }
-    } else {
-      removeIds = getSourceRemvoeIds(source, root)
-    }
-
-    return { source, isPainted, removeIds }
-  }
-
-  fromSource = (source: DomSource | DomSource[]) => {
-    if (!isArray(source)) {
-      source = [source]
-    }
-
-    const sources: DomSource[] = []
-
-    source.forEach((item) => {
-      const [res, ids] = this._handlePaintWrap(item)
-      if (res) {
-        sources.push(item)
-
-        this._store.save(item)
-
+        this._store.save(id, sources)
         this.emit(
           EventTypeEnum.CREATE,
-          { sources: item, type: CreateFrom.source, removeIds: ids },
+          { id, sources, type: CreateFrom.rang, removeIds: [...removeIds] },
           this
         )
+
+        rangeUtil.removeAll()
       }
+    } else {
+      source.forEach((item) => {
+        const ids = this._paint.getRemoveIds(item)
+        ids.forEach((id) => removeIds.add(id))
+      })
+    }
+
+    return { source, isPainted, removeIds: [...removeIds] }
+  }
+
+  fromSource = (id: string, source: DomSource[]) => {
+    const removeIds = new Set<string>()
+
+    const sources = source.filter((item) => {
+      const [painted, ids] = this._handlePaintWrap(item)
+      if (painted) {
+        ids.forEach((id) => removeIds.add(id))
+      }
+      return painted
     })
 
     if (isLen(sources)) {
+      this._store.save(id, sources)
+
+      this.emit(
+        EventTypeEnum.CREATE,
+        { id, sources, type: CreateFrom.source, removeIds: [...removeIds] },
+        this
+      )
       sources.map((item) => handleHookCall(item, this._hooks.record.saveSource, item.id, item))
     }
   }
 
   getDomsById = (id: string) => {
-    return selctorAll(`[${DATA_WEB_HIGHLIGHT}='${id}']`, this._option.root)
+    return selctorAll(`[${DATA_WEB_HIGHLIGHT}='${id}']`, getOption().root)
   }
 
   getSourceById = (id: string) => {
     return this._store.get(id)
   }
 
-  getDomNode = (source: DomSource, isStart = true) => {
-    const { startDomMeta, endDomMeta } = source
-    const domMeta = isStart ? startDomMeta : endDomMeta
+  // getDomNode = (source: DomSource, isStart = true) => {
+  //   const { startDomMeta, endDomMeta } = source
+  //   const domMeta = isStart ? startDomMeta : endDomMeta
 
-    return getDomNode({ source, domMeta, root: this._option.root })
-  }
+  //   return getDomNode({ source, domMeta })
+  // }
 
   remove = (id: string) => {
     const source = this.getSourceById(id)
@@ -162,17 +168,15 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
 
     this._store.remove(id)
 
-    const { root, mode } = this._option
+    if (isLen(source)) {
+      this._paint.remove(source[0])
 
-    removePainted({ source, root, mode, removeSourceHook: this._hooks.record.removeSource })
-
-    this.emit(EventTypeEnum.REMOVE, { ids: [id] }, this)
+      this.emit(EventTypeEnum.REMOVE, { ids: [id] }, this)
+    }
   }
 
   removeAll = () => {
-    const { root, tagName } = this._option
-
-    removeAllPainted(root, tagName, this._hooks.record.removeSource)
+    this._paint.removeAll()
 
     const ids = this._store.removeAll()
 
@@ -203,10 +207,19 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
     const target = event.target as HTMLElement
     if (isHighlightWrapNode(target)) {
       const id = getAttr(target, DATA_WEB_HIGHLIGHT)
-
       const source = this.getSourceById(id)
 
-      this.emit(EventTypeEnum.CLICK, { id, target, source }, this, event)
+      if (source) {
+        if (source.length > 1) {
+          const page = getAttr(target, getOption().pageAttribateName)
+          const data = source.find((item) => item.page === page)
+          if (data) {
+            this.emit(EventTypeEnum.CLICK, { id, target, source: data }, this, event)
+          }
+        } else {
+          this.emit(EventTypeEnum.CLICK, { id, target, source: source[0] }, this, event)
+        }
+      }
     } else {
       this.emit(EventTypeEnum.CLICK, { target }, this, event)
     }
@@ -241,7 +254,7 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
   }
 
   private addListener = () => {
-    const { root, dynamic } = this._option
+    const { root, dynamic } = getOption()
 
     if (!dynamic) {
       listener(root, this._event.PointerOver, this.hover as EventListenerOrEventListenerObject)
@@ -253,7 +266,7 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
   }
 
   private removeListener = () => {
-    const root = this._option.root
+    const root = getOption().root
 
     unListener(root, this._event.PointerOver, this.hover as EventListenerOrEventListenerObject)
 
@@ -264,7 +277,7 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
 
   private _handleClass(id: string, cb: (node: HTMLElement) => void) {
     const source = this.getSourceById(id)
-    if (!source) {
+    if (!source || !isLen(source)) {
       errorEventEimtter.emit(INTERNAL_ERROR_EVENT, {
         type: ERROR.HIGHLIGHT_ID_INDVALID,
         error: `Can't find the highlight source by the id 【${id}】`
@@ -274,8 +287,8 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
     }
 
     const doms = selctorAll(
-      `${source.tagName}[${DATA_WEB_HIGHLIGHT}='${source.id}']`,
-      this._option.root
+      `${source[0].tagName}[${DATA_WEB_HIGHLIGHT}='${source[0].id}']`,
+      getOption().root
     )
 
     if (isLen(doms)) {
@@ -283,64 +296,52 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
     } else {
       errorEventEimtter.emit(INTERNAL_ERROR_EVENT, {
         type: ERROR.HIGHLIGHT_DOM_NOT_FOUND,
-        error: `Can't find the highlight dom by the id 【${source.id}】`,
-        detail: source
+        error: `Can't find the highlight dom by the id 【${source[0].id}】`,
+        detail: source[0]
       })
     }
   }
 
   private _handleSelection = () => {
-    const { context } = this._option
-
-    const range = getRange(context)
+    const range = rangeUtil.get()
 
     if (range) {
-      const { source, isPainted, removeIds } = this.fromRange(range)
+      const res = this.fromRange(range)
 
-      this.emit(EventTypeEnum.SOURCE, { source, isPainted, range, removeIds }, this)
+      if (res) {
+        const { source, isPainted, removeIds } = res
+        this.emit(EventTypeEnum.SOURCE, { source, isPainted, range, removeIds }, this)
+      }
     }
   }
 
-  private _handlePaintWrap(source: DomSource, range?: Range): [boolean, string[]] {
-    const { root, mode } = this._option
+  private _handlePaintWrap(source: DomSource): [boolean, string[]] {
     let result: boolean = false
-    const removeIds: string[] = []
+    const removeIds = new Set<string>()
 
-    const res = paint({
-      source,
-      root,
-      mode,
-      store: this._store,
-      selectNodeHook: this._hooks.render.selectNodes,
-      wrapNodeHook: this._hooks.render.wrapNode,
-      removeSourceHook: this._hooks.record.removeSource
-    })
+    const res = this._paint.create(source)
 
     if (!isNull(res)) {
       const { wrap, ids } = res
       if (isLen(wrap)) {
-        const _source = handleHookCall(source, this._hooks.record.saveSource, source.id, source)
-
-        this._store.save(_source)
+        handleHookCall(source, this._hooks.record.saveSource, source.id, source)
 
         result = true
-
-        removeIds.push(...ids)
+        ids.forEach((id) => removeIds.add(id))
       } else {
         errorEventEimtter.emit(INTERNAL_ERROR_EVENT, {
           type: ERROR.PAINT_HIGHLIGHT_FAIL,
           error: `Failed to draw highlighted note content.`,
-          detail: source,
-          range
+          detail: source
         })
       }
     }
 
-    return [result, removeIds]
+    return [result, [...removeIds]]
   }
 
   private __handleError = (data: EventErrorData) => {
-    if (this._option.showError) {
+    if (getOption().showError) {
       console.warn(data)
     }
   }

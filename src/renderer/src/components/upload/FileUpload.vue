@@ -3,7 +3,7 @@ import { Reader } from '@book-wise/reader';
 import { Book, db } from '@renderer/batabase';
 import { Toast } from '@renderer/components/toast';
 import { useDialog } from '@renderer/hooks';
-import { convertBlobToUint8Array, isElectron } from '@renderer/shared';
+import { convertBlobToUint8Array, isElectron, now } from '@renderer/shared';
 import { v4 as uuidv4 } from 'uuid';
 import { defineExpose } from 'vue';
 import { readFiles } from './read-file';
@@ -62,8 +62,8 @@ async function uploadFile(event: Event) {
                 pages: 0,
                 status: 0,
                 category: 0,
-                createTime: new Date().getTime(),
-                updateTime: new Date().getTime(),
+                createTime: now(),
+                updateTime: now(),
                 isDelete: null,
             }
         })

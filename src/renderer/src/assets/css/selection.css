@@ -1,0 +1,89 @@
+/** 花词高亮 颜色 */
+
+.selection-red {
+  --tw-text-opacity: 1;
+  --tw-bg-opacity: 1;
+  color: rgb(127 29 29 / var(--tw-text-opacity));
+  background-color: rgb(252 165 165 / var(--tw-bg-opacity));
+  cursor: pointer;
+}
+
+.selection-orange {
+  --tw-text-opacity: 1;
+  --tw-bg-opacity: 1;
+  color: rgb(124 45 18 / var(--tw-text-opacity));
+  background-color: rgb(253 186 116 / var(--tw-bg-opacity));
+  cursor: pointer;
+}
+
+.selection-amber {
+  --tw-text-opacity: 1;
+  --tw-bg-opacity: 1;
+  color: rgb(120 53 15 / var(--tw-text-opacity));
+  background-color: rgb(252 211 77 / var(--tw-bg-opacity));
+  cursor: pointer;
+}
+
+.selection-yellow {
+  --tw-text-opacity: 1;
+  --tw-bg-opacity: 1;
+  color: rgb(113 63 18 / var(--tw-text-opacity));
+  background-color: rgb(253 224 71 / var(--tw-bg-opacity));
+  cursor: pointer;
+}
+
+.selection-lime {
+  --tw-text-opacity: 1;
+  --tw-bg-opacity: 1;
+  color: rgb(54 83 20 / var(--tw-text-opacity));
+  background-color: rgb(190 242 100 / var(--tw-bg-opacity));
+  cursor: pointer;
+}
+
+.selection-emerald {
+  --tw-text-opacity: 1;
+  --tw-bg-opacity: 1;
+  color: rgb(6 78 59 / var(--tw-text-opacity));
+  background-color: rgb(110 231 183 / var(--tw-bg-opacity));
+  cursor: pointer;
+}
+
+.selection-cyan {
+  --tw-text-opacity: 1;
+  --tw-bg-opacity: 1;
+  color: rgb(22 78 99 / var(--tw-text-opacity));
+  background-color: rgb(103 232 249 / var(--tw-bg-opacity));
+  cursor: pointer;
+}
+
+.selection-blue {
+  --tw-text-opacity: 1;
+  --tw-bg-opacity: 1;
+  color: rgb(30 58 138 / var(--tw-text-opacity));
+  background-color: rgb(147 197 253 / var(--tw-bg-opacity));
+  cursor: pointer;
+}
+
+.selection-violet {
+  --tw-text-opacity: 1;
+  --tw-bg-opacity: 1;
+  color: rgb(76 29 149 / var(--tw-text-opacity));
+  background-color: rgb(196 181 253 / var(--tw-bg-opacity));
+  cursor: pointer;
+}
+
+.selection-fuchsia {
+  --tw-text-opacity: 1;
+  --tw-bg-opacity: 1;
+  color: rgb(112 26 117 / var(--tw-text-opacity));
+  background-color: rgb(240 171 252 / var(--tw-bg-opacity));
+  cursor: pointer;
+}
+
+.selection-rose {
+  --tw-text-opacity: 1;
+  --tw-bg-opacity: 1;
+  color: rgb(136 19 55 / var(--tw-text-opacity));
+  background-color: rgb(253 164 175 / var(--tw-bg-opacity));
+  cursor: pointer;
+}

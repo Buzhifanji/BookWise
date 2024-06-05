@@ -11,7 +11,7 @@ import { AlignJustify, Search } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import CatalogView from './Catalog.vue';
 import NoteView from './Note.vue';
-import { initWebHighlight } from './highlight';
+import { initHighlight } from './highlight';
 import DoubleReaderView from './mode/DoubleReader.vue';
 import ScrollReaderView from './mode/ScrollReader.vue';
 import SectionReaderView from './mode/SectionReader.vue';
@@ -80,7 +80,7 @@ async function loadData() {
   const { sections, toc } = await render(content.content)
 
   // 初始化高亮
-  initWebHighlight();
+  initHighlight(info);
 
   section.value = sections
   tocList.value = toc

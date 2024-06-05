@@ -10,3 +10,7 @@ export function wait(time: number = 300) {
     }, time)
   })
 }
+
+export function now() {
+  return new Date().getTime()
+}

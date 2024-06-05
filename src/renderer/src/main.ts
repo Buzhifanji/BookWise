@@ -1,4 +1,5 @@
-import './assets/main.css'
+import './assets/css/main.css'
+import './assets/css/selection.css'
 
 import { router } from '@renderer/route'
 import { i18n } from '@renderer/view/setting'

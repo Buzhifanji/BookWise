@@ -68,7 +68,7 @@ function linkClick(href: string) {
   <!-- 书籍内容 -->
   <div class="flex-1 bg-base-100 h-full cursor-pointer  overflow-auto hover:scrollbar-thin scrollbar-none"
     ref="containerRef">
-    <div class="prose mx-auto my-0 ">
+    <div class="prose mx-auto my-0 " :data-page-number="index">
       <div class="py-8">
         <button class="btn btn-active btn-neutral" @click="prev">上一章</button>
       </div>

@@ -1,9 +1,10 @@
 import { db } from '@renderer/batabase'
+import { now } from '@renderer/shared'
 
 export class BookAction {
   static removeOne(id: string, isSoft: boolean) {
     if (isSoft) {
-      db.books.update(id, { isDelete: new Date().getTime() })
+      db.books.update(id, { isDelete: now() })
     } else {
       db.books.delete(id)
     }

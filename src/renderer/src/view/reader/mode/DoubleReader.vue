@@ -189,7 +189,7 @@ function linkClick(href: string) {
         <template v-else>
           <div ref="containerRef"
             class="columns-1 lg:columns-2 gap-x-16 h-full overflow-auto scrollbar-none p-8 pb-12 double-container relative">
-            <SectionView :key="index" :data="section" :data-index="index" @link-click="linkClick"></SectionView>
+            <SectionView :key="index" :data="section" :data-page-number="index" @link-click="linkClick"></SectionView>
             <div ref="remendyRef"></div>
           </div>
           <button class="btn btn-outline absolute bottom-5 left-10 btn-sm" @click="prewView">上一页</button>

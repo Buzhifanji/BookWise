@@ -5,7 +5,52 @@
 import { useStorage } from '@vueuse/core'
 import { computed } from 'vue'
 
+const _colorNames = [
+  'red',
+  'orange',
+  'amber',
+  'yellow',
+  'lime',
+  'emerald',
+  'cyan',
+  'blue',
+  'violet',
+  'fuchsia',
+  'rose'
+  // 'primary',
+  // 'secondary',
+  // 'accent',
+  // 'neutral',
+  // 'info',
+  // 'success',
+  // 'warning',
+  // 'error'
+] as const
+
+type Keys = (typeof _colorNames)[number]
+
 // 配色来源： https://daisyui.com/docs/colors/
+class HighlightColor {
+  selectColor: Keys = 'orange'
+
+  changeSelectColor = (value: Keys) => {
+    this.selectColor = value
+  }
+
+  getSelectionClassName = () => {
+    return `selection-${this.selectColor}`
+  }
+
+  getSelection = () => {
+    const value = this.selectColor
+    return `selection:bg-${value} selection:text-${value}`
+  }
+
+  // selectionColors = () => {}
+}
+
+export const highlightColor = new HighlightColor()
+
 const storage = 'book-wise_selection-color'
 export const defaultColor = useStorage(storage, 'blue')
 
