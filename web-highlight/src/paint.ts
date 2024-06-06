@@ -30,14 +30,13 @@ interface WrapNode {
 
 const getParentNode = (node: SelectNode) => node.node.parentNode as HTMLElement
 
-const getAllDom = (tagName: string, dataId: string) => {
-  const { root } = getOption()
+const getAllDom = (tagName: string, dataId: string, root = getOption().root) => {
   const data = `${tagName}[${DATA_WEB_HIGHLIGHT}='${dataId}']`
 
   return selctorAll(data, root)
 }
 
-const hasPainted = (tagName: string, dataId: string, page: string) => {
+const getsectionDom = (tagName: string, dataId: string, page: string) => {
   const root = getSectionConatiner(page)
 
   if (root) {
@@ -205,7 +204,7 @@ export class PaintUntil {
     const { id, tagName, page } = source
 
     // 检测是否绘制过
-    const paintedDoms = hasPainted(tagName, id, page!)
+    const paintedDoms = getsectionDom(tagName, id, page!)
     if (!isNull(paintedDoms)) {
       //已经绘制过了，无需再绘制
       errorEventEimtter.emit(INTERNAL_ERROR_EVENT, {
@@ -337,21 +336,23 @@ export class PaintUntil {
     if (!oldIds) {
       return null
     }
+    const { page, id } = source
     // 删除旧的高亮节点
-    this.removeOldWrap(oldIds, source.page)
+    this.removeOldWrap(oldIds, page)
 
     // 整合好source和dom后，重新获取selectNodes 数据
     selectNodes = getSelectNodes(source) || selectNodes
 
     const res = this.paintAction(selectNodes, source)
-    const doms = getAllDom(source.tagName, source.id)
+    const root = getSectionConatiner(page)!
+    const doms = getAllDom(source.tagName, id, root)
 
     if (isLen(doms)) {
       source.text = doms.reduce((acc, cur) => (acc += cur.innerHTML), '')
     } else {
       errorEventEimtter.emit(INTERNAL_ERROR_EVENT, {
         type: ERROR.HIGHLIGHT_DOM_NOT_FOUND,
-        error: `Can't find the highlight dom by the id 【${source.id}】`,
+        error: `Can't find the highlight dom by the id 【${id}】`,
         detail: source
       })
     }

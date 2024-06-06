@@ -77,9 +77,6 @@ async function loadData() {
   // 获取书本渲染器
   const { sections, toc } = await render(content.content)
 
-
-
-
   section.value = sections
   tocList.value = toc
   book.value = info
@@ -87,11 +84,10 @@ async function loadData() {
   console.log(info)
   console.log(content)
 
-
+  // 初始化高亮
   setTimeout(() => {
     initHighlight();
   }, 0)
-  // 初始化高亮
 }
 
 // 目录跳转

@@ -19,11 +19,11 @@ export function initHighlight() {
   highlighter.on(EventTypeEnum.SOURCE, ({ isPainted, range, source, removeIds }) => {})
 
   // 创建高亮笔记
-  highlighter.on(EventTypeEnum.CREATE, ({ id, sources, type, removeIds }) => {
+  highlighter.on(EventTypeEnum.CREATE, async ({ id, sources, type, removeIds }) => {
     if (type === CreateFrom.rang) {
       // 删除重叠的笔记
       if (removeIds && removeIds.length > 0) {
-        db.notes.bulkDelete(removeIds)
+        await db.notes.bulkDelete(removeIds)
       }
 
       // 新建笔记

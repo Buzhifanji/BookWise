@@ -139,9 +139,9 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
       data.set(id, list)
     })
 
-    data.forEach((item) => {
+    data.forEach((sourceList) => {
       const removeIds = new Set<string>()
-      const sources = source.filter((item) => {
+      const sources = sourceList.filter((item) => {
         const [painted, ids] = this._handlePaintWrap(item)
         if (painted) {
           ids.forEach((id) => removeIds.add(id))

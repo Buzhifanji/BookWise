@@ -9,6 +9,7 @@ export interface Note {
   updateTime: number // 更新时间
   isDelete: number | null // 是否删除（记录删除时间）
   colorName: string // 高亮颜色名称
+  // sourceId: string
   startDomMeta: string // 开始节点
   endDomMeta: string // 结束节点
 }
