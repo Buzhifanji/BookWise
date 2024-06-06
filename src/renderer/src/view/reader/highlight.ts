@@ -1,14 +1,17 @@
 import { CreateFrom, EventTypeEnum, WebHighlight } from '@book-wise/web-highlight'
-import { Book, db } from '@renderer/batabase'
+import { db } from '@renderer/batabase'
+import { $ } from '@renderer/shared'
 import { highlightColor } from './highlight-color'
 
-// todo bug 合并高亮内容存在bug
 export let highlighter: WebHighlight
 
-export function initHighlight(book: Book) {
+export const CONTINAER_ID = 'reader-container'
+
+export function initHighlight() {
   highlighter = new WebHighlight({
     tagName: 'span',
     className: highlightColor.getSelectionClassName(),
+    root: ($('#' + CONTINAER_ID) as HTMLElement) || Document,
     showError: true,
     auto: true
   })

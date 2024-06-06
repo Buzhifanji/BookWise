@@ -11,12 +11,11 @@ import { AlignJustify, Search } from 'lucide-vue-next';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import CatalogView from './Catalog.vue';
 import NoteView from './Note.vue';
-import { highlighter, initHighlight } from './highlight';
+import { CONTINAER_ID, highlighter, initHighlight } from './highlight';
 import DoubleReaderView from './mode/DoubleReader.vue';
 import ScrollReaderView from './mode/ScrollReader.vue';
 import SectionReaderView from './mode/SectionReader.vue';
 import { getBookHref, render, unMountedBookRender } from './render';
-
 
 const props = defineProps({
   id: String,
@@ -40,7 +39,6 @@ const { isLG: isNote, toggleDrawer: toggleNote } = useToggleDrawer() // 控制�
 const scrollReaderViewRef = ref<InstanceType<typeof ScrollReaderView>>() // 滚动视图
 const sectionReaderViewRef = ref<InstanceType<typeof SectionReaderView>>() // 章节视图
 const doubleReaderViewRef = ref<InstanceType<typeof DoubleReaderView>>() // 双栏视图
-
 
 // 获取书本内容
 async function getBookContent(bookId: string, url: string) {
@@ -79,8 +77,8 @@ async function loadData() {
   // 获取书本渲染器
   const { sections, toc } = await render(content.content)
 
-  // 初始化高亮
-  initHighlight(info);
+
+
 
   section.value = sections
   tocList.value = toc
@@ -88,6 +86,12 @@ async function loadData() {
   bookContent.value = content
   console.log(info)
   console.log(content)
+
+
+  setTimeout(() => {
+    initHighlight();
+  }, 0)
+  // 初始化高亮
 }
 
 // 目录跳转
@@ -169,16 +173,17 @@ onUnmounted(() => {
             </div>
           </div>
           <!-- 书籍内容 -->
-
-          <!-- 滚动条模式 -->
-          <ScrollReaderView :section="section" ref="scrollReaderViewRef"
-            v-if="settingStore.readMode === ReadMode.sroll" />
-          <!-- 章节模式 -->
-          <SectionReaderView :section="section" ref="sectionReaderViewRef"
-            v-if="settingStore.readMode === ReadMode.section" />
-          <!-- 双栏模式 -->
-          <DoubleReaderView :section="section" ref="doubleReaderViewRef"
-            v-if="settingStore.readMode === ReadMode.double" />
+          <div class="flex-1 overflow-hidden" :id="CONTINAER_ID">
+            <!-- 滚动条模式 -->
+            <ScrollReaderView :section="section" ref="scrollReaderViewRef"
+              v-if="settingStore.readMode === ReadMode.sroll" />
+            <!-- 章节模式 -->
+            <SectionReaderView :section="section" ref="sectionReaderViewRef"
+              v-if="settingStore.readMode === ReadMode.section" />
+            <!-- 双栏模式 -->
+            <DoubleReaderView :section="section" ref="doubleReaderViewRef"
+              v-if="settingStore.readMode === ReadMode.double" />
+          </div>
         </div>
       </div>
       <!-- 笔记 -->

@@ -69,8 +69,7 @@ function linkClick(href: string) {
 
 <template>
   <!-- 书籍内容 -->
-  <div class="flex-1 bg-base-100 h-full cursor-pointer  overflow-auto hover:scrollbar-thin scrollbar-none"
-    ref="containerRef">
+  <div class=" bg-base-100 h-full cursor-pointer  overflow-auto hover:scrollbar-thin scrollbar-none" ref="containerRef">
     <div class="relative w-full" :style="{ height: `${totalSize}px` }">
       <div class="absolute top-0 left-0 w-full " :style="{ transform: `translateY(${virtualRows[0]?.start ?? 0}px)` }">
         <div v-for="virtualRow in virtualRows" :key="virtualRow.key" :data-index="virtualRow.index"

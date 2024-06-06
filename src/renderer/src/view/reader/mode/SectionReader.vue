@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { CONTINAER_ID } from '../highlight';
 import { getBookHref, isExternal, openExternal } from '../render';
 import SectionView from './Section.vue';
 
@@ -66,8 +67,7 @@ function linkClick(href: string) {
 
 <template>
   <!-- 书籍内容 -->
-  <div class="flex-1 bg-base-100 h-full cursor-pointer  overflow-auto hover:scrollbar-thin scrollbar-none"
-    ref="containerRef">
+  <div class=" bg-base-100 h-full cursor-pointer  overflow-auto hover:scrollbar-thin scrollbar-none" :id="CONTINAER_ID">
     <div class="prose mx-auto my-0 " :data-page-number="index">
       <div class="py-8">
         <button class="btn btn-active btn-neutral" @click="prev">上一章</button>
