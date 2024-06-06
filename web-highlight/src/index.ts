@@ -131,26 +131,35 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
   }
 
   fromSource = (id: string, source: DomSource[]) => {
-    const removeIds = new Set<string>()
-
-    const sources = source.filter((item) => {
-      const [painted, ids] = this._handlePaintWrap(item)
-      if (painted) {
-        ids.forEach((id) => removeIds.add(id))
-      }
-      return painted
+    const data = new Map<string, DomSource[]>()
+    source.forEach((item) => {
+      const id = item.id
+      const list = data.get(id) || []
+      list.push(item)
+      data.set(id, list)
     })
 
-    if (isLen(sources)) {
-      this._store.save(id, sources)
+    data.forEach((item) => {
+      const removeIds = new Set<string>()
+      const sources = source.filter((item) => {
+        const [painted, ids] = this._handlePaintWrap(item)
+        if (painted) {
+          ids.forEach((id) => removeIds.add(id))
+        }
+        return painted
+      })
 
-      this.emit(
-        EventTypeEnum.CREATE,
-        { id, sources, type: CreateFrom.source, removeIds: [...removeIds] },
-        this
-      )
-      sources.map((item) => handleHookCall(item, this._hooks.record.saveSource, item.id, item))
-    }
+      if (isLen(sources)) {
+        this._store.save(id, sources)
+
+        this.emit(
+          EventTypeEnum.CREATE,
+          { id, sources, type: CreateFrom.source, removeIds: [...removeIds] },
+          this
+        )
+        sources.map((item) => handleHookCall(item, this._hooks.record.saveSource, item.id, item))
+      }
+    })
   }
 
   getDomsById = (id: string) => {
