@@ -18,7 +18,7 @@ import {
   setAttr
 } from './util/dom'
 import { ERROR } from './util/err'
-import { isHighlightWrapNode, isNull } from './util/is'
+import { isHighlightWrapNode, isNull, isString } from './util/is'
 
 interface WrapNode {
   node: Node
@@ -27,6 +27,8 @@ interface WrapNode {
   className: string
   tagName: string
 }
+
+const getParentNode = (node: SelectNode) => node.node.parentNode as HTMLElement
 
 const getAllDom = (tagName: string, dataId: string) => {
   const { root } = getOption()
@@ -49,7 +51,7 @@ const getPaintedIds = (selectNodes: SelectNode[]) => {
   const result = new Set<string>()
 
   selectNodes.forEach((selectNode) => {
-    const node = getNode(selectNode)
+    const node = getParentNode(selectNode)
     if (isHighlightWrapNode(node)) {
       const id = getAttr(node, DATA_WEB_HIGHLIGHT)
       if (id) {
@@ -60,8 +62,6 @@ const getPaintedIds = (selectNodes: SelectNode[]) => {
 
   return result
 }
-
-const getNode = (node: SelectNode) => node.node.parentNode as HTMLElement
 
 const getUpperLevelDom = (node: Node) => {
   const parent = node.parentNode as HTMLElement
@@ -78,7 +78,7 @@ const getNodeExtraId = (node: HTMLElement) => {
 
 const getWrapId = (selectNode: SelectNode) => {
   let result: string = ''
-  const node = getNode(selectNode)
+  const node = getParentNode(selectNode)
   if (isHighlightWrapNode(node)) {
     result = getAttr(node, DATA_WEB_HIGHLIGHT)
   }
@@ -291,26 +291,57 @@ export class PaintUntil {
     }
   }
 
+  private handleSelectNotes(selectNodes: SelectNode[], source: DomSource) {
+    const nodes = selectNodes.map((node) => this.getOldWrapSource(node, source.page))
+    const result = new Set<string>()
+    let startDomMeta = source.startDomMeta
+    let endDomMeta = source.endDomMeta
+    let startId: string = ''
+    let endId: string = ''
+    for (let i = 0; i < nodes.length; i++) {
+      const item = nodes[i]
+      if (isNull(item)) {
+        continue
+      } else if (isString(item)) {
+        // 特殊情况，store存储的数据丢失了，但界面上存在
+        result.add(item)
+      } else {
+        if (i === 0) {
+          // 开始节点有交集
+          startDomMeta = item.startDomMeta
+          startId = item.id
+        }
+
+        if (i === nodes.length - 1) {
+          // 结束节点有交集
+          endDomMeta = item.endDomMeta
+          endId = item.id
+        }
+
+        result.add(item.id)
+      }
+    }
+
+    if (startId && endId && startId === endId) {
+      // 无需要绘制
+      return null
+    } else {
+      source.startDomMeta = startDomMeta
+      source.endDomMeta = endDomMeta
+      return result
+    }
+  }
+
   private paintSingle(selectNodes: SelectNode[], source: DomSource) {
-    // // 处理边界：判断首位是否有交集，有的话就需要把旧和新的合并
-
-    const page = source.page
-    // 处理开始节点是否有交集
-    const startNodeSource = this.getOldWrapSource(selectNodes[0], page)
-    source.startDomMeta = startNodeSource?.startDomMeta || source.startDomMeta
-
-    // 处理结束节点是否有交集
-    const endNodeSource = this.getOldWrapSource(selectNodes[selectNodes.length - 1], page)
-    source.endDomMeta = endNodeSource?.endDomMeta || source.endDomMeta
-
-    const oldIds = getPaintedIds(selectNodes)
+    const oldIds = this.handleSelectNotes(selectNodes, source)
+    if (!oldIds) {
+      return null
+    }
     // 删除旧的高亮节点
     this.removeOldWrap(oldIds, source.page)
 
     // 整合好source和dom后，重新获取selectNodes 数据
-    if (startNodeSource || endNodeSource) {
-      selectNodes = getSelectNodes(source) || selectNodes
-    }
+    selectNodes = getSelectNodes(source) || selectNodes
 
     const res = this.paintAction(selectNodes, source)
     const doms = getAllDom(source.tagName, source.id)
@@ -340,7 +371,7 @@ export class PaintUntil {
         error: `Can't find the source in the cache store by the id 【${id}】.it happened at the getOldWrapSource function execute.`
       })
 
-      return null
+      return id
     }
 
     const source = sources.find((source) => source.page === page)
