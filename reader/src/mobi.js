@@ -904,6 +904,12 @@ class MOBI6 {
   async loadRecindex(recindex) {
     return this.loadResource(Number(recindex) - 1)
   }
+
+  async loadBlob(recindex) {
+    const raw = await this.mobi.loadResource(Number(recindex) - 1)
+    return new Blob([raw])
+  }
+
   async replaceResources(doc) {
     for (const img of doc.querySelectorAll('img[recindex]')) {
       const recindex = img.getAttribute('recindex')
