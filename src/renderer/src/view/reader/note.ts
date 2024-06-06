@@ -1,45 +1,48 @@
 import { DomSource } from '@book-wise/web-highlight'
 import { Note, db } from '@renderer/batabase'
 import { now } from '@renderer/shared'
+import { v4 as uuidv4 } from 'uuid'
 
 export class NoteAction {
   static async remove(ids: string[]) {
     await db.notes.bulkDelete(ids)
   }
 
-  static async create({
+  static async bulkAdd({
     sources,
     eBookId,
-    chapterIndex,
     chapterName,
     notes
   }: {
-    sources: DomSource
+    sources: DomSource[]
     eBookId: string
-    chapterIndex: number
     chapterName: string
     notes: string
   }) {
-    const isExist = await this.findById(sources.id)
+    if (sources.length === 0) return null
+    const isExist = await this.findById(sources[0].id)
     if (isExist) return null
 
-    const note: Note = {
-      id: sources.id,
-      eBookId,
-      chapterIndex,
-      chapterName,
-      bookText: sources.text,
-      notes,
-      createTime: now(),
-      updateTime: now(),
-      isDelete: null,
-      colorName: sources.className,
-      startDomMeta: JSON.stringify(sources.startDomMeta),
-      endDomMeta: JSON.stringify(sources.endDomMeta)
-    }
+    const res: Note[] = sources.map((source) => {
+      return {
+        id: uuidv4(),
+        sourceId: source.id,
+        eBookId,
+        chapterName,
+        bookText: source.text,
+        notes,
+        createTime: now(),
+        updateTime: now(),
+        isDelete: null,
+        colorName: source.className,
+        page: source.page,
+        startDomMeta: JSON.stringify(source.startDomMeta),
+        endDomMeta: JSON.stringify(source.endDomMeta)
+      }
+    })
 
-    await db.notes.add(note)
-    return note
+    await db.notes.bulkAdd(res)
+    return res
   }
 
   static async findByEBookId(eBookId: string) {

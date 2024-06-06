@@ -86,7 +86,7 @@ async function loadData() {
 
   // 初始化高亮
   setTimeout(() => {
-    initHighlight();
+    initHighlight(info);
   }, 0)
 }
 

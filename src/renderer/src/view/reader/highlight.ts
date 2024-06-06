@@ -1,13 +1,14 @@
 import { CreateFrom, EventTypeEnum, WebHighlight } from '@book-wise/web-highlight'
-import { db } from '@renderer/batabase'
+import { Book, db } from '@renderer/batabase'
 import { $ } from '@renderer/shared'
 import { highlightColor } from './highlight-color'
+import { NoteAction } from './note'
 
 export let highlighter: WebHighlight
 
 export const CONTINAER_ID = 'reader-container'
 
-export function initHighlight() {
+export function initHighlight(book: Book) {
   highlighter = new WebHighlight({
     tagName: 'span',
     className: highlightColor.getSelectionClassName(),
@@ -18,7 +19,7 @@ export function initHighlight() {
 
   highlighter.on(EventTypeEnum.SOURCE, ({ isPainted, range, source, removeIds }) => {})
 
-  // 创建高亮笔记
+  // 创建高亮内容
   highlighter.on(EventTypeEnum.CREATE, async ({ id, sources, type, removeIds }) => {
     if (type === CreateFrom.rang) {
       // 删除重叠的笔记
@@ -27,9 +28,8 @@ export function initHighlight() {
       }
 
       // 新建笔记
-      // NoteAction.create({ sources, eBookId: book.id })
+      NoteAction.bulkAdd({ sources, eBookId: book.id, chapterName: '', notes: '' })
     }
-    console.log('sources', sources)
   })
 
   highlighter.on(EventTypeEnum.CLICK, ({ id, target, source }) => {})
