@@ -44,3 +44,7 @@ export function openExternal(href: string) {
     window.open(href, '_blank')
   }
 }
+
+export function unMountedBookRender() {
+  bookRender?.destroy()
+}

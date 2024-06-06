@@ -8,14 +8,14 @@ import { CETALOG_DRAWER, NOTE_DRAWER, isElectron } from '@renderer/shared';
 import { settingStore } from '@renderer/store';
 import { useToggle, useWindowSize } from '@vueuse/core';
 import { AlignJustify, Search } from 'lucide-vue-next';
-import { computed, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import CatalogView from './Catalog.vue';
 import NoteView from './Note.vue';
-import { initHighlight } from './highlight';
+import { highlighter, initHighlight } from './highlight';
 import DoubleReaderView from './mode/DoubleReader.vue';
 import ScrollReaderView from './mode/ScrollReader.vue';
 import SectionReaderView from './mode/SectionReader.vue';
-import { getBookHref, render } from './render';
+import { getBookHref, render, unMountedBookRender } from './render';
 
 
 const props = defineProps({
@@ -109,8 +109,14 @@ function catalogJump({ href }: any) {
   }
 }
 
-loadData().then(() => setLoading(false))
+onMounted(() => {
+  loadData().then(() => setLoading(false))
+})
 
+onUnmounted(() => {
+  unMountedBookRender()
+  highlighter?.dispose()
+})
 
 </script>
 
