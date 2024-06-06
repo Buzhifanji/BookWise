@@ -1,5 +1,5 @@
 import { CreateFrom, EventTypeEnum, WebHighlight } from '@book-wise/web-highlight'
-import { Book, db } from '@renderer/batabase'
+import { Book } from '@renderer/batabase'
 import { $ } from '@renderer/shared'
 import { highlightColor } from './highlight-color'
 import { NoteAction } from './note'
@@ -20,11 +20,11 @@ export function initHighlight(book: Book) {
   highlighter.on(EventTypeEnum.SOURCE, ({ isPainted, range, source, removeIds }) => {})
 
   // 创建高亮内容
-  highlighter.on(EventTypeEnum.CREATE, async ({ id, sources, type, removeIds }) => {
+  highlighter.on(EventTypeEnum.CREATE, async ({ sources, type, removeIds }) => {
     if (type === CreateFrom.rang) {
       // 删除重叠的笔记
       if (removeIds && removeIds.length > 0) {
-        await db.notes.bulkDelete(removeIds)
+        await NoteAction.removeBySoureIds(removeIds)
       }
 
       // 新建笔记

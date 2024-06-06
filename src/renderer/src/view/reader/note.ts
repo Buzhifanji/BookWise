@@ -64,4 +64,8 @@ export class NoteAction {
       page: note.page
     }
   }
+
+  static removeBySoureIds(sourceId: string[]) {
+    return db.notes.where('sourceId').anyOf(sourceId).delete()
+  }
 }
