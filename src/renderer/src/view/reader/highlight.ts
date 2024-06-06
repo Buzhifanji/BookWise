@@ -32,5 +32,9 @@ export function initHighlight(book: Book) {
     }
   })
 
-  highlighter.on(EventTypeEnum.CLICK, ({ id, target, source }) => {})
+  highlighter.on(EventTypeEnum.CLICK, ({ id, target, source }) => {
+    console.log(id)
+    console.log(target)
+    console.log(source)
+  })
 }

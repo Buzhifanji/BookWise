@@ -3,11 +3,11 @@
 </script>
 
 <template>
-  <div class="leftmenu-wrapper bg-base-100">笔记</div>
+  <div class="left-note-wrapperbg-base-100">笔记</div>
 </template>
 
 <style scoped>
-.leftmenu-wrapper {
+.left-note-wrapper {
   --rightbar-width: 240px;
   width: var(--rightbar-width);
   transition: all .3s;

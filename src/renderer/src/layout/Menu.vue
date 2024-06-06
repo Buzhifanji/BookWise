@@ -54,6 +54,8 @@ watchEffect(() => {
 
 <style scoped>
 .leftmenu-wrapper {
+  --leftbar-width: 15rem;
+
   width: var(--leftbar-width);
   transition: all .3s;
   position: sticky;

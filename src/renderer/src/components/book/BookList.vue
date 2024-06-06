@@ -25,9 +25,7 @@ const emit = defineEmits<{
 }>();
 
 
-const WIDTH = 6.5
-const HEIGHT = 12
-const PADDING = 20
+const WIDTH = 120
 const store = useContentCantianerStore()
 
 const parentRef = ref<HTMLElement | null>(null)
@@ -39,7 +37,7 @@ onMounted(() => {
 })
 
 const list = computed(() => {
-  const count = parseInt((store.width / (remToPx(WIDTH) + PADDING)).toString())
+  const count = parseInt(((store.width) / (WIDTH + remToPx(2.5))).toString())
   return chuankArray(toRaw(props.data) || [], count)
 })
 
@@ -117,20 +115,26 @@ function restoreOneBook() {
       height: `${totalSize}px`,
     }">
       <template v-for="virtualRow in virtualRows" :key="virtualRow.key">
-        <div :ref="measureElement" :data-index="virtualRow.index"
-          class="absolute top-0 left-0 flex pb-6  justify-start w-full gap-10" :style="{
+        <div :ref="measureElement" :data-index="virtualRow.index" class="absolute top-0 left-0  w-full pb-8" :style="{
       transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin
         }px)`,
     }">
-          <div v-for="item in list[virtualRow.index]"
-            class="card bg-base-100 transition duration-150 ease-in-out hover:scale-105  rounded shadow cursor-pointer gap-2"
-            @click="emit('click', item)" :style="{ width: `${WIDTH}rem`, height: `${HEIGHT}rem` }" ref=""
-            @contextmenu="rightEvent($event, item)">
-            <img :src="convertUint8ArrayToURL(item.cover)" alt="书籍封面">
-            <div class="line-clamp-2 mx-1 mb-1 text-sm">{{ item.name }}</div>
+          <div class="relative w-full ">
+            <div class="flex w-full justify-start pb-[1.125rem] px-5 gap-10 class ">
+              <div v-for="item in list[virtualRow.index]"
+                class="card bg-base-100 glass rounded shadow cursor-pointer gap-2 bookshelf transition ease-in-out"
+                @click="emit('click', item)" :style="{ width: `${WIDTH}px`, height: `${137 + remToPx(3.5)}px` }" ref=""
+                @contextmenu="rightEvent($event, item)">
+                <div class="h-[137px] " :style="{ width: `${WIDTH}px`, }">
+                  <img :src="convertUint8ArrayToURL(item.cover)" class="w-full  h-full object-cover" alt="书籍封面">
+                </div>
+                <div class="line-clamp-2 mx-1 mb-1 text-sm">{{ item.name }}</div>
+              </div>
+            </div>
+            <div class="shelf-shadows shadow-2xl"></div>
+            <div class="shelf bg-base-100"></div>
           </div>
         </div>
-
       </template>
     </div>
 
@@ -183,3 +187,44 @@ function restoreOneBook() {
     </dialog>
   </div>
 </template>
+
+<style scoped>
+.bookshelf {
+  transform: perspective(2000px) rotateY(0deg) translateX(0px) scaleX(1);
+  transform-style: preserve-3d;
+  box-shadow: 6px 6px 12px -1px rgba(0, 0, 0, 0.1), 20px 14px 16px -6px rgba(0, 0, 0, 0.1);
+}
+
+.bookshelf:hover {
+  transform: perspective(2000px) rotateY(-15deg) translateX(-10px) scaleX(0.94);
+}
+
+
+.shelf-shadows {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1rem;
+  border-radius: 2px;
+  z-index: 1;
+}
+
+.shelf {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1rem;
+  border-radius: 2px;
+  z-index: 3;
+  box-shadow:
+    0px -5px 3px 0px rgba(0, 0, 0, 0.2),
+    0px 15px 20px 0px rgba(0, 0, 0, 0.6),
+    0px 15px 20px 0px rgba(0, 0, 0, 0.6),
+    0px 15px 20px 0px rgba(0, 0, 0, 0.6),
+    0px 5px 5px 0px rgba(0, 0, 0, 0.3),
+    0px 5px 5px 0px rgba(0, 0, 0, 0.3),
+    0px 5px 5px 0px rgba(0, 0, 0, 0.3);
+}
+</style>

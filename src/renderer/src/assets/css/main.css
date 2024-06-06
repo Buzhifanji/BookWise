@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --leftbar-width: 240px;
-}
-
 html {
   line-height: 1.5;
   -webkit-text-size-adjust: 100%;
