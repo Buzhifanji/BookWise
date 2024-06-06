@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Select } from '@renderer/components';
-import { ReadMode } from '@renderer/enum';
+import { BookshelftMode, ReadMode } from '@renderer/enum';
 import { settingStore } from '@renderer/store';
 import { ref } from 'vue';
 import { languageStore } from './language';
@@ -18,6 +18,12 @@ const readModeList = [
 ]
 
 
+const bookshelfModeList = [
+  { id: BookshelftMode.bookshelf, value: '书架模式' },
+  { id: BookshelftMode.card, value: '卡片模式' },
+  { id: BookshelftMode.list, value: '列表模式' },
+]
+
 const textOpacity = { '--tw-text-opacity': 0.6 };
 
 
@@ -30,7 +36,7 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
         {{ $t('setting.userSetting') }}
       </h2>
     </div>
-    <div class="col-span-full lg:col-auto">
+    <div class="col-span-full lg:col-auto flex flex-col gap-6">
       <div class="card w-full bg-base-100 shadow">
         <div class="card-body">
           <h2 class="card-title">{{ $t('setting.language') }} & {{ $t('setting.theme') }}</h2>
@@ -45,6 +51,23 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
               <span class="label-text" :style="textOpacity">{{ $t('setting.chooseTheme') }}</span>
             </div>
             <Select v-model="selectedTheme" :list="themeStore.list" @update:model-value="themeStore.set" />
+          </label>
+        </div>
+      </div>
+      <div class="card w-full bg-base-100 shadow">
+        <div class="card-body">
+          <h2 class="card-title">模式</h2>
+          <label class="form-control w-full max-w-xs">
+            <div class="label">
+              <span class="label-text" :style="textOpacity">书架模式</span>
+            </div>
+            <Select v-model="settingStore.bookself" :list="bookshelfModeList" />
+          </label>
+          <label class="form-control w-full max-w-xs">
+            <div class="label">
+              <span class="label-text" :style="textOpacity">阅读模式</span>
+            </div>
+            <Select v-model="settingStore.readMode" :list="readModeList" />
           </label>
         </div>
       </div>
@@ -68,14 +91,6 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
                 <p class="label-text font-normal" :style="textOpacity">关闭回收站，删除图片的时候，将会被永久删除，而不是移到回收站</p>
               </div>
               <input type="checkbox" v-model="settingStore.isOpenRecyleBin" class="checkbox checkbox-info" />
-            </label>
-          </div>
-          <div class="form-control">
-            <label class="cursor-pointer label">
-              <div>
-                <h3 class="font-bold text-xl">阅读模式</h3>
-              </div>
-              <Select v-model="settingStore.readMode" :list="readModeList" />
             </label>
           </div>
         </div>
