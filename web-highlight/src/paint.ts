@@ -348,7 +348,8 @@ export class PaintUntil {
     const doms = getAllDom(source.tagName, id, root)
 
     if (isLen(doms)) {
-      source.text = doms.reduce((acc, cur) => (acc += cur.innerHTML), '')
+      const _doms = doms.filter((dom) => !['IMG, IMAGE'].includes(dom.tagName.toLocaleUpperCase()))
+      source.text = _doms.reduce((acc, cur) => (acc += cur.innerText), '')
     } else {
       errorEventEimtter.emit(INTERNAL_ERROR_EVENT, {
         type: ERROR.HIGHLIGHT_DOM_NOT_FOUND,
