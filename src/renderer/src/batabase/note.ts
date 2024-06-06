@@ -15,4 +15,4 @@ export interface Note {
 }
 
 export const schemaNote =
-  '&id, eBookId, chapterIndex, chapterName, bookText, notes, domSource, createTime, updateTime, isDelete, colorName'
+  '&id, eBookId,sourceId, chapterIndex, chapterName, bookText, notes, domSource, createTime, updateTime, isDelete, colorName'
