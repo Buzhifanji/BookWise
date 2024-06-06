@@ -100,6 +100,7 @@ function catalogJump({ href }: any) {
     }
   }
 
+
   if (settingStore.value.readMode === ReadMode.sroll) {
     scrollReaderViewRef.value?.jump(index)
   } else if (settingStore.value.readMode === ReadMode.section) {

@@ -11,6 +11,7 @@ export const render = async (data: ArrayBuffer) => {
   bookRender = new Reader()
   await bookRender.open(new File([data], ''))
   const sections = await bookRender.getSections()
+
   const toc = bookRender.book.toc || []
   console.log(bookRender)
   return { sections, toc }

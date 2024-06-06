@@ -168,13 +168,8 @@ export class Reader {
     const result = []
     for (const section of this.book.sections) {
       const id = section.id
-      if (id && typeof id === 'string' && id.includes('page')) continue // 过滤掉封面
 
       const doc = await section.createDocument()
-      const dd = await section.load()
-      // console.log(doc)
-      // console.log(dd)
-
       const body = doc.querySelector('body')
       this.#handleLinks(body, section)
       await this.#handleImg(body, section)
@@ -223,27 +218,30 @@ export class Reader {
     }
   }
 
+  #replace(dom, section, attr) {
+    const href_ = dom.getAttribute(attr)
+    const href = section?.resolveHref?.(href_) ?? href_
+    dom.setAttribute(attr, href)
+    return href
+  }
+
   /**
    * 处理书本链接
    */
   #handleLinks(dom, section) {
     const links = dom.querySelectorAll('a[href]')
     for (const item of links) {
-      const href_ = item.getAttribute('href')
-      const href = section?.resolveHref?.(href_) ?? href_
-      item.setAttribute('href', href)
+      this.#replace(item, section, 'href')
     }
   }
 
   async #handleRecIndexImg(dom, section) {
     for (const img of dom.querySelectorAll('img[recindex]')) {
-      const src = img.getAttribute('recindex')
-      const href = section?.resolveHref?.(src) ?? src
+      const href = this.#replace(img, section, 'recindex')
       if (href) {
         const blob = await this.book?.loadBlob(href)
         if (blob) {
           this.blobs.set(href, blob)
-          img.setAttribute('src', href)
         }
       }
     }
@@ -260,15 +258,13 @@ export class Reader {
 
       const imgs = dom.querySelectorAll('img[src]')
       for (const img of imgs) {
-        const src = img.getAttribute('src')
-        const href = section?.resolveHref?.(src) ?? src
+        const href = this.#replace(img, section, 'src')
         if (href) {
           if (this.book.loadBlob) {
             // epub commic
             const blob = await this.book?.loadBlob(href)
             if (blob) {
               this.blobs.set(href, blob)
-              img.setAttribute('src', href)
             }
           } else if (this.book.loadResourceBlob) {
             // mobi azw3
@@ -276,7 +272,6 @@ export class Reader {
             const blob = await this.book.loadResourceBlob(href)
             if (blob) {
               this.blobs.set(href, blob)
-              img.setAttribute('src', href)
             }
           } else {
             console.log('todo handle imgae resource')
