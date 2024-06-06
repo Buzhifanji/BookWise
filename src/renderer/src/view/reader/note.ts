@@ -52,4 +52,16 @@ export class NoteAction {
   static async findById(id: string) {
     return await db.notes.where('id').equals(id).first()
   }
+
+  static noteToDomSource(note: Note): DomSource {
+    return {
+      id: note.sourceId,
+      text: note.bookText,
+      className: note.colorName,
+      tagName: 'span',
+      startDomMeta: JSON.parse(note.startDomMeta),
+      endDomMeta: JSON.parse(note.endDomMeta),
+      page: note.page
+    }
+  }
 }

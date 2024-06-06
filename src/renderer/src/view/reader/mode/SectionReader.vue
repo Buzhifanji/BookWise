@@ -72,7 +72,7 @@ function linkClick(href: string) {
       <div class="py-8">
         <button class="btn btn-active btn-neutral" @click="prev">上一章</button>
       </div>
-      <SectionView :key="index" :data="section" @link-click="linkClick"></SectionView>
+      <SectionView :key="index" :index="index" :data="section" @link-click="linkClick"></SectionView>
       <div class="text-center py-10">
         <button class="btn  btn-active  btn-primary btn-wide" @click="next">下一章</button>
       </div>

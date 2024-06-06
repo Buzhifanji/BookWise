@@ -1,17 +1,23 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { highlighter } from '../highlight';
+import { NoteAction } from '../note';
 import { getImgBlob } from '../render';
 
 interface Props {
   data: any,
+  index: number
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   data: '',
+  index: 0,
 })
 
 const emit = defineEmits(['linkClick'])
 const contianer = ref<HTMLElement | null>(null)
+const route = useRoute();
 
 // 图片绑定blob
 function mountBlobToImg() {
@@ -36,9 +42,18 @@ function handleLink() {
   }
 }
 
+
+async function drawHighlight() {
+  const id = route.params.id as string;
+  const notes = (await NoteAction.findByEBookId(id)).filter(note => note.page === props.index.toString())
+  const domSource = notes.map(note => NoteAction.noteToDomSource(note))
+  highlighter?.fromSource(id, domSource)
+}
+
 onMounted(() => {
   mountBlobToImg()
   handleLink()
+  drawHighlight()
 })
 
 

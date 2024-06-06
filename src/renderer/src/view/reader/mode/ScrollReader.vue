@@ -74,7 +74,8 @@ function linkClick(href: string) {
       <div class="absolute top-0 left-0 w-full " :style="{ transform: `translateY(${virtualRows[0]?.start ?? 0}px)` }">
         <div v-for="virtualRow in virtualRows" :key="virtualRow.key" :data-index="virtualRow.index"
           :data-page-number="virtualRow.index" :ref="measureElement" class="prose mx-auto my-0 ">
-          <SectionView :data="section[virtualRow.index]" @link-click="linkClick"></SectionView>
+          <SectionView :data="section[virtualRow.index]" :index="virtualRow.index" @link-click="linkClick">
+          </SectionView>
         </div>
       </div>
     </div>
