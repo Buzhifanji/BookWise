@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
+import { BookshelftMode } from '@renderer/enum';
 import { useDialog, useRightClick } from '@renderer/hooks';
-import { chuankArray, convertUint8ArrayToURL, remToPx } from '@renderer/shared';
+import { chuankArray, remToPx } from '@renderer/shared';
 import { settingStore, useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
 import { BellElectric, PencilLine, Trash2, UndoDot } from 'lucide-vue-next';
 import { computed, defineProps, onMounted, ref, toRaw, withDefaults } from 'vue';
+import BookCardView from './BookCard.vue';
 import { BookAction } from './book-action';
 
 interface Props {
@@ -26,6 +28,7 @@ const emit = defineEmits<{
 
 
 const WIDTH = 120
+const HEIGHT = 137
 const store = useContentCantianerStore()
 
 const parentRef = ref<HTMLElement | null>(null)
@@ -119,20 +122,21 @@ function restoreOneBook() {
       transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin
         }px)`,
     }">
-          <div class="relative w-full ">
+          <div class="relative w-full" v-if="settingStore.bookself === BookshelftMode.bookshelf">
             <div class="flex w-full justify-start pb-[1.125rem] px-5 gap-10 class ">
-              <div v-for="item in list[virtualRow.index]"
-                class="card bg-base-100 glass rounded shadow cursor-pointer gap-2 bookshelf transition ease-in-out"
-                @click="emit('click', item)" :style="{ width: `${WIDTH}px`, height: `${137 + remToPx(3.5)}px` }" ref=""
-                @contextmenu="rightEvent($event, item)">
-                <div class="h-[137px] " :style="{ width: `${WIDTH}px`, }">
-                  <img :src="convertUint8ArrayToURL(item.cover)" class="w-full  h-full object-cover" alt="书籍封面">
-                </div>
-                <div class="line-clamp-2 mx-1 mb-1 text-sm">{{ item.name }}</div>
-              </div>
+              <template v-for="item in list[virtualRow.index]">
+                <BookCardView class="bookshelf" :book="item" :width="WIDTH" @click="emit('click', item)"
+                  @contextmenu="rightEvent($event, item)" />
+              </template>
             </div>
             <div class="shelf-shadows shadow-2xl"></div>
             <div class="shelf bg-base-100"></div>
+          </div>
+          <div v-else-if="settingStore.bookself === BookshelftMode.card" class="flex w-full justify-start  gap-10">
+            <template v-for="item in list[virtualRow.index]">
+              <BookCardView class="shadow  duration-150  hover:scale-105  " :book="item" :width="WIDTH"
+                @click="emit('click', item)" @contextmenu="rightEvent($event, item)" />
+            </template>
           </div>
         </div>
       </template>
@@ -189,17 +193,6 @@ function restoreOneBook() {
 </template>
 
 <style scoped>
-.bookshelf {
-  transform: perspective(2000px) rotateY(0deg) translateX(0px) scaleX(1);
-  transform-style: preserve-3d;
-  box-shadow: 6px 6px 12px -1px rgba(0, 0, 0, 0.1), 20px 14px 16px -6px rgba(0, 0, 0, 0.1);
-}
-
-.bookshelf:hover {
-  transform: perspective(2000px) rotateY(-15deg) translateX(-10px) scaleX(0.94);
-}
-
-
 .shelf-shadows {
   position: absolute;
   bottom: 0;
