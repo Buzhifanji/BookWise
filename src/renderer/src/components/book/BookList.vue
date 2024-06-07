@@ -29,6 +29,7 @@ const emit = defineEmits<{
 const bookshelfWidht = 120
 const bookshelfHeight = 137
 const bookCardWidth = 282
+const textOpacity = { '--tw-text-opacity': 0.6 };
 
 const bookMode = (value: BookshelftMode) => value === settingStore.value.bookself
 
@@ -45,7 +46,7 @@ onMounted(() => {
 const list = computed(() => {
   const width = bookMode(BookshelftMode.bookshelf) ? bookshelfWidht : bookMode(BookshelftMode.card) ? bookCardWidth : 0
   const count = parseInt(((store.width) / (width + remToPx(2.5))).toString())
-  return chuankArray(toRaw(props.data) || [], count)
+  return bookMode(BookshelftMode.list) ? toRaw(props.data) : chuankArray(toRaw(props.data) || [], count)
 })
 
 // 虚拟列表
@@ -122,14 +123,15 @@ function restoreOneBook() {
       height: `${totalSize}px`,
     }">
       <template v-for="virtualRow in virtualRows" :key="virtualRow.key">
-        <div :ref="measureElement" :data-index="virtualRow.index" class="absolute top-0 left-0  w-full pb-8" :style="{
+        <div :ref="measureElement" :data-index="virtualRow.index" class="absolute top-0 left-0  w-full "
+          :class="[bookMode(BookshelftMode.list) ? 'pb-5' : 'pb-10']" :style="{
       transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin
         }px)`,
     }">
-          <!-- 书架模式 -->
           <div class="relative w-full" v-if="bookMode(BookshelftMode.bookshelf)">
+            <!-- 书架模式 -->
             <div class="flex w-full justify-start pb-[1.125rem] px-5 gap-10 class ">
-              <template v-for="item in list[virtualRow.index]">
+              <template v-for="item in list[virtualRow.index] as Book[]">
                 <div class="card bg-base-100  rounded shadow cursor-pointer gap-2 bookshelf transition ease-in-out"
                   @click="emit('click', item)"
                   :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight + remToPx(3.5)}px` }"
@@ -145,9 +147,9 @@ function restoreOneBook() {
             <div class="shelf-shadows shadow-2xl"></div>
             <div class="shelf bg-base-100"></div>
           </div>
-          <!-- 卡片模式 -->
           <div v-else-if="bookMode(BookshelftMode.card)" class="flex w-full justify-start  gap-10">
-            <template v-for="item in list[virtualRow.index]">
+            <!-- 卡片模式 -->
+            <template v-for="item in list[virtualRow.index] as Book[]">
               <div
                 class="card flex-row items-center gap-4 p-4 bg-base-100 shadow-md cursor-pointer transition ease-in-out duration-150  hover:scale-110"
                 @click="emit('click', item)" @contextmenu="rightEvent($event, item)"
@@ -157,10 +159,27 @@ function restoreOneBook() {
                 </figure>
                 <div class="flex flex-1 flex-col gap-2">
                   <p class="line-clamp-2">{{ item.name }}</p>
-                  <p class="line-clamp-2"> {{ item.author }}.</p>
+                  <p class="line-clamp-2 label-text" :style="textOpacity"> {{ item.author }}.</p>
                 </div>
               </div>
             </template>
+          </div>
+          <div v-else class="flex w-full flex-col ">
+            <!-- 列表模式 -->
+            <div
+              class="card flex flex-row bg-base-100 p-2 gap-4 cursor-pointer shadow hover:bg-primary hover:text-primary-content"
+              @click="emit('click', list[virtualRow.index] as Book)"
+              @contextmenu="rightEvent($event, list[virtualRow.index] as Book)">
+              <figure :style="{ width: `${84}px`, height: `${121}px` }"><img
+                  :src="convertUint8ArrayToURL((list[virtualRow.index] as Book).cover)"
+                  class="w-full rounded h-full object-cover" alt="书籍封面">
+              </figure>
+              <div class="flexflex-col flex-1 py-2">
+                <p class="line-clamp-1">{{ (list[virtualRow.index] as Book).name }}</p>
+                <p class="line-clamp-1 label-text" :style="textOpacity">{{ (list[virtualRow.index] as Book).author }}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </template>
