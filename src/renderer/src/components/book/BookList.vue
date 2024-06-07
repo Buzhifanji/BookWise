@@ -9,6 +9,7 @@ import { vOnClickOutside } from '@vueuse/components';
 import { BellElectric, PencilLine, Trash2, UndoDot } from 'lucide-vue-next';
 import { computed, defineProps, onMounted, ref, toRaw, withDefaults } from 'vue';
 import { BookAction } from './book-action';
+import { useToggle } from '@vueuse/core';
 
 interface Props {
   data: Book[],
@@ -30,7 +31,7 @@ const bookshelfWidht = 120
 const bookshelfHeight = 137
 const bookCardWidth = 282
 const textOpacity = { '--tw-text-opacity': 0.6 };
-
+const [bgOpacity, setBgOpacity] = useToggle(1)
 const bookMode = (value: BookshelftMode) => value === settingStore.value.bookself
 
 const store = useContentCantianerStore()
@@ -81,8 +82,8 @@ const { rightEvent, closeRight, rightInfo, selectData } = useRightClick<Book>()
 // 消息确认弹出
 const { dialogRef, openDialog, closeDialog } = useDialog();
 
+// 删除
 let _isForce = false;
-
 function removeBefore(isForce: boolean) {
   const id = selectData.value?.id
   if (!id) return
@@ -90,7 +91,6 @@ function removeBefore(isForce: boolean) {
   openDialog()
   closeRight()
 }
-
 function removeOneBook() {
   const id = selectData.value?.id
   if (!id) return
@@ -104,7 +104,7 @@ function removeOneBook() {
   closeDialog()
 }
 
-
+// 恢复
 function restoreOneBook() {
   const id = selectData.value?.id
   if (!id) return
@@ -168,6 +168,9 @@ function restoreOneBook() {
             <!-- 列表模式 -->
             <div
               class="card flex flex-row bg-base-100 p-2 gap-4 cursor-pointer shadow hover:bg-primary hover:text-primary-content"
+              :style="{'--tw-bg-opacity': bgOpacity}"
+              @mouseenter="setBgOpacity(0.6)"
+              @mouseleave="setBgOpacity(1)"
               @click="emit('click', list[virtualRow.index] as Book)"
               @contextmenu="rightEvent($event, list[virtualRow.index] as Book)">
               <figure :style="{ width: `${84}px`, height: `${121}px` }"><img
