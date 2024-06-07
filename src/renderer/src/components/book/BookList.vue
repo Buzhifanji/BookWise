@@ -2,13 +2,12 @@
 import { Book } from '@renderer/batabase';
 import { BookshelftMode } from '@renderer/enum';
 import { useDialog, useRightClick } from '@renderer/hooks';
-import { chuankArray, remToPx } from '@renderer/shared';
+import { chuankArray, convertUint8ArrayToURL, remToPx } from '@renderer/shared';
 import { settingStore, useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
 import { BellElectric, PencilLine, Trash2, UndoDot } from 'lucide-vue-next';
 import { computed, defineProps, onMounted, ref, toRaw, withDefaults } from 'vue';
-import BookCardView from './BookCard.vue';
 import { BookAction } from './book-action';
 
 interface Props {
@@ -27,8 +26,12 @@ const emit = defineEmits<{
 }>();
 
 
-const WIDTH = 120
-const HEIGHT = 137
+const bookshelfWidht = 120
+const bookshelfHeight = 137
+const bookCardWidth = 282
+
+const bookMode = (value: BookshelftMode) => value === settingStore.value.bookself
+
 const store = useContentCantianerStore()
 
 const parentRef = ref<HTMLElement | null>(null)
@@ -40,7 +43,8 @@ onMounted(() => {
 })
 
 const list = computed(() => {
-  const count = parseInt(((store.width) / (WIDTH + remToPx(2.5))).toString())
+  const width = bookMode(BookshelftMode.bookshelf) ? bookshelfWidht : bookMode(BookshelftMode.card) ? bookCardWidth : 0
+  const count = parseInt(((store.width) / (width + remToPx(2.5))).toString())
   return chuankArray(toRaw(props.data) || [], count)
 })
 
@@ -122,20 +126,40 @@ function restoreOneBook() {
       transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin
         }px)`,
     }">
-          <div class="relative w-full" v-if="settingStore.bookself === BookshelftMode.bookshelf">
+          <!-- 书架模式 -->
+          <div class="relative w-full" v-if="bookMode(BookshelftMode.bookshelf)">
             <div class="flex w-full justify-start pb-[1.125rem] px-5 gap-10 class ">
               <template v-for="item in list[virtualRow.index]">
-                <BookCardView class="bookshelf" :book="item" :width="WIDTH" @click="emit('click', item)"
-                  @contextmenu="rightEvent($event, item)" />
+                <div class="card bg-base-100  rounded shadow cursor-pointer gap-2 bookshelf transition ease-in-out"
+                  @click="emit('click', item)"
+                  :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight + remToPx(3.5)}px` }"
+                  @contextmenu="rightEvent($event, item)">
+                  <div :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight}px` }" class="rounded">
+                    <img :src="convertUint8ArrayToURL(item.cover)" class="w-full rounded h-full object-cover"
+                      alt="书籍封面">
+                  </div>
+                  <div class="line-clamp-2 mx-1 mb-1 text-sm">{{ item.name }}</div>
+                </div>
               </template>
             </div>
             <div class="shelf-shadows shadow-2xl"></div>
             <div class="shelf bg-base-100"></div>
           </div>
-          <div v-else-if="settingStore.bookself === BookshelftMode.card" class="flex w-full justify-start  gap-10">
+          <!-- 卡片模式 -->
+          <div v-else-if="bookMode(BookshelftMode.card)" class="flex w-full justify-start  gap-10">
             <template v-for="item in list[virtualRow.index]">
-              <BookCardView class="shadow  duration-150  hover:scale-105  " :book="item" :width="WIDTH"
-                @click="emit('click', item)" @contextmenu="rightEvent($event, item)" />
+              <div
+                class="card flex-row items-center gap-4 p-4 bg-base-100 shadow-md cursor-pointer transition ease-in-out duration-150  hover:scale-110"
+                @click="emit('click', item)" @contextmenu="rightEvent($event, item)"
+                :style="{ width: `${bookCardWidth}px` }">
+                <figure :style="{ width: `${84}px`, height: `${121}px` }"><img :src="convertUint8ArrayToURL(item.cover)"
+                    class="w-full rounded h-full object-cover" alt="书籍封面">
+                </figure>
+                <div class="flex flex-1 flex-col gap-2">
+                  <p class="line-clamp-2">{{ item.name }}</p>
+                  <p class="line-clamp-2"> {{ item.author }}.</p>
+                </div>
+              </div>
             </template>
           </div>
         </div>
@@ -193,6 +217,16 @@ function restoreOneBook() {
 </template>
 
 <style scoped>
+.bookshelf {
+  transform: perspective(2000px) rotateY(0deg) translateX(0px) scaleX(1);
+  transform-style: preserve-3d;
+  box-shadow: 6px 6px 12px -1px rgba(0, 0, 0, 0.1), 20px 14px 16px -6px rgba(0, 0, 0, 0.1);
+}
+
+.bookshelf:hover {
+  transform: perspective(2000px) rotateY(-15deg) translateX(-10px) scaleX(0.94);
+}
+
 .shelf-shadows {
   position: absolute;
   bottom: 0;

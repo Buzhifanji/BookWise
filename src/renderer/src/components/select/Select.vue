@@ -6,27 +6,30 @@ import { SelectItem } from './type';
 interface Props {
   modelValue?: SelectItem | string
   list: SelectItem[]
+  isCloce?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  list: () => []
+  list: () => [],
+  isCloce: true
 })
 
 const emit = defineEmits(['update:modelValue'])
 
 const detailsRef = ref<HTMLDetailsElement | null>(null)
 
-const toggle = () => {
+const onCloce = () => {
   if (detailsRef.value && detailsRef.value.open) {
     detailsRef.value.open = false
   }
 }
 
-onClickOutside(detailsRef, toggle)
+onClickOutside(detailsRef, onCloce)
 
 function onClick(value: SelectItem) {
   const data = (props.modelValue as SelectItem).id ? value : value.id
   emit('update:modelValue', data)
+  if (props.isCloce) onCloce()
 }
 
 function getModelValue(modelValue: SelectItem | string) {

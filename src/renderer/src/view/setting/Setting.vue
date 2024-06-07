@@ -50,7 +50,8 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
             <div class="label">
               <span class="label-text" :style="textOpacity">{{ $t('setting.chooseTheme') }}</span>
             </div>
-            <Select v-model="selectedTheme" :list="themeStore.list" @update:model-value="themeStore.set" />
+            <Select v-model="selectedTheme" :is-cloce="false" :list="themeStore.list"
+              @update:model-value="themeStore.set" />
           </label>
         </div>
       </div>
