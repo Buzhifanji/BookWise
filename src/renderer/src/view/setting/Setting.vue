@@ -30,72 +30,74 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
 </script>
 
 <template>
-  <div class="p-6 grid grid-cols-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-screen-2xl">
-    <div class="col-span-full">
-      <h2 class="font-bold text-2xl ">
-        {{ $t('setting.userSetting') }}
-      </h2>
-    </div>
-    <div class="col-span-full lg:col-auto flex flex-col gap-6">
-      <div class="card w-full bg-base-100 shadow">
-        <div class="card-body">
-          <h2 class="card-title">{{ $t('setting.language') }} & {{ $t('setting.theme') }}</h2>
-          <label class="form-control w-full max-w-xs">
-            <div class="label">
-              <span class="label-text" :style="textOpacity">{{ $t('setting.chooseLanguage') }}</span>
-            </div>
-            <Select v-model="selectedLang" :list="languageStore.list" @update:model-value="languageStore.set" />
-          </label>
-          <label class="form-control w-full max-w-xs">
-            <div class="label">
-              <span class="label-text" :style="textOpacity">{{ $t('setting.chooseTheme') }}</span>
-            </div>
-            <Select v-model="selectedTheme" :is-cloce="false" :list="themeStore.list"
-              @update:model-value="themeStore.set" />
-          </label>
-        </div>
+    <div class="absoulte inset-0 h-full overflow-auto scrollbar-thin">
+    <div class="p-6 grid grid-cols-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-screen-2xl">
+      <div class="col-span-full">
+        <h2 class="font-bold text-2xl ">
+          {{ $t('setting.userSetting') }}
+        </h2>
       </div>
-      <div class="card w-full bg-base-100 shadow">
-        <div class="card-body">
-          <h2 class="card-title">模式</h2>
-          <label class="form-control w-full max-w-xs">
-            <div class="label">
-              <span class="label-text" :style="textOpacity">书架模式</span>
-            </div>
-            <Select v-model="settingStore.bookself" :list="bookshelfModeList" />
-          </label>
-          <label class="form-control w-full max-w-xs">
-            <div class="label">
-              <span class="label-text" :style="textOpacity">阅读模式</span>
-            </div>
-            <Select v-model="settingStore.readMode" :list="readModeList" />
-          </label>
-        </div>
-      </div>
-    </div>
-    <div class="col-span-full lg:col-span-2">
-      <div class="card bg-base-100 shadow w-full">
-        <div class="card-body">
-          <div class="form-control">
-            <label class="cursor-pointer label">
-              <div>
-                <h3 class="font-bold text-xl">阅读器是否打开新页面</h3>
-                <p class="label-text font-normal" :style="textOpacity">如果是否，将阅读器只会在当前页面。</p>
+      <div class="col-span-full lg:col-auto flex flex-col gap-6">
+        <div class="card w-full bg-base-100 shadow">
+          <div class="card-body">
+            <h2 class="card-title">{{ $t('setting.language') }} & {{ $t('setting.theme') }}</h2>
+            <label class="form-control w-full max-w-xs">
+              <div class="label">
+                <span class="label-text" :style="textOpacity">{{ $t('setting.chooseLanguage') }}</span>
               </div>
-              <input type="checkbox" v-model="settingStore.isOpenNew" class="checkbox checkbox-info" />
+              <Select v-model="selectedLang" :list="languageStore.list" @update:model-value="languageStore.set" />
+            </label>
+            <label class="form-control w-full max-w-xs">
+              <div class="label">
+                <span class="label-text" :style="textOpacity">{{ $t('setting.chooseTheme') }}</span>
+              </div>
+              <Select v-model="selectedTheme" :is-cloce="false" :list="themeStore.list"
+                @update:model-value="themeStore.set" />
             </label>
           </div>
-          <div class="form-control">
-            <label class="cursor-pointer label">
-              <div>
-                <h3 class="font-bold text-xl">开启回收站功能</h3>
-                <p class="label-text font-normal" :style="textOpacity">关闭回收站，删除图片的时候，将会被永久删除，而不是移到回收站</p>
+        </div>
+        <div class="card w-full bg-base-100 shadow">
+          <div class="card-body">
+            <h2 class="card-title">模式</h2>
+            <label class="form-control w-full max-w-xs">
+              <div class="label">
+                <span class="label-text" :style="textOpacity">书架模式</span>
               </div>
-              <input type="checkbox" v-model="settingStore.isOpenRecyleBin" class="checkbox checkbox-info" />
+              <Select v-model="settingStore.bookself" :list="bookshelfModeList" />
+            </label>
+            <label class="form-control w-full max-w-xs">
+              <div class="label">
+                <span class="label-text" :style="textOpacity">阅读模式</span>
+              </div>
+              <Select v-model="settingStore.readMode" :list="readModeList" />
             </label>
           </div>
         </div>
       </div>
+      <div class="col-span-full lg:col-span-2">
+        <div class="card bg-base-100 shadow w-full">
+          <div class="card-body">
+            <div class="form-control">
+              <label class="cursor-pointer label">
+                <div>
+                  <h3 class="font-bold text-xl">阅读器是否打开新页面</h3>
+                  <p class="label-text font-normal" :style="textOpacity">如果是否，将阅读器只会在当前页面。</p>
+                </div>
+                <input type="checkbox" v-model="settingStore.isOpenNew" class="checkbox checkbox-info" />
+              </label>
+            </div>
+            <div class="form-control">
+              <label class="cursor-pointer label">
+                <div>
+                  <h3 class="font-bold text-xl">开启回收站功能</h3>
+                  <p class="label-text font-normal" :style="textOpacity">关闭回收站，删除图片的时候，将会被永久删除，而不是移到回收站</p>
+                </div>
+                <input type="checkbox" v-model="settingStore.isOpenRecyleBin" class="checkbox checkbox-info" />
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+    </div>
 </template>
