@@ -10,6 +10,9 @@ import { BellElectric, PencilLine, Trash2, UndoDot } from 'lucide-vue-next';
 import { computed, defineProps, onMounted, ref, shallowReactive, toRaw, withDefaults } from 'vue';
 import { BookAction } from './book-action';
 import { useToggle } from '@vueuse/core';
+import { object, string, number, date, InferType } from 'yup';
+import { useForm } from 'vee-validate';
+
 
 interface Props {
   data: Book[],
@@ -84,15 +87,25 @@ const { dialogRef, openDialog, closeDialog } = useDialog();
 
 // 编辑
 const { dialogRef: editeDialogRef, openDialog: openEditeDiaglog, closeDialog: closeEditeDialog } = useDialog();
-const editeValue = shallowReactive({ name: '', author: ''})
+type editeData = { name: string, author: string}
+const { defineField, handleSubmit, errors: editeError} = useForm<editeData>({
+  validationSchema: {
+    name: (value: unknown) => value ? true : '请输入书名',
+    author: (value: unknown) => value ? true : '请输入作者名',
+  },
+  });
+const [name, nameProps] = defineField('name')
+const [author, authorProps] = defineField('author')
 const onEdite = () => {
-  editeValue.name = selectData.value?.name || ''
-  editeValue.author = selectData.value?.author || ''
+  if(!selectData.value) return
+  name.value = selectData.value.name 
+  author.value = selectData.value.author 
   openEditeDiaglog()
 }
-const submitEdite = () => {
-
-}
+const submitEdite = handleSubmit(values => {
+  BookAction.editeOne(selectData.value!.id, values)
+  closeEditeDialog()
+});
 
 // 删除
 let _isForce = false;
@@ -252,24 +265,32 @@ function restoreOneBook() {
     <dialog class="modal" ref="editeDialogRef">
       <div class="modal-box" v-on-click-outside="closeEditeDialog">
         <h3 class="font-bold text-lg mb-5">编辑书籍</h3>
-        <div class="flex flex-col gap-4">
-          <div>
-            <label class="input input-bordered flex items-center gap-2">
-              书名
-              <input type="text" class="grow" v-model="editeValue.name" placeholder="请输入书名" />
-            </label>
+        <form @submit="submitEdite">
+          <div class="flex flex-col gap-4">
+            <div>
+              <label class="input input-bordered flex items-center gap-2" for="name" :class="{'input-error': editeError.name}">
+                书名
+                <input type="text" class="grow" name="name" v-model="name" v-bind="nameProps" placeholder="请输入书名" />
+              </label>
+                <div class="label" v-if=" editeError.name">
+                  <span class="label-text text-error">{{  editeError.name }}</span>
+                </div>
+            </div>
+            <div>
+              <label class="input input-bordered flex items-center gap-2" :class="{'input-error': editeError.author}">
+                作者
+                <input type="text" class="grow" name="author" v-model="author" v-bind="authorProps" placeholder="请输入作者名" />
+              </label>
+              <div class="label" v-if=" editeError.author">
+                  <span class="label-text text-error">{{  editeError.author }}</span>
+                </div>
+            </div>
           </div>
-          <div>
-            <label class="input input-bordered flex items-center gap-2">
-              作者
-              <input type="text" class="grow" v-model="editeValue.author" placeholder="请输入作者名" />
-            </label>
+          <div class="modal-action">
+            <button class="btn btn-outline" @click="closeEditeDialog">取消</button>
+            <button class="btn btn-success ml-4" type="submit">确认</button>
           </div>
-        </div>
-        <div class="modal-action">
-          <button class="btn btn-outline" @click="closeEditeDialog">取消</button>
-          <button class="btn btn-success ml-4" @click="submitEdite">确认</button>
-        </div>
+        </form>
       </div>
     </dialog>
   </div>

@@ -1,16 +1,20 @@
-import { db } from '@renderer/batabase'
+import { Book, db } from '@renderer/batabase'
 import { now } from '@renderer/shared'
 
 export class BookAction {
   static removeOne(id: string, isSoft: boolean) {
     if (isSoft) {
-      db.books.update(id, { isDelete: now() })
+    return  db.books.update(id, { isDelete: now() })
     } else {
-      db.books.delete(id)
+      return  db.books.delete(id)
     }
   }
 
+  static editeOne(id: string,value: Partial<Book>) {
+    return db.books.update(id, {...value})
+  }
+
   static restoreOne(id: string) {
-    db.books.update(id, { isDelete: null })
+    return db.books.update(id, { isDelete: null })
   }
 }
