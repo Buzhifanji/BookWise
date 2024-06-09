@@ -14,7 +14,7 @@ console.log(props.data)
 </script>
 
 <template>
-  <div v-if="data.length" class="h-full p-4">
-    <Card :data="data[0]"/>
+  <div v-if="data.length" class="h-full p-4 absulote inset-0 overflow-auto flex flex-col gap-4">
+    <Card  v-for="item in data" :data="item"/>
   </div>
 </template>

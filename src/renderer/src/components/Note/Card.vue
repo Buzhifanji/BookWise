@@ -7,7 +7,7 @@ defineProps<{data: Note}>()
 </script>
 
 <template>
-  <div class="card bg-base-100 cursor-pointer  w-96 prose">
+  <div class="card bg-base-100 cursor-pointer text-sm  w-96 prose">
     <div class="card-body">
         <div class="flex flex-row item-center justify-between">
             <div>{{ data.createTime }}</div>
