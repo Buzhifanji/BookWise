@@ -7,10 +7,9 @@ import { settingStore, useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
 import { BellElectric, PencilLine, Trash2, UndoDot } from 'lucide-vue-next';
-import { computed, defineProps, onMounted, ref, shallowReactive, toRaw, withDefaults } from 'vue';
+import { computed, defineProps, onMounted, ref, toRaw, withDefaults } from 'vue';
 import { BookAction } from './book-action';
 import { useToggle } from '@vueuse/core';
-import { object, string, number, date, InferType } from 'yup';
 import { useForm } from 'vee-validate';
 
 
@@ -106,6 +105,10 @@ const submitEdite = handleSubmit(values => {
   BookAction.editeOne(selectData.value!.id, values)
   closeEditeDialog()
 });
+
+// 详情
+const { dialogRef: detailDialogRef, openDialog: openDetailDiaglog, closeDialog: closeDetailDialog } = useDialog();
+
 
 // 删除
 let _isForce = false;
@@ -239,7 +242,7 @@ function restoreOneBook() {
             <PencilLine class="h-5 w-5" />编辑
           </a>
         </li>
-        <li>
+        <li @click="openDetailDiaglog()">
           <a>
             <BellElectric class="h-5 w-5" />详情
           </a>
@@ -291,6 +294,50 @@ function restoreOneBook() {
             <button class="btn btn-success ml-4" type="submit">确认</button>
           </div>
         </form>
+      </div>
+    </dialog>
+
+    <!-- 详情 -->
+    <dialog class="modal" ref="detailDialogRef">
+      <div class="modal-box max-w-5xl" v-on-click-outside="closeDetailDialog">
+        <h3 class="font-bold text-lg mb-5">书籍详情</h3>
+        <div class="columns-1 md:columns-2 gap-x-8 gap-y-6 ">
+          <div class="flex gap-4 mb-3">
+            <div>书名</div>
+            <div class="stat-title">{{ selectData?.name }}</div>
+          </div>
+          <div class="flex gap-4 mb-3">
+            <div>作者</div>
+            <div class="stat-title">{{ selectData?.author }}</div>
+          </div>
+          <div class="flex gap-4 mb-3">
+            <div>大小</div>
+            <div class="stat-title">{{ selectData?.size }}</div>
+          </div>
+          <div class="flex gap-4 mb-3">
+            <div>页数</div>
+            <div class="stat-title">{{ selectData?.pages }}</div>
+          </div>
+          <div class="flex gap-4 mb-3">
+            <div>出版商</div>
+            <div class="stat-title">{{ selectData?.publisher }}</div>
+          </div>
+          <div class="flex gap-4 mb-3">
+            <div>出版时间</div>
+            <div class="stat-title">{{ selectData?.publishTime }}</div>
+          </div>
+          <div class="flex gap-4 mb-3">
+            <div>创建时间</div>
+            <div class="stat-title">{{ selectData?.createTime }}</div>
+          </div>
+          <div class="flex gap-4 mb-3">
+            <div>更新时间</div>
+            <div class="stat-title">{{ selectData?.updateTime }}</div>
+          </div>
+        </div>
+        <div class="modal-action">
+          <button class="btn btn-outline" @click="closeDetailDialog">关闭</button>
+        </div>
       </div>
     </dialog>
   </div>
