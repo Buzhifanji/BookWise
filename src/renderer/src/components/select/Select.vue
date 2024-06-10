@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core';
-import { defineEmits, defineProps, ref } from 'vue';
+import { defineEmits, defineProps, onMounted, ref } from 'vue';
 import { SelectItem } from './type';
+import { isInClientRectTop } from '@renderer/shared/dom';
 
 interface Props {
   modelValue?: SelectItem | string
@@ -17,6 +18,13 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits(['update:modelValue'])
 
 const detailsRef = ref<HTMLDetailsElement | null>(null)
+const summaryRef = ref<HTMLElement | null>(null)
+
+const position = ref('')
+
+onMounted(() => {
+  position.value = isInClientRectTop(summaryRef.value!) ? 'dropdown-top' : 'dropdown-bottom'
+})
 
 const onCloce = () => {
   if (detailsRef.value && detailsRef.value.open) {
@@ -45,8 +53,8 @@ function getModelValue(modelValue: SelectItem | string) {
 </script>
 
 <template>
-  <details class="dropdown " ref="detailsRef">
-    <summary class=" cursor-pointer select select-bordered items-center w-full">
+  <details class="dropdown " :class="position" ref="detailsRef">
+    <summary ref="summaryRef" class=" cursor-pointer select select-bordered items-center w-full">
       {{ getModelValue(modelValue!) }}
     </summary>
     <ul

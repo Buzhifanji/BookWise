@@ -17,3 +17,8 @@ export function remToPx(value: number) {
   const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize)
   return value * rootFontSize
 }
+
+export function isInClientRectTop(node: HTMLElement) {
+  const bottom = node.getBoundingClientRect().bottom
+  return bottom >= (window.innerHeight / 2)
+}
