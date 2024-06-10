@@ -58,7 +58,7 @@ function getModelValue(modelValue: SelectItem | string) {
       {{ getModelValue(modelValue!) }}
     </summary>
     <ul
-      class="p-2  mt-2  dropdown-content  z-[10] max-h-96 w-full overflow-auto  rounded-md menu flex-nowrap bg-base-100 shadow-2xl ring-1 gap-1 scrollbar-thin ">
+      class="p-2  mt-2  dropdown-content  z-[10] max-h-96 w-full overflow-auto  rounded-md menu flex-nowrap bg-base-100 shadow-2xl border gap-1 scrollbar-thin ">
       <li v-for="item in list" :key="item.value" @click="onClick(item)">
         <slot v-if="$slots.default" :data="item"></slot>
         <a :class="{ 'active': ((modelValue as SelectItem)?.id || modelValue) === item.id }" v-else>
