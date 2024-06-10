@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { isInClientRectTop } from '@renderer/shared/dom';
 import { onClickOutside } from '@vueuse/core';
 import { defineEmits, defineProps, onMounted, ref } from 'vue';
 import { SelectItem } from './type';
-import { isInClientRectTop } from '@renderer/shared/dom';
 
 interface Props {
   modelValue?: SelectItem | string
@@ -58,8 +58,8 @@ function getModelValue(modelValue: SelectItem | string) {
       {{ getModelValue(modelValue!) }}
     </summary>
     <ul
-      class="p-2  mt-2  dropdown-content  z-[10] max-h-96 w-full overflow-auto  rounded-md menu flex-nowrap bg-base-100 shadow-2xl border gap-1 scrollbar-thin ">
-      <li v-for="item in list" :key="item.value" @click="onClick(item)">
+      class="p-2  mt-2  dropdown-content  z-[10] max-h-96 w-full overflow-auto border badge-accent badge-outline  rounded-md menu flex-nowrap  bg-base-100 shadow-2xl  gap-1 scrollbar-thin ">
+      <li v-for="item in list" :key="item.value" @click="onClick(item)" class="text-base-content">
         <slot v-if="$slots.default" :data="item"></slot>
         <a :class="{ 'active': ((modelValue as SelectItem)?.id || modelValue) === item.id }" v-else>
           {{ item.value }}

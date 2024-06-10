@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import NoteListView from '@renderer/components/Note/Note-list.vue'
 import { Note, db } from '@renderer/batabase';
+import NoteListView from '@renderer/components/note/NoteList.vue';
 import { useObservable } from '@vueuse/rxjs';
 import { liveQuery } from 'dexie';
 
@@ -9,5 +9,5 @@ const noteList = useObservable<Note[], Note[]>((liveQuery(async () => (await db.
 </script>
 
 <template>
-  <NoteListView :data="noteList || []"/>
+  <NoteListView :data="noteList || []" />
 </template>
