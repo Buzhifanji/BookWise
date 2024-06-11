@@ -36,7 +36,11 @@ function createWindow(): void {
     } else {
       const newWindow = new BrowserWindow({
         width: 800,
-        height: 600
+        height: 600,
+        webPreferences: {
+          preload: join(__dirname, '../preload/index.js'),
+          sandbox: false
+        }
       })
       newWindow.loadURL(url)
       openWindows.set(url, newWindow.id)

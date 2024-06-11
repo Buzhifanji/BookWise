@@ -1,4 +1,4 @@
-export const isElectron = !!window?.electron
+export const isElectron = navigator.userAgent.toLowerCase().indexOf('electron/') > -1
 
 // export const isWindows = isElectron ? window?.electron?.process.platform === 'win32' : false
 

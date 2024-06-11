@@ -42,7 +42,15 @@ async function uploadFile(event: Event) {
             const reader = new Reader()
             await reader.open(new File([data], ''))
             const cover = await reader.getCover()
-            return { ...reader.getMetadata(), md5: hash, cover: await convertBlobToUint8Array(cover), path: file.path || '', data }
+
+            let path = ''
+            if (isElectron) {
+                path = await window.api.getFilePath(file)
+            }
+
+            return {
+                ...reader.getMetadata(), md5: hash, cover: await convertBlobToUint8Array(cover), path, data
+            }
         }))
 
         const newBook: Book[] = bookMetadata.map(item => {

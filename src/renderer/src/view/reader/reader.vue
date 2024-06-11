@@ -44,18 +44,14 @@ const doubleReaderViewRef = ref<InstanceType<typeof DoubleReaderView>>() // 双�
 async function getBookContent(bookId: string, url: string) {
   try {
     if (isElectron) {
-      // 桌面从路径中获取文件
-      const fs = await import('fs')
-      const content = await fs.promises.readFile(url, 'binary')
-      console.log('sssss')
-      console.log(content)
-      return JSON.parse(content)
+      const content = await window.api.readFile(url)
+      return { content, bookId }
     } else {
       // 网页从数据库中获取
       return await db.bookContents.where('bookId').equals(bookId).first()
     }
   } catch (err) {
-
+    return null
   }
 }
 

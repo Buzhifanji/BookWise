@@ -5,7 +5,7 @@ import { Note, schemaNote } from './note'
 
 const db = new Dexie('__BookWiseDatabase__') as Dexie & {
   books: EntityTable<Book, 'id'>
-  bookContents: EntityTable<BookContent, 'id'>
+  bookContents: EntityTable<BookContent, 'bookId'>
   notes: EntityTable<Note, 'id'>
 }
 
