@@ -17,8 +17,8 @@ const handleClick = (e: any) => {
 
 <template>
   <div class="catalog-wrapper bg-base-100 overflow-auto hover:scrollbar-thin scrollbar-none">
-    <!-- <FoldTree :data="data" v-if="settingStore.isFoldCatalog" /> -->
-    <ExpandTree :data="data" @click="handleClick" />
+    <!-- <FoldTreeView :data="data" v-if="settingStore.isFoldCatalog" /> -->
+    <ExpandTreeView :data="data" @click="handleClick" />
   </div>
 </template>
 

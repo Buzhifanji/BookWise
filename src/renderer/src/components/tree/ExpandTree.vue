@@ -23,7 +23,7 @@ const handleClick = (e: any) => {
     <li v-for="item in data" :key="item.herf" @click.stop="handleClick(item)">
       <a class="whitespace-normal">{{ item.label }}</a>
       <template v-if="item.subitems && item.subitems.length > 0">
-        <ExpandTree :data="item.subitems" :deps="deps + 1" @click="handleClick" />
+        <ExpandTreeView :data="item.subitems" :deps="deps + 1" @click="handleClick" />
       </template>
     </li>
   </ul>

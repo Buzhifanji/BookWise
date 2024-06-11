@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { Note } from '@renderer/batabase';
+import { chuankArray, remToPx } from '@renderer/shared';
+import { useContentCantianerStore } from '@renderer/store';
+import { useVirtualizer } from '@tanstack/vue-virtual';
 import { computed, defineProps, ref, toRaw, withDefaults } from 'vue';
 import Card from './Card.vue';
-import { useVirtualizer } from '@tanstack/vue-virtual';
-import { useContentCantianerStore } from '@renderer/store';
-import { chuankArray, remToPx } from '@renderer/shared';
 
 interface Props {
   data: Note[],

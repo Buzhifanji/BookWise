@@ -6,11 +6,11 @@ import { chuankArray, convertUint8ArrayToURL, remToPx } from '@renderer/shared';
 import { settingStore, useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
-import { BellElectric, PencilLine, Trash2, UndoDot } from 'lucide-vue-next';
-import { computed, defineProps, onMounted, ref, toRaw, withDefaults } from 'vue';
-import { BookAction } from './book-action';
 import { useToggle } from '@vueuse/core';
+import { BellElectric, PencilLine, Trash2, UndoDot } from 'lucide-vue-next';
 import { useForm } from 'vee-validate';
+import { computed, defineProps, onMounted, ref, toRaw, withDefaults } from 'vue';
+import { BookAction } from './action';
 
 
 interface Props {
@@ -86,19 +86,19 @@ const { dialogRef, openDialog, closeDialog } = useDialog();
 
 // 编辑
 const { dialogRef: editeDialogRef, openDialog: openEditeDiaglog, closeDialog: closeEditeDialog } = useDialog();
-type editeData = { name: string, author: string}
-const { defineField, handleSubmit, errors: editeError} = useForm<editeData>({
+type editeData = { name: string, author: string }
+const { defineField, handleSubmit, errors: editeError } = useForm<editeData>({
   validationSchema: {
     name: (value: unknown) => value ? true : '请输入书名',
     author: (value: unknown) => value ? true : '请输入作者名',
   },
-  });
+});
 const [name, nameProps] = defineField('name')
 const [author, authorProps] = defineField('author')
 const onEdite = () => {
-  if(!selectData.value) return
-  name.value = selectData.value.name 
-  author.value = selectData.value.author 
+  if (!selectData.value) return
+  name.value = selectData.value.name
+  author.value = selectData.value.author
   openEditeDiaglog()
 }
 const submitEdite = handleSubmit(values => {
@@ -196,9 +196,7 @@ function restoreOneBook() {
             <!-- 列表模式 -->
             <div
               class="card flex flex-row bg-base-100 p-2 gap-4 cursor-pointer shadow hover:bg-primary hover:text-primary-content"
-              :style="{'--tw-bg-opacity': bgOpacity}"
-              @mouseenter="setBgOpacity(0.6)"
-              @mouseleave="setBgOpacity(1)"
+              :style="{ '--tw-bg-opacity': bgOpacity }" @mouseenter="setBgOpacity(0.6)" @mouseleave="setBgOpacity(1)"
               @click="emit('click', list[virtualRow.index] as Book)"
               @contextmenu="rightEvent($event, list[virtualRow.index] as Book)">
               <figure :style="{ width: `${84}px`, height: `${121}px` }"><img
@@ -271,22 +269,24 @@ function restoreOneBook() {
         <form @submit="submitEdite">
           <div class="flex flex-col gap-4">
             <div>
-              <label class="input input-bordered flex items-center gap-2" for="name" :class="{'input-error': editeError.name}">
+              <label class="input input-bordered flex items-center gap-2" for="name"
+                :class="{ 'input-error': editeError.name }">
                 书名
                 <input type="text" class="grow" name="name" v-model="name" v-bind="nameProps" placeholder="请输入书名" />
               </label>
-                <div class="label" v-if=" editeError.name">
-                  <span class="label-text text-error">{{  editeError.name }}</span>
-                </div>
+              <div class="label" v-if="editeError.name">
+                <span class="label-text text-error">{{ editeError.name }}</span>
+              </div>
             </div>
             <div>
-              <label class="input input-bordered flex items-center gap-2" :class="{'input-error': editeError.author}">
+              <label class="input input-bordered flex items-center gap-2" :class="{ 'input-error': editeError.author }">
                 作者
-                <input type="text" class="grow" name="author" v-model="author" v-bind="authorProps" placeholder="请输入作者名" />
+                <input type="text" class="grow" name="author" v-model="author" v-bind="authorProps"
+                  placeholder="请输入作者名" />
               </label>
-              <div class="label" v-if=" editeError.author">
-                  <span class="label-text text-error">{{  editeError.author }}</span>
-                </div>
+              <div class="label" v-if="editeError.author">
+                <span class="label-text text-error">{{ editeError.author }}</span>
+              </div>
             </div>
           </div>
           <div class="modal-action">
@@ -381,4 +381,4 @@ function restoreOneBook() {
     0px 5px 5px 0px rgba(0, 0, 0, 0.3),
     0px 5px 5px 0px rgba(0, 0, 0, 0.3);
 }
-</style>
+</style>./action

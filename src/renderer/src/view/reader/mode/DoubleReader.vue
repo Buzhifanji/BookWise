@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import RingLoadingView from '@renderer/components/loading/RingLoading.vue';
-import { Toast } from '@renderer/components/toast';
+import { RingLoadingView, Toast } from '@renderer/components';
 import { wait } from '@renderer/shared';
 import { useDebounceFn, useResizeObserver, useThrottleFn, useToggle } from '@vueuse/core';
 import { nextTick, onMounted, ref } from 'vue';
@@ -187,10 +186,9 @@ function linkClick(href: string) {
       <div class="absolute inset-0">
         <RingLoadingView v-if="isLoading" class="rounded-3xl" />
         <template v-else>
-          <div ref="containerRef"
-          :data-page-number="index"
+          <div ref="containerRef" :data-page-number="index"
             class="columns-1 lg:columns-2 gap-x-16 h-full overflow-auto scrollbar-none p-8 pb-12 double-container relative">
-            <SectionView :key="index" :index="index" :data="section"  @link-click="linkClick">
+            <SectionView :key="index" :index="index" :data="section" @link-click="linkClick">
             </SectionView>
             <div ref="remendyRef"></div>
           </div>

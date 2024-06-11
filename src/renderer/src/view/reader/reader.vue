@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { Book, BookContent, db } from '@renderer/batabase';
-import { Drawer, useToggleDrawer } from '@renderer/components/drawer';
-import UnfoundView from '@renderer/components/error/404.vue';
-import RingLoadingView from '@renderer/components/loading/RingLoading.vue';
+import { DrawerView, ErrorView, RingLoadingView, useToggleDrawer } from '@renderer/components';
 import { ReadMode } from '@renderer/enum';
 import { CETALOG_DRAWER, NOTE_DRAWER, isElectron } from '@renderer/shared';
 import { settingStore } from '@renderer/store';
@@ -123,9 +121,9 @@ onUnmounted(() => {
     <template v-if="book && bookContent">
       <!-- 目录 -->
       <div class="block lg:hidden">
-        <Drawer :id="CETALOG_DRAWER">
+        <DrawerView :id="CETALOG_DRAWER">
           <CatalogView :data="tocList" @click="catalogJump" />
-        </Drawer>
+        </DrawerView>
       </div>
       <div class="hidden lg:block ">
         <CatalogView :class="{ 'hide': isCatalog }" :data="tocList" @click="catalogJump" />
@@ -181,14 +179,14 @@ onUnmounted(() => {
       </div>
       <!-- 笔记 -->
       <div class="block lg:hidden">
-        <Drawer :id="NOTE_DRAWER" :is-right="true">
+        <DrawerView :id="NOTE_DRAWER" :is-right="true">
           <NoteView />
-        </Drawer>
+        </DrawerView>
       </div>
       <div class="hidden lg:block">
         <NoteView :class="{ 'hide': isNote }" />
       </div>
     </template>
-    <UnfoundView v-else />
+    <ErrorView v-else />
   </template>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Drawer, useToggleDrawer } from '@renderer/components/drawer';
+import { DrawerView, useToggleDrawer } from '@renderer/components';
 import Menu from '@renderer/layout/Menu.vue';
 import Navbar from '@renderer/layout/Navbar.vue';
 import { MENU_DRAWER } from '@renderer/shared';
@@ -25,9 +25,9 @@ useResizeObserver(contentRef, debouncedFn)
 
 <template>
   <div class="block lg:hidden">
-    <Drawer :id="MENU_DRAWER">
+    <DrawerView :id="MENU_DRAWER">
       <Menu />
-    </Drawer>
+    </DrawerView>
   </div>
   <div class="hidden lg:block">
     <Menu :class="{ 'hide': isLG }" />

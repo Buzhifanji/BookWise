@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Select } from '@renderer/components';
+import { SelectView } from '@renderer/components';
 import { BookshelftMode, ReadMode } from '@renderer/enum';
 import { settingStore } from '@renderer/store';
 import { ref } from 'vue';
@@ -30,7 +30,7 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
 </script>
 
 <template>
-    <div class="absoulte inset-0 h-full overflow-auto scrollbar-thin">
+  <div class="absoulte inset-0 h-full overflow-auto scrollbar-thin">
     <div class="p-6 grid grid-cols-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-screen-2xl">
       <div class="col-span-full">
         <h2 class="font-bold text-2xl ">
@@ -45,13 +45,13 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
               <div class="label">
                 <span class="label-text" :style="textOpacity">{{ $t('setting.chooseLanguage') }}</span>
               </div>
-              <Select v-model="selectedLang" :list="languageStore.list" @update:model-value="languageStore.set" />
+              <SelectView v-model="selectedLang" :list="languageStore.list" @update:model-value="languageStore.set" />
             </label>
             <label class="form-control w-full max-w-xs">
               <div class="label">
                 <span class="label-text" :style="textOpacity">{{ $t('setting.chooseTheme') }}</span>
               </div>
-              <Select v-model="selectedTheme" :is-cloce="false" :list="themeStore.list"
+              <SelectView v-model="selectedTheme" :is-cloce="false" :list="themeStore.list"
                 @update:model-value="themeStore.set" />
             </label>
           </div>
@@ -63,13 +63,13 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
               <div class="label">
                 <span class="label-text" :style="textOpacity">书架模式</span>
               </div>
-              <Select v-model="settingStore.bookself" :list="bookshelfModeList" />
+              <SelectView v-model="settingStore.bookself" :list="bookshelfModeList" />
             </label>
             <label class="form-control w-full max-w-xs">
               <div class="label">
                 <span class="label-text" :style="textOpacity">阅读模式</span>
               </div>
-              <Select v-model="settingStore.readMode" :list="readModeList" />
+              <SelectView v-model="settingStore.readMode" :list="readModeList" />
             </label>
           </div>
         </div>
@@ -99,5 +99,5 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
         </div>
       </div>
     </div>
-    </div>
+  </div>
 </template>
