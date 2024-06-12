@@ -47,7 +47,7 @@ async function drawHighlight() {
   const id = route.params.id as string;
   const notes = (await NoteAction.findByEBookId(id)).filter(note => note.page === props.index.toString())
   const domSource = notes.map(note => NoteAction.noteToDomSource(note))
-  highlighter?.fromSource(id, domSource)
+  highlighter?.fromSource(domSource)
 }
 
 onMounted(() => {

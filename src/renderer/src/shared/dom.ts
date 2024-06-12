@@ -20,5 +20,18 @@ export function remToPx(value: number) {
 
 export function isInClientRectTop(node: HTMLElement) {
   const bottom = node.getBoundingClientRect().bottom
-  return bottom >= (window.innerHeight / 2)
+  return bottom >= window.innerHeight / 2
+}
+
+export function getNoteOffset(node: HTMLElement, root: HTMLElement) {
+  const result = { top: 0, left: 0 }
+
+  while (node && node !== root) {
+    result.top += node.offsetTop
+    result.left += node.offsetLeft
+
+    node = node.offsetParent as HTMLElement
+  }
+
+  return result
 }

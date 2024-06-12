@@ -130,7 +130,7 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
     return { source, isPainted, removeIds: [...removeIds] }
   }
 
-  fromSource = (id: string, source: DomSource[]) => {
+  fromSource = (source: DomSource[]) => {
     const data = new Map<string, DomSource[]>()
     source.forEach((item) => {
       const id = item.id
@@ -139,7 +139,7 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
       data.set(id, list)
     })
 
-    data.forEach((sourceList) => {
+    data.forEach((sourceList, id) => {
       const removeIds = new Set<string>()
       const sources = sourceList.filter((item) => {
         const [painted, ids] = this._handlePaintWrap(item)
@@ -151,7 +151,6 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
 
       if (isLen(sources)) {
         this._store.save(id, sources)
-
         this.emit(
           EventTypeEnum.CREATE,
           { id, sources, type: CreateFrom.source, removeIds: [...removeIds] },
@@ -225,6 +224,8 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
     if (isHighlightWrapNode(target)) {
       const id = getAttr(target, DATA_WEB_HIGHLIGHT)
       const source = this.getSourceById(id)
+
+      console.log(id, source)
 
       if (source) {
         if (source.length > 1) {

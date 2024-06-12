@@ -5,15 +5,9 @@ export class Store {
   private _data = new Map<string, DomSource[]>()
 
   save(id: string, source: DomSource[]) {
-    this._data.set(id, source)
-
-    // if (Array.isArray(source)) {
-    //   this._data.set(id, source)
-    // } else {
-    //   const list = this._data.get(id) || []
-    //   list.push(source)
-    //   this._data.set(id, list)
-    // }
+    const list = this.get(id) || []
+    list.push(...source)
+    this._data.set(id, list)
   }
 
   get(id: string): DomSource[] | undefined {

@@ -14,6 +14,7 @@ import DoubleReaderView from './mode/DoubleReader.vue';
 import ScrollReaderView from './mode/ScrollReader.vue';
 import SectionReaderView from './mode/SectionReader.vue';
 import { getBookHref, render, unMountedBookRender } from './render';
+import ToolbarView from './toolbar/toolbar.vue';
 
 const props = defineProps({
   id: String,
@@ -174,6 +175,9 @@ onUnmounted(() => {
             <!-- 双栏模式 -->
             <DoubleReaderView :section="section" ref="doubleReaderViewRef"
               v-if="settingStore.readMode === ReadMode.double" />
+
+            <!-- 工具栏 -->
+            <ToolbarView />
           </div>
         </div>
       </div>

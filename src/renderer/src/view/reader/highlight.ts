@@ -1,8 +1,9 @@
 import { CreateFrom, EventTypeEnum, WebHighlight } from '@book-wise/web-highlight'
 import { Book } from '@renderer/batabase'
-import { $ } from '@renderer/shared'
+import { $, getNoteOffset } from '@renderer/shared'
 import { highlightColor } from './highlight-color'
 import { NoteAction } from './note'
+import { ToolbarAction } from './toolbar/action'
 
 export let highlighter: WebHighlight
 
@@ -33,6 +34,13 @@ export function initHighlight(book: Book) {
   })
 
   highlighter.on(EventTypeEnum.CLICK, ({ id, target, source }) => {
+    if (id && source) {
+      const root = $('#' + CONTINAER_ID) as HTMLElement
+      const { top, left } = getNoteOffset(target, root)
+      ToolbarAction.open(top, left, source)
+    } else {
+      ToolbarAction.close()
+    }
     console.log(id)
     console.log(target)
     console.log(source)
