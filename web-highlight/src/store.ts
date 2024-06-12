@@ -6,7 +6,8 @@ export class Store {
 
   save(id: string, source: DomSource[]) {
     const list = this.get(id) || []
-    list.push(...source)
+    const newList = source.filter((item) => !list.find((sub) => sub.id === item.id))
+    list.push(...newList)
     this._data.set(id, list)
   }
 
