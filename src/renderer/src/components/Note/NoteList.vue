@@ -67,7 +67,13 @@ const removeAction = async () => {
     position: ['toast-top', 'toast-center'],
     type: 'alert-success',
   })
+}
 
+// 详情
+const { dialogRef: detailDialogRef, openDialog: openDetailDialog, closeDialog: closeDetailDialog } = useDialog();
+const onDetail = (value: Note) => {
+  selectData = value
+  openDetailDialog()
 }
 </script>
 
@@ -78,7 +84,7 @@ const removeAction = async () => {
         <div :ref="measureElement" :data-index="virtualRow.index" class="flex gap-4 absolute top-0 left-0  w-full pb-5"
           :style="{ transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin}px)` }">
           <template v-for="item in list[virtualRow.index]">
-            <Card :data="item" @delete="removeBefore" />
+            <Card :data="item" @delete="removeBefore" @detail="onDetail" />
           </template>
         </div>
       </template>
@@ -96,6 +102,21 @@ const removeAction = async () => {
         <div class="modal-action">
           <button class="btn btn-outline" @click="closeRemoveDialog">取消</button>
           <button class="btn btn-outline  btn-error ml-4" @click="removeAction">确认</button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- 详情 -->
+    <dialog class="modal" ref="detailDialogRef">
+      <div class="modal-box prose" v-on-click-outside="closeDetailDialog">
+        <h3 class="font-bold text-lg">笔记详情</h3>
+        <blockquote class="my-[1em]">
+          <p class=" my-[0.6em]">{{ selectData?.bookText }}</p>
+        </blockquote>
+        <p v-if="selectData?.notes">{{ selectData?.notes }}</p>
+        <p class="text-warning">将该笔记永久删除</p>
+        <div class="modal-action">
+          <button class="btn btn-outline" @click="closeDetailDialog">关闭</button>
         </div>
       </div>
     </dialog>
