@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SelectView } from '@renderer/components';
+import { CheckBoxView, Select, SelectView } from '@renderer/components';
 import { BookshelftMode, ReadMode } from '@renderer/enum';
 import { settingStore } from '@renderer/store';
 import { ref } from 'vue';
@@ -9,14 +9,11 @@ import { themeStore } from './theme';
 const selectedTheme = ref(themeStore.getDefault(themeStore.list[0]));
 const selectedLang = ref(languageStore.getDefault(languageStore.list[0]))
 
-// const readModeList = [ReadMode.sroll, ReadMode.section, ReadMode.double].map((item) => ({ id: item, value: item }))
-
 const readModeList = [
   { id: ReadMode.sroll, value: '滚动模式' },
   { id: ReadMode.section, value: '章节模式' },
   { id: ReadMode.double, value: '双页模式' },
 ]
-
 
 const bookshelfModeList = [
   { id: BookshelftMode.bookshelf, value: '书架模式' },
@@ -41,17 +38,13 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
         <div class="card w-full bg-base-100 shadow">
           <div class="card-body">
             <h2 class="card-title">{{ $t('setting.language') }} & {{ $t('setting.theme') }}</h2>
-            <label class="form-control w-full max-w-xs">
-              <div class="label">
-                <span class="label-text" :style="textOpacity">{{ $t('setting.chooseLanguage') }}</span>
-              </div>
-              <SelectView v-model="selectedLang" :list="languageStore.list" @update:model-value="languageStore.set" />
-            </label>
+            <SelectView v-model="selectedLang" :list="languageStore.list" @update:model-value="languageStore.set"
+              :label="$t('setting.chooseLanguage')" />
             <label class="form-control w-full max-w-xs">
               <div class="label">
                 <span class="label-text" :style="textOpacity">{{ $t('setting.chooseTheme') }}</span>
               </div>
-              <SelectView v-model="selectedTheme" :is-cloce="false" :list="themeStore.list"
+              <Select v-model="selectedTheme" :is-cloce="false" :list="themeStore.list"
                 @update:model-value="themeStore.set" />
             </label>
           </div>
@@ -59,42 +52,18 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
         <div class="card w-full bg-base-100 shadow">
           <div class="card-body">
             <h2 class="card-title">模式</h2>
-            <label class="form-control w-full max-w-xs">
-              <div class="label">
-                <span class="label-text" :style="textOpacity">书架模式</span>
-              </div>
-              <SelectView v-model="settingStore.bookself" :list="bookshelfModeList" />
-            </label>
-            <label class="form-control w-full max-w-xs">
-              <div class="label">
-                <span class="label-text" :style="textOpacity">阅读模式</span>
-              </div>
-              <SelectView v-model="settingStore.readMode" :list="readModeList" />
-            </label>
+            <SelectView v-model="settingStore.bookself" :list="bookshelfModeList" :label="'书架模式'" />
+            <SelectView v-model="settingStore.readMode" :list="readModeList" :label="'阅读模式'" />
           </div>
         </div>
       </div>
       <div class="col-span-full lg:col-span-2">
         <div class="card bg-base-100 shadow w-full">
           <div class="card-body">
-            <div class="form-control">
-              <label class="cursor-pointer label">
-                <div>
-                  <h3 class="font-bold text-xl">阅读器是否打开新页面</h3>
-                  <p class="label-text font-normal" :style="textOpacity">如果是否，将阅读器只会在当前页面。</p>
-                </div>
-                <input type="checkbox" v-model="settingStore.isOpenNew" class="checkbox checkbox-info" />
-              </label>
-            </div>
-            <div class="form-control">
-              <label class="cursor-pointer label">
-                <div>
-                  <h3 class="font-bold text-xl">开启回收站功能</h3>
-                  <p class="label-text font-normal" :style="textOpacity">关闭回收站，删除图片的时候，将会被永久删除，而不是移到回收站</p>
-                </div>
-                <input type="checkbox" v-model="settingStore.isOpenRecyleBin" class="checkbox checkbox-info" />
-              </label>
-            </div>
+            <CheckBoxView v-model="settingStore.isOpenNew" title="阅读器是否打开新页面" desc="如果是否，将阅读器只会在当前页面。" />
+            <CheckBoxView v-model="settingStore.isOpenRecyleBin" title="开启回收站功能"
+              desc="关闭回收站，删除书籍的时候，将会被永久删除，而不是移到回收站" />
+            <CheckBoxView v-model="settingStore.isNoteShowClass" title="笔记是否显示高亮样式" desc="关闭后，当鼠标滑过的时候，才会显示高亮样式" />
           </div>
         </div>
       </div>

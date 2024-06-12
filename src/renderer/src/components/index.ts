@@ -1,9 +1,11 @@
 import BookListView from './book/BookList.vue'
+import CheckBoxView from './checkbox/CheckBox.vue'
 import DrawerView from './drawer/Drawer.vue'
 import ErrorView from './error/404.vue'
 import RingLoadingView from './loading/RingLoading.vue'
 import NoteListView from './note/NoteList.vue'
-import SelectView from './select/Select.vue'
+import Select from './select/Select.vue'
+import SelectView from './select/SelectView.vue'
 import { SelectItem } from './select/type'
 import ExpandTreeView from './tree/ExpandTree.vue'
 import FoldTreeView from './tree/FoldTree.vue'
@@ -18,6 +20,7 @@ export * from './toast'
 
 export {
   BookListView,
+  CheckBoxView,
   DrawerView,
   ErrorView,
   ExpandTreeView,
@@ -25,6 +28,7 @@ export {
   FoldTreeView,
   NoteListView,
   RingLoadingView,
+  Select,
   SelectView
 }
 
