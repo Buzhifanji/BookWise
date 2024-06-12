@@ -67,7 +67,7 @@ function linkClick(href: string) {
 
 <template>
   <!-- 书籍内容 -->
-  <div class=" bg-base-100 h-full cursor-pointer  overflow-auto hover:scrollbar-thin scrollbar-none" ref="containerRef"
+  <div class=" bg-base-100 h-full cursor-pointer  overflow-auto hover:scrollbar-thin" ref="containerRef"
     :id="CONTINAER_ID">
     <div class="prose mx-auto my-0 " :data-page-number="index">
       <div class="py-8">

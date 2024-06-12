@@ -9,11 +9,13 @@ export let highlighter: WebHighlight
 
 export const CONTINAER_ID = 'reader-container'
 
+const getRoot = () => $('#' + CONTINAER_ID) as HTMLElement
+
 export function initHighlight(book: Book) {
   highlighter = new WebHighlight({
     tagName: 'span',
     className: highlightColor.getSelectionClassName(),
-    root: ($('#' + CONTINAER_ID) as HTMLElement) || Document,
+    root: getRoot() || Document,
     showError: true,
     auto: true
   })
@@ -35,14 +37,10 @@ export function initHighlight(book: Book) {
 
   highlighter.on(EventTypeEnum.CLICK, ({ id, target, source }) => {
     if (id && source) {
-      const root = $('#' + CONTINAER_ID) as HTMLElement
-      const { top, left } = getNoteOffset(target, root)
+      const { top, left } = getNoteOffset(target, getRoot())
       ToolbarAction.open(top, left, source)
     } else {
       ToolbarAction.close()
     }
-    console.log(id)
-    console.log(target)
-    console.log(source)
   })
 }

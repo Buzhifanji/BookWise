@@ -22,6 +22,7 @@ import { DATA_WEB_HIGHLIGHT } from './util/const'
 import {
   addClass,
   getAttr,
+  hasAttr,
   listener,
   removeClass,
   replaceClass,
@@ -223,24 +224,19 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
     const target = event.target as HTMLElement
     if (isHighlightWrapNode(target)) {
       const id = getAttr(target, DATA_WEB_HIGHLIGHT)
-      const source = this.getSourceById(id)
-
-      console.log(id, source)
-
-      if (source) {
-        if (source.length > 1) {
-          const page = getAttr(target, getOption().pageAttribateName)
-          const data = source.find((item) => item.page === page)
-          if (data) {
-            this.emit(EventTypeEnum.CLICK, { id, target, source: data }, this, event)
-          }
-        } else {
-          this.emit(EventTypeEnum.CLICK, { id, target, source: source[0] }, this, event)
+      const source = this.getSourceById(id) || []
+      const { page, container } = this._findSectionContainer(target)
+      const data = source.find((item) => item.page === page)
+      if (data) {
+        let _target = target
+        if (page) {
+          _target = selctorAll(`[${DATA_WEB_HIGHLIGHT}='${id}']`, container)[0]
         }
+        this.emit(EventTypeEnum.CLICK, { id, target: _target, source: data }, this, event)
+        return
       }
-    } else {
-      this.emit(EventTypeEnum.CLICK, { target }, this, event)
     }
+    this.emit(EventTypeEnum.CLICK, { target }, this, event)
   }
 
   hover = (event: MouseOrTouchEvent) => {
@@ -362,5 +358,16 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
     if (getOption().showError) {
       console.warn(data)
     }
+  }
+
+  private _findSectionContainer = (target: HTMLElement) => {
+    const { root, pageAttribateName } = getOption()
+    let node = target
+    while (node !== root && !hasAttr(node, pageAttribateName)) {
+      node = node.parentNode as HTMLElement
+    }
+    const page = getAttr(node, pageAttribateName) || ''
+
+    return { page, container: node }
   }
 }

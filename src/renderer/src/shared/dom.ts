@@ -24,14 +24,23 @@ export function isInClientRectTop(node: HTMLElement) {
 }
 
 export function getNoteOffset(node: HTMLElement, root: HTMLElement) {
-  const result = { top: 0, left: 0 }
+  const rect = root.getBoundingClientRect()
+  const { top, left, width } = node.getBoundingClientRect()
+  return { top: top - rect.top, left: left - rect.left + width / 2 }
 
-  while (node && node !== root) {
-    result.top += node.offsetTop
-    result.left += node.offsetLeft
+  // 获取元素相对于视窗的位置(虚拟列表使用了transform属性，它会影响元素的布局，可能会影响到兄弟元素或子元素的offsetTop值)
+  // if (isRect) {
+  //   const { top, left, width } = node.getBoundingClientRect()
+  //   return { top, left: left + width / 2 }
+  // }
 
-    node = node.offsetParent as HTMLElement
-  }
+  // const result = { top: 0, left: node.offsetWidth / 2 }
+  // while (node && node !== root) {
+  //   result.top += node.offsetTop
+  //   result.left += node.offsetLeft
 
-  return result
+  //   node = node.offsetParent as HTMLElement
+  // }
+
+  // return result
 }

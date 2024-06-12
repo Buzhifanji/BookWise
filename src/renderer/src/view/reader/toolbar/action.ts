@@ -1,5 +1,5 @@
 import { DomSource } from '@book-wise/web-highlight'
-import { computed, ref, shallowReactive } from 'vue'
+import { ref, shallowReactive } from 'vue'
 
 export class ToolbarAction {
   static style = shallowReactive({ top: 0, left: 0 })
@@ -19,13 +19,5 @@ export class ToolbarAction {
     this.style.top = 0
     this.style.left = 0
     this.source = null
-  }
-
-  static getStyle() {
-    return computed(() => {
-      const { top, left } = this.style
-
-      return { top: `${top === 0 ? -1000 : top - 46}px`, left: `${left}px` }
-    })
   }
 }

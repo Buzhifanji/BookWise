@@ -165,7 +165,7 @@ onUnmounted(() => {
             </div>
           </div>
           <!-- 书籍内容 -->
-          <div class="flex-1 overflow-hidden" :id="CONTINAER_ID">
+          <div class="flex-1 overflow-hidden relative" :id="CONTINAER_ID">
             <!-- 滚动条模式 -->
             <ScrollReaderView :section="section" ref="scrollReaderViewRef"
               v-if="settingStore.readMode === ReadMode.sroll" />
