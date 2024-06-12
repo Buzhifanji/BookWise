@@ -153,9 +153,9 @@ function restoreOneBook() {
       <template v-for="virtualRow in virtualRows" :key="virtualRow.key">
         <div :ref="measureElement" :data-index="virtualRow.index" class="absolute top-0 left-0  w-full "
           :class="[bookMode(BookshelftMode.list) ? 'pb-5' : 'pb-10']" :style="{
-      transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin
-        }px)`,
-    }">
+            transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin
+              }px)`,
+          }">
           <div class="relative w-full" v-if="bookMode(BookshelftMode.bookshelf)">
             <!-- 书架模式 -->
             <div class="flex w-full justify-start pb-[1.125rem] px-5 gap-10 class ">
@@ -251,7 +251,10 @@ function restoreOneBook() {
     <!-- 确认消息 -->
     <dialog class="modal" ref="dialogRef">
       <div class="modal-box" v-on-click-outside="closeDialog">
-        <h3 class="font-bold text-lg">删除书籍</h3>
+        <div class="flex flex-row justify-between items-center">
+          <h3 class="font-bold text-lg">删除书籍</h3>
+          <div> <kbd class="kbd">Esc</kbd></div>
+        </div>
         <p class="py-4">{{ selectData?.name }}</p>
         <p v-if="settingStore.isOpenRecyleBin && !isRecycleBin" class="text-warning">将本书移入回收站</p>
         <p v-else class="text-warning">将本书永久删除</p>
@@ -265,7 +268,10 @@ function restoreOneBook() {
     <!-- 编辑 -->
     <dialog class="modal" ref="editeDialogRef">
       <div class="modal-box" v-on-click-outside="closeEditeDialog">
-        <h3 class="font-bold text-lg mb-5">编辑书籍</h3>
+        <div class="flex flex-row justify-between items-center mb-5">
+          <h3 class="font-bold text-lg ">编辑书籍</h3>
+          <div> <kbd class="kbd">Esc</kbd></div>
+        </div>
         <form @submit="submitEdite">
           <div class="flex flex-col gap-4">
             <div>
@@ -300,7 +306,10 @@ function restoreOneBook() {
     <!-- 详情 -->
     <dialog class="modal" ref="detailDialogRef">
       <div class="modal-box max-w-5xl" v-on-click-outside="closeDetailDialog">
-        <h3 class="font-bold text-lg mb-5">书籍详情</h3>
+        <div class="flex flex-row justify-between items-center mb-5">
+          <h3 class="font-bold text-lg ">书籍详情</h3>
+          <div> <kbd class="kbd">Esc</kbd></div>
+        </div>
         <div class="columns-1 md:columns-2 gap-x-8 gap-y-6 ">
           <div class="flex gap-4 mb-3">
             <div>书名</div>

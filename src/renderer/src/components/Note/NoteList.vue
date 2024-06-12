@@ -93,7 +93,10 @@ const onDetail = (value: Note) => {
     <!-- 删除确认 -->
     <dialog class="modal" ref="removeDialogRef">
       <div class="modal-box prose" v-on-click-outside="closeRemoveDialog">
-        <h3 class="font-bold text-lg">确认删除笔记</h3>
+        <div class="flex flex-row justify-between items-center">
+          <h3 class="font-bold text-lg">确认删除笔记</h3>
+          <div> <kbd class="kbd">Esc</kbd></div>
+        </div>
         <blockquote class="my-[1em]">
           <p class=" my-[0.6em]">{{ selectData?.bookText }}</p>
         </blockquote>
@@ -109,7 +112,10 @@ const onDetail = (value: Note) => {
     <!-- 详情 -->
     <dialog class="modal" ref="detailDialogRef">
       <div class="modal-box prose" v-on-click-outside="closeDetailDialog">
-        <h3 class="font-bold text-lg">笔记详情</h3>
+        <div class="flex flex-row justify-between items-center">
+          <h3 class="font-bold text-lg">笔记详情</h3>
+          <div> <kbd class="kbd">Esc</kbd></div>
+        </div>
         <blockquote class="my-[1em]">
           <p class=" my-[0.6em]">{{ selectData?.bookText }}</p>
         </blockquote>
