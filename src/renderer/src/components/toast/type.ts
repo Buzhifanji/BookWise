@@ -18,5 +18,5 @@ export interface ToastOptions {
   position?: Position[]
   type?: AlertType
   message: string
-  duration?: number
+  duration?: number | null
 }

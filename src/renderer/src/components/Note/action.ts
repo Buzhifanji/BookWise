@@ -4,7 +4,7 @@ import { liveQuery } from 'dexie'
 
 export class NoteAction {
   static removeOne(id: string) {
-    db.notes.delete(id)
+    return db.notes.delete(id)
   }
 
   static editeOne(id: string, value: Partial<Note>) {

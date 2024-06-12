@@ -20,7 +20,7 @@ function createToastConatiner(position: Position[]) {
 
 function createAlert(type: string, id: string) {
   const alert = createElement('div')
-  alert.className = 'alert ' + type
+  alert.className = 'alert ' + type + ' rounded-md p-[0.75rem]'
   alert.style.boxShadow = '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)'
   alert.id = id
   return alert

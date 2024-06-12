@@ -7,7 +7,7 @@ import { defineProps, ref } from 'vue';
 const props = defineProps<{ data: Note }>()
 
 const emit = defineEmits<{
-    (e: 'delete', id: string): void,
+    (e: 'delete', data: Note): void,
     (e: 'detail', data: Note): void,
 }>()
 
@@ -23,12 +23,12 @@ const onMouseLeave = () => className.value = ''
         <div class="card-body">
             <div class="flex flex-row item-center justify-between">
                 <div>{{ data.createTime }}</div>
-                <button class="btn btn-ghost btn-sm" @click="emit('delete', data.id)">
+                <button class="btn btn-ghost btn-sm" @click="emit('delete', data)">
                     <Trash2 class="w-4 h-4" />
                 </button>
             </div>
             <div @click="emit('detail', data)" v-if="settingStore.isNoteShowClass">
-                <blockquote class="my-[1em] " :class="className">
+                <blockquote class="my-[1em]" :class="className">
                     <p class="my-[0.6em] line-clamp-3">
                         {{ data.bookText }}
                     </p>
