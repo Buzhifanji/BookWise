@@ -14,7 +14,7 @@ const getRoot = () => $('#' + CONTINAER_ID) as HTMLElement
 export function initHighlight(book: Book) {
   highlighter = new WebHighlight({
     tagName: 'span',
-    className: highlightColor.getSelectionClassName(),
+    className: highlightColor.getClassName(),
     root: getRoot() || Document,
     showError: true,
     auto: true

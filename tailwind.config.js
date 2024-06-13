@@ -5,6 +5,14 @@ module.exports = {
     extend: {}
   },
   plugins: [require('@tailwindcss/typography'), require('daisyui'), require('tailwind-scrollbar')],
+  safelist: [
+    {
+      pattern: /bg-(red|orange|amber|yellow|lime|emerald|cyan|blue|violet|fuchsia|rose)-300/
+    },
+    {
+      pattern: /border-(red|orange|amber|yellow|lime|emerald|cyan|blue|violet|fuchsia|rose)-300/
+    }
+  ],
   daisyui: {
     themes: true, // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]
     darkTheme: 'dark', // name of one of the included themes for dark mode

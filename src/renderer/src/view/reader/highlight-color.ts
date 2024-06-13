@@ -5,48 +5,36 @@
 import { useStorage } from '@vueuse/core'
 import { computed } from 'vue'
 
-const _colorNames = [
-  'red',
-  'orange',
-  'amber',
-  'yellow',
-  'lime',
-  'emerald',
-  'cyan',
-  'blue',
-  'violet',
-  'fuchsia',
-  'rose'
-  // 'primary',
-  // 'secondary',
-  // 'accent',
-  // 'neutral',
-  // 'info',
-  // 'success',
-  // 'warning',
-  // 'error'
-] as const
+const _colorNames = ['red', 'yellow', 'emerald', 'cyan', 'violet'] as const
 
-type Keys = (typeof _colorNames)[number]
+export type ColorKeys = (typeof _colorNames)[number]
+
+export enum HighlightType {
+  marker = 'selection', // 高亮
+  beeline = 'beeline', // 直线
+  wave = 'wave' // 波浪线
+}
 
 // 配色来源： https://daisyui.com/docs/colors/
 class HighlightColor {
-  selectColor: Keys = 'orange'
+  selectColor: ColorKeys = 'yellow'
+  type: HighlightType = HighlightType.marker
 
-  changeSelectColor = (value: Keys) => {
+  changeSelectColor = (value: ColorKeys) => {
     this.selectColor = value
   }
 
-  getSelectionClassName = () => {
-    return `selection-${this.selectColor}`
+  getClassName = () => {
+    return `${this.type}-${this.selectColor}`
   }
 
-  getSelection = () => {
-    const value = this.selectColor
-    return `selection:bg-${value} selection:text-${value}`
+  getColors = () => {
+    return _colorNames
   }
 
-  // selectionColors = () => {}
+  getBadgeColor(colorName: string) {
+    return `bg-${colorName}-300 border-${colorName}-300 `
+  }
 }
 
 export const highlightColor = new HighlightColor()
