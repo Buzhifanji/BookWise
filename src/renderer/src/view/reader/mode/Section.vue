@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { NoteAction } from '@renderer/components';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { highlighter } from '../highlight';
-import { NoteAction } from '../note';
 import { getImgBlob } from '../render';
 
 interface Props {
@@ -45,7 +45,7 @@ function handleLink() {
 
 async function drawHighlight() {
   const id = route.params.id as string;
-  const notes = (await NoteAction.findByEBookId(id)).filter(note => note.page === props.index.toString())
+  const notes = await NoteAction.findBookPageNotes(id, props.index.toString())
   const domSource = notes.map(note => NoteAction.noteToDomSource(note))
   highlighter?.fromSource(domSource)
 }

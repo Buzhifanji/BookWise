@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Note } from '@renderer/batabase';
+import { NoteAction } from '@renderer/components';
 import { useDialog } from '@renderer/hooks';
 import { chuankArray, remToPx } from '@renderer/shared';
 import { useContentCantianerStore } from '@renderer/store';
@@ -8,7 +9,6 @@ import { vOnClickOutside } from '@vueuse/components';
 import { computed, defineProps, ref, toRaw, withDefaults } from 'vue';
 import { Toast } from '../toast';
 import Card from './Card.vue';
-import { NoteAction } from './action';
 
 interface Props {
   data: Note[],
@@ -75,6 +75,8 @@ const onDetail = (value: Note) => {
   selectData = value
   openDetailDialog()
 }
+
+
 </script>
 
 <template>
@@ -98,7 +100,7 @@ const onDetail = (value: Note) => {
           <div> <kbd class="kbd">Esc</kbd></div>
         </div>
         <blockquote class="my-[1em]">
-          <p class=" my-[0.6em]">{{ selectData?.bookText }}</p>
+          <p class=" my-[0.6em]" v-for="item in NoteAction.getDomSource(selectData?.domSource)">{{ item.text }}</p>
         </blockquote>
         <p v-if="selectData?.notes">{{ selectData?.notes }}</p>
         <p class="text-warning">将该笔记永久删除</p>
@@ -117,7 +119,7 @@ const onDetail = (value: Note) => {
           <div> <kbd class="kbd">Esc</kbd></div>
         </div>
         <blockquote class="my-[1em]">
-          <p class=" my-[0.6em]">{{ selectData?.bookText }}</p>
+          <p class=" my-[0.6em]" v-for="item in NoteAction.getDomSource(selectData?.domSource)">{{ item.text }}</p>
         </blockquote>
         <p v-if="selectData?.notes">{{ selectData?.notes }}</p>
         <p class="text-warning">将该笔记永久删除</p>

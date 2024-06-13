@@ -232,7 +232,7 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
         if (page) {
           _target = selctorAll(`[${DATA_WEB_HIGHLIGHT}='${id}']`, container)[0]
         }
-        this.emit(EventTypeEnum.CLICK, { id, target: _target, source: data }, this, event)
+        this.emit(EventTypeEnum.CLICK, { id, target: _target, source }, this, event)
         return
       }
     }

@@ -1,8 +1,8 @@
 import { CreateFrom, EventTypeEnum, WebHighlight } from '@book-wise/web-highlight'
 import { Book } from '@renderer/batabase'
+import { NoteAction } from '@renderer/components'
 import { $, getNoteOffset } from '@renderer/shared'
 import { highlightColor } from './highlight-color'
-import { NoteAction } from './note'
 import { ToolbarAction } from './toolbar/action'
 
 export let highlighter: WebHighlight
@@ -31,7 +31,7 @@ export function initHighlight(book: Book) {
       }
 
       // 新建笔记
-      await NoteAction.bulkAdd({ sources, eBookId: book.id, chapterName: '', notes: '' })
+      await NoteAction.add({ sources, eBookId: book.id, chapterName: '', notes: '' })
     }
   })
 

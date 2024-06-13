@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { onClickOutside, useElementBounding, useParentElement } from '@vueuse/core';
+import { NoteAction } from '@renderer/components';
+import { get, onClickOutside, set, useElementBounding, useParentElement } from '@vueuse/core';
 import { computed, onMounted, ref } from 'vue';
 import { NoteBarAction } from './action';
 
 const parentEl = useParentElement()
 const cardRef = ref<HTMLElement | null>(null)
 const textareatRef = ref<HTMLTextAreaElement | null>(null)
+const textareaValue = ref('')
 
 onClickOutside(cardRef, () => {
   NoteBarAction.close()
@@ -25,6 +27,18 @@ const style = computed(() => {
 
 const source = NoteBarAction.source
 
+async function initNote() {
+  const domSource = get(source)
+  if (domSource.length === 0) return
+
+  const note = await NoteAction.findBySourceId(domSource[0].id)
+  if (note) {
+    set(textareaValue, note.notes)
+  }
+}
+
+initNote()
+
 onMounted(() => {
   textareatRef.value?.focus()
 })
@@ -42,13 +56,14 @@ onMounted(() => {
             <div class="divider divider-accent h-full w-[3px] flex-col m-0 py-1.5"></div>
           </div>
           <blockquote>
-            <p>
-              {{ source?.text }}
+            <p v-for="item in source">
+              {{ item.text }}
             </p>
           </blockquote>
         </div>
-        <textarea ref="textareatRef" rows="4"
-          class="textarea textarea-accent w-full  bg-neutral text-neutral-content my-3" placeholder="Bio"></textarea>
+        <textarea ref="textareatRef" v-model="textareaValue" rows="4"
+          class="textarea textarea-accent w-full  bg-neutral text-neutral-content my-3"
+          placeholder="写下此时的想法..."></textarea>
         <div class="card-actions justify-end">
           <button class="btn btn-success">添加</button>
         </div>

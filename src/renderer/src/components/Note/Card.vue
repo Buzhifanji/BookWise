@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Note } from '@renderer/batabase';
+import { NoteAction } from '@renderer/components';
 import { settingStore } from '@renderer/store';
 import { BellElectric, Ellipsis, Trash2 } from 'lucide-vue-next';
 import { defineProps, ref } from 'vue';
@@ -12,9 +13,14 @@ const emit = defineEmits<{
     (e: 'jump', data: Note): void,
 }>()
 
-const className = ref(settingStore.value.isNoteShowClass ? props.data.colorName : '')
+const getColorName = () => {
+    const source = NoteAction.getDomSource(props.data.domSource)[0]
+    return source ? source.className : ''
+}
 
-const onMouseEnter = () => className.value = props.data.colorName
+const className = ref(settingStore.value.isNoteShowClass ? getColorName() : '')
+
+const onMouseEnter = () => className.value = getColorName()
 const onMouseLeave = () => className.value = ''
 
 </script>
@@ -45,8 +51,8 @@ const onMouseLeave = () => className.value = ''
             </div>
             <div @click="emit('jump', data)" v-if="settingStore.isNoteShowClass">
                 <blockquote class="my-[1em]" :class="className">
-                    <p class="my-[0.6em] line-clamp-3">
-                        {{ data.bookText }}
+                    <p class="my-[0.6em] line-clamp-3" v-for="item in NoteAction.getDomSource(data?.domSource)">
+                        {{ item.text }}
                     </p>
                 </blockquote>
                 <p class="my-[0.6em] line-clamp-3">
@@ -55,8 +61,8 @@ const onMouseLeave = () => className.value = ''
             </div>
             <div @click="emit('jump', data)" v-else>
                 <blockquote class="my-[1em] " :class="className" @mouseenter="onMouseEnter" @mouseleave="onMouseLeave">
-                    <p class="my-[0.6em] line-clamp-3">
-                        {{ data.bookText }}
+                    <p class="my-[0.6em] line-clamp-3" v-for="item in NoteAction.getDomSource(data?.domSource)">
+                        {{ item.text }}
                     </p>
                 </blockquote>
                 <p class="my-[0.6em] line-clamp-3">

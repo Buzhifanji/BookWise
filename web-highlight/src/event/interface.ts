@@ -16,7 +16,7 @@ export interface EventHandlerMap<T> {
     h: T
   ) => void
   [EventTypeEnum.CLICK]: (
-    data: { id?: string; target: HTMLElement; source?: DomSource },
+    data: { id?: string; target: HTMLElement; source?: DomSource[] },
     h: T,
     e: MouseOrTouchEvent
   ) => void
