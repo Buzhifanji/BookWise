@@ -11,7 +11,7 @@ function createToastConatiner(position: Position[]) {
   }
 
   const div = createElement('div')
-  div.className = 'toast ' + position.join(' ')
+  div.className = 'toast text-[16px] ' + position.join(' ')
   div.style.zIndex = '1000'
   document.body.appendChild(div)
 
@@ -20,7 +20,7 @@ function createToastConatiner(position: Position[]) {
 
 function createAlert(type: string, id: string) {
   const alert = createElement('div')
-  alert.className = 'alert ' + type + ' rounded-md p-[0.75rem]'
+  alert.className = 'alert ' + type + ' rounded-md px-[0.45rem] py-[0.5rem]'
   alert.style.boxShadow = '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)'
   alert.id = id
   return alert
@@ -34,9 +34,9 @@ function createMessage(message: string) {
 
 function createCloseButton(id: string) {
   const button = createElement('button')
-  button.className = 'btn btn-circle btn-sm'
+  button.className = 'btn btn-circle btn-xs'
   button.innerHTML =
-    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-xicon"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>'
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-xicon "><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>'
   button.addEventListener('click', () => {
     remove(id)
   })

@@ -5,6 +5,11 @@ import { useObservable } from '@vueuse/rxjs'
 import { liveQuery } from 'dexie'
 import { v4 as uuidv4 } from 'uuid'
 
+export interface NoteText {
+  value: string
+  time: number
+}
+
 export class NoteAction {
   static async add({
     sources,
@@ -94,5 +99,11 @@ export class NoteAction {
     if (!value) return []
 
     return JSON.parse(value) as DomSource[]
+  }
+
+  static getNoteText(value: string | undefined) {
+    if (!value) return []
+
+    return JSON.parse(value) as NoteText[]
   }
 }

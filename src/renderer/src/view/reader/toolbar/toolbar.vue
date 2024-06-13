@@ -10,7 +10,9 @@ const { width, height } = useElementSize(container)
 const style = computed(() => {
   const { top, left } = ToolbarAction.style
 
-  return { top: `${top === 0 ? -1000 : top - height.value - 10}px`, left: `${left - width.value / 2}px` }
+  const _top = top - height.value - 10
+
+  return { top: `${top === 0 ? -1000 : _top > 0 ? _top : 0}px`, left: `${left - width.value / 2}px` }
 })
 
 const isShowToolBar = ToolbarAction.show
@@ -46,6 +48,7 @@ const list = [
           </a>
         </li>
       </ul>
+      <div></div>
     </div>
   </div>
 
