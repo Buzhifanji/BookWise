@@ -1,4 +1,5 @@
 import { DomSource } from '@book-wise/web-highlight'
+import { set } from '@vueuse/core'
 import { ref, shallowReactive } from 'vue'
 
 export class ToolbarAction {
@@ -8,16 +9,14 @@ export class ToolbarAction {
   static source: DomSource | null = null
 
   static open(top: number, left: number, source: DomSource) {
-    this.show.value = true
-    this.style.top = top
-    this.style.left = left
+    set(this.show, true)
+    Object.assign(this.style, { top, left })
     this.source = source
   }
 
   static close() {
-    this.show.value = false
-    this.style.top = 0
-    this.style.left = 0
+    set(this.show, false)
+    Object.assign(this.style, { top: 0, left: 0 })
     this.source = null
   }
 }
@@ -25,15 +24,16 @@ export class ToolbarAction {
 export class NoteBarAction {
   static show = ref(false)
 
-  static source: DomSource | null = null
+  static source = ref<DomSource | null>(null)
 
   static open(source: DomSource) {
-    this.show.value = true
-    this.source = source
+    set(this.show, true)
+    set(this.source, source)
+    console.log('open', source)
   }
 
   static close() {
-    this.show.value = false
-    this.source = null
+    set(this.show, false)
+    set(this.source, null)
   }
 }

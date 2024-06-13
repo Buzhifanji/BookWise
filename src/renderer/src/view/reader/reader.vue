@@ -16,6 +16,7 @@ import SectionReaderView from './mode/SectionReader.vue';
 import { getBookHref, render, unMountedBookRender } from './render';
 import NoteRichView from './toolbar/NoteRich.vue';
 import ToolbarView from './toolbar/Toolbar.vue';
+import { NoteBarAction } from './toolbar/action';
 
 const props = defineProps({
   id: String,
@@ -39,6 +40,8 @@ const { isLG: isNote, toggleDrawer: toggleNote } = useToggleDrawer() // 控制�
 const scrollReaderViewRef = ref<InstanceType<typeof ScrollReaderView>>() // 滚动视图
 const sectionReaderViewRef = ref<InstanceType<typeof SectionReaderView>>() // 章节视图
 const doubleReaderViewRef = ref<InstanceType<typeof DoubleReaderView>>() // 双栏视图
+
+const isNoteRichShow = NoteBarAction.show
 
 // 获取书本内容
 async function getBookContent(bookId: string, url: string) {
@@ -181,7 +184,7 @@ onUnmounted(() => {
             <ToolbarView />
 
             <!-- 添加笔记 -->
-            <NoteRichView />
+            <NoteRichView v-if="isNoteRichShow" />
           </div>
         </div>
       </div>
