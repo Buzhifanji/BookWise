@@ -114,7 +114,7 @@ init()
         <div class="bg-base-200 p-3 rounded-md">
           <div class="flex flex-row gap-4">
             <div class="flex">
-              <div class="divider divider-primary h-full w-[3px] flex-col m-0 py-1.5"></div>
+              <div class="divider divider-primary h-full w-[3px] flex-col m-0 py-1"></div>
             </div>
             <blockquote>
               <p v-for="item in source">

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useElementSize } from '@vueuse/core';
+import { Toast } from '@renderer/components';
+import { useClipboard, useElementSize } from '@vueuse/core';
 import { Baseline, Copy, Highlighter, MessageSquareMore, SpellCheck2, Trash } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import { NoteBarAction, ToolbarAction } from './action';
@@ -22,8 +23,19 @@ const openNoteRich = () => {
   ToolbarAction.close()
 }
 
+const { copy } = useClipboard()
+const copyAction = () => {
+  const val = ToolbarAction.source.reduce((acc, cur) => (acc += cur.text), '')
+  copy(val)
+  Toast({
+    message: '已复制到剪贴板',
+    position: ['toast-top', 'toast-center'],
+    type: 'alert-success',
+  })
+}
+
 const list = [
-  { name: '复制', icon: Copy, click: () => { } },
+  { name: '复制', icon: Copy, click: copyAction },
   { name: '马克笔', icon: Highlighter, click: () => { } },
   { name: '直线', icon: Baseline, click: () => { } },
   { name: '波浪线', icon: SpellCheck2, click: () => { } },
