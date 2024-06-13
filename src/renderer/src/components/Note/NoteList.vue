@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { Note } from '@renderer/batabase';
-import { NoteAction } from '@renderer/components';
+import { NoteAction, NoteText } from '@renderer/components';
 import { useDialog } from '@renderer/hooks';
 import { chuankArray, remToPx } from '@renderer/shared';
 import { useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
+import { set } from '@vueuse/core';
 import { computed, defineProps, ref, toRaw, withDefaults } from 'vue';
 import { Toast } from '../toast';
 import Card from './Card.vue';
+import NoteView from './Note.vue';
 
 interface Props {
   data: Note[],
@@ -18,10 +20,12 @@ const props = withDefaults(defineProps<Props>(), {
   data: () => [],
 })
 
+// 笔记内容
+const noteList = ref<NoteText[]>([])
+
 const store = useContentCantianerStore()
 
 const parentRef = ref<HTMLElement | null>(null)
-
 const list = computed(() => {
   const count = parseInt(((store.width) / remToPx(24 + 1)).toString())
   return chuankArray(toRaw(props.data) || [], count)
@@ -63,7 +67,7 @@ const removeAction = async () => {
   await NoteAction.removeOne(selectData!.id)
   closeRemoveDialog()
   Toast({
-    message: '删除成功',
+    message: '删除笔记成功',
     position: ['toast-top', 'toast-center'],
     type: 'alert-success',
   })
@@ -74,8 +78,18 @@ const { dialogRef: detailDialogRef, openDialog: openDetailDialog, closeDialog: c
 const onDetail = (value: Note) => {
   selectData = value
   openDetailDialog()
+  set(noteList, NoteAction.getNoteText(value.notes))
 }
 
+const removeNote = async (index: number) => {
+  noteList.value.splice(index, 1)
+  await NoteAction.set(selectData!.id, { notes: JSON.stringify(noteList.value) })
+  Toast({
+    message: '删除笔记成功',
+    position: ['toast-top', 'toast-center'],
+    type: 'alert-success',
+  })
+}
 
 </script>
 
@@ -102,7 +116,9 @@ const onDetail = (value: Note) => {
         <blockquote class="my-[1em]">
           <p class=" my-[0.6em]" v-for="item in NoteAction.getDomSource(selectData?.domSource)">{{ item.text }}</p>
         </blockquote>
-        <p v-if="selectData?.notes">{{ selectData?.notes }}</p>
+        <template v-if="noteList.length">
+          <NoteView :data="noteList" @remove="removeNote" />
+        </template>
         <p class="text-warning">将该笔记永久删除</p>
         <div class="modal-action">
           <button class="btn btn-outline" @click="closeRemoveDialog">取消</button>
@@ -121,7 +137,9 @@ const onDetail = (value: Note) => {
         <blockquote class="my-[1em]">
           <p class=" my-[0.6em]" v-for="item in NoteAction.getDomSource(selectData?.domSource)">{{ item.text }}</p>
         </blockquote>
-        <p v-if="selectData?.notes">{{ selectData?.notes }}</p>
+        <template v-if="noteList.length">
+          <NoteView :data="noteList" :show-remove="false" />
+        </template>
         <p class="text-warning">将该笔记永久删除</p>
         <div class="modal-action">
           <button class="btn btn-outline" @click="closeDetailDialog">关闭</button>

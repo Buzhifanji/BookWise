@@ -7,4 +7,4 @@ const noteList = NoteAction.observable()
 
 <template>
   <NoteListView :data="noteList || []" />
-</template>@renderer/components/note/action
+</template>

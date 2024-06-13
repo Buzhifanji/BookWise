@@ -18,11 +18,13 @@ const style = computed(() => {
 
 const isShowToolBar = ToolbarAction.show
 
+// 打开笔记输入框
 const openNoteRich = () => {
   NoteBarAction.open(ToolbarAction.source!)
   ToolbarAction.close()
 }
 
+// 复制
 const { copy } = useClipboard()
 const copyAction = () => {
   const val = ToolbarAction.source.reduce((acc, cur) => (acc += cur.text), '')
