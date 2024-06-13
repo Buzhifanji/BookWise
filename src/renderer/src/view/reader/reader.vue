@@ -14,7 +14,8 @@ import DoubleReaderView from './mode/DoubleReader.vue';
 import ScrollReaderView from './mode/ScrollReader.vue';
 import SectionReaderView from './mode/SectionReader.vue';
 import { getBookHref, render, unMountedBookRender } from './render';
-import ToolbarView from './toolbar/toolbar.vue';
+import NoteRichView from './toolbar/NoteRich.vue';
+import ToolbarView from './toolbar/Toolbar.vue';
 
 const props = defineProps({
   id: String,
@@ -178,6 +179,9 @@ onUnmounted(() => {
 
             <!-- 工具栏 -->
             <ToolbarView />
+
+            <!-- 添加笔记 -->
+            <NoteRichView />
           </div>
         </div>
       </div>

@@ -37,7 +37,7 @@ export function initHighlight(book: Book) {
 
   highlighter.on(EventTypeEnum.CLICK, ({ id, target, source }) => {
     if (id && source) {
-      const { top, left } = getNoteOffset(target, getRoot())
+      const { top, left } = getNoteOffset(target)
       ToolbarAction.open(top, left, source)
     } else {
       ToolbarAction.close()

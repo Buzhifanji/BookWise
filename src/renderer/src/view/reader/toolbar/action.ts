@@ -21,3 +21,19 @@ export class ToolbarAction {
     this.source = null
   }
 }
+
+export class NoteBarAction {
+  static show = ref(false)
+
+  static source: DomSource | null = null
+
+  static open(source: DomSource) {
+    this.show.value = true
+    this.source = source
+  }
+
+  static close() {
+    this.show.value = false
+    this.source = null
+  }
+}
