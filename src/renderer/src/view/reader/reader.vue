@@ -16,7 +16,7 @@ import SectionReaderView from './mode/SectionReader.vue';
 import { getBookHref, render, unMountedBookRender } from './render';
 import NoteRichView from './toolbar/NoteRich.vue';
 import ToolbarView from './toolbar/Toolbar.vue';
-import { NoteBarAction } from './toolbar/action';
+import { NoteBarAction, ToolbarAction } from './toolbar/action';
 
 const props = defineProps({
   id: String,
@@ -42,6 +42,7 @@ const sectionReaderViewRef = ref<InstanceType<typeof SectionReaderView>>() // �
 const doubleReaderViewRef = ref<InstanceType<typeof DoubleReaderView>>() // 双栏视图
 
 const isNoteRichShow = NoteBarAction.show
+const isShowToolBar = ToolbarAction.show
 
 // 获取书本内容
 async function getBookContent(bookId: string, url: string) {
@@ -181,7 +182,7 @@ onUnmounted(() => {
               v-if="settingStore.readMode === ReadMode.double" />
 
             <!-- 工具栏 -->
-            <ToolbarView />
+            <ToolbarView v-if="isShowToolBar" />
 
             <!-- 添加笔记 -->
             <NoteRichView v-if="isNoteRichShow" />

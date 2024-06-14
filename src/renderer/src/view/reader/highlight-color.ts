@@ -12,20 +12,24 @@ export type ColorKeys = (typeof _colorNames)[number]
 export enum HighlightType {
   marker = 'selection', // 高亮
   beeline = 'beeline', // 直线
-  wave = 'wave' // 波浪线
+  wavy = 'wavy' // 波浪线
 }
 
 // 配色来源： https://daisyui.com/docs/colors/
 class HighlightColor {
-  selectColor: ColorKeys = 'yellow'
+  color: ColorKeys = 'yellow'
   type: HighlightType = HighlightType.marker
 
-  changeSelectColor = (value: ColorKeys) => {
-    this.selectColor = value
+  changeColor = (value: ColorKeys) => {
+    this.color = value
+  }
+
+  changeType = (val: HighlightType) => {
+    this.type = val
   }
 
   getClassName = () => {
-    return `${this.type}-${this.selectColor}`
+    return `${this.type}-${this.color}`
   }
 
   getColors = () => {

@@ -90,54 +90,54 @@
 
 .beeline-red {
   --tw-bg-opacity: 1;
-  text-decoration: underline solid rgb(252 165 165 / var(--tw-bg-opacity)) 2px;
+  text-decoration: underline solid rgb(252 165 165 / var(--tw-bg-opacity)) 3px;
   text-underline-offset: 6px;
 }
 
 .beeline-yellow {
   --tw-bg-opacity: 1;
-  text-decoration: underline solid rgb(252 165 165 / var(--tw-bg-opacity)) 2px;
+  text-decoration: underline solid rgb(253 224 71 / var(--tw-bg-opacity)) 3px;
   text-underline-offset: 6px;
 }
 
 .beeline-emerald {
   --tw-bg-opacity: 1;
-  text-decoration: underline solid rgb(110 231 183 / var(--tw-bg-opacity)) 2px;
+  text-decoration: underline solid rgb(110 231 183 / var(--tw-bg-opacity)) 3px;
   text-underline-offset: 6px;
 }
 .beeline-cyan {
   --tw-bg-opacity: 1;
-  text-decoration: underline solid rgb(103 232 249 / var(--tw-bg-opacity)) 2px;
+  text-decoration: underline solid rgb(103 232 249 / var(--tw-bg-opacity)) 3px;
   text-underline-offset: 6px;
 }
 .beeline-violet {
   --tw-bg-opacity: 1;
-  text-decoration: underline solid rgb(196 181 253 / var(--tw-bg-opacity)) 2px;
+  text-decoration: underline solid rgb(196 181 253 / var(--tw-bg-opacity)) 3px;
   text-underline-offset: 6px;
 }
 
 .wavy-red {
   --tw-bg-opacity: 1;
-  text-decoration: underline wavy rgb(252 165 165 / var(--tw-bg-opacity)) 2px;
+  text-decoration: rgb(252 165 165 / var(--tw-bg-opacity)) wavy underline 2px;
   text-underline-offset: 4px;
 }
 .wavy-yellow {
   --tw-bg-opacity: 1;
-  text-decoration: underline wavy rgb(252 165 165 / var(--tw-bg-opacity)) 2px;
+  text-decoration: rgb(253 224 71 / var(--tw-bg-opacity)) wavy underline 2px;
   text-underline-offset: 4px;
 }
 .wavy-emerald {
   --tw-bg-opacity: 1;
-  text-decoration: underline wavy rgb(110 231 183 / var(--tw-bg-opacity)) 2px;
+  text-decoration: rgb(110 231 183 / var(--tw-bg-opacity)) wavy underline 2px;
   text-underline-offset: 4px;
 }
 .wavy-cyan {
   --tw-bg-opacity: 1;
-  text-decoration: underline wavy rgb(103 232 249 / var(--tw-bg-opacity)) 2px;
+  text-decoration: rgb(103 232 249 / var(--tw-bg-opacity)) wavy underline 2px;
   text-underline-offset: 4px;
 }
 .wavy-violet {
   --tw-bg-opacity: 1;
-  text-decoration: underline wavy rgb(196 181 253 / var(--tw-bg-opacity)) 2px;
+  text-decoration: rgb(196 181 253 / var(--tw-bg-opacity)) wavy underline 2px;
   text-underline-offset: 4px;
 }

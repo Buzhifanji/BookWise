@@ -63,7 +63,7 @@ async function submit() {
 
   noteList.value.push({ value, time: now() })
 
-  await NoteAction.set(note.id, { notes: JSON.stringify(noteList.value) })
+  await NoteAction.update(note.id, { notes: JSON.stringify(noteList.value) })
 
   NoteBarAction.close()
   if (note?.notes) {
@@ -85,7 +85,7 @@ async function submit() {
 async function remove(index: number) {
   noteList.value.splice(index, 1)
 
-  await NoteAction.set(note!.id, { notes: JSON.stringify(noteList.value) })
+  await NoteAction.update(note!.id, { notes: JSON.stringify(noteList.value) })
 
   Toast({
     message: '删除笔记成功',

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { Toast } from '@renderer/components';
+import { NoteAction, Toast } from '@renderer/components';
 import { get, set, useClipboard, useElementSize } from '@vueuse/core';
 import { Baseline, Copy, Highlighter, MessageSquareMore, SpellCheck2, Trash } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
+import { highlighter } from '../highlight';
 import { ColorKeys, HighlightType, highlightColor } from '../highlight-color';
 import { NoteBarAction, ToolbarAction } from './action';
 
@@ -17,7 +18,6 @@ const style = computed(() => {
   return { top: `${top === 0 ? -1000 : _top > 0 ? _top : 0}px`, left: `${left - width.value / 2}px` }
 })
 
-const isShowToolBar = ToolbarAction.show
 
 // 打开笔记输入框
 const openNoteRich = () => {
@@ -37,57 +37,87 @@ const copyAction = () => {
   })
 }
 
+
+
 // 颜色
-const activeColor = ref(0)
-const changeColor = (value: ColorKeys, i: number) => {
-  const { className } = ToolbarAction.source![0]
+const activeColor = ref<ColorKeys>(highlightColor.color)
+const changeColor = (value: ColorKeys) => {
+  if (!ToolbarAction.source.length) return
+  const { className } = ToolbarAction.source[0]
   if (className.includes(value)) return
 
-  set(activeColor, i)
-  highlightColor.changeSelectColor(value)
-
+  set(activeColor, value)
+  highlightColor.changeColor(value)
+  updateNote()
 }
 
 // 高亮 波浪线 直线
-const setTextDecoration = () => {
+const activeTextDecoration = ref('')
+const changeTextDecoration = (val: HighlightType) => {
+  if (get(activeTextDecoration) === val) return
+  highlightColor.changeType(val)
+  set(activeTextDecoration, val)
+  updateNote()
+}
+const onMarker = () => changeTextDecoration(HighlightType.marker)
+const onBeeline = () => changeTextDecoration(HighlightType.beeline)
+const onWave = () => changeTextDecoration(HighlightType.wavy)
+
+function updateNote() {
+  if (!ToolbarAction.source.length) return
+  const { id, className } = ToolbarAction.source[0]
+  const newClassName = `${get(activeTextDecoration)}-${get(activeColor)}`
+  ToolbarAction.source.forEach(item => item.className = newClassName)
+
+  // 更新dom节点
+  highlighter.replaceClass(id, newClassName, className)
+  // 更新数据库的数据
+  NoteAction.updateBySourceId(id, { domSource: JSON.stringify(ToolbarAction.source) })
+}
+
+function init() {
   const source = ToolbarAction.source![0]
-  if (!source) return ''
+  if (!source) return
   const { className } = source
-  let result = ''
-  if (className.includes(HighlightType.marker)) {
-    result = HighlightType.marker
-  } else if (className.includes(HighlightType.beeline)) {
-    result = HighlightType.beeline
-  } else if (className.includes(HighlightType.wave)) {
-    result = HighlightType.wave
+  const [_textType, color] = className.split('-')
+
+  // 文字标记类型
+  let textType = ''
+  if (_textType === HighlightType.marker) {
+    textType = HighlightType.marker
+  } else if (_textType === HighlightType.beeline) {
+    textType = HighlightType.beeline
+  } else if (_textType === HighlightType.wavy) {
+    textType = HighlightType.wavy
   }
-  return result
-}
-const activeTextDecoration = ref(setTextDecoration())
-const onMarker = () => {
-  if (get(activeTextDecoration) === HighlightType.marker) return
+  set(activeTextDecoration, textType)
 
-
+  // 颜色
+  if (color) {
+    set(activeColor, color)
+  }
 }
+
+init()
 
 const list = [
   { name: '复制', icon: Copy, click: copyAction, active: 'copy' },
   { name: '马克笔', icon: Highlighter, click: onMarker, active: HighlightType.marker },
-  { name: '直线', icon: Baseline, click: () => { }, active: HighlightType.beeline },
-  { name: '波浪线', icon: SpellCheck2, click: () => { }, active: HighlightType.wave },
+  { name: '直线', icon: Baseline, click: onBeeline, active: HighlightType.beeline },
+  { name: '波浪线', icon: SpellCheck2, click: onWave, active: HighlightType.wavy },
   { name: '写想法', icon: MessageSquareMore, click: openNoteRich, active: 'note' },
 ]
 </script>
 
 <template>
-  <div class="fixed inset-0" v-if="isShowToolBar">
+  <div class="fixed inset-0">
     <div ref="container"
       class="absolute bg-base-100 border border-info z-50 shadow-2xl rounded-md flex flex-col divide-y ease-in-out  shadow-cyan-500/50"
       :style="style" @click.stop>
       <div class="flex flex-row gap-3 cursor-pointer p-2.5">
-        <div v-for="item, index in highlightColor.getColors()" class="badge badge-lg" @click="changeColor(item, index)"
+        <div v-for="item in highlightColor.getColors()" class="badge badge-lg" @click="changeColor(item)"
           :class="highlightColor.getBadgeColor(item)" :key="item">
-          {{ index === activeColor ? '✓' : '' }}
+          {{ item === activeColor ? '✓' : '' }}
         </div>
       </div>
       <ul class="menu menu-horizontal p-1 m-0">

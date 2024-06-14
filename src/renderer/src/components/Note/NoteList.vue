@@ -83,7 +83,7 @@ const onDetail = (value: Note) => {
 
 const removeNote = async (index: number) => {
   noteList.value.splice(index, 1)
-  await NoteAction.set(selectData!.id, { notes: JSON.stringify(noteList.value) })
+  await NoteAction.update(selectData!.id, { notes: JSON.stringify(noteList.value) })
   Toast({
     message: '删除笔记成功',
     position: ['toast-top', 'toast-center'],

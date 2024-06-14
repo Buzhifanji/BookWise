@@ -51,8 +51,17 @@ export class NoteAction {
     return db.notes.where('sourceId').anyOf(sourceId).delete()
   }
 
-  static set(id: string, value: Partial<Note>) {
+  static update(id: string, value: Partial<Note>) {
     return db.notes.update(id, { ...value })
+  }
+
+  static async updateBySourceId(sourceId: string, value: Partial<Note>) {
+    const note = await this.findBySourceId(sourceId)
+    if (note) {
+      await this.update(note.id, value)
+      return true
+    }
+    return false
   }
 
   static observable() {
