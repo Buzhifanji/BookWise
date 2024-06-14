@@ -2,12 +2,14 @@
 import { Note } from '@renderer/batabase';
 import { NoteAction, NoteText } from '@renderer/components';
 import { useDialog } from '@renderer/hooks';
+import { RouterName } from '@renderer/route';
 import { chuankArray, remToPx } from '@renderer/shared';
 import { useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
 import { set } from '@vueuse/core';
 import dayjs from 'dayjs';
+import { Flag } from 'lucide-vue-next';
 import { computed, defineProps, ref, toRaw, withDefaults } from 'vue';
 import { Toast } from '../toast';
 import Card from './Card.vue';
@@ -95,7 +97,7 @@ const removeNote = async (index: number) => {
 </script>
 
 <template>
-  <div ref="parentRef" class="p-6 flex h-full overflow-auto">
+  <div ref="parentRef" class="p-6 flex h-full overflow-auto" v-if="data.length">
     <div class="relative w-full" :style="{ height: `${totalSize}px`, }">
       <template v-for="virtualRow in virtualRows" :key="virtualRow.key">
         <div :ref="measureElement" :data-index="virtualRow.index" class="flex gap-4 absolute top-0 left-0  w-full pb-5"
@@ -153,5 +155,18 @@ const removeNote = async (index: number) => {
         </div>
       </div>
     </dialog>
+  </div>
+  <div class="hero min-h-screen bg-base-200" v-else>
+    <div class="hero-content text-center">
+      <div class="max-w-md">
+        <h1 class="text-5xl font-bold">笔记列表为空</h1>
+        <p class="py-6">在您的书籍列表界面，选择一本阅读，然后选中吸引您注意力的文字，在弹出的对话框中输入您的思考</p>
+        <RouterLink :to="RouterName.Book">
+          <button class="btn btn-secondary">
+            <Flag />跳转到图书列表
+          </button>
+        </RouterLink>
+      </div>
+    </div>
   </div>
 </template>

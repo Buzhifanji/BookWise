@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
+import { FileUploadView } from '@renderer/components';
 import { BookshelftMode } from '@renderer/enum';
 import { useDialog, useRightClick } from '@renderer/hooks';
 import { chuankArray, convertUint8ArrayToURL, remToPx } from '@renderer/shared';
@@ -7,11 +8,10 @@ import { settingStore, useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
 import { useToggle } from '@vueuse/core';
-import { BellElectric, PencilLine, Trash2, UndoDot } from 'lucide-vue-next';
+import { BellElectric, PencilLine, Plus, Trash2, UndoDot } from 'lucide-vue-next';
 import { useForm } from 'vee-validate';
 import { computed, defineProps, onMounted, ref, toRaw, withDefaults } from 'vue';
 import { BookAction } from './action';
-
 
 interface Props {
   data: Book[],
@@ -76,6 +76,11 @@ const measureElement = (el) => {
   rowVirtualizer.value.measureElement(el)
 
   return undefined
+}
+
+const uploadRef = ref<InstanceType<typeof FileUploadView> | null>(null);
+function uploadAction() {
+  uploadRef.value?.open()
 }
 
 // 右键
@@ -146,7 +151,7 @@ function restoreOneBook() {
 </script>
 
 <template>
-  <div ref="parentRef" class="p-6 flex h-full overflow-auto">
+  <div ref="parentRef" class="p-6 flex h-full overflow-auto" v-if="data.length">
     <div class="relative w-full" :style="{
       height: `${totalSize}px`,
     }">
@@ -349,6 +354,22 @@ function restoreOneBook() {
         </div>
       </div>
     </dialog>
+  </div>
+  <div class="hero min-h-screen bg-base-200" v-else>
+    <div class="hero-content text-center">
+      <div class="max-w-md" v-if="isRecycleBin">
+        <h1 class="text-5xl font-bold">空空如也</h1>
+        <p class="py-6">回收站里没有删除数据的记录！</p>
+      </div>
+      <div class="max-w-md" v-else>
+        <h1 class="text-5xl font-bold">图书列表为空</h1>
+        <p class="py-6">点击上传按钮，从本地上传一份书籍，然后开始沉浸书海吧！</p>
+        <button class="btn btn-accent" @click="uploadAction()">
+          <Plus />上传
+        </button>
+        <FileUploadView ref="uploadRef" />
+      </div>
+    </div>
   </div>
 </template>
 
