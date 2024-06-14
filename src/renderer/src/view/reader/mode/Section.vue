@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { NoteAction } from '@renderer/components';
+import { get } from '@vueuse/core';
+import { useRouteParams } from '@vueuse/router';
 import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
 import { highlighter } from '../highlight';
 import { getImgBlob } from '../render';
 
@@ -17,7 +18,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits(['linkClick'])
 const contianer = ref<HTMLElement | null>(null)
-const route = useRoute();
+
+const bookParam = useRouteParams<string>('id')
 
 // 图片绑定blob
 function mountBlobToImg() {
@@ -44,8 +46,7 @@ function handleLink() {
 
 
 async function drawHighlight() {
-  const id = route.params.id as string;
-  const notes = await NoteAction.findBookPageNotes(id, props.index.toString())
+  const notes = await NoteAction.findBookPageNotes(get(bookParam), props.index.toString())
   const domSource = notes.map(note => NoteAction.noteToDomSource(note))
   highlighter?.fromSource(domSource)
 }

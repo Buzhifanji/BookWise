@@ -26,6 +26,9 @@ importers:
       '@vueuse/core':
         specifier: ^10.10.0
         version: 10.10.0(vue@3.4.27(typescript@5.4.5))
+      '@vueuse/router':
+        specifier: ^10.10.1
+        version: 10.10.1(vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)))(vue@3.4.27(typescript@5.4.5))
       '@vueuse/rxjs':
         specifier: ^10.10.0
         version: 10.10.0(rxjs@7.8.1)(vue@3.4.27(typescript@5.4.5))
@@ -1172,6 +1175,11 @@ packages:
   '@vueuse/metadata@10.10.0':
     resolution: {integrity: sha512-UNAo2sTCAW5ge6OErPEHb5z7NEAg3XcO9Cj7OK45aZXfLLH1QkexDcZD77HBi5zvEiLOm1An+p/4b5K3Worpug==}
 
+  '@vueuse/router@10.10.1':
+    resolution: {integrity: sha512-pStxV6e0sGaFgNBxYLn0Tl6scgLT/lKx3b5QDeUGj17Cv5M9mDWx178+EKTYAnfKlZUXjkWzIGNX9aXSK81q7g==}
+    peerDependencies:
+      vue-router: '>=4.0.0-rc.1'
+
   '@vueuse/rxjs@10.10.0':
     resolution: {integrity: sha512-gGziL1ImRb6M6P7BIPIWg9bk0qbZWIdSmXNwUlwlPi/tu6c4bBa4tfz4jqaL3ayQ2jOj8GTYea2Kg/8Afp+/ew==}
     peerDependencies:
@@ -1179,6 +1187,9 @@ packages:
 
   '@vueuse/shared@10.10.0':
     resolution: {integrity: sha512-2aW33Ac0Uk0U+9yo3Ypg9s5KcR42cuehRWl7vnUHadQyFvCktseyxxEPBi1Eiq4D2yBGACOnqLZpx1eMc7g5Og==}
+
+  '@vueuse/shared@10.10.1':
+    resolution: {integrity: sha512-edqexI+RQpoeqDxTatqBZa+K87ganbrwpoP++Fd9828U3js5jzwcEDeyrYcUgkKZ5LLL8q7M5SOMvSpMrxBPxg==}
 
   '@xmldom/xmldom@0.8.10':
     resolution: {integrity: sha512-2WALfTl4xo2SkGCYRt6rDTFfk9R1czmBvUQy12gK2KuRKIpWEhcbbzy8EZXtz/jkRqHX8bFEc6FC1HjX4TUWYw==}
@@ -3256,6 +3267,17 @@ packages:
       '@vue/composition-api':
         optional: true
 
+  vue-demi@0.14.8:
+    resolution: {integrity: sha512-Uuqnk9YE9SsWeReYqK2alDI5YzciATE0r2SkA6iMAtuXvNTMNACJLJEXNXaEy94ECuBe4Sk6RzRU80kjdbIo1Q==}
+    engines: {node: '>=12'}
+    hasBin: true
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+
   vue-eslint-parser@9.4.2:
     resolution: {integrity: sha512-Ry9oiGmCAK91HrKMtCrKFWmSFWvYkpGglCeFAIqDdr9zdXmMMpJOmUJS7WWsW7fX81h6mwHmUZCQQ1E0PkSwYQ==}
     engines: {node: ^14.17.0 || >=16.0.0}
@@ -4349,6 +4371,15 @@ snapshots:
 
   '@vueuse/metadata@10.10.0': {}
 
+  '@vueuse/router@10.10.1(vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)))(vue@3.4.27(typescript@5.4.5))':
+    dependencies:
+      '@vueuse/shared': 10.10.1(vue@3.4.27(typescript@5.4.5))
+      vue-demi: 0.14.8(vue@3.4.27(typescript@5.4.5))
+      vue-router: 4.3.2(vue@3.4.27(typescript@5.4.5))
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+
   '@vueuse/rxjs@10.10.0(rxjs@7.8.1)(vue@3.4.27(typescript@5.4.5))':
     dependencies:
       '@vueuse/shared': 10.10.0(vue@3.4.27(typescript@5.4.5))
@@ -4361,6 +4392,13 @@ snapshots:
   '@vueuse/shared@10.10.0(vue@3.4.27(typescript@5.4.5))':
     dependencies:
       vue-demi: 0.14.7(vue@3.4.27(typescript@5.4.5))
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+
+  '@vueuse/shared@10.10.1(vue@3.4.27(typescript@5.4.5))':
+    dependencies:
+      vue-demi: 0.14.8(vue@3.4.27(typescript@5.4.5))
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -6707,6 +6745,10 @@ snapshots:
       - terser
 
   vue-demi@0.14.7(vue@3.4.27(typescript@5.4.5)):
+    dependencies:
+      vue: 3.4.27(typescript@5.4.5)
+
+  vue-demi@0.14.8(vue@3.4.27(typescript@5.4.5)):
     dependencies:
       vue: 3.4.27(typescript@5.4.5)
 

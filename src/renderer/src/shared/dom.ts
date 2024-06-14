@@ -23,7 +23,7 @@ export function isInClientRectTop(node: HTMLElement) {
   return bottom >= window.innerHeight / 2
 }
 
-export function getNoteOffset(node: HTMLElement) {
+export function getNoteOffset(node: HTMLElement | Range) {
   const { top, left, width } = node.getBoundingClientRect()
   return { top, left: left + width / 2 }
 }

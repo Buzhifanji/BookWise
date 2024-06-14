@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { NoteAction, Toast } from '@renderer/components';
 import { get, set, useClipboard, useElementSize } from '@vueuse/core';
+import { useRouteParams } from '@vueuse/router';
 import { Baseline, Copy, Highlighter, MessageSquareMore, SpellCheck2, Trash } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import { highlighter } from '../highlight';
@@ -18,6 +19,8 @@ const style = computed(() => {
   return { top: `${top === 0 ? -1000 : _top > 0 ? _top : 0}px`, left: `${left - width.value / 2}px` }
 })
 
+const isEdite = ToolbarAction.isEdite;
+const bookParam = useRouteParams<string>('id')
 
 // 打开笔记输入框
 const openNoteRich = () => {
@@ -62,16 +65,24 @@ const onBeeline = () => changeTextDecoration(HighlightType.beeline)
 const onWave = () => changeTextDecoration(HighlightType.wavy)
 
 // 更新笔记
-function updateNote() {
+async function updateNote() {
   if (!ToolbarAction.source.length) return
   const { id, className } = ToolbarAction.source[0]
   const newClassName = `${get(activeTextDecoration)}-${get(activeColor)}`
   ToolbarAction.source.forEach(item => item.className = newClassName)
 
-  // 更新dom节点
-  highlighter.replaceClass(id, newClassName, className)
+  if (get(isEdite)) {
+    // 编辑
+    highlighter.replaceClass(id, newClassName, className)
+    NoteAction.updateBySourceId(id, { domSource: JSON.stringify(ToolbarAction.source) })
+  } else {
+    // 新增
+    highlighter.fromSource(ToolbarAction.source)
+    await NoteAction.add({ sources: ToolbarAction.source, eBookId: get(bookParam), chapterName: '', notes: '' })
+    set(isEdite, true)
+  }
+
   // 更新数据库的数据
-  NoteAction.updateBySourceId(id, { domSource: JSON.stringify(ToolbarAction.source) })
   highlighter.setOption({ className: newClassName })
 }
 
@@ -99,6 +110,11 @@ function init() {
   } else if (_textType === HighlightType.wavy) {
     textType = HighlightType.wavy
   }
+
+  if (!get(isEdite)) {
+    textType = ''
+  }
+
   set(activeTextDecoration, textType)
 
   // 颜色
@@ -135,7 +151,7 @@ const list = [
             <component :is="item.icon" />
           </a>
         </li>
-        <li @click.stop="removeNote" class="tooltip" data-tip="删除">
+        <li @click.stop="removeNote" class="tooltip" data-tip="删除" v-if="isEdite">
           <a>
             <Trash />
           </a>

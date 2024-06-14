@@ -322,6 +322,8 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
     if (range) {
       const res = this.fromRange(range)
 
+      console.log(res)
+
       if (res) {
         const { source, isPainted, removeIds } = res
         this.emit(EventTypeEnum.SOURCE, { source, isPainted, range, removeIds }, this)

@@ -5,11 +5,12 @@ import { ref, shallowReactive } from 'vue'
 export class ToolbarAction {
   static style = shallowReactive({ top: 0, left: 0 })
   static show = ref(false)
-
+  static isEdite = ref(true)
   static source: DomSource[] = []
 
-  static open(top: number, left: number, source: DomSource[]) {
+  static open(top: number, left: number, source: DomSource[], isEdite: boolean) {
     set(this.show, true)
+    set(this.isEdite, isEdite)
     Object.assign(this.style, { top, left })
     this.source = source
   }

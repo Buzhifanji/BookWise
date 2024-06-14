@@ -27,7 +27,21 @@ export function initHighlight(book: Book) {
     highlighter?.setOption({ auto })
   })
 
-  highlighter.on(EventTypeEnum.SOURCE, ({ isPainted, range, source, removeIds }) => {})
+  /**
+   * 当 选中划词的时候，此时有range对象，会触发 EventTypeEnum.SOURCE 事件，应该展示 笔记工具操作栏。
+   * 但同时也会触发 EventTypeEnum.CLICK 事件，会关闭 笔记工具操作栏。
+   * 此时界面上应该显示 笔记工具栏，所以需要 isNotPaintedFromSource 来解决这个冲突的事件。
+   */
+  let isNotPaintedFromSource = false
+
+  highlighter.on(EventTypeEnum.SOURCE, ({ isPainted, range, source, removeIds }) => {
+    if (!isPainted) {
+      // 手动控制绘制
+      const { top, left } = getNoteOffset(range)
+      ToolbarAction.open(top, left, source, false)
+      isNotPaintedFromSource = true
+    }
+  })
 
   // 创建高亮内容
   highlighter.on(EventTypeEnum.CREATE, async ({ sources, type, removeIds }) => {
@@ -45,9 +59,11 @@ export function initHighlight(book: Book) {
   highlighter.on(EventTypeEnum.CLICK, ({ id, target, source }) => {
     if (id && source) {
       const { top, left } = getNoteOffset(target)
-      ToolbarAction.open(top, left, source)
+      ToolbarAction.open(top, left, source, true)
     } else {
-      ToolbarAction.close()
+      if (!isNotPaintedFromSource) ToolbarAction.close()
     }
+
+    isNotPaintedFromSource = false
   })
 }
