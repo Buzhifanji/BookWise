@@ -48,18 +48,6 @@ const copyAction = () => {
   })
 }
 
-// 颜色
-const activeColor = ref<ColorKeys>(highlightColor.color)
-const changeColor = (value: ColorKeys) => {
-  if (!ToolbarAction.source.length) return
-  const { className } = ToolbarAction.source[0]
-  if (className.includes(value)) return
-
-  set(activeColor, value)
-  highlightColor.changeColor(value)
-  updateNote()
-}
-
 // 高亮 波浪线 直线
 const activeTextDecoration = ref('')
 const changeTextDecoration = (val: HighlightType) => {
@@ -71,6 +59,22 @@ const changeTextDecoration = (val: HighlightType) => {
 const onMarker = () => changeTextDecoration(HighlightType.marker)
 const onBeeline = () => changeTextDecoration(HighlightType.beeline)
 const onWave = () => changeTextDecoration(HighlightType.wavy)
+
+// 颜色
+const activeColor = ref<ColorKeys>(highlightColor.color)
+const changeColor = (value: ColorKeys) => {
+  if (!ToolbarAction.source.length) return
+  const { className } = ToolbarAction.source[0]
+  if (className.includes(value)) return
+
+  set(activeColor, value)
+
+  if(get(activeTextDecoration)) {
+    highlightColor.changeColor(value)
+    updateNote()
+  }
+}
+
 
 // 更新笔记
 async function updateNote() {

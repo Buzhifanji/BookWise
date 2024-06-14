@@ -45,6 +45,7 @@ let note: Note | undefined = undefined;
 
 
 function closeNoteRich() {
+  // 处理直接新增笔记的特殊情况
   if (!NoteBarAction.isPainted) {
     if (get(source).length) {
       highlighter.remove(get(source)[0].id)
@@ -116,6 +117,7 @@ async function submit() {
   NoteBarAction.close()
 }
 
+// 删除
 async function remove(index: number) {
   noteList.value.splice(index, 1)
 

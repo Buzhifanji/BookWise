@@ -70,6 +70,14 @@ export class NoteAction {
     )
   }
 
+  static observableByEBookId(eBookId: string) {
+    return useObservable<Note[], Note[]>(
+      liveQuery(async () =>
+        (await db.notes.where('eBookId').equals(eBookId).toArray()).filter((item) => !item.isDelete)
+      ) as any
+    )
+  }
+
   static async findByEBookId(eBookId: string) {
     return await db.notes.where('eBookId').equals(eBookId).toArray()
   }

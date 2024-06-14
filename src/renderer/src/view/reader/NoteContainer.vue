@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
+import { NoteAction } from '@renderer/components';
 import { convertUint8ArrayToURL } from '@renderer/shared';
+import { useToggle } from '@vueuse/core';
 import dayjs from 'dayjs';
 import { ref } from 'vue';
 
@@ -8,7 +10,7 @@ interface Props {
   book: Book,
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 // tab
 const activeTab = ref('book')
@@ -20,13 +22,34 @@ const changeTab = (tab: string) => {
   activeTab.value = tab
 }
 
+const notes = NoteAction.observableByEBookId(props.book.id)
+
+const removeOneNote = () => {
+
+}
+
+// 鼠标选中效果
+const textOpacity = { '--tw-text-opacity': 0.6 };
+const [bgOpacity, setBgOpacity] = useToggle(1)
 </script>
 
 <template>
   <div class="left-note-wrapper bg-base-100 flex flex-col">
     <div role="tablist" class="tabs tabs-boxed rounded-none rounded-b">
-      <a role="tab" class="tab transition ease-in-out " :class="{ 'tab-active': activeTab === item.name }"
-        @click="changeTab(item.name)" v-for="item in tabList">{{ item.label }}</a>
+      <a role="tab" class="tab transition ease-in-out " :class="{ 'tab-active': activeTab === 'book' }"
+        @click="changeTab('book')">书籍</a>
+
+      <a role="tab" class="tab transition ease-in-out " :class="{ 'tab-active': activeTab === 'note' }"
+        @click="changeTab('note')" v-if="notes?.length">
+        <div class="indicator w-full justify-center">
+          <span class="indicator-item indicator-bottom badge badge-secondary right-[5px]">
+            {{ notes.length >= 100 ? '99+' : notes.length }}
+          </span>
+          <div>笔记</div>
+        </div>
+      </a>
+      <a role="tab" class="tab transition ease-in-out " :class="{ 'tab-active': activeTab === 'note' }"
+        @click="changeTab('note')" v-else>笔记</a>
     </div>
     <div class="flex-1 transition ease-in-out p-3">
       <!-- 书籍信息 -->
@@ -71,8 +94,40 @@ const changeTab = (tab: string) => {
 
       </div>
       <!-- 笔记 -->
-      <div v-else>
-        note
+      <div v-else class="h-full bg-base-100 ">
+        <div v-for="item in notes"
+          class="card bg-base-200 rounded-md cursor-pointer mb-3 hover:bg-info hover:text-info-content"
+          :style="{ '--tw-bg-opacity': bgOpacity }" @mouseenter="setBgOpacity(0.3)" @mouseleave="setBgOpacity(1)">
+          <div class="card-body p-2">
+            <!-- 高亮内容 -->
+            <div class="flex flex-row gap-4">
+              <div class="flex">
+                <div class="divider divider-primary h-full w-[3px] flex-col m-0 py-1"></div>
+              </div>
+              <blockquote>
+                <p v-for="sub in NoteAction.getDomSource(item.domSource)">
+                  {{ sub.text }}
+                </p>
+              </blockquote>
+            </div>
+            <div class="grid grid-cols-1 divide-y">
+              <!-- 笔记列表 -->
+              <div v-for="sub in NoteAction.getNoteText(item.notes)"
+                class="bg-base-200 p-3 hover:bg-info hover:text-info-content" :style="{ '--tw-bg-opacity': bgOpacity }">
+                <div class="flex flex-row justify-between items-center mb-1">
+                  <div class="stat-desc">{{ dayjs(sub.time).format('L LT') }}</div>
+                  <div>
+                    <button class="btn btn-outline btn-error btn-xs" @click="removeOneNote()">删除</button>
+                  </div>
+                </div>
+                <p>{{ sub.value }}</p>
+              </div>
+            </div>
+            <div class="flex flex-row-reverse">
+              <button class="btn btn-sm btn-outline btn-primary">编辑</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -80,7 +135,7 @@ const changeTab = (tab: string) => {
 
 <style scoped>
 .left-note-wrapper {
-  --rightbar-width: 20rem;
+  --rightbar-width: 26rem;
   width: var(--rightbar-width);
   transition: all .3s;
   position: sticky;
