@@ -34,7 +34,7 @@ export function initHighlight(book: Book) {
    */
   let isNotPaintedFromSource = false
 
-  highlighter.on(EventTypeEnum.SOURCE, ({ isPainted, range, source, removeIds }) => {
+  highlighter.on(EventTypeEnum.SOURCE, ({ isPainted, range, source }) => {
     if (!isPainted) {
       // 手动控制绘制
       const { top, left } = getNoteOffset(range)
