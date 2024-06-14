@@ -8,6 +8,7 @@ import { settingStore, useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
 import { useToggle } from '@vueuse/core';
+import dayjs from 'dayjs';
 import { BellElectric, PencilLine, Plus, Trash2, UndoDot } from 'lucide-vue-next';
 import { useForm } from 'vee-validate';
 import { computed, defineProps, onMounted, ref, toRaw, withDefaults } from 'vue';
@@ -340,13 +341,13 @@ function restoreOneBook() {
             <div>出版时间</div>
             <div class="stat-title">{{ selectData?.publishTime }}</div>
           </div>
-          <div class="flex gap-4 mb-3">
+          <div class="flex gap-4 mb-3" v-if="selectData?.createTime">
             <div>创建时间</div>
-            <div class="stat-title">{{ selectData?.createTime }}</div>
+            <div class="stat-title">{{ dayjs(selectData.createTime).format('L LT') }}</div>
           </div>
-          <div class="flex gap-4 mb-3">
+          <div class="flex gap-4 mb-3" v-if="selectData?.updateTime">
             <div>更新时间</div>
-            <div class="stat-title">{{ selectData?.updateTime }}</div>
+            <div class="stat-title"> {{ dayjs(selectData.updateTime).format('L LT') }}</div>
           </div>
         </div>
         <div class="modal-action">

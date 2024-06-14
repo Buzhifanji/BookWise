@@ -24,7 +24,7 @@ const handleClick = (e: any) => {
 
 <style scoped>
 .catalog-wrapper {
-  --catalog-bar-width: 400px;
+  --catalog-bar-width: 20rem;
   width: var(--catalog-bar-width);
   transition: all .3s;
   position: sticky;

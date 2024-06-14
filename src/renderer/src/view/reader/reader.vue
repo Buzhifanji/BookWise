@@ -8,7 +8,7 @@ import { useToggle, useWindowSize } from '@vueuse/core';
 import { AlignJustify, Search } from 'lucide-vue-next';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import CatalogView from './Catalog.vue';
-import NoteView from './Note.vue';
+import NoteView from './NoteContainer.vue';
 import { CONTINAER_ID, highlighter, initHighlight } from './highlight';
 import DoubleReaderView from './mode/DoubleReader.vue';
 import ScrollReaderView from './mode/ScrollReader.vue';
@@ -192,11 +192,11 @@ onUnmounted(() => {
       <!-- 笔记 -->
       <div class="block lg:hidden">
         <DrawerView :id="NOTE_DRAWER" :is-right="true">
-          <NoteView />
+          <NoteView :book="book" />
         </DrawerView>
       </div>
       <div class="hidden lg:block">
-        <NoteView :class="{ 'hide': isNote }" />
+        <NoteView :book="book" :class="{ 'hide': isNote }" />
       </div>
     </template>
     <ErrorView v-else />
