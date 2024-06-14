@@ -2,12 +2,11 @@
 import { Book } from '@renderer/batabase';
 import { FileUploadView } from '@renderer/components';
 import { BookshelftMode } from '@renderer/enum';
-import { useDialog, useRightClick } from '@renderer/hooks';
+import { useBgOpacity, useDialog, useRightClick } from '@renderer/hooks';
 import { chuankArray, convertUint8ArrayToURL, remToPx } from '@renderer/shared';
 import { settingStore, useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
-import { useToggle } from '@vueuse/core';
 import dayjs from 'dayjs';
 import { BellElectric, PencilLine, Plus, Trash2, UndoDot } from 'lucide-vue-next';
 import { useForm } from 'vee-validate';
@@ -34,7 +33,10 @@ const bookshelfWidht = 120
 const bookshelfHeight = 137
 const bookCardWidth = 282
 const textOpacity = { '--tw-text-opacity': 0.6 };
-const [bgOpacity, setBgOpacity] = useToggle(1)
+
+// 鼠标选中效果
+const { bgOpacity, indexBgOpacity, hoverAction } = useBgOpacity()
+
 const bookMode = (value: BookshelftMode) => value === settingStore.value.bookself
 
 const store = useContentCantianerStore()
@@ -73,9 +75,9 @@ const measureElement = (el) => {
   if (!el) {
     return
   }
-
-  rowVirtualizer.value.measureElement(el)
-
+  setTimeout(() => {
+    rowVirtualizer.value.measureElement(el)
+  })
   return undefined
 }
 
@@ -202,7 +204,8 @@ function restoreOneBook() {
             <!-- 列表模式 -->
             <div
               class="card flex flex-row bg-base-100 p-2 gap-4 cursor-pointer shadow hover:bg-primary hover:text-primary-content"
-              :style="{ '--tw-bg-opacity': bgOpacity }" @mouseenter="setBgOpacity(0.6)" @mouseleave="setBgOpacity(1)"
+              :style="{ '--tw-bg-opacity': indexBgOpacity(virtualRow.index) }"
+              @mouseenter="hoverAction(0.3, virtualRow.index)" @mouseleave="hoverAction(1, -1)"
               @click="emit('click', list[virtualRow.index] as Book)"
               @contextmenu="rightEvent($event, list[virtualRow.index] as Book)">
               <figure :style="{ width: `${84}px`, height: `${121}px` }"><img

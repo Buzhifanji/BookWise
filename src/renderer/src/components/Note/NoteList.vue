@@ -52,9 +52,9 @@ const measureElement = (el) => {
   if (!el) {
     return
   }
-
-  rowVirtualizer.value.measureElement(el)
-
+  setTimeout(() => {
+    rowVirtualizer.value.measureElement(el)
+  })
   return undefined
 }
 

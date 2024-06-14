@@ -36,13 +36,9 @@ const measureElement = (element: any) => {
   if (!element) {
     return
   }
-
-
   setTimeout(() => {
     rowVirtualizer.value.measureElement(element)
   })
-
-
   return undefined
 }
 

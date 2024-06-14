@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
 import { NoteAction } from '@renderer/components';
+import { useBgOpacity } from '@renderer/hooks';
 import { convertUint8ArrayToURL } from '@renderer/shared';
-import { useToggle } from '@vueuse/core';
+import { useVirtualizer } from '@tanstack/vue-virtual';
 import dayjs from 'dayjs';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 interface Props {
   book: Book,
@@ -14,10 +15,6 @@ const props = defineProps<Props>()
 
 // tab
 const activeTab = ref('book')
-const tabList = [
-  { name: 'book', label: '书籍' },
-  { name: 'note', label: '笔记' },
-]
 const changeTab = (tab: string) => {
   activeTab.value = tab
 }
@@ -29,8 +26,30 @@ const removeOneNote = () => {
 }
 
 // 鼠标选中效果
-const textOpacity = { '--tw-text-opacity': 0.6 };
-const [bgOpacity, setBgOpacity] = useToggle(1)
+const { bgOpacity, indexBgOpacity, hoverAction } = useBgOpacity()
+
+// 虚拟列表
+const containerRef = ref<HTMLElement | null>(null)
+const rowVirtualizerOptions = computed(() => {
+  return {
+    count: notes.value?.length || 0,
+    estimateSize: () => 400,
+    overscan: 10,
+    getScrollElement: () => containerRef.value,
+  }
+})
+const rowVirtualizer = useVirtualizer(rowVirtualizerOptions)
+const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems())
+const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
+const measureElement = (el) => {
+  if (!el) {
+    return
+  }
+  setTimeout(() => {
+    rowVirtualizer.value.measureElement(el)
+  })
+  return undefined
+}
 </script>
 
 <template>
@@ -51,7 +70,7 @@ const [bgOpacity, setBgOpacity] = useToggle(1)
       <a role="tab" class="tab transition ease-in-out " :class="{ 'tab-active': activeTab === 'note' }"
         @click="changeTab('note')" v-else>笔记</a>
     </div>
-    <div class="flex-1 transition ease-in-out p-3">
+    <div class="flex-1 transition ease-in-out p-3 relative">
       <!-- 书籍信息 -->
       <div class="flex flex-col" v-if="activeTab === 'book'">
         <div class="flex flex-row gap-3">
@@ -94,39 +113,51 @@ const [bgOpacity, setBgOpacity] = useToggle(1)
 
       </div>
       <!-- 笔记 -->
-      <div v-else class="h-full bg-base-100 ">
-        <div v-for="item in notes"
-          class="card bg-base-200 rounded-md cursor-pointer mb-3 hover:bg-info hover:text-info-content"
-          :style="{ '--tw-bg-opacity': bgOpacity }" @mouseenter="setBgOpacity(0.3)" @mouseleave="setBgOpacity(1)">
-          <div class="card-body p-2">
-            <!-- 高亮内容 -->
-            <div class="flex flex-row gap-4">
-              <div class="flex">
-                <div class="divider divider-primary h-full w-[3px] flex-col m-0 py-1"></div>
-              </div>
-              <blockquote>
-                <p v-for="sub in NoteAction.getDomSource(item.domSource)">
-                  {{ sub.text }}
-                </p>
-              </blockquote>
-            </div>
-            <div class="grid grid-cols-1 divide-y">
-              <!-- 笔记列表 -->
-              <div v-for="sub in NoteAction.getNoteText(item.notes)"
-                class="bg-base-200 p-3 hover:bg-info hover:text-info-content" :style="{ '--tw-bg-opacity': bgOpacity }">
-                <div class="flex flex-row justify-between items-center mb-1">
-                  <div class="stat-desc">{{ dayjs(sub.time).format('L LT') }}</div>
-                  <div>
-                    <button class="btn btn-outline btn-error btn-xs" @click="removeOneNote()">删除</button>
+      <div v-else class="absolute inset-0 ">
+        <div class="h-full p-3 bg-base-100 overflow-y-auto scrollbar-none hover:scrollbar-thin" ref="containerRef">
+          <div class="relative w-full" :style="{ height: `${totalSize}px` }">
+            <div class="absolute top-0 left-0 w-full "
+              :style="{ transform: `translateY(${virtualRows[0]?.start ?? 0}px)` }">
+              <div v-for="virtualRow in virtualRows" :key="virtualRow.key" :data-index="virtualRow.index"
+                :data-page-number="virtualRow.index" :ref="measureElement">
+                <div class="card bg-base-200 rounded-md cursor-pointer mb-3 hover:bg-info hover:text-info-content"
+                  :style="{ '--tw-bg-opacity': indexBgOpacity(virtualRow.index) }"
+                  @mouseenter="hoverAction(0.3, virtualRow.index)" @mouseleave="hoverAction(1, -1)">
+                  <div class="card-body p-2">
+                    <!-- 高亮内容 -->
+                    <div class="flex flex-row gap-4">
+                      <div class="flex">
+                        <div class="divider divider-primary h-full w-[3px] flex-col m-0 py-1"></div>
+                      </div>
+                      <blockquote>
+                        <p v-for="sub in NoteAction.getDomSource(notes[virtualRow.index].domSource)">
+                          {{ sub.text }}
+                        </p>
+                      </blockquote>
+                    </div>
+                    <div class="grid grid-cols-1 divide-y">
+                      <!-- 笔记列表 -->
+                      <div v-for="sub in NoteAction.getNoteText(notes[virtualRow.index].notes)"
+                        class="bg-base-200 p-3 hover:bg-info hover:text-info-content"
+                        :style="{ '--tw-bg-opacity': bgOpacity }">
+                        <div class="flex flex-row justify-between items-center mb-1">
+                          <div class="stat-desc">{{ dayjs(sub.time).format('L LT') }}</div>
+                          <div>
+                            <button class="btn btn-outline btn-error btn-xs" @click="removeOneNote()">删除</button>
+                          </div>
+                        </div>
+                        <p>{{ sub.value }}</p>
+                      </div>
+                    </div>
+                    <div class="flex flex-row-reverse">
+                      <button class="btn btn-sm btn-outline btn-primary">编辑</button>
+                    </div>
                   </div>
                 </div>
-                <p>{{ sub.value }}</p>
               </div>
             </div>
-            <div class="flex flex-row-reverse">
-              <button class="btn btn-sm btn-outline btn-primary">编辑</button>
-            </div>
           </div>
+
         </div>
       </div>
     </div>
