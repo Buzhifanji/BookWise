@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { languageStore, themeStore } from '@renderer/view/setting';
+import './dayjs';
 
 // 初始化主题
 themeStore.init('light');

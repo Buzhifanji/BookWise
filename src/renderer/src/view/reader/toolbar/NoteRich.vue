@@ -4,6 +4,7 @@ import { NoteAction, NoteText, Toast } from '@renderer/components';
 import { now } from '@renderer/shared';
 import { get, onClickOutside, onKeyStroke, set, useElementBounding, useParentElement } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
+import dayjs from 'dayjs';
 import { computed, onMounted, ref } from 'vue';
 import { highlighter } from '../highlight';
 import { highlightColor } from '../highlight-color';
@@ -159,7 +160,7 @@ init()
         </div>
         <div v-for="item, index in noteList" class="bg-base-200 p-3 rounded-md">
           <div class="flex flex-row justify-between items-center mb-1">
-            <div class="stat-desc">{{ item.time }}</div>
+            <div class="stat-desc">{{ dayjs(item.time).format('L LT') }}</div>
             <div>
               <button class="btn btn-outline btn-error btn-xs" @click="remove(index)">删除</button>
             </div>

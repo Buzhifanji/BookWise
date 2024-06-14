@@ -2,6 +2,7 @@
 import { Note } from '@renderer/batabase';
 import { NoteAction } from '@renderer/components';
 import { settingStore } from '@renderer/store';
+import dayjs from 'dayjs';
 import { BellElectric, Ellipsis, Trash2 } from 'lucide-vue-next';
 import { computed, defineProps, ref } from 'vue';
 
@@ -28,7 +29,7 @@ const onMouseLeave = () => className.value = ''
     <div class="card rounded-md shadow-md bg-base-100 cursor-pointer text-sm  w-96 prose">
         <div class="card-body">
             <div class="flex flex-row item-center justify-between">
-                <div>{{ data.createTime }}</div>
+                <div>{{ dayjs(data.updateTime).format('L LT') }}</div>
                 <div class="dropdown dropdown-end">
                     <button class="btn btn-ghost btn-sm">
                         <Ellipsis class="w-5 h-5" />

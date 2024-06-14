@@ -32,6 +32,9 @@ importers:
       '@vueuse/rxjs':
         specifier: ^10.10.0
         version: 10.10.0(rxjs@7.8.1)(vue@3.4.27(typescript@5.4.5))
+      dayjs:
+        specifier: ^1.11.11
+        version: 1.11.11
       dexie:
         specifier: ^4.0.7
         version: 4.0.7
@@ -1609,6 +1612,9 @@ packages:
   date-time@3.1.0:
     resolution: {integrity: sha512-uqCUKXE5q1PNBXjPqvwhwJf9SwMoAHBgWJ6DcrnS5o+W2JOiIILl0JEdVD8SGujrNS02GGxgwAg2PN2zONgtjg==}
     engines: {node: '>=6'}
+
+  dayjs@1.11.11:
+    resolution: {integrity: sha512-okzr3f11N6WuqYtZSvm+F776mB41wRZMhKP+hc34YdW+KmtYYK9iqvHSwo2k9FEH3fhGXvOPV6yz2IcSrfRUDg==}
 
   de-indent@1.0.2:
     resolution: {integrity: sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==}
@@ -4952,6 +4958,8 @@ snapshots:
   date-time@3.1.0:
     dependencies:
       time-zone: 1.0.0
+
+  dayjs@1.11.11: {}
 
   de-indent@1.0.2: {}
 

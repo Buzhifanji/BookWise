@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { NoteText } from '@renderer/components';
+import dayjs from 'dayjs';
 
 interface Props {
   data: NoteText[],
@@ -23,7 +24,7 @@ const removeNote = (index: number) => {
   <div class="bg-base-200 p-3 rounded-md grid grid-cols-1 divide-y">
     <div v-for="item, index in data">
       <div class="flex flex-row justify-between items-center mt-3">
-        <div class="stat-desc">{{ item.time }}</div>
+        <div class="stat-desc">{{ dayjs(item.time).format('L LT') }}</div>
         <div v-if="showRemove">
           <button class="btn btn-outline btn-error btn-xs" @click="removeNote(index)">删除</button>
         </div>

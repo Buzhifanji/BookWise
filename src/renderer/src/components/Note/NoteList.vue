@@ -7,6 +7,7 @@ import { useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
 import { set } from '@vueuse/core';
+import dayjs from 'dayjs';
 import { computed, defineProps, ref, toRaw, withDefaults } from 'vue';
 import { Toast } from '../toast';
 import Card from './Card.vue';
@@ -113,6 +114,9 @@ const removeNote = async (index: number) => {
           <h3 class="font-bold text-lg">确认删除笔记</h3>
           <div> <kbd class="kbd">Esc</kbd></div>
         </div>
+        <div v-if="selectData?.createTime">
+          {{ dayjs(selectData?.createTime).format('L LT') }}
+        </div>
         <blockquote class="my-[1em]">
           <p class=" my-[0.6em]" v-for="item in NoteAction.getDomSource(selectData?.domSource)">{{ item.text }}</p>
         </blockquote>
@@ -133,6 +137,9 @@ const removeNote = async (index: number) => {
         <div class="flex flex-row justify-between items-center">
           <h3 class="font-bold text-lg">笔记详情</h3>
           <div> <kbd class="kbd">Esc</kbd></div>
+        </div>
+        <div v-if="selectData?.createTime">
+          {{ dayjs(selectData?.createTime).format('L LT') }}
         </div>
         <blockquote class="my-[1em]">
           <p class=" my-[0.6em]" v-for="item in NoteAction.getDomSource(selectData?.domSource)">{{ item.text }}</p>
