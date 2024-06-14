@@ -37,8 +37,6 @@ const copyAction = () => {
   })
 }
 
-
-
 // 颜色
 const activeColor = ref<ColorKeys>(highlightColor.color)
 const changeColor = (value: ColorKeys) => {
@@ -74,6 +72,7 @@ function updateNote() {
   highlighter.replaceClass(id, newClassName, className)
   // 更新数据库的数据
   NoteAction.updateBySourceId(id, { domSource: JSON.stringify(ToolbarAction.source) })
+  highlighter.setOption({ className: newClassName })
 }
 
 // 删除笔记
