@@ -3,8 +3,6 @@ import { getOption } from './option'
 class RangeUtil {
   prev: Range | null = null
 
-  lastRange: Range | null = null
-
   getRange() {
     let result: Range | null = null
     const selection = getOption().context.getSelection()
@@ -28,22 +26,6 @@ class RangeUtil {
       selection.removeAllRanges()
     }
     this.prev = null
-  }
-
-  cacheRange() {
-    const selection = getOption().context.getSelection()
-    if (selection && !selection.isCollapsed) {
-      this.lastRange = selection.getRangeAt(0).cloneRange()
-    }
-  }
-
-  restoreRange() {
-    if (this.lastRange) {
-      const selection = document.getSelection()!
-      selection.removeAllRanges()
-
-      selection!.addRange(this.lastRange!)
-    }
   }
 }
 

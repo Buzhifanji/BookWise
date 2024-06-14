@@ -267,14 +267,6 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
     this.emit(EventTypeEnum.HOVER_OUT, { id: this._hoverId }, this, event)
   }
 
-  cacheRange = () => {
-    rangeUtil.cacheRange()
-  }
-
-  restoreRange = () => {
-    rangeUtil.restoreRange()
-  }
-
   private addListener = () => {
     const { root, dynamic } = getOption()
 

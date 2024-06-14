@@ -112,11 +112,7 @@ async function submit() {
       type: 'alert-success',
     })
   }
-
-
   NoteBarAction.close()
-
-
 }
 
 async function remove(index: number) {
