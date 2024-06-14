@@ -63,6 +63,7 @@ const onMarker = () => changeTextDecoration(HighlightType.marker)
 const onBeeline = () => changeTextDecoration(HighlightType.beeline)
 const onWave = () => changeTextDecoration(HighlightType.wavy)
 
+// 更新笔记
 function updateNote() {
   if (!ToolbarAction.source.length) return
   const { id, className } = ToolbarAction.source[0]
@@ -73,6 +74,15 @@ function updateNote() {
   highlighter.replaceClass(id, newClassName, className)
   // 更新数据库的数据
   NoteAction.updateBySourceId(id, { domSource: JSON.stringify(ToolbarAction.source) })
+}
+
+// 删除笔记
+function removeNote() {
+  if (!ToolbarAction.source.length) return
+  const { id } = ToolbarAction.source[0]
+  highlighter.remove(id)
+  NoteAction.removeBySoureIds([id])
+  ToolbarAction.close()
 }
 
 function init() {
@@ -126,7 +136,7 @@ const list = [
             <component :is="item.icon" />
           </a>
         </li>
-        <li @click.stop class="tooltip" data-tip="删除">
+        <li @click.stop="removeNote" class="tooltip" data-tip="删除">
           <a>
             <Trash />
           </a>
