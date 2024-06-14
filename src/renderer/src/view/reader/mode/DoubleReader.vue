@@ -53,7 +53,6 @@ function setHeight() {
     const { scrollWidth, offsetWidth } = dom
     if (scrollWidth > offsetWidth) {
       const remainder = scrollWidth % offsetWidth
-      console.log(scrollWidth, offsetWidth, remainder)
       result = offsetWidth - remainder
     }
     remendyRef.value!.style.height = `${result}px`

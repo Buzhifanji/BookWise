@@ -3,9 +3,10 @@ import { Book } from '@renderer/batabase'
 import { NoteAction } from '@renderer/components'
 import { $, getNoteOffset } from '@renderer/shared'
 import { settingStore } from '@renderer/store'
+import { get } from '@vueuse/core'
 import { watchEffect } from 'vue'
 import { highlightColor } from './highlight-color'
-import { ToolbarAction } from './toolbar/action'
+import { NoteBarAction, ToolbarAction } from './toolbar/action'
 
 export let highlighter: WebHighlight
 
@@ -35,7 +36,7 @@ export function initHighlight(book: Book) {
   let isNotPaintedFromSource = false
 
   highlighter.on(EventTypeEnum.SOURCE, ({ isPainted, range, source }) => {
-    if (!isPainted) {
+    if (!isPainted && !get(NoteBarAction.show)) {
       // 手动控制绘制
       const { top, left } = getNoteOffset(range)
       ToolbarAction.open(top, left, source, false)

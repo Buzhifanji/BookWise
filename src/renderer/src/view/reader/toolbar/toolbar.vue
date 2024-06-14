@@ -24,7 +24,15 @@ const bookParam = useRouteParams<string>('id')
 
 // 打开笔记输入框
 const openNoteRich = () => {
-  NoteBarAction.open(ToolbarAction.source!)
+  if (!get(isEdite)) {
+    // 没有高亮，直接笔记输入框
+    const source = ToolbarAction.source.map(item => {
+      return { ...item, className: 'selection-info' }
+    })
+    highlighter?.fromSource(source)
+    // highlighter?.cacheRange()
+  }
+  NoteBarAction.open(ToolbarAction.source!, get(isEdite))
   ToolbarAction.close()
 }
 
@@ -137,7 +145,7 @@ const list = [
 <template>
   <div class="fixed inset-0">
     <div ref="container"
-      class="absolute bg-base-100 border border-info z-50 shadow-2xl rounded-md flex flex-col divide-y ease-in-out  shadow-cyan-500/50"
+      class="absolute bg-base-100 border border-info z-50 bar-shadow rounded-md flex flex-col divide-y ease-in-out  shadow-cyan-500/50"
       :style="style" @click.stop>
       <div class="flex flex-row gap-3 cursor-pointer p-2.5">
         <div v-for="item in highlightColor.getColors()" class="badge badge-lg" @click="changeColor(item)"
@@ -161,3 +169,9 @@ const list = [
   </div>
 
 </template>
+
+<style scoped>
+.bar-shadow {
+  box-shadow: 0 10px 50px 0 rgba(0, 0, 0, .1);
+}
+</style>

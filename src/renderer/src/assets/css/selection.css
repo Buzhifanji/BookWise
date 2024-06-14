@@ -1,5 +1,13 @@
 /** 花词高亮 颜色 */
 
+.selection-info {
+  --tw-text-opacity: 1;
+  --tw-bg-opacity: 1;
+  color: var(--fallback-bc, oklch(var(--bc) / var(--tw-text-opacity)));
+  background-color: var(--fallback-in, oklch(var(--in) / var(--tw-bg-opacity)));
+  cursor: pointer;
+}
+
 .selection-red {
   --tw-text-opacity: 1;
   --tw-bg-opacity: 1;

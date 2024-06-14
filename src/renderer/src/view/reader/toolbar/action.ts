@@ -24,13 +24,13 @@ export class ToolbarAction {
 
 export class NoteBarAction {
   static show = ref(false)
-
+  static isPainted = true
   static source = ref<DomSource[]>([])
 
-  static open(source: DomSource[]) {
+  static open(source: DomSource[], isPainted: boolean) {
     set(this.show, true)
     set(this.source, source)
-    console.log('open', source)
+    this.isPainted = isPainted
   }
 
   static close() {
