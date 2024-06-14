@@ -2,6 +2,8 @@ import { CreateFrom, EventTypeEnum, WebHighlight } from '@book-wise/web-highligh
 import { Book } from '@renderer/batabase'
 import { NoteAction } from '@renderer/components'
 import { $, getNoteOffset } from '@renderer/shared'
+import { settingStore } from '@renderer/store'
+import { watchEffect } from 'vue'
 import { highlightColor } from './highlight-color'
 import { ToolbarAction } from './toolbar/action'
 
@@ -17,7 +19,12 @@ export function initHighlight(book: Book) {
     className: highlightColor.getClassName(),
     root: getRoot() || Document,
     showError: true,
-    auto: true
+    auto: settingStore.value.isAutoHighlight
+  })
+
+  watchEffect(() => {
+    const auto = settingStore.value.isAutoHighlight
+    highlighter?.setOption({ auto })
   })
 
   highlighter.on(EventTypeEnum.SOURCE, ({ isPainted, range, source, removeIds }) => {})

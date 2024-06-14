@@ -23,7 +23,6 @@ const bookshelfModeList = [
 
 const textOpacity = { '--tw-text-opacity': 0.6 };
 
-
 </script>
 
 <template>
@@ -64,6 +63,7 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
             <CheckBoxView v-model="settingStore.isOpenRecyleBin" title="开启回收站功能"
               desc="关闭回收站，删除书籍的时候，将会被永久删除，而不是移到回收站" />
             <CheckBoxView v-model="settingStore.isNoteShowClass" title="笔记是否显示高亮样式" desc="关闭后，当鼠标滑过的时候，才会显示高亮样式" />
+            <CheckBoxView v-model="settingStore.isAutoHighlight" title="是否自动高亮" desc="打开后，在选中文字的时候，会自动高亮" />
           </div>
         </div>
       </div>
