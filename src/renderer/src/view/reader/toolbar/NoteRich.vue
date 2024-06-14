@@ -4,10 +4,11 @@ import { NoteAction, NoteText, Toast } from '@renderer/components';
 import { now } from '@renderer/shared';
 import { get, onClickOutside, onKeyStroke, set, useElementBounding, useParentElement } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
-import dayjs from 'dayjs';
 import { computed, onMounted, ref } from 'vue';
 import { highlighter } from '../highlight';
 import { highlightColor } from '../highlight-color';
+import NoteListView from './NoteList.vue';
+import SourceListView from './SourceList.vue';
 import { NoteBarAction } from './action';
 
 const parentEl = useParentElement()
@@ -118,7 +119,7 @@ async function submit() {
 }
 
 // 删除
-async function remove(index: number) {
+async function remove(_: NoteText, index: number) {
   noteList.value.splice(index, 1)
 
   await NoteAction.update(note!.id, { notes: JSON.stringify(noteList.value) })
@@ -148,27 +149,8 @@ init()
           <h3 class="font-bold text-lg">我的笔记</h3>
           <div @click="closeNoteRich()"> <kbd class="kbd">Esc</kbd></div>
         </div>
-        <div class="bg-base-200 p-3 rounded-md">
-          <div class="flex flex-row gap-4">
-            <div class="flex">
-              <div class="divider divider-primary h-full w-[3px] flex-col m-0 py-1"></div>
-            </div>
-            <blockquote>
-              <p v-for="item in source">
-                {{ item.text }}
-              </p>
-            </blockquote>
-          </div>
-        </div>
-        <div v-for="item, index in noteList" class="bg-base-200 p-3 rounded-md">
-          <div class="flex flex-row justify-between items-center mb-1">
-            <div class="stat-desc">{{ dayjs(item.time).format('L LT') }}</div>
-            <div>
-              <button class="btn btn-outline btn-error btn-xs" @click="remove(index)">删除</button>
-            </div>
-          </div>
-          <p>{{ item.value }}</p>
-        </div>
+        <SourceListView :data="source" />
+        <NoteListView :data="noteList" @remove="remove" />
         <textarea ref="textareatRef" v-model="textareaValue" rows="4"
           class="textarea textarea-accent w-full bg-base-200 my-3" placeholder="写下此时的想法..."></textarea>
         <div class="card-actions justify-end">

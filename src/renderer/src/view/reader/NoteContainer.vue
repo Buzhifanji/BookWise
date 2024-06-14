@@ -2,10 +2,12 @@
 import { Book } from '@renderer/batabase';
 import { NoteAction } from '@renderer/components';
 import { useBgOpacity } from '@renderer/hooks';
-import { convertUint8ArrayToURL } from '@renderer/shared';
+import { $, convertUint8ArrayToURL } from '@renderer/shared';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import dayjs from 'dayjs';
 import { computed, ref } from 'vue';
+import NoteListView from './toolbar/NoteList.vue';
+import SourceListView from './toolbar/SourceList.vue';
 
 interface Props {
   book: Book,
@@ -49,6 +51,15 @@ const measureElement = (el) => {
     rowVirtualizer.value.measureElement(el)
   })
   return undefined
+}
+
+// 编辑
+const openEidteBar = (index: number) => {
+  console.log(index)
+  const dom = $(`.note-item[data-index='${index}']`) as HTMLElement
+  if (dom) {
+
+  }
 }
 </script>
 
@@ -118,39 +129,24 @@ const measureElement = (el) => {
           <div class="relative w-full" :style="{ height: `${totalSize}px` }">
             <div class="absolute top-0 left-0 w-full "
               :style="{ transform: `translateY(${virtualRows[0]?.start ?? 0}px)` }">
-              <div v-for="virtualRow in virtualRows" :key="virtualRow.key" :data-index="virtualRow.index"
-                :data-page-number="virtualRow.index" :ref="measureElement">
+              <div v-for="virtualRow in virtualRows" :key="virtualRow.key" class="note-item"
+                :data-index="virtualRow.index" :ref="measureElement">
                 <div class="card bg-base-200 rounded-md cursor-pointer mb-3 hover:bg-info hover:text-info-content"
                   :style="{ '--tw-bg-opacity': indexBgOpacity(virtualRow.index) }"
                   @mouseenter="hoverAction(0.3, virtualRow.index)" @mouseleave="hoverAction(1, -1)">
                   <div class="card-body p-2">
                     <!-- 高亮内容 -->
-                    <div class="flex flex-row gap-4">
-                      <div class="flex">
-                        <div class="divider divider-primary h-full w-[3px] flex-col m-0 py-1"></div>
-                      </div>
-                      <blockquote>
-                        <p v-for="sub in NoteAction.getDomSource(notes[virtualRow.index].domSource)">
-                          {{ sub.text }}
-                        </p>
-                      </blockquote>
-                    </div>
+                    <SourceListView :data="NoteAction.getDomSource(notes[virtualRow.index].domSource)"
+                      :opacity="indexBgOpacity(virtualRow.index)" />
+
+                    <!-- 笔记列表 -->
                     <div class="grid grid-cols-1 divide-y">
-                      <!-- 笔记列表 -->
-                      <div v-for="sub in NoteAction.getNoteText(notes[virtualRow.index].notes)"
-                        class="bg-base-200 p-3 hover:bg-info hover:text-info-content"
-                        :style="{ '--tw-bg-opacity': bgOpacity }">
-                        <div class="flex flex-row justify-between items-center mb-1">
-                          <div class="stat-desc">{{ dayjs(sub.time).format('L LT') }}</div>
-                          <div>
-                            <button class="btn btn-outline btn-error btn-xs" @click="removeOneNote()">删除</button>
-                          </div>
-                        </div>
-                        <p>{{ sub.value }}</p>
-                      </div>
+                      <NoteListView :data="NoteAction.getNoteText(notes[virtualRow.index].notes)"
+                        :opacity="indexBgOpacity(virtualRow.index)" />
                     </div>
                     <div class="flex flex-row-reverse">
-                      <button class="btn btn-sm btn-outline btn-primary">编辑</button>
+                      <button class="btn btn-sm btn-outline btn-primary"
+                        @click="openEidteBar(virtualRow.index)">编辑</button>
                     </div>
                   </div>
                 </div>
@@ -159,6 +155,19 @@ const measureElement = (el) => {
           </div>
 
         </div>
+
+        <!-- 笔记工具栏 -->
+        <!-- <div class="fixed inset-0">
+          <div class="card bg-base-100 absolute top-10  select-none cursor-pointer right-80 bar-shadow">
+            <div class="card-body">
+              <div class="flex flex-row justify-between items-center mb-2">
+                <h3 class="font-bold text-lg">我的笔记</h3>
+                <div> <kbd class="kbd">Esc</kbd></div>
+              </div>
+
+            </div>
+          </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -181,5 +190,9 @@ const measureElement = (el) => {
 
 .left-note-wrapper.hide {
   margin-inline-end: calc(var(--rightbar-width)* -1);
+}
+
+.bar-shadow {
+  box-shadow: 0 10px 50px 0 rgba(0, 0, 0, .1);
 }
 </style>
