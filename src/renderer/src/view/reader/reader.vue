@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Book, BookContent, db } from '@renderer/batabase';
-import { DrawerView, ErrorView, RingLoadingView, useToggleDrawer } from '@renderer/components';
+import { Book, BookContent, Note, db } from '@renderer/batabase';
+import { DrawerView, ErrorView, NoteAction, RingLoadingView, useToggleDrawer } from '@renderer/components';
 import { ReadMode } from '@renderer/enum';
 import { CETALOG_DRAWER, NOTE_DRAWER, isElectron } from '@renderer/shared';
 import { settingStore } from '@renderer/store';
@@ -90,7 +90,17 @@ async function loadData() {
   }, 0)
 }
 
+
 // 目录跳转
+function jumpAction(index: number, id?: string) {
+  if (settingStore.value.readMode === ReadMode.sroll) {
+    scrollReaderViewRef.value?.jump(index, id)
+  } else if (settingStore.value.readMode === ReadMode.section) {
+    sectionReaderViewRef.value?.jump(index)
+  } else {
+    doubleReaderViewRef.value?.jump(index)
+  }
+}
 function catalogJump({ href }: any) {
   let index = 0;
   if (href) {
@@ -100,14 +110,17 @@ function catalogJump({ href }: any) {
     }
   }
 
+  jumpAction(index)
+}
 
-  if (settingStore.value.readMode === ReadMode.sroll) {
-    scrollReaderViewRef.value?.jump(index)
-  } else if (settingStore.value.readMode === ReadMode.section) {
-    sectionReaderViewRef.value?.jump(index)
-  } else {
-    doubleReaderViewRef.value?.jump(index)
-  }
+async function noteJump(note: Note) {
+  const source = NoteAction.getDomSource(note.domSource)
+  if (source.length === 0) return
+
+  const { page, id } = source[0]
+  if (page === '-1') return
+
+  jumpAction(+page, id)
 }
 
 onMounted(() => {
@@ -192,11 +205,11 @@ onUnmounted(() => {
       <!-- 笔记 -->
       <div class="block lg:hidden">
         <DrawerView :id="NOTE_DRAWER" :is-right="true">
-          <NoteView :book="book" />
+          <NoteView :book="book" @jump="noteJump" />
         </DrawerView>
       </div>
       <div class="hidden lg:block">
-        <NoteView :book="book" :class="{ 'hide': isNote }" />
+        <NoteView :book="book" @jump="noteJump" :class="{ 'hide': isNote }" />
       </div>
     </template>
     <ErrorView v-else />

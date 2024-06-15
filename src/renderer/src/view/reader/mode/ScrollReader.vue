@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { $, wait } from '@renderer/shared';
 import { useVirtualizer } from '@tanstack/vue-virtual';
+import { get } from '@vueuse/core';
 import { computed, ref } from 'vue';
 import { getBookHref, isExternal, openExternal } from '../render';
 import SectionView from './Section.vue';
@@ -43,9 +45,25 @@ const measureElement = (element: any) => {
 }
 
 // 目录跳转
-function jump(index: number) {
-  console.log('index', index)
+async function jump(index: number, id?: string) {
   rowVirtualizer.value.scrollToIndex(index, { align: 'start', behavior: 'smooth' })
+  if (!id) return
+
+  await wait()
+  const container = $(`div[data-page-number='${index}']`) as HTMLElement
+
+  if (!container) return
+
+  const target = container.querySelector(`span[data-web-highlight_id='${id}']`) as HTMLElement
+
+  if (!target) return
+
+  const rect = target.getBoundingClientRect()
+
+  const scrollTop = get(containerRef)?.scrollTop || 0
+  if (scrollTop) {
+    rowVirtualizer.value.scrollToOffset(scrollTop + rect.top, { align: 'center', behavior: 'smooth' })
+  }
 }
 
 // 点击书本链接

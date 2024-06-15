@@ -19,6 +19,9 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const emit = defineEmits<{
+  (e: 'jump', data: Note): void,
+}>()
 
 const bookParam = useRouteParams<string>('id')
 
@@ -141,6 +144,7 @@ const addNote = () => {
 const removeNote = (_: NoteText, index: number) => {
   noteRichAction.remove(index)
 }
+
 </script>
 
 <template>
@@ -217,7 +221,8 @@ const removeNote = (_: NoteText, index: number) => {
                   @mouseenter="hoverAction(0.3, virtualRow.index)" @mouseleave="closeHover()">
                   <div class="card-body p-2">
                     <!-- 高亮内容 -->
-                    <SourceListView :data="NoteAction.getDomSource(notes[virtualRow.index].domSource)"
+                    <SourceListView @click="emit('jump', notes[virtualRow.index])"
+                      :data="NoteAction.getDomSource(notes[virtualRow.index].domSource)"
                       :opacity="indexBgOpacity(virtualRow.index)" :auto="false" />
                     <!-- 笔记列表 -->
                     <div class="grid grid-cols-1 divide-y divide-neutral">
