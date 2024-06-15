@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { get, useElementSize } from '@vueuse/core';
+import { Note } from '@renderer/batabase';
+import { NoteAction, NoteText, Toast } from '@renderer/components';
+import { $ } from '@renderer/shared';
+import { get, onClickOutside, set, useElementSize } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
 import { Baseline, Copy, Highlighter, MessageSquareMore, SpellCheck2, Trash } from 'lucide-vue-next';
-import { computed, ref } from 'vue';
-import { highlighter } from '../highlight';
+import { Ref, computed, ref } from 'vue';
+import { CONTINAER_ID, highlighter } from '../highlight';
 import { HighlightType, highlightColor } from '../highlight-color';
+import NoteListView from './NoteList.vue';
 import { NoteBarStyle, NoteToolBarAction, ToolbarStyle } from './action';
 
 const container = ref<HTMLElement | null>(null)
@@ -28,6 +32,62 @@ const activeTextDecoration = noteToolBar.decoration
 // 颜色
 const activeColor = noteToolBar.color
 
+const closeDom = (val: Ref<HTMLElement | null>, e: Event) => {
+  const dom = get(val)
+  if(dom && dom.contains(e.target as HTMLElement)) return
+  ToolbarStyle.close()
+}
+
+onClickOutside(container, (e) => {
+  closeDom(noteRef, e)
+})
+
+
+// 笔记
+const note = ref<Note>()
+const noteRef = ref<HTMLElement | null>(null)
+const noteList = ref<NoteText[]>([])
+const { height: noteHeight } = useElementSize(noteRef)
+const noteStyle = computed(() => {
+  const top = +get(style).top.replace('px', '')
+  const space = 10
+  const h = get(noteHeight)
+  const container = $(`#${CONTINAER_ID}`) as HTMLElement
+  const content = container.querySelector('.prose') as HTMLElement
+  const w = content.offsetWidth
+  const {left: cLeft} = content.getBoundingClientRect()
+
+  if(top >=  (h + space)) {
+    return { top: `${top - space - h}px`, left: `${cLeft}px`, width: `${w}px`}
+  } else {
+    // 高度不够，直接在底部显示
+    return { bottom: '20px', left: `${cLeft}px` , width: `${w}px`}
+  }
+})
+const findNote = async () => {
+  if(get(isEdite) && ToolbarStyle.source.length) {
+    const val = await NoteAction.findBySourceId(ToolbarStyle.source[0].id)
+    set(note, val)
+    const list = val?.notes ? NoteAction.getNoteText(val.notes) : []
+    set(noteList, list)
+  }
+}
+const removeNote = async (_: NoteText, index: number) => {
+  noteList.value.splice(index, 1)
+  await NoteAction.update(get(note)!.id, { notes: JSON.stringify(get(noteList)) })
+  Toast({
+    message: '删除笔记成功',
+    position: ['toast-top', 'toast-center'],
+    type: 'alert-success'
+  })
+}
+
+onClickOutside(noteRef, (e) => {
+  closeDom(container, e)
+})
+
+findNote()
+
 // 打开笔记输入框
 const openNoteRich = () => {
   if (!get(isEdite)) {
@@ -36,7 +96,6 @@ const openNoteRich = () => {
       return { ...item, className: 'selection-info' }
     })
     highlighter?.fromSource(source)
-    // highlighter?.cacheRange()
   }
   NoteBarStyle.open(ToolbarStyle.source!, get(isEdite))
   ToolbarStyle.close()
@@ -52,7 +111,7 @@ const list = [
 </script>
 
 <template>
-  <div class="fixed inset-0">
+  <div class="fixed inset-0" >
     <div ref="container"
       class="absolute bg-base-100 border border-info z-50 bar-shadow rounded-md flex flex-col divide-y ease-in-out  shadow-cyan-500/50"
       :style="style" @click.stop>
@@ -74,6 +133,9 @@ const list = [
           </a>
         </li>
       </ul>
+    </div>
+    <div v-if="noteList.length" ref="noteRef" class="absolute  bg-base-100 border border-info bar-shadow rounded-md flex flex-col ease-in-out divide-y" @click.stop :style="noteStyle">
+      <NoteListView class-name="rounded-md" :data="noteList"  @remove="removeNote"/>
     </div>
   </div>
 
