@@ -133,7 +133,7 @@ const lineList = [
 // 笔记操作
 const addNote = () => {
   const note = get(selectNote)
-  if(!note) return
+  if (!note) return
 
   // 新增，之前有高亮,但无笔记内容
   noteRichAction.addInNoNotes()
@@ -145,11 +145,11 @@ const removeNote = (_: NoteText, index: number) => {
 
 <template>
   <div class="left-note-wrapper bg-base-100 flex flex-col">
-    <div role="tablist" class="tabs tabs-boxed rounded-none rounded-b">
-      <a role="tab" class="tab transition ease-in-out " :class="{ 'tab-active': activeTab === 'book' }"
+    <div role="tablist" class="tabs tabs-boxed rounded-none  py-2">
+      <a role="tab" class="tab transition ease-in-out" :class="{ 'tab-active': activeTab === 'book' }"
         @click="changeTab('book')">书籍</a>
 
-      <a role="tab" class="tab transition ease-in-out " :class="{ 'tab-active': activeTab === 'note' }"
+      <a role="tab" class="tab transition ease-in-out" :class="{ 'tab-active': activeTab === 'note' }"
         @click="changeTab('note')" v-if="notes?.length">
         <div class="indicator w-full justify-center">
           <span class="indicator-item indicator-bottom badge badge-secondary right-[5px]">
@@ -158,7 +158,7 @@ const removeNote = (_: NoteText, index: number) => {
           <div>笔记</div>
         </div>
       </a>
-      <a role="tab" class="tab transition ease-in-out " :class="{ 'tab-active': activeTab === 'note' }"
+      <a role="tab" class="tab transition ease-in-out" :class="{ 'tab-active': activeTab === 'note' }"
         @click="changeTab('note')" v-else>笔记</a>
     </div>
     <div class="flex-1 transition ease-in-out p-3 relative">
@@ -218,7 +218,7 @@ const removeNote = (_: NoteText, index: number) => {
                   <div class="card-body p-2">
                     <!-- 高亮内容 -->
                     <SourceListView :data="NoteAction.getDomSource(notes[virtualRow.index].domSource)"
-                      :opacity="indexBgOpacity(virtualRow.index)" :auto="false"/>
+                      :opacity="indexBgOpacity(virtualRow.index)" :auto="false" />
                     <!-- 笔记列表 -->
                     <div class="grid grid-cols-1 divide-y divide-neutral">
                       <NoteListView :show="false" :data="NoteAction.getNoteText(notes[virtualRow.index].notes)"
@@ -271,9 +271,9 @@ const removeNote = (_: NoteText, index: number) => {
                   </div>
                 </div>
               </div>
-              <NoteListView class-name="rounded-lg" :data="noteList" @remove="removeNote"/>
-              <textarea v-model="textareaValue" rows="4" class="textarea textarea-accent w-full bg-base-200 rounded-lg my-3"
-                placeholder="写下此时的想法..."></textarea>
+              <NoteListView class-name="rounded-lg" :data="noteList" @remove="removeNote" />
+              <textarea v-model="textareaValue" rows="4"
+                class="textarea textarea-accent w-full bg-base-200 rounded-lg my-3" placeholder="写下此时的想法..."></textarea>
               <div class="card-actions justify-end">
                 <button class="btn btn-sm btn-success" @click="addNote()">添加</button>
               </div>

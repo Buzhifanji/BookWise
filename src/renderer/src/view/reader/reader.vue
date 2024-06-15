@@ -138,7 +138,7 @@ onUnmounted(() => {
         <div class="flex h-full flex-col ">
           <!-- 头部 -->
           <div role="navigation" id="book-view_nav_bar" aria-label="Navbar"
-            class="navbar justify-between border-b border-base-200 px-3">
+            class="navbar justify-between border-b border-base-200 px-3 py-0 min-h-12 shadow-2xl">
             <div class="gap-3 flex">
               <!-- 控制侧边栏菜单栏 -->
               <label :for="CETALOG_DRAWER" class="cursor-pointer " v-if="isSM">
