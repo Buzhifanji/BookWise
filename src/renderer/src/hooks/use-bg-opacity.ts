@@ -14,5 +14,5 @@ export const useBgOpacity = () => {
     return get(hoverIndex) === index ? get(bgOpacity) : 1
   }
 
-  return { bgOpacity, indexBgOpacity, hoverAction }
+  return { bgOpacity, indexBgOpacity, hoverAction, hoverIndex }
 }

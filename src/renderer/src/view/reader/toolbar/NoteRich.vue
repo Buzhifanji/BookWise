@@ -150,9 +150,9 @@ init()
           <div @click="closeNoteRich()"> <kbd class="kbd">Esc</kbd></div>
         </div>
         <SourceListView :data="source" />
-        <NoteListView :data="noteList" @remove="remove" />
+        <NoteListView class-name="rounded-md" :data="noteList" @remove="remove" />
         <textarea ref="textareatRef" v-model="textareaValue" rows="4"
-          class="textarea textarea-accent w-full bg-base-200 my-3" placeholder="写下此时的想法..."></textarea>
+          class="textarea textarea-accent w-full bg-base-200 my-3 rounded-lg" placeholder="写下此时的想法..."></textarea>
         <div class="card-actions justify-end">
           <button class="btn btn-success" @click="submit">添加</button>
         </div>

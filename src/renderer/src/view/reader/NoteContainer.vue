@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { Book } from '@renderer/batabase';
-import { NoteAction } from '@renderer/components';
+import { Book, Note } from '@renderer/batabase';
+import { NoteAction, Toast } from '@renderer/components';
 import { useBgOpacity } from '@renderer/hooks';
 import { $, convertUint8ArrayToURL } from '@renderer/shared';
 import { useVirtualizer } from '@tanstack/vue-virtual';
+import { get, onClickOutside, onKeyStroke, set, useClipboard, useElementSize, useWindowSize } from '@vueuse/core';
 import dayjs from 'dayjs';
+import { Baseline, Copy, Highlighter, SpellCheck2, Trash } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
+import { ColorKeys, HighlightType, highlightColor } from './highlight-color';
 import NoteListView from './toolbar/NoteList.vue';
 import SourceListView from './toolbar/SourceList.vue';
+import { ToolbarAction } from './toolbar/action';
 
 interface Props {
   book: Book,
@@ -26,9 +30,6 @@ const notes = NoteAction.observableByEBookId(props.book.id)
 const removeOneNote = () => {
 
 }
-
-// 鼠标选中效果
-const { bgOpacity, indexBgOpacity, hoverAction } = useBgOpacity()
 
 // 虚拟列表
 const containerRef = ref<HTMLElement | null>(null)
@@ -53,13 +54,84 @@ const measureElement = (el) => {
   return undefined
 }
 
-// 编辑
-const openEidteBar = (index: number) => {
-  console.log(index)
+// 鼠标选中效果
+const { hoverIndex, indexBgOpacity, hoverAction } = useBgOpacity()
+const closeHover = () => {
+  if (!get(selectNote)) {
+    hoverAction(1, -1)
+  }
+}
+
+// 编辑（工具栏）
+const selectNote = ref<Note>() // 选中的笔记
+const noteTop = ref(0)
+const toolbarRef = ref<HTMLElement | null>(null)
+const openEidteBar = async (index: number) => {
   const dom = $(`.note-item[data-index='${index}']`) as HTMLElement
   if (dom) {
-
+    set(selectNote, get(notes)[index])
+    hoverAction(0.3, index)
+    const { top } = dom.getBoundingClientRect()
+    set(noteTop, top)
   }
+}
+const { height: barHeight } = useElementSize(toolbarRef)
+const { height: winHeight } = useWindowSize()
+const barTop = computed(() => {
+  const n = get(noteTop)
+  const w = get(winHeight)
+  const h = get(barHeight)
+  if (n < 0) {
+    return 0
+  }
+  if (n + h > w) {
+    return w - h - 2
+  }
+  return n
+})
+
+
+onClickOutside(toolbarRef, () => {
+  hoverAction(1, -1)
+  set(selectNote, undefined)
+})
+onKeyStroke('Escape', () => {
+  if (get(selectNote)) {
+    hoverAction(1, -1)
+    set(selectNote, undefined)
+  }
+})
+
+// 复制
+const { copy } = useClipboard()
+const copyAction = () => {
+  const val = ToolbarAction.source.reduce((acc, cur) => (acc += cur.text), '')
+  copy(val)
+  Toast({
+    message: '已复制到剪贴板',
+    position: ['toast-top', 'toast-center'],
+    type: 'alert-success',
+  })
+}
+
+const onMarker = () => { }
+const onBeeline = () => { }
+const onWave = () => { }
+const barList = [
+  { name: '复制', icon: Copy, click: copyAction, active: 'copy' },
+  // { name: '复制', icon: Copy, click: copyAction, active: 'copy' },
+  // { name: '复制', icon: Copy, click: copyAction, active: 'copy' },
+  { name: '删除', icon: Trash, click: copyAction, active: 'remove' },
+  // { name: '写想法', icon: MessageSquareMore, click: openNoteRich, active: 'note' },
+]
+const lineList = [
+  { name: '马克笔', icon: Highlighter, click: onMarker, active: HighlightType.marker },
+  { name: '直线', icon: Baseline, click: onBeeline, active: HighlightType.beeline },
+  { name: '波浪线', icon: SpellCheck2, click: onWave, active: HighlightType.wavy },
+]
+
+function changeColor(value: ColorKeys) {
+
 }
 </script>
 
@@ -131,16 +203,17 @@ const openEidteBar = (index: number) => {
               :style="{ transform: `translateY(${virtualRows[0]?.start ?? 0}px)` }">
               <div v-for="virtualRow in virtualRows" :key="virtualRow.key" class="note-item"
                 :data-index="virtualRow.index" :ref="measureElement">
-                <div class="card bg-base-200 rounded-md cursor-pointer mb-3 hover:bg-info hover:text-info-content"
+                <div class="card bg-base-200 rounded-md cursor-pointer mb-3 "
+                  :class="[hoverIndex === virtualRow.index ? 'bg-info text-info-content' : '']"
                   :style="{ '--tw-bg-opacity': indexBgOpacity(virtualRow.index) }"
-                  @mouseenter="hoverAction(0.3, virtualRow.index)" @mouseleave="hoverAction(1, -1)">
+                  @mouseenter="hoverAction(0.3, virtualRow.index)" @mouseleave="closeHover()">
                   <div class="card-body p-2">
                     <!-- 高亮内容 -->
                     <SourceListView :data="NoteAction.getDomSource(notes[virtualRow.index].domSource)"
                       :opacity="indexBgOpacity(virtualRow.index)" />
 
                     <!-- 笔记列表 -->
-                    <div class="grid grid-cols-1 divide-y">
+                    <div class="grid grid-cols-1 divide-y divide-secondary-content">
                       <NoteListView :data="NoteAction.getNoteText(notes[virtualRow.index].notes)"
                         :opacity="indexBgOpacity(virtualRow.index)" />
                     </div>
@@ -157,17 +230,48 @@ const openEidteBar = (index: number) => {
         </div>
 
         <!-- 笔记工具栏 -->
-        <!-- <div class="fixed inset-0">
-          <div class="card bg-base-100 absolute top-10  select-none cursor-pointer right-80 bar-shadow">
-            <div class="card-body">
-              <div class="flex flex-row justify-between items-center mb-2">
-                <h3 class="font-bold text-lg">我的笔记</h3>
-                <div> <kbd class="kbd">Esc</kbd></div>
+        <div class="fixed inset-0" v-if="selectNote">
+          <div
+            class="card bg-base-100 absolute transition ease-in-out   right-[26rem] border border-primary z-50 select-none cursor-pointer max-w-md bar-shadow"
+            :style="{ top: `${barTop}px` }" ref="toolbarRef">
+            <div class="card-body p-4">
+              <div class="grid grid-cols-1 bg-base-200 rounded-lg p-2 divide-y divide-secondary-content"
+                :style="{ '--tw-bg-opacity': 0.5 }">
+                <ul class="menu menu-horizontal p-1 m-0 justify-between">
+                  <li @click.stop="item.click" v-for="item in barList" :key="item.name" class="tooltip"
+                    :data-tip="item.name">
+                    <a>
+                      <component :is="item.icon" />
+                    </a>
+                  </li>
+                </ul>
+                <div class="grid grid-cols-2 divide-x divide-secondary-content">
+                  <ul class="menu menu-horizontal p-1 m-0 justify-between">
+                    <li @click.stop="item.click" v-for="item in lineList" :key="item.name" class="tooltip"
+                      :data-tip="item.name">
+                      <a>
+                        <component :is="item.icon" />
+                      </a>
+                    </li>
+                  </ul>
+                  <div>
+                    <div class="flex flex-row gap-3 cursor-pointer p-2.5">
+                      <div v-for="item in highlightColor.getColors()" class="badge badge-lg" @click="changeColor(item)"
+                        :class="highlightColor.getBadgeColor(item)" :key="item">
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-
+              <NoteListView class-name="rounded-lg" :data="NoteAction.getNoteText(selectNote.notes)" />
+              <textarea ref="textareatRef" rows="4" class="textarea textarea-accent w-full bg-base-200 rounded-lg my-3"
+                placeholder="写下此时的想法..."></textarea>
+              <div class="card-actions justify-end">
+                <button class="btn btn-sm btn-success">添加</button>
+              </div>
             </div>
           </div>
-        </div> -->
+        </div>
       </div>
     </div>
   </div>
