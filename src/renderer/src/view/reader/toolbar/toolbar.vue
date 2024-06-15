@@ -68,8 +68,7 @@ const findNote = async () => {
   if(get(isEdite) && ToolbarStyle.source.length) {
     const val = await NoteAction.findBySourceId(ToolbarStyle.source[0].id)
     set(note, val)
-    const list = val?.notes ? NoteAction.getNoteText(val.notes) : []
-    set(noteList, list)
+    set(noteList, NoteAction.getNoteText(val?.notes))
   }
 }
 const removeNote = async (_: NoteText, index: number) => {

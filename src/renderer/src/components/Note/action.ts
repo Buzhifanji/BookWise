@@ -86,6 +86,10 @@ export class NoteAction {
     return await db.notes.where('sourceId').equals(id).first()
   }
 
+  static async findBySourceIds(ids: string[]) {
+    return await db.notes.where('sourceId').anyOf(ids).toArray()
+  }
+
   static async findBookPageNotes(eBookId: string, page: string) {
     const bookNotes = await this.findByEBookId(eBookId)
     const result: Note[] = []

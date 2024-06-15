@@ -216,7 +216,7 @@ export class NoteRichAction {
   ) {}
 
   setNotes(_note: Note) {
-    set(this.notes, _note.notes ? NoteAction.getNoteText(_note.notes) : [])
+    set(this.notes, NoteAction.getNoteText(_note.notes))
     this.noteDetail = _note
   }
 

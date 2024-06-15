@@ -1,6 +1,6 @@
 import { CreateFrom, EventTypeEnum, WebHighlight } from '@book-wise/web-highlight'
 import { Book } from '@renderer/batabase'
-import { NoteAction } from '@renderer/components'
+import { NoteAction, NoteText } from '@renderer/components'
 import { $, getNoteOffset } from '@renderer/shared'
 import { settingStore } from '@renderer/store'
 import { get } from '@vueuse/core'
@@ -47,13 +47,25 @@ export function initHighlight(book: Book) {
   // 创建高亮内容
   highlighter.on(EventTypeEnum.CREATE, async ({ sources, type, removeIds }) => {
     if (type === CreateFrom.rang) {
-      // 删除重叠的笔记
+      let notes = ''
       if (removeIds && removeIds.length > 0) {
+        // 取出将要删除笔记里的内容
+        const willDeleteNote = await NoteAction.findBySourceIds(removeIds)
+        const cacheNote: NoteText[] = []
+        willDeleteNote.forEach((item) => {
+          const val = NoteAction.getNoteText(item.notes)
+          cacheNote.push(...val)
+        })
+        if (cacheNote.length > 0) {
+          notes = JSON.stringify(cacheNote)
+        }
+
+        // 删除重叠的笔记
         await NoteAction.removeBySoureIds(removeIds)
       }
 
       // 新建笔记
-      await NoteAction.add({ sources, eBookId: book.id, chapterName: '', notes: '' })
+      await NoteAction.add({ sources, eBookId: book.id, chapterName: '', notes })
     }
   })
 
