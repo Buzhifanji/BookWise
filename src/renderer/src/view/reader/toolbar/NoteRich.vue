@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import { Note } from '@renderer/batabase';
 import { NoteAction, NoteText, Toast } from '@renderer/components';
-import { now } from '@renderer/shared';
-import { get, onClickOutside, onKeyStroke, set, useElementBounding, useParentElement } from '@vueuse/core';
+import { get, onClickOutside, onKeyStroke, useElementBounding, useParentElement } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
 import { computed, onMounted, ref } from 'vue';
 import { highlighter } from '../highlight';
-import { highlightColor } from '../highlight-color';
 import NoteListView from './NoteList.vue';
 import SourceListView from './SourceList.vue';
-import { NoteBarStyle } from './action';
+import { NoteBarStyle, NoteRichAction } from './action';
 
 const parentEl = useParentElement()
 const cardRef = ref<HTMLElement | null>(null)
@@ -27,6 +25,8 @@ onKeyStroke('Escape', () => {
 const { width, left, } = useElementBounding(parentEl)
 const bookParam = useRouteParams<string>('id')
 
+const noteRichAction = new NoteRichAction(bookParam, textareaValue)
+
 const style = computed(() => {
   const w = width.value
   const l = left.value
@@ -40,7 +40,7 @@ const style = computed(() => {
 
 const source = NoteBarStyle.source
 
-const noteList = ref<NoteText[]>([])
+const noteList = noteRichAction.notes
 
 let note: Note | undefined = undefined;
 
@@ -73,7 +73,7 @@ async function init() {
     })
     NoteBarStyle.close()
   } else {
-    set(noteList, NoteAction.getNoteText(note.notes))
+    noteRichAction.setNotes(note)
   }
 }
 
@@ -81,54 +81,19 @@ async function submit() {
   const value = get(textareaValue)
   if (!value) return
 
-  noteList.value.push({ value, time: now() })
-
   if (NoteBarStyle.isPainted) {
-    // 编辑
-    if (!note) return
-
-    await NoteAction.update(note.id, { notes: JSON.stringify(noteList.value) })
-    if (note?.notes) {
-      Toast({
-        message: '修改笔记成功',
-        position: ['toast-top', 'toast-center'],
-        type: 'alert-success',
-      })
-    } else {
-      Toast({
-        message: '添加笔记成功',
-        position: ['toast-top', 'toast-center'],
-        type: 'alert-success',
-      })
-    }
+     // 新增，之前有高亮,但无笔记内容
+     noteRichAction.addInNoNotes()
   } else {
-    // 新增
-    const sources = get(source).map(item => {
-      return { ...item, className: highlightColor.getClassName() }
-    })
-    await NoteAction.add({ sources, eBookId: get(bookParam), chapterName: '', notes: '' })
-    highlighter.remove(get(source)[0].id)
-    highlighter.fromSource(sources)
-    Toast({
-      message: '添加笔记成功',
-      position: ['toast-top', 'toast-center'],
-      type: 'alert-success',
-    })
+    // 第一次新增，无高亮
+    noteRichAction.firstAdd(get(source))
   }
   NoteBarStyle.close()
 }
 
 // 删除
 async function remove(_: NoteText, index: number) {
-  noteList.value.splice(index, 1)
-
-  await NoteAction.update(note!.id, { notes: JSON.stringify(noteList.value) })
-
-  Toast({
-    message: '删除笔记成功',
-    position: ['toast-top', 'toast-center'],
-    type: 'alert-success',
-  })
+  noteRichAction.remove(index)
 }
 
 
@@ -142,7 +107,7 @@ init()
 
 <template>
   <div class="fixed inset-0 transition ease-in-out">
-    <div class="card w-96 bg-base-100  absolute bottom-8 cursor-pointer bar-shadow select-none max-h-full overflow-auto"
+    <div class="card w-96 bg-base-100 border border-primary absolute bottom-8 cursor-pointer bar-shadow select-none max-h-full overflow-auto"
       :style="style" ref="cardRef">
       <div class="card-body">
         <div class="flex flex-row justify-between items-center mb-2">

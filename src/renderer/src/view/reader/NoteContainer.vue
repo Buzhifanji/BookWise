@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Book, Note } from '@renderer/batabase';
-import { NoteAction } from '@renderer/components';
+import { NoteAction, NoteText } from '@renderer/components';
 import { useBgOpacity } from '@renderer/hooks';
 import { $, convertUint8ArrayToURL } from '@renderer/shared';
 import { useVirtualizer } from '@tanstack/vue-virtual';
@@ -12,7 +12,7 @@ import { computed, ref } from 'vue';
 import { HighlightType, highlightColor } from './highlight-color';
 import NoteListView from './toolbar/NoteList.vue';
 import SourceListView from './toolbar/SourceList.vue';
-import { NoteToolBarAction } from './toolbar/action';
+import { NoteRichAction, NoteToolBarAction } from './toolbar/action';
 
 interface Props {
   book: Book,
@@ -68,6 +68,11 @@ const toolbarRef = ref<HTMLElement | null>(null) //工具栏dom
 const noteToolBar = new NoteToolBarAction([], ref(true), bookParam)
 const activeTextDecoration = noteToolBar.decoration // 文字高亮类型
 const activeColor = noteToolBar.color // 文字高亮颜色
+
+const textareaValue = ref('') // 笔记输入框
+const noteRichAction = new NoteRichAction(bookParam, textareaValue)
+const noteList = noteRichAction.notes // 编辑框里的笔记列表
+
 const openEidteBar = async (index: number) => {
   const dom = $(`.note-item[data-index='${index}']`) as HTMLElement
   if (dom) {
@@ -79,6 +84,7 @@ const openEidteBar = async (index: number) => {
     set(noteTop, top)
 
     noteToolBar.updateSource(NoteAction.getDomSource(note.domSource))
+    noteRichAction.setNotes(note)
   }
 }
 const closeEditrBar = () => {
@@ -124,6 +130,17 @@ const lineList = [
   { name: '波浪线', icon: SpellCheck2, click: () => noteToolBar.wavy(), active: HighlightType.wavy },
 ]
 
+// 笔记操作
+const addNote = () => {
+  const note = get(selectNote)
+  if(!note) return
+
+  // 新增，之前有高亮,但无笔记内容
+  noteRichAction.addInNoNotes()
+}
+const removeNote = (_: NoteText, index: number) => {
+  noteRichAction.remove(index)
+}
 </script>
 
 <template>
@@ -204,7 +221,7 @@ const lineList = [
                       :opacity="indexBgOpacity(virtualRow.index)" :auto="false"/>
                     <!-- 笔记列表 -->
                     <div class="grid grid-cols-1 divide-y divide-neutral">
-                      <NoteListView :data="NoteAction.getNoteText(notes[virtualRow.index].notes)"
+                      <NoteListView :show="false" :data="NoteAction.getNoteText(notes[virtualRow.index].notes)"
                         :opacity="indexBgOpacity(virtualRow.index)" />
                     </div>
                     <div class="flex flex-row-reverse">
@@ -254,11 +271,11 @@ const lineList = [
                   </div>
                 </div>
               </div>
-              <NoteListView class-name="rounded-lg" :data="NoteAction.getNoteText(selectNote.notes)" />
-              <textarea ref="textareatRef" rows="4" class="textarea textarea-accent w-full bg-base-200 rounded-lg my-3"
+              <NoteListView class-name="rounded-lg" :data="noteList" @remove="removeNote"/>
+              <textarea v-model="textareaValue" rows="4" class="textarea textarea-accent w-full bg-base-200 rounded-lg my-3"
                 placeholder="写下此时的想法..."></textarea>
               <div class="card-actions justify-end">
-                <button class="btn btn-sm btn-success">添加</button>
+                <button class="btn btn-sm btn-success" @click="addNote()">添加</button>
               </div>
             </div>
           </div>

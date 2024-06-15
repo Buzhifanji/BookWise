@@ -2,10 +2,11 @@
 import { NoteText } from '@renderer/components';
 import dayjs from 'dayjs';
 
-withDefaults(defineProps<{ data: NoteText[], opacity?: number, className?: string }>(), {
+withDefaults(defineProps<{ data: NoteText[], opacity?: number, className?: string, show?: boolean }>(), {
   data: () => [],
   opacity: 0.5,
-  className: ''
+  className: '',
+  show: true
 })
 
 const emit = defineEmits<{
@@ -20,7 +21,7 @@ const emit = defineEmits<{
     :style="{ '--tw-bg-opacity': opacity }">
     <div class="flex flex-row justify-between items-center mb-1">
       <div class="stat-desc">{{ dayjs(item.time).format('L LT') }}</div>
-      <div>
+      <div v-if="show">
         <button class="btn btn-outline btn-error btn-xs" @click="emit('remove', item, index)">删除</button>
       </div>
     </div>
