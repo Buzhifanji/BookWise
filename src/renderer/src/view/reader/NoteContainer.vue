@@ -1,23 +1,26 @@
 <script setup lang="ts">
 import { Book, Note } from '@renderer/batabase';
-import { NoteAction, Toast } from '@renderer/components';
+import { NoteAction } from '@renderer/components';
 import { useBgOpacity } from '@renderer/hooks';
 import { $, convertUint8ArrayToURL } from '@renderer/shared';
 import { useVirtualizer } from '@tanstack/vue-virtual';
-import { get, onClickOutside, onKeyStroke, set, useClipboard, useElementSize, useWindowSize } from '@vueuse/core';
+import { get, onClickOutside, onKeyStroke, set, useElementSize, useWindowSize } from '@vueuse/core';
+import { useRouteParams } from '@vueuse/router';
 import dayjs from 'dayjs';
 import { Baseline, Copy, Highlighter, SpellCheck2, Trash } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
-import { ColorKeys, HighlightType, highlightColor } from './highlight-color';
+import { HighlightType, highlightColor } from './highlight-color';
 import NoteListView from './toolbar/NoteList.vue';
 import SourceListView from './toolbar/SourceList.vue';
-import { ToolbarAction } from './toolbar/action';
+import { NoteToolBarAction } from './toolbar/action';
 
 interface Props {
   book: Book,
 }
 
 const props = defineProps<Props>()
+
+const bookParam = useRouteParams<string>('id')
 
 // tab
 const activeTab = ref('book')
@@ -26,10 +29,6 @@ const changeTab = (tab: string) => {
 }
 
 const notes = NoteAction.observableByEBookId(props.book.id)
-
-const removeOneNote = () => {
-
-}
 
 // 虚拟列表
 const containerRef = ref<HTMLElement | null>(null)
@@ -64,17 +63,29 @@ const closeHover = () => {
 
 // 编辑（工具栏）
 const selectNote = ref<Note>() // 选中的笔记
-const noteTop = ref(0)
-const toolbarRef = ref<HTMLElement | null>(null)
+const noteTop = ref(0) // 选中的dom 距离可视化区域的顶部距离
+const toolbarRef = ref<HTMLElement | null>(null) //工具栏dom
+const noteToolBar = new NoteToolBarAction([], ref(true), bookParam)
+const activeTextDecoration = noteToolBar.decoration // 文字高亮类型
+const activeColor = noteToolBar.color // 文字高亮颜色
 const openEidteBar = async (index: number) => {
   const dom = $(`.note-item[data-index='${index}']`) as HTMLElement
   if (dom) {
-    set(selectNote, get(notes)[index])
+    const note = get(notes)[index]
+    set(selectNote, note)
     hoverAction(0.3, index)
+
     const { top } = dom.getBoundingClientRect()
     set(noteTop, top)
+
+    noteToolBar.updateSource(NoteAction.getDomSource(note.domSource))
   }
 }
+const closeEditrBar = () => {
+  set(selectNote, undefined)
+  hoverAction(1, -1)
+}
+
 const { height: barHeight } = useElementSize(toolbarRef)
 const { height: winHeight } = useWindowSize()
 const barTop = computed(() => {
@@ -91,48 +102,28 @@ const barTop = computed(() => {
 })
 
 
-onClickOutside(toolbarRef, () => {
-  hoverAction(1, -1)
-  set(selectNote, undefined)
-})
+onClickOutside(toolbarRef, closeEditrBar)
 onKeyStroke('Escape', () => {
   if (get(selectNote)) {
-    hoverAction(1, -1)
-    set(selectNote, undefined)
+    closeEditrBar()
   }
 })
 
-// 复制
-const { copy } = useClipboard()
-const copyAction = () => {
-  const val = ToolbarAction.source.reduce((acc, cur) => (acc += cur.text), '')
-  copy(val)
-  Toast({
-    message: '已复制到剪贴板',
-    position: ['toast-top', 'toast-center'],
-    type: 'alert-success',
-  })
+const removeOneNote = () => {
+  noteToolBar.remove()
+  closeEditrBar()
 }
 
-const onMarker = () => { }
-const onBeeline = () => { }
-const onWave = () => { }
 const barList = [
-  { name: '复制', icon: Copy, click: copyAction, active: 'copy' },
-  // { name: '复制', icon: Copy, click: copyAction, active: 'copy' },
-  // { name: '复制', icon: Copy, click: copyAction, active: 'copy' },
-  { name: '删除', icon: Trash, click: copyAction, active: 'remove' },
-  // { name: '写想法', icon: MessageSquareMore, click: openNoteRich, active: 'note' },
+  { name: '复制', icon: Copy, click: () => noteToolBar.copySource(), active: 'copy' },
+  { name: '删除', icon: Trash, click: () => removeOneNote(), active: 'remove' },
 ]
 const lineList = [
-  { name: '马克笔', icon: Highlighter, click: onMarker, active: HighlightType.marker },
-  { name: '直线', icon: Baseline, click: onBeeline, active: HighlightType.beeline },
-  { name: '波浪线', icon: SpellCheck2, click: onWave, active: HighlightType.wavy },
+  { name: '马克笔', icon: Highlighter, click: () => noteToolBar.marker(), active: HighlightType.marker },
+  { name: '直线', icon: Baseline, click: () => noteToolBar.beeline(), active: HighlightType.beeline },
+  { name: '波浪线', icon: SpellCheck2, click: () => noteToolBar.wavy(), active: HighlightType.wavy },
 ]
 
-function changeColor(value: ColorKeys) {
-
-}
 </script>
 
 <template>
@@ -249,15 +240,16 @@ function changeColor(value: ColorKeys) {
                   <ul class="menu menu-horizontal p-1 m-0 justify-between">
                     <li @click.stop="item.click" v-for="item in lineList" :key="item.name" class="tooltip"
                       :data-tip="item.name">
-                      <a>
+                      <a :class="{ active: item.active === activeTextDecoration }">
                         <component :is="item.icon" />
                       </a>
                     </li>
                   </ul>
                   <div>
                     <div class="flex flex-row gap-3 cursor-pointer p-2.5">
-                      <div v-for="item in highlightColor.getColors()" class="badge badge-lg" @click="changeColor(item)"
-                        :class="highlightColor.getBadgeColor(item)" :key="item">
+                      <div v-for="item in highlightColor.getColors()" class="badge badge-lg"
+                        @click="noteToolBar.changeColor(item)" :class="highlightColor.getBadgeColor(item)" :key="item">
+                        {{ item === activeColor ? '✓' : '' }}
                       </div>
                     </div>
                   </div>

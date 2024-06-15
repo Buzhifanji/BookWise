@@ -6,7 +6,7 @@ import { settingStore } from '@renderer/store'
 import { get } from '@vueuse/core'
 import { watchEffect } from 'vue'
 import { highlightColor } from './highlight-color'
-import { NoteBarAction, ToolbarAction } from './toolbar/action'
+import { NoteBarStyle, ToolbarStyle } from './toolbar/action'
 
 export let highlighter: WebHighlight
 
@@ -36,10 +36,10 @@ export function initHighlight(book: Book) {
   let isNotPaintedFromSource = false
 
   highlighter.on(EventTypeEnum.SOURCE, ({ isPainted, range, source }) => {
-    if (!isPainted && !get(NoteBarAction.show)) {
+    if (!isPainted && !get(NoteBarStyle.show)) {
       // 手动控制绘制
       const { top, left } = getNoteOffset(range)
-      ToolbarAction.open(top, left, source, false)
+      ToolbarStyle.open(top, left, source, false)
       isNotPaintedFromSource = true
     }
   })
@@ -60,9 +60,9 @@ export function initHighlight(book: Book) {
   highlighter.on(EventTypeEnum.CLICK, ({ id, target, source }) => {
     if (id && source) {
       const { top, left } = getNoteOffset(target)
-      ToolbarAction.open(top, left, source, true)
+      ToolbarStyle.open(top, left, source, true)
     } else {
-      if (!isNotPaintedFromSource) ToolbarAction.close()
+      if (!isNotPaintedFromSource) ToolbarStyle.close()
     }
 
     isNotPaintedFromSource = false

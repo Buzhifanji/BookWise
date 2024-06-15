@@ -9,7 +9,7 @@ import { highlighter } from '../highlight';
 import { highlightColor } from '../highlight-color';
 import NoteListView from './NoteList.vue';
 import SourceListView from './SourceList.vue';
-import { NoteBarAction } from './action';
+import { NoteBarStyle } from './action';
 
 const parentEl = useParentElement()
 const cardRef = ref<HTMLElement | null>(null)
@@ -38,7 +38,7 @@ const style = computed(() => {
   return { width: `${_width}px`, left: `${_left}px` }
 })
 
-const source = NoteBarAction.source
+const source = NoteBarStyle.source
 
 const noteList = ref<NoteText[]>([])
 
@@ -47,17 +47,17 @@ let note: Note | undefined = undefined;
 
 function closeNoteRich() {
   // 处理直接新增笔记的特殊情况
-  if (!NoteBarAction.isPainted) {
+  if (!NoteBarStyle.isPainted) {
     if (get(source).length) {
       highlighter.remove(get(source)[0].id)
     }
   }
-  NoteBarAction.close()
+  NoteBarStyle.close()
 }
 
 async function init() {
   // 手动绘制，直接添加笔记
-  if (!NoteBarAction.isPainted) {
+  if (!NoteBarStyle.isPainted) {
     return
   }
 
@@ -71,7 +71,7 @@ async function init() {
       position: ['toast-top', 'toast-center'],
       type: 'alert-error',
     })
-    NoteBarAction.close()
+    NoteBarStyle.close()
   } else {
     set(noteList, NoteAction.getNoteText(note.notes))
   }
@@ -83,7 +83,7 @@ async function submit() {
 
   noteList.value.push({ value, time: now() })
 
-  if (NoteBarAction.isPainted) {
+  if (NoteBarStyle.isPainted) {
     // 编辑
     if (!note) return
 
@@ -115,7 +115,7 @@ async function submit() {
       type: 'alert-success',
     })
   }
-  NoteBarAction.close()
+  NoteBarStyle.close()
 }
 
 // 删除

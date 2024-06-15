@@ -16,7 +16,7 @@ import SectionReaderView from './mode/SectionReader.vue';
 import { getBookHref, render, unMountedBookRender } from './render';
 import NoteRichView from './toolbar/NoteRich.vue';
 import ToolbarView from './toolbar/Toolbar.vue';
-import { NoteBarAction, ToolbarAction } from './toolbar/action';
+import { NoteBarStyle, ToolbarStyle } from './toolbar/action';
 
 const props = defineProps({
   id: String,
@@ -41,8 +41,8 @@ const scrollReaderViewRef = ref<InstanceType<typeof ScrollReaderView>>() // 滚�
 const sectionReaderViewRef = ref<InstanceType<typeof SectionReaderView>>() // 章节视图
 const doubleReaderViewRef = ref<InstanceType<typeof DoubleReaderView>>() // 双栏视图
 
-const isNoteRichShow = NoteBarAction.show
-const isShowToolBar = ToolbarAction.show
+const isNoteRichShow = NoteBarStyle.show
+const isShowToolBar = ToolbarStyle.show
 
 // 获取书本内容
 async function getBookContent(bookId: string, url: string) {
