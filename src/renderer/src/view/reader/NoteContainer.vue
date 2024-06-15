@@ -201,8 +201,7 @@ const lineList = [
                   <div class="card-body p-2">
                     <!-- 高亮内容 -->
                     <SourceListView :data="NoteAction.getDomSource(notes[virtualRow.index].domSource)"
-                      :opacity="indexBgOpacity(virtualRow.index)" />
-
+                      :opacity="indexBgOpacity(virtualRow.index)" :auto="false"/>
                     <!-- 笔记列表 -->
                     <div class="grid grid-cols-1 divide-y divide-secondary-content">
                       <NoteListView :data="NoteAction.getNoteText(notes[virtualRow.index].notes)"

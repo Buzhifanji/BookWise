@@ -105,12 +105,12 @@ export class NoteToolBarAction {
     if (get(this.isEdite)) {
       // 编辑
       highlighter.replaceClass(id, newClassName, className)
-      NoteAction.updateBySourceId(id, { domSource: JSON.stringify(ToolbarStyle.source) })
+      NoteAction.updateBySourceId(id, { domSource: JSON.stringify(source) })
     } else {
       // 新增
-      highlighter.fromSource(ToolbarStyle.source)
+      highlighter.fromSource(source)
       await NoteAction.add({
-        sources: ToolbarStyle.source,
+        sources: source,
         eBookId: get(this.bookParam),
         chapterName: '',
         notes: ''
