@@ -24,14 +24,14 @@ const section = computed(() => props.section[index.value])
 
 // 目录跳转
 async function jump(i: number, id?: string) {
-  if (containerRef.value) {
+  if (containerRef.value && !id) {
     containerRef.value.scrollTop = 0
   }
 
   index.value = i
 
   if (!id) return
-  await wait()
+  await wait(100)
   const container = $(`div[data-page-number='${i}']`) as HTMLElement
   if (!container) return
 
