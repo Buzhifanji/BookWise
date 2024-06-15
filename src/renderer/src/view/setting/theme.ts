@@ -1,10 +1,4 @@
 import { SelectItem } from '@renderer/components'
-import { StorageSelect } from '@renderer/shared'
-
-const key = 'book—wise__theme'
-
-const update = (value: SelectItem) =>
-  document.querySelector('html')?.setAttribute('data-theme', value.value)
 
 const data = [
   'light',
@@ -41,6 +35,4 @@ const data = [
   'sunset'
 ]
 
-const themes: SelectItem[] = data.map((item) => ({ id: item, value: item }))
-
-export const themeStore = new StorageSelect(key, themes, update)
+export const themes: SelectItem[] = data.map((item) => ({ id: item, value: item }))

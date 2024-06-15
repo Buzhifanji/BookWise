@@ -1,5 +1,4 @@
 import SettingView from './Setting.vue'
-import { i18n, languageStore } from './language'
-import { themeStore } from './theme'
+import { i18n } from './language'
 
-export { SettingView, i18n, languageStore, themeStore }
+export { SettingView, i18n }

@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import { languageStore, themeStore } from '@renderer/view/setting';
+import { watchEffect } from 'vue';
 import './dayjs';
+import { settingStore } from './store';
+import { setI18nLanguage } from './view/setting/language';
 
-// 初始化主题
-themeStore.init('light');
+watchEffect(() => {
+    const theme = settingStore.value.theme
+    document.querySelector('html')?.setAttribute('data-theme', theme)
 
-// 初始化语言
-languageStore.init('English');
+    const lang = settingStore.value.lang
+    setI18nLanguage(lang)
+})
+
 
 </script>
 

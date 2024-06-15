@@ -2,12 +2,8 @@
 import { CheckBoxView, Select, SelectView } from '@renderer/components';
 import { BookshelftMode, ReadMode } from '@renderer/enum';
 import { settingStore } from '@renderer/store';
-import { ref } from 'vue';
-import { languageStore } from './language';
-import { themeStore } from './theme';
-
-const selectedTheme = ref(themeStore.getDefault(themeStore.list[0]));
-const selectedLang = ref(languageStore.getDefault(languageStore.list[0]))
+import { langs } from './language';
+import { themes } from './theme';
 
 const readModeList = [
   { id: ReadMode.sroll, value: '滚动模式' },
@@ -37,14 +33,14 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
         <div class="card w-full bg-base-100 shadow">
           <div class="card-body">
             <h2 class="card-title">{{ $t('setting.language') }} & {{ $t('setting.theme') }}</h2>
-            <SelectView v-model="selectedLang" :list="languageStore.list" @update:model-value="languageStore.set"
+            <SelectView v-model="settingStore.lang" :list="langs" 
               :label="$t('setting.chooseLanguage')" />
             <label class="form-control w-full max-w-xs">
               <div class="label">
                 <span class="label-text" :style="textOpacity">{{ $t('setting.chooseTheme') }}</span>
               </div>
-              <Select v-model="selectedTheme" :is-cloce="false" :list="themeStore.list"
-                @update:model-value="themeStore.set" />
+              <Select v-model="settingStore.theme" :is-cloce="false" :list="themes"
+                 />
             </label>
           </div>
         </div>

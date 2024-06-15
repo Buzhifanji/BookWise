@@ -1,12 +1,9 @@
 import en from '@renderer/assets/locales/en.json'
 import { SelectItem } from '@renderer/components'
-import { StorageSelect } from '@renderer/shared'
 import { nextTick } from 'vue'
 import { createI18n } from 'vue-i18n'
 
 import.meta.glob(`../../assets/locales/*.json`, { eager: true })
-
-const key = 'book—wise__language'
 
 export const i18n = createI18n({
   legacy: false, // 设置为false以使用Composition API
@@ -27,13 +24,13 @@ async function loadLocaleMessages(locale: string) {
   return nextTick()
 }
 
-const setI18nLanguage = async ({ id, value }: SelectItem) => {
+export const setI18nLanguage = async (id: string) => {
   const html = document.querySelector('html')
   await loadLocaleMessages(id)
   i18n.global.locale.value = id as unknown as any
 
   if (html) {
-    html.setAttribute('lang', value)
+    html.setAttribute('lang', id)
     const dr = ['ar', 'fa'].includes(id) ? 'rtl' : 'ltr'
     html.setAttribute('dir', dr) // 设置文本方向
   }
@@ -64,9 +61,7 @@ const languageMap = {
   zh_hant: '繁体中文'
 }
 
-const langs: SelectItem[] = Object.keys(languageMap).map((key) => ({
+export const langs: SelectItem[] = Object.keys(languageMap).map((key) => ({
   id: key,
   value: languageMap[key]
 }))
-
-export const languageStore = new StorageSelect(key, langs, setI18nLanguage)

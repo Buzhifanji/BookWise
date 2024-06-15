@@ -9,6 +9,8 @@ interface SettingState {
   isOpenRecyleBin: boolean // 是否打开回收站
   isNoteShowClass: boolean // 笔记是否显示class
   isAutoHighlight: boolean // 选中文字的时候是否自定高亮
+  theme: string // 主题
+  lang: string // 语言
 }
 
 const defaultState: SettingState = {
@@ -18,7 +20,9 @@ const defaultState: SettingState = {
   bookself: BookshelftMode.bookshelf,
   isOpenRecyleBin: true,
   isNoteShowClass: true,
-  isAutoHighlight: true
+  isAutoHighlight: true,
+  theme: 'light',
+  lang: 'en'
 }
 
 /**
