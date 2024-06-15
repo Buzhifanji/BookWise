@@ -314,7 +314,7 @@ function restoreOneBook() {
 
     <!-- 详情 -->
     <dialog class="modal" ref="detailDialogRef">
-      <div class="modal-box max-w-5xl" v-on-click-outside="closeDetailDialog">
+      <div class="modal-box max-w-5xl " v-on-click-outside="closeDetailDialog">
         <div class="flex flex-row justify-between items-center mb-5">
           <h3 class="font-bold text-lg ">书籍详情</h3>
           <div> <kbd class="kbd">Esc</kbd></div>

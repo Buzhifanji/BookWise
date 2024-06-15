@@ -111,47 +111,51 @@ const removeNote = async (index: number) => {
 
     <!-- 删除确认 -->
     <dialog class="modal" ref="removeDialogRef">
-      <div class="modal-box prose" v-on-click-outside="closeRemoveDialog">
+      <div class="modal-box " v-on-click-outside="closeRemoveDialog">
         <div class="flex flex-row justify-between items-center">
           <h3 class="font-bold text-lg">确认删除笔记</h3>
-          <div> <kbd class="kbd">Esc</kbd></div>
+          <div @click="closeRemoveDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
         </div>
         <div v-if="selectData?.createTime">
           {{ dayjs(selectData?.createTime).format('L LT') }}
         </div>
-        <blockquote class="my-[1em]">
-          <p class=" my-[0.6em]" v-for="item in NoteAction.getDomSource(selectData?.domSource)">{{ item.text }}</p>
-        </blockquote>
+        <div class="prose">
+          <blockquote class="my-[1em]">
+            <p class=" my-[0.6em]" v-for="item in NoteAction.getDomSource(selectData?.domSource)">{{ item.text }}</p>
+          </blockquote>
+        </div>
         <template v-if="noteList.length">
           <NoteView :data="noteList" @remove="removeNote" />
         </template>
-        <p class="text-warning">将该笔记永久删除</p>
+        <p class="text-warning mt-4">将该笔记永久删除</p>
         <div class="modal-action">
-          <button class="btn btn-outline" @click="closeRemoveDialog">取消</button>
-          <button class="btn btn-outline  btn-error ml-4" @click="removeAction">确认</button>
+          <button class="btn btn-outline btn-sm " @click="closeRemoveDialog">取消</button>
+          <button class="btn btn-outline btn-sm  btn-error ml-4" @click="removeAction">确认</button>
         </div>
       </div>
     </dialog>
 
     <!-- 详情 -->
     <dialog class="modal" ref="detailDialogRef">
-      <div class="modal-box prose" v-on-click-outside="closeDetailDialog">
+      <div class="modal-box " v-on-click-outside="closeDetailDialog">
         <div class="flex flex-row justify-between items-center">
           <h3 class="font-bold text-lg">笔记详情</h3>
-          <div> <kbd class="kbd">Esc</kbd></div>
+          <div @click="closeDetailDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
         </div>
         <div v-if="selectData?.createTime">
           {{ dayjs(selectData?.createTime).format('L LT') }}
         </div>
-        <blockquote class="my-[1em]">
-          <p class=" my-[0.6em]" v-for="item in NoteAction.getDomSource(selectData?.domSource)">{{ item.text }}</p>
-        </blockquote>
+        <div class="prose">
+          <blockquote class="my-[1em] ">
+            <p class=" my-[0.6em]" v-for="item in NoteAction.getDomSource(selectData?.domSource)">{{ item.text }}</p>
+          </blockquote>
+        </div>
         <template v-if="noteList.length">
           <NoteView :data="noteList" :show-remove="false" />
         </template>
-        <p class="text-warning">将该笔记永久删除</p>
+        <p class="text-warning mt-4">将该笔记永久删除</p>
         <div class="modal-action">
-          <button class="btn btn-outline" @click="closeDetailDialog">关闭</button>
+          <button class="btn btn-outline btn-sm" @click="closeDetailDialog">关闭</button>
         </div>
       </div>
     </dialog>
