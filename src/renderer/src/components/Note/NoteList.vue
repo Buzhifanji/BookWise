@@ -129,8 +129,8 @@ const removeNote = async (index: number) => {
         </template>
         <p class="text-warning mt-4">将该笔记永久删除</p>
         <div class="modal-action">
-          <button class="btn btn-outline btn-sm " @click="closeRemoveDialog">取消</button>
-          <button class="btn btn-outline btn-sm  btn-error ml-4" @click="removeAction">确认</button>
+          <button class="btn btn-outline " @click="closeRemoveDialog">取消</button>
+          <button class="btn btn-outline   btn-error ml-4" @click="removeAction">确认</button>
         </div>
       </div>
     </dialog>
@@ -155,7 +155,7 @@ const removeNote = async (index: number) => {
         </template>
         <p class="text-warning mt-4">将该笔记永久删除</p>
         <div class="modal-action">
-          <button class="btn btn-outline btn-sm" @click="closeDetailDialog">关闭</button>
+          <button class="btn btn-outline " @click="closeDetailDialog">关闭</button>
         </div>
       </div>
     </dialog>

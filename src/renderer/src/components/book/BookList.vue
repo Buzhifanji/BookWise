@@ -262,7 +262,8 @@ function restoreOneBook() {
       <div class="modal-box" v-on-click-outside="closeDialog">
         <div class="flex flex-row justify-between items-center">
           <h3 class="font-bold text-lg">删除书籍</h3>
-          <div> <kbd class="kbd">Esc</kbd></div>
+          <div @click="closeDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
+
         </div>
         <p class="py-4">{{ selectData?.name }}</p>
         <p v-if="settingStore.isOpenRecyleBin && !isRecycleBin" class="text-warning">将本书移入回收站</p>
@@ -276,10 +277,10 @@ function restoreOneBook() {
 
     <!-- 编辑 -->
     <dialog class="modal" ref="editeDialogRef">
-      <div class="modal-box" v-on-click-outside="closeEditeDialog">
+      <div class="modal-box max-w-5xl" v-on-click-outside="closeEditeDialog">
         <div class="flex flex-row justify-between items-center mb-5">
           <h3 class="font-bold text-lg ">编辑书籍</h3>
-          <div> <kbd class="kbd">Esc</kbd></div>
+          <div @click="closeEditeDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
         </div>
         <form @submit="submitEdite">
           <div class="flex flex-col gap-4">
@@ -305,7 +306,7 @@ function restoreOneBook() {
             </div>
           </div>
           <div class="modal-action">
-            <button class="btn btn-outline" @click="closeEditeDialog">取消</button>
+            <button class="btn btn-outline " @click="closeEditeDialog">取消</button>
             <button class="btn btn-success ml-4" type="submit">确认</button>
           </div>
         </form>
@@ -317,7 +318,7 @@ function restoreOneBook() {
       <div class="modal-box max-w-5xl " v-on-click-outside="closeDetailDialog">
         <div class="flex flex-row justify-between items-center mb-5">
           <h3 class="font-bold text-lg ">书籍详情</h3>
-          <div> <kbd class="kbd">Esc</kbd></div>
+          <div @click="closeDetailDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
         </div>
         <div class="columns-1 md:columns-2 gap-x-8 gap-y-6 ">
           <div class="flex gap-4 mb-3">
@@ -354,7 +355,7 @@ function restoreOneBook() {
           </div>
         </div>
         <div class="modal-action">
-          <button class="btn btn-outline" @click="closeDetailDialog">关闭</button>
+          <button class="btn btn-outline " @click="closeDetailDialog">关闭</button>
         </div>
       </div>
     </dialog>
