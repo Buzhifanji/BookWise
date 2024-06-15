@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { $, wait } from '@renderer/shared';
 import { computed, ref } from 'vue';
 import { CONTINAER_ID } from '../highlight';
 import { getBookHref, isExternal, openExternal } from '../render';
@@ -22,12 +23,25 @@ const index = ref<number>(0)
 const section = computed(() => props.section[index.value])
 
 // 目录跳转
-function jump(i: number) {
+async function jump(i: number, id?: string) {
   if (containerRef.value) {
     containerRef.value.scrollTop = 0
   }
 
   index.value = i
+
+  if (!id) return
+  await wait()
+  const container = $(`div[data-page-number='${i}']`) as HTMLElement
+  if (!container) return
+
+  const target = container.querySelector(`span[data-web-highlight_id='${id}']`) as HTMLElement
+  if (!target) return
+
+  target.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center'
+  })
 }
 
 function prev() {

@@ -96,7 +96,7 @@ function jumpAction(index: number, id?: string) {
   if (settingStore.value.readMode === ReadMode.sroll) {
     scrollReaderViewRef.value?.jump(index, id)
   } else if (settingStore.value.readMode === ReadMode.section) {
-    sectionReaderViewRef.value?.jump(index)
+    sectionReaderViewRef.value?.jump(index, id)
   } else {
     doubleReaderViewRef.value?.jump(index)
   }
