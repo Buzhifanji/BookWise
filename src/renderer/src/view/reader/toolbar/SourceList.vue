@@ -4,7 +4,6 @@ import { settingStore } from '@renderer/store';
 import { get, set } from '@vueuse/core';
 import { ref, watchEffect } from 'vue';
 
-
 const porps = withDefaults(defineProps<{ 
   data: DomSource[], 
   opacity?: number,
@@ -63,7 +62,7 @@ watchEffect(() => {
 
 <template>
   <template v-if="data.length > 0">
-    <div class="bg-base-200 p-3 " :class="[_className, className,]" @mouseover="onMouseEnter" @mouseleave="onMouseLeave" :style="{ '--tw-bg-opacity': opacity }">
+    <div class="bg-base-200 text-base-content p-3 " :class="[_className, className,]" @mouseover="onMouseEnter" @mouseleave="onMouseLeave" :style="{ '--tw-bg-opacity': opacity }">
       <div class="flex flex-row gap-4">
         <div class="flex">
           <div class="divider divider-primary h-full w-[3px] flex-col m-0 py-1"></div>

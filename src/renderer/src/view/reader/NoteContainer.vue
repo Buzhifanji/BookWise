@@ -203,7 +203,7 @@ const lineList = [
                     <SourceListView :data="NoteAction.getDomSource(notes[virtualRow.index].domSource)"
                       :opacity="indexBgOpacity(virtualRow.index)" :auto="false"/>
                     <!-- 笔记列表 -->
-                    <div class="grid grid-cols-1 divide-y divide-secondary-content">
+                    <div class="grid grid-cols-1 divide-y divide-neutral">
                       <NoteListView :data="NoteAction.getNoteText(notes[virtualRow.index].notes)"
                         :opacity="indexBgOpacity(virtualRow.index)" />
                     </div>
@@ -225,7 +225,7 @@ const lineList = [
             class="card bg-base-100 absolute transition ease-in-out   right-[26rem] border border-primary z-50 select-none cursor-pointer max-w-md bar-shadow"
             :style="{ top: `${barTop}px` }" ref="toolbarRef">
             <div class="card-body p-4">
-              <div class="grid grid-cols-1 bg-base-200 rounded-lg p-2 divide-y divide-secondary-content"
+              <div class="grid grid-cols-1 bg-base-200 rounded-lg p-2 divide-y divide-neutral"
                 :style="{ '--tw-bg-opacity': 0.5 }">
                 <ul class="menu menu-horizontal p-1 m-0 justify-between">
                   <li @click.stop="item.click" v-for="item in barList" :key="item.name" class="tooltip"
@@ -235,8 +235,8 @@ const lineList = [
                     </a>
                   </li>
                 </ul>
-                <div class="grid grid-cols-2 divide-x divide-secondary-content">
-                  <ul class="menu menu-horizontal p-1 m-0 justify-between">
+                <div class="grid grid-cols-2 divide-x py-3 divide-neutral">
+                  <ul class="menu menu-horizontal py-0 px-2 m-0 justify-between">
                     <li @click.stop="item.click" v-for="item in lineList" :key="item.name" class="tooltip"
                       :data-tip="item.name">
                       <a :class="{ active: item.active === activeTextDecoration }">
@@ -244,8 +244,8 @@ const lineList = [
                       </a>
                     </li>
                   </ul>
-                  <div>
-                    <div class="flex flex-row gap-3 cursor-pointer p-2.5">
+                  <div class="flex items-center px-2">
+                    <div class="flex flex-row gap-3 cursor-pointer ">
                       <div v-for="item in highlightColor.getColors()" class="badge badge-lg"
                         @click="noteToolBar.changeColor(item)" :class="highlightColor.getBadgeColor(item)" :key="item">
                         {{ item === activeColor ? '✓' : '' }}
