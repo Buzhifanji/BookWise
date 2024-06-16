@@ -98,7 +98,7 @@ function jumpAction(index: number, id?: string) {
   } else if (settingStore.value.readMode === ReadMode.section) {
     sectionReaderViewRef.value?.jump(index, id)
   } else {
-    doubleReaderViewRef.value?.jump(index)
+    doubleReaderViewRef.value?.jump(index, id)
   }
 }
 function catalogJump({ href }: any) {

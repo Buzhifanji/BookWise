@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RingLoadingView, Toast } from '@renderer/components';
 import { wait } from '@renderer/shared';
-import { useDebounceFn, useResizeObserver, useThrottleFn, useToggle } from '@vueuse/core';
+import { set, useDebounceFn, useResizeObserver, useThrottleFn, useToggle } from '@vueuse/core';
 import { nextTick, onMounted, ref } from 'vue';
 import { getBookHref, isExternal, openExternal } from '../render';
 import SectionView from './Section.vue';
@@ -45,6 +45,7 @@ async function updateSection() {
   setLoading(false)
 }
 
+const style = ref({ height: '0px' })
 
 function setHeight() {
   const dom = containerRef.value
@@ -53,9 +54,11 @@ function setHeight() {
     const { scrollWidth, offsetWidth } = dom
     if (scrollWidth > offsetWidth) {
       const remainder = scrollWidth % offsetWidth
-      result = offsetWidth - remainder
+      if (remainder > 0) {
+        result = offsetWidth - remainder
+      }
     }
-    remendyRef.value!.style.height = `${result}px`
+    set(style, { height: `${result}px` })
   }
 }
 
@@ -84,7 +87,7 @@ function resetScrollLeft() {
 
 
 // 目录跳转
-async function jump(i: number) {
+async function jump(i: number, id?: string) {
   index.value = i
   await updateSection()
 }
@@ -94,10 +97,10 @@ async function prev() {
     index.value -= 1
     await updateSection()
     await nextTick()
-    setHeight()
     // 需要等待 弥补的空div渲染完成
     await wait(10)
     const dom = containerRef.value!
+
     dom.scrollTo({ left: dom.scrollWidth })
   } else {
     Toast({ position: ['toast-top', 'toast-center'], type: 'alert-warning', message: '已经是第一页了', })
@@ -108,12 +111,10 @@ async function next() {
   if (index.value < props.section.length - 1) {
     index.value += 1
     await updateSection()
-    await nextTick()
 
   } else {
     Toast({ position: ['toast-top', 'toast-center'], type: 'alert-warning', message: '已经是最后一页了', })
   }
-  setHeight()
 }
 
 const prewView = useThrottleFn(() => {
@@ -186,10 +187,10 @@ function linkClick(href: string) {
         <RingLoadingView v-if="isLoading" class="rounded-3xl" />
         <template v-else>
           <div ref="containerRef" :data-page-number="index"
-            class="columns-1 lg:columns-2 gap-x-16 h-full overflow-auto scrollbar-none p-8 pb-12 double-container relative">
+            class="columns-1 scroll-smooth transition ease-in-out lg:columns-2 gap-x-16 h-full overflow-auto  scrollbar-none p-8 pb-12 double-container relative">
             <SectionView :key="index" :index="index" :data="section" @link-click="linkClick">
             </SectionView>
-            <div ref="remendyRef"></div>
+            <div ref="remendyRef" :style="style"></div>
           </div>
           <button class="btn btn-outline absolute bottom-5 left-10 btn-sm" @click="prewView">上一页</button>
           <button class="btn btn-outline absolute bottom-5 right-10 btn-sm" @click="nextView">下一页</button>
