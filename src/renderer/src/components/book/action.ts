@@ -1,5 +1,7 @@
 import { Book, db } from '@renderer/batabase'
-import { now } from '@renderer/shared'
+import { RouterName, router } from '@renderer/route'
+import { isElectron, now } from '@renderer/shared'
+import { settingStore } from '@renderer/store'
 import { useObservable } from '@vueuse/rxjs'
 import { liveQuery } from 'dexie'
 
@@ -24,5 +26,26 @@ export class BookAction {
     return useObservable<Book[], Book[]>(
       liveQuery(async () => (await db.books.toArray()).filter((item) => !item.isDelete)) as any
     )
+  }
+}
+
+export function bookJump(id: string) {
+  const isBlank = settingStore.value.isOpenNew
+  if (isElectron) {
+    // 桌面版
+    if (isBlank) {
+      const { href } = router.resolve({ name: RouterName.Reader, params: { id } })
+      window.open(href, '_blank')
+    } else {
+      router.push({ name: RouterName.Reader, params: { id } })
+    }
+  } else {
+    // 网页版
+    if (isBlank) {
+      const { href } = router.resolve({ name: RouterName.Reader, params: { id } })
+      window.open(href, '_blank')
+    } else {
+      router.push({ name: RouterName.Reader, params: { id } })
+    }
   }
 }

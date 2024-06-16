@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Note } from '@renderer/batabase';
-import { NoteAction, NoteText } from '@renderer/components';
+import { NoteAction, NoteText, bookJump } from '@renderer/components';
 import { useDialog } from '@renderer/hooks';
 import { RouterName } from '@renderer/route';
 import { chuankArray, remToPx } from '@renderer/shared';
@@ -94,6 +94,12 @@ const removeNote = async (index: number) => {
   })
 }
 
+// 跳转
+const jump = (value: Note) => {
+  localStorage.setItem('__note__', JSON.stringify(value))
+  bookJump(value.eBookId)
+}
+
 </script>
 
 <template>
@@ -103,7 +109,7 @@ const removeNote = async (index: number) => {
         <div :ref="measureElement" :data-index="virtualRow.index" class="flex gap-4 absolute top-0 left-0  w-full pb-5"
           :style="{ transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin}px)` }">
           <template v-for="item in list[virtualRow.index]">
-            <Card :data="item" @delete="removeBefore" @detail="onDetail" />
+            <Card :data="item" @delete="removeBefore" @detail="onDetail" @jump="jump" />
           </template>
         </div>
       </template>

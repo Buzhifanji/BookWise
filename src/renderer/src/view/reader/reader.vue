@@ -71,7 +71,6 @@ async function loadData() {
 
   // 获取书本内容
   const content = await getBookContent(bookId, info.path)
-
   if (!content) return
 
   // 获取书本渲染器
@@ -87,6 +86,12 @@ async function loadData() {
   // 初始化高亮
   setTimeout(() => {
     initHighlight(info);
+    // 笔记跳转
+    const note = localStorage.getItem('__note__')
+    if (note) {
+      noteJump(JSON.parse(note))
+      localStorage.removeItem('__note__')
+    }
   }, 0)
 }
 
@@ -118,6 +123,7 @@ async function noteJump(note: Note) {
   if (source.length === 0) return
 
   const { page, id } = source[0]
+  console.log(page, id)
   if (page === '-1') return
 
   jumpAction(+page, id)
