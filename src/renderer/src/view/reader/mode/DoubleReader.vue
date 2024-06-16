@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { RingLoadingView, Toast } from '@renderer/components';
-import { wait } from '@renderer/shared';
+import { $, wait } from '@renderer/shared';
 import { set, useDebounceFn, useResizeObserver, useThrottleFn, useToggle } from '@vueuse/core';
 import { nextTick, onMounted, ref } from 'vue';
+import { CONTINAER_ID } from '../highlight';
 import { getBookHref, isExternal, openExternal } from '../render';
 import SectionView from './Section.vue';
 
@@ -90,15 +91,29 @@ function resetScrollLeft() {
 async function jump(i: number, id?: string) {
   index.value = i
   await updateSection()
+
+  await wait(210)
+  const dom = containerRef.value!
+  const target = dom?.querySelector(`span[data-web-highlight_id='${id}']`) as HTMLElement
+  if (target) {
+    const { left } = target.getBoundingClientRect()
+    const container = $(`#${CONTINAER_ID}`) as HTMLElement
+    const content = container.querySelector('.prose') as HTMLElement
+    const { left: cLeft } = content.getBoundingClientRect()
+    const { offsetWidth } = dom
+
+    const l = left - cLeft
+    const remainder = +(l / offsetWidth).toFixed(0)
+    dom.scrollLeft = remainder * offsetWidth
+  }
 }
 
 async function prev() {
   if (index.value > 0) {
     index.value -= 1
     await updateSection()
-    await nextTick()
     // 需要等待 弥补的空div渲染完成
-    await wait(10)
+    await wait(20)
     const dom = containerRef.value!
 
     dom.scrollTo({ left: dom.scrollWidth })
