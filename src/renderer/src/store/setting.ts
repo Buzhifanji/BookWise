@@ -9,6 +9,7 @@ interface SettingState {
   isOpenRecyleBin: boolean // 是否打开回收站
   isNoteShowClass: boolean // 笔记是否显示class
   isAutoHighlight: boolean // 选中文字的时候是否自定高亮
+  isRemeberPosition: boolean // 是否记住阅读位置
   theme: string // 主题
   lang: string // 语言
 }
@@ -21,6 +22,7 @@ const defaultState: SettingState = {
   isOpenRecyleBin: true,
   isNoteShowClass: true,
   isAutoHighlight: true,
+  isRemeberPosition: true,
   theme: 'light',
   lang: 'en'
 }

@@ -33,14 +33,12 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
         <div class="card w-full bg-base-100 shadow">
           <div class="card-body">
             <h2 class="card-title">{{ $t('setting.language') }} & {{ $t('setting.theme') }}</h2>
-            <SelectView v-model="settingStore.lang" :list="langs" 
-              :label="$t('setting.chooseLanguage')" />
+            <SelectView v-model="settingStore.lang" :list="langs" :label="$t('setting.chooseLanguage')" />
             <label class="form-control w-full max-w-xs">
               <div class="label">
                 <span class="label-text" :style="textOpacity">{{ $t('setting.chooseTheme') }}</span>
               </div>
-              <Select v-model="settingStore.theme" :is-cloce="false" :list="themes"
-                 />
+              <Select v-model="settingStore.theme" :is-cloce="false" :list="themes" />
             </label>
           </div>
         </div>
@@ -60,6 +58,8 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
               desc="关闭回收站，删除书籍的时候，将会被永久删除，而不是移到回收站" />
             <CheckBoxView v-model="settingStore.isNoteShowClass" title="笔记是否显示高亮样式" desc="关闭后，当鼠标滑过的时候，才会显示高亮样式" />
             <CheckBoxView v-model="settingStore.isAutoHighlight" title="是否自动高亮" desc="打开后，在选中文字的时候，会自动高亮" />
+            <CheckBoxView v-model="settingStore.isRemeberPosition" title="是否记住上次阅读位置"
+              desc="打开后，再次进入阅读界面，将会自动跳转到上次阅读的位置" />
           </div>
         </div>
       </div>

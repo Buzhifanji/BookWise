@@ -123,7 +123,6 @@ async function noteJump(note: Note) {
   if (source.length === 0) return
 
   const { page, id } = source[0]
-  console.log(page, id)
   if (page === '-1') return
 
   jumpAction(+page, id)
