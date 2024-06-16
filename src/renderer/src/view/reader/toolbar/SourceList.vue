@@ -64,7 +64,7 @@ watchEffect(() => {
 
 <template>
   <template v-if="data.length > 0">
-    <div class="bg-base-200 text-base-content p-3 " @click="emit('click')" :class="[_className, className,]"
+    <div class="bg-base-200 text-base-content p-3 select-none" @click="emit('click')" :class="[_className, className,]"
       @mouseover="onMouseEnter" @mouseleave="onMouseLeave" :style="{ '--tw-bg-opacity': opacity }">
       <div class="flex flex-row gap-4">
         <div class="flex">

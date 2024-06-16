@@ -4,7 +4,7 @@ import { NoteAction, NoteText } from '@renderer/components';
 import { useBgOpacity } from '@renderer/hooks';
 import { $, convertUint8ArrayToURL } from '@renderer/shared';
 import { useVirtualizer } from '@tanstack/vue-virtual';
-import { get, onClickOutside, onKeyStroke, set, useElementSize, useWindowSize } from '@vueuse/core';
+import { get, onClickOutside, onKeyStroke, set, useElementSize, useThrottleFn, useWindowSize } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
 import dayjs from 'dayjs';
 import { Baseline, Copy, Highlighter, SpellCheck2, Trash } from 'lucide-vue-next';
@@ -145,6 +145,10 @@ const removeNote = (_: NoteText, index: number) => {
   noteRichAction.remove(index)
 }
 
+// 高亮跳转
+const throttleClick = useThrottleFn((val: Note) => {
+  emit('jump', val)
+}, 800)
 </script>
 
 <template>
@@ -221,7 +225,7 @@ const removeNote = (_: NoteText, index: number) => {
                   @mouseenter="hoverAction(0.3, virtualRow.index)" @mouseleave="closeHover()">
                   <div class="card-body p-2">
                     <!-- 高亮内容 -->
-                    <SourceListView @click="emit('jump', notes[virtualRow.index])"
+                    <SourceListView @click="throttleClick(notes[virtualRow.index])"
                       :data="NoteAction.getDomSource(notes[virtualRow.index].domSource)"
                       :opacity="indexBgOpacity(virtualRow.index)" :auto="false" />
                     <!-- 笔记列表 -->

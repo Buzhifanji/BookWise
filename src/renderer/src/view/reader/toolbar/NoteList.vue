@@ -17,7 +17,8 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div v-for="item, index in data" class="bg-base-200 text-base-content  p-3 hover:bg-info hover:text-info-content" :class="className"
+  <div v-for="item, index in data"
+    class="bg-base-200 text-base-content select-none p-3 hover:bg-info hover:text-info-content" :class="className"
     :style="{ '--tw-bg-opacity': opacity }">
     <div class="flex flex-row justify-between items-center mb-1">
       <div class="stat-desc">{{ dayjs(item.time).format('L LT') }}</div>

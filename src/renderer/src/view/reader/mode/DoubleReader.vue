@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RingLoadingView, Toast } from '@renderer/components';
 import { $, wait } from '@renderer/shared';
-import { set, useDebounceFn, useResizeObserver, useThrottleFn, useToggle } from '@vueuse/core';
+import { set, useResizeObserver, useThrottleFn, useToggle } from '@vueuse/core';
 import { nextTick, onMounted, ref } from 'vue';
 import { CONTINAER_ID } from '../highlight';
 import { getBookHref, isExternal, openExternal } from '../render';
@@ -25,13 +25,13 @@ const [isLoading, setLoading] = useToggle(false)
 const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
 const remendyRef = ref<HTMLElement | null>(null) // 监听dom变化
 
-const debouncedFn = useDebounceFn(async () => {
+const resize = useThrottleFn(async () => {
   setHeight()
   await nextTick()
   resetScrollLeft()
 }, 400)
 
-useResizeObserver(containerRef, debouncedFn)
+useResizeObserver(containerRef, resize)
 
 const index = ref<number>(0)
 

@@ -5,8 +5,9 @@
  */
 export function wait(time: number = 300) {
   return new Promise<void>((resolve) => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       resolve()
+      timer && clearTimeout(timer)
     }, time)
   })
 }
