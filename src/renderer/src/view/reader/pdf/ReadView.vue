@@ -22,9 +22,13 @@ watchEffect(async () => {
 onUnmounted(() => PDF.destroy())
 
 async function drawHighlight(page: string) {
-  const notes = await NoteAction.findBookPageNotes(get(bookParam), page)
-  const domSource = notes.map(note => NoteAction.noteToDomSource(note))
-  highlighter?.fromSource(domSource)
+  try {
+    const notes = await NoteAction.findBookPageNotes(get(bookParam), page)
+    const domSource = notes.map(note => NoteAction.noteToDomSource(note))
+    highlighter?.fromSource(domSource)
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 pdfBus.on((pageNumber) => {
