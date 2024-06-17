@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { $, wait } from '@renderer/shared';
+import { wait } from '@renderer/shared';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { get } from '@vueuse/core';
 import { computed, ref } from 'vue';
 import { getBookHref, isExternal, openExternal } from '../render';
+import { getSourceTarget } from '../source';
 import SectionView from './Section.vue';
 
 interface Props {
@@ -50,12 +51,7 @@ async function jump(index: number, id?: string) {
   if (!id) return
 
   await wait()
-  const container = $(`div[data-page-number='${index}']`) as HTMLElement
-
-  if (!container) return
-
-  const target = container.querySelector(`span[data-web-highlight_id='${id}']`) as HTMLElement
-
+  const target = getSourceTarget(index, id)
   if (!target) return
 
   const rect = target.getBoundingClientRect()

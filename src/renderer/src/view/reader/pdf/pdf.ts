@@ -12,6 +12,7 @@ import {
   PDFViewer
 } from 'pdfjs-dist/web/pdf_viewer'
 import { highlighter } from '../highlight'
+import { getSourceTarget } from '../source'
 
 GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url).href
 
@@ -82,14 +83,7 @@ class PDFTool {
     this.pdfViewer!.scrollPageIntoView({ pageNumber })
     await this.drawHighlight(pageNumber.toString())
     if (id) {
-      const container = $(`div[data-page-number='${pageNumber}']`) as HTMLElement
-      console.log(container)
-      if (!container) return
-
-      const target = container.querySelector(`span[data-web-highlight_id='${id}']`) as HTMLElement
-
-      console.log(target)
-
+      const target = getSourceTarget(pageNumber, id)
       if (!target) return
 
       target.scrollIntoView()

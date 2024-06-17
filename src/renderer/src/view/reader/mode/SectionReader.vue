@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { $, wait } from '@renderer/shared';
+import { wait } from '@renderer/shared';
 import { computed, ref } from 'vue';
 import { CONTINAER_ID } from '../highlight';
 import { getBookHref, isExternal, openExternal } from '../render';
+import { getSourceTarget } from '../source';
 import SectionView from './Section.vue';
 
 interface Props {
@@ -32,10 +33,8 @@ async function jump(i: number, id?: string) {
 
   if (!id) return
   await wait(100)
-  const container = $(`div[data-page-number='${i}']`) as HTMLElement
-  if (!container) return
 
-  const target = container.querySelector(`span[data-web-highlight_id='${id}']`) as HTMLElement
+  const target = getSourceTarget(i, id)
   if (!target) return
 
   target.scrollIntoView({

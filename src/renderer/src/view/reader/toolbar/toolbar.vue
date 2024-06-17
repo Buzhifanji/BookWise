@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { Note } from '@renderer/batabase';
 import { NoteAction, NoteText, Toast } from '@renderer/components';
-import { $ } from '@renderer/shared';
 import { get, onClickOutside, set, useElementSize } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
 import { Baseline, Copy, Highlighter, MessageSquareMore, SpellCheck2, Trash } from 'lucide-vue-next';
 import { Ref, computed, ref } from 'vue';
-import { CONTINAER_ID, highlighter } from '../highlight';
+import { highlighter } from '../highlight';
 import { HighlightType, highlightColor } from '../highlight-color';
+import { getSectionContainer } from '../source';
 import NoteListView from './NoteList.vue';
 import { NoteBarStyle, NoteToolBarAction, ToolbarStyle } from './action';
 
@@ -34,7 +34,7 @@ const activeColor = noteToolBar.color
 
 const closeDom = (val: Ref<HTMLElement | null>, e: Event) => {
   const dom = get(val)
-  if(dom && dom.contains(e.target as HTMLElement)) return
+  if (dom && dom.contains(e.target as HTMLElement)) return
   ToolbarStyle.close()
 }
 
@@ -52,20 +52,23 @@ const noteStyle = computed(() => {
   const top = +get(style).top.replace('px', '')
   const space = 10
   const h = get(noteHeight)
-  const container = $(`#${CONTINAER_ID}`) as HTMLElement
-  const content = container.querySelector('.prose') as HTMLElement
-  const w = content.offsetWidth
-  const {left: cLeft} = content.getBoundingClientRect()
 
-  if(top >=  (h + space)) {
-    return { top: `${top - space - h}px`, left: `${cLeft}px`, width: `${w}px`}
+  const source = ToolbarStyle.source;
+  if (!source.length) return { top: '0px', left: '0px' }
+  const content = getSectionContainer(source[0].page)
+  if (!content) return { top: '0px', left: '0px' }
+  const { left: cLeft } = content.getBoundingClientRect()
+  const w = content.offsetWidth
+
+  if (top >= (h + space)) {
+    return { top: `${top - space - h}px`, left: `${cLeft}px`, width: `${w}px` }
   } else {
     // 高度不够，直接在底部显示
-    return { bottom: '20px', left: `${cLeft}px` , width: `${w}px`}
+    return { bottom: '20px', left: `${cLeft}px`, width: `${w}px` }
   }
 })
 const findNote = async () => {
-  if(get(isEdite) && ToolbarStyle.source.length) {
+  if (get(isEdite) && ToolbarStyle.source.length) {
     const val = await NoteAction.findBySourceId(ToolbarStyle.source[0].id)
     set(note, val)
     set(noteList, NoteAction.getNoteText(val?.notes))
@@ -110,7 +113,7 @@ const list = [
 </script>
 
 <template>
-  <div class="fixed inset-0" >
+  <div class="fixed inset-0">
     <div ref="container"
       class="absolute bg-base-100 border border-info z-50 bar-shadow rounded-md flex flex-col divide-y ease-in-out  shadow-cyan-500/50"
       :style="style" @click.stop>
@@ -133,8 +136,10 @@ const list = [
         </li>
       </ul>
     </div>
-    <div v-if="noteList.length" ref="noteRef" class="absolute  bg-base-100 border border-info bar-shadow rounded-md flex flex-col ease-in-out divide-y" @click.stop :style="noteStyle">
-      <NoteListView class-name="rounded-md" :data="noteList"  @remove="removeNote"/>
+    <div v-if="noteList.length" ref="noteRef"
+      class="absolute  bg-base-100 border border-info bar-shadow rounded-md flex flex-col ease-in-out divide-y"
+      @click.stop :style="noteStyle">
+      <NoteListView class-name="rounded-md" :data="noteList" @remove="removeNote" />
     </div>
   </div>
 
