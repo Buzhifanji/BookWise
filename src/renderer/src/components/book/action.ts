@@ -6,11 +6,11 @@ import { useObservable } from '@vueuse/rxjs'
 import { liveQuery } from 'dexie'
 
 export class BookAction {
-  static removeOne(id: string, isSoft: boolean) {
-    if (isSoft) {
-      return db.books.update(id, { isDelete: now() })
-    } else {
+  static removeOne(id: string, isForce: boolean) {
+    if (isForce) {
       return db.books.delete(id)
+    } else {
+      return db.books.update(id, { isDelete: now() })
     }
   }
 

@@ -35,7 +35,7 @@ const bookCardWidth = 282
 const textOpacity = { '--tw-text-opacity': 0.6 };
 
 // 鼠标选中效果
-const { bgOpacity, indexBgOpacity, hoverAction } = useBgOpacity()
+const { indexBgOpacity, hoverAction } = useBgOpacity()
 
 const bookMode = (value: BookshelftMode) => value === settingStore.value.bookself
 
@@ -132,7 +132,7 @@ function removeOneBook() {
   if (!id) return
 
   if (!_isForce) {
-    _isForce = settingStore.value.isOpenRecyleBin
+    _isForce = !settingStore.value.isOpenRecyleBin
   }
 
   BookAction.removeOne(id, _isForce)
@@ -257,7 +257,7 @@ function restoreOneBook() {
       </template>
     </ul>
 
-    <!-- 确认消息 -->
+    <!-- 确认删除 -->
     <dialog class="modal" ref="dialogRef">
       <div class="modal-box" v-on-click-outside="closeDialog">
         <div class="flex flex-row justify-between items-center">
