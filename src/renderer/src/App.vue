@@ -1,18 +1,22 @@
 <script setup lang="ts">
+import favicon from '@renderer/assets/favicon.ico';
+import { set, useFavicon } from '@vueuse/core';
 import { watchEffect } from 'vue';
 import './dayjs';
 import { settingStore } from './store';
 import { setI18nLanguage } from './view/setting/language';
 
-watchEffect(() => {
-    const theme = settingStore.value.theme
-    document.querySelector('html')?.setAttribute('data-theme', theme)
 
-    const lang = settingStore.value.lang
-    setI18nLanguage(lang)
+watchEffect(() => {
+  const theme = settingStore.value.theme
+  document.querySelector('html')?.setAttribute('data-theme', theme)
+
+  const lang = settingStore.value.lang
+  setI18nLanguage(lang)
 })
 
-
+const icon = useFavicon()
+set(icon, favicon)
 </script>
 
 <template>

@@ -8,7 +8,7 @@ import { get, set, useToggle, useWindowSize } from '@vueuse/core';
 import { AlignJustify } from 'lucide-vue-next';
 import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue';
 // import '../../assets/css/pdf.css';
-import { SkipBack } from 'lucide-vue-next';
+import { ChevronFirst, ChevronLast, SkipBack } from 'lucide-vue-next';
 import { useRouter } from 'vue-router';
 import CatalogView from './Catalog.vue';
 import NoteView from './NoteContainer.vue';
@@ -204,6 +204,16 @@ onUnmounted(() => {
                 </button>
               </div>
 
+              <!-- 翻页 -->
+              <div class="join">
+                <button class="btn btn-sm  rounded-l-full join-item" @click="">
+                  <ChevronFirst />
+                </button>
+                <input type="number" class="input input-sm w-20 input-bordered join-item" placeholder="number" />
+                <button class="btn btn-sm join-item rounded-r-full" @click="">
+                  <ChevronLast />
+                </button>
+              </div>
               <!-- 打开搜索框按钮 -->
               <!-- <button aria-label="Search button"
                 class="btn hidden h-9 w-48 items-center justify-start gap-3 border-base-content/20 hover:border-transparent hover:bg-base-content/20 sm:flex btn-sm btn-outline">

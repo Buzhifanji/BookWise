@@ -66,7 +66,7 @@ onClickOutside(containerRef, onCloce)
 
 <template>
   <div class="join" ref="containerRef">
-    <button class="btn btn-sm  btn-ghost" @click="minus">
+    <button class="btn btn-sm  btn-ghost " @click="minus">
       <Minus />
     </button>
     <details class="dropdown dropdown-bottom " ref="detailsRef">
