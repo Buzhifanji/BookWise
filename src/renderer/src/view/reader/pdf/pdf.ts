@@ -1,7 +1,7 @@
-import { $, pdfBus } from '@renderer/shared'
-import { useStorage } from '@vueuse/core'
+import { $ } from '@renderer/shared'
 import { GlobalWorkerOptions, PDFDocumentProxy, getDocument } from 'pdfjs-dist'
 
+import { NoteAction } from '@renderer/components'
 import { ReadMode } from '@renderer/enum'
 import { settingStore } from '@renderer/store'
 import {
@@ -11,18 +11,17 @@ import {
   PDFLinkService,
   PDFViewer
 } from 'pdfjs-dist/web/pdf_viewer'
-
-const default_scale = 1 * window.devicePixelRatio
-
-const SCALE = useStorage<number>('pdf_reader_scale', default_scale) // 展示比例
+import { highlighter } from '../highlight'
 
 GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url).href
 
 class PDFTool {
   pdfViewer: PDFViewer | null = null // pdf 上下文
   pdfDocument: PDFDocumentProxy | null = null
+  bookId: string | null = null
 
-  async render(content: ArrayBuffer) {
+  async render(content: ArrayBuffer, bookId: string) {
+    this.bookId = bookId
     return new Promise(async (resolve, reject) => {
       try {
         const container = $(`#viewerContainer`) as HTMLDivElement
@@ -42,15 +41,13 @@ class PDFTool {
           l10n
         })
 
-        view.currentScale = default_scale
+        view.currentScale = settingStore.value.pdfScale
 
         linkService.setViewer(view)
 
         const loadingTask = getDocument(content)
 
         const pdfDocument = await loadingTask.promise
-
-        console.log(pdfDocument)
 
         view.setDocument(pdfDocument)
 
@@ -62,11 +59,10 @@ class PDFTool {
 
         // 监听 页面渲染完成，通知上层绘制笔记内容
         eventBus.on('textlayerrendered', (value: any) => {
-          pdfBus.emit(value.pageNumber.toString())
+          this.drawHighlight(value.pageNumber.toString())
         })
 
-        eventBus.on('pagesloaded', () => {
-          view.currentScale = SCALE.value
+        eventBus.on('pagesloaded', (value: any) => {
           view.currentScaleValue = 'auto'
           setSpreadMode(settingStore.value.readMode)
           resolve('')
@@ -82,9 +78,35 @@ class PDFTool {
     return outline.map(this.makeTOCItem)
   }
 
-  async pageJump(pageNumber: number) {
+  async pageJump(pageNumber: number, id?: string) {
     this.pdfViewer!.scrollPageIntoView({ pageNumber })
-    return await this.finishRender()
+    await this.drawHighlight(pageNumber.toString())
+    if (id) {
+      const container = $(`div[data-page-number='${pageNumber}']`) as HTMLElement
+      console.log(container)
+      if (!container) return
+
+      const target = container.querySelector(`span[data-web-highlight_id='${id}']`) as HTMLElement
+
+      console.log(target)
+
+      if (!target) return
+
+      target.scrollIntoView()
+    }
+
+    return
+  }
+
+  async drawHighlight(page: string) {
+    try {
+      if (!this.bookId) return
+      const notes = await NoteAction.findBookPageNotes(this.bookId!, page)
+      const domSource = notes.map((note) => NoteAction.noteToDomSource(note))
+      highlighter?.fromSource(domSource)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   // 切换阅读模式
@@ -144,7 +166,8 @@ class PDFTool {
 
   finishRender() {
     return new Promise<string>((resovle) => {
-      this.pdfViewer!.eventBus.on('pagesloaded', (value: any) => {
+      this.pdfViewer!.eventBus.on('textlayerrendered', (value: any) => {
+        console.log('================')
         resovle('ok')
       })
     })

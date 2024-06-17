@@ -93,7 +93,7 @@ async function loadData() {
   await nextTick()
 
   if (get(isPDF)) {
-    await PDF.render(content.content)
+    await PDF.render(content.content, props.id)
     const outline = await PDF.getOutline()
     set(tocList, outline)
   }
@@ -105,35 +105,27 @@ async function loadData() {
     noteJump(JSON.parse(note))
     localStorage.removeItem('__note__')
   }
-
-  // 初始化高亮
-  // setTimeout(() => {
-
-  //   initHighlight(info);
-  //   // 笔记跳转
-  //   const note = localStorage.getItem('__note__')
-  //   if (note) {
-  //     noteJump(JSON.parse(note))
-  //     localStorage.removeItem('__note__')
-  //   }
-  // }, 0)
 }
 
 
 // 目录跳转
-function jumpAction(index: number, id?: string) {
-  if (settingStore.value.readMode === ReadMode.sroll) {
-    scrollReaderViewRef.value?.jump(index, id)
-  } else if (settingStore.value.readMode === ReadMode.section) {
-    sectionReaderViewRef.value?.jump(index, id)
+async function jumpAction(index: number, id?: string) {
+  if (get(isPDF)) {
+    await PDF.pageJump(index, id)
   } else {
-    doubleReaderViewRef.value?.jump(index, id)
+    if (settingStore.value.readMode === ReadMode.sroll) {
+      scrollReaderViewRef.value?.jump(index, id)
+    } else if (settingStore.value.readMode === ReadMode.section) {
+      sectionReaderViewRef.value?.jump(index, id)
+    } else {
+      doubleReaderViewRef.value?.jump(index, id)
+    }
   }
 }
 async function catalogJump({ href }: any) {
   if (get(isPDF)) {
     const { index } = await PDF.resolveHref(href)
-    await PDF.pageJump(index + 1)
+    await jumpAction(index + 1)
   } else {
     let index = 0;
     if (href) {

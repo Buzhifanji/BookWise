@@ -12,6 +12,7 @@ interface SettingState {
   isRemeberPosition: boolean // 是否记住阅读位置
   theme: string // 主题
   lang: string // 语言
+  pdfScale: number // PDF展示比例
 }
 
 const defaultState: SettingState = {
@@ -24,7 +25,8 @@ const defaultState: SettingState = {
   isAutoHighlight: true,
   isRemeberPosition: true,
   theme: 'light',
-  lang: 'en'
+  lang: 'en',
+  pdfScale: 1 * window.devicePixelRatio
 }
 
 /**

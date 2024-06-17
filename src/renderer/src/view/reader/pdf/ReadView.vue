@@ -1,17 +1,11 @@
 <script setup lang="ts">
-import { NoteAction } from '@renderer/components';
-import { pdfBus } from '@renderer/shared';
 import { settingStore } from '@renderer/store';
-import { get, useResizeObserver } from '@vueuse/core';
-import { useRouteParams } from '@vueuse/router';
+import { useResizeObserver } from '@vueuse/core';
 import 'pdfjs-dist/web/pdf_viewer.css';
 import { onUnmounted, ref, watchEffect } from 'vue';
-import { highlighter } from '../highlight';
 import { PDF, setSpreadMode } from './pdf';
 
 const PDFContainerRef = ref<HTMLElement | null>(null)
-
-const bookParam = useRouteParams<string>('id')
 
 useResizeObserver(PDFContainerRef, () => PDF.resize())
 
@@ -20,20 +14,6 @@ watchEffect(async () => {
 })
 
 onUnmounted(() => PDF.destroy())
-
-async function drawHighlight(page: string) {
-  try {
-    const notes = await NoteAction.findBookPageNotes(get(bookParam), page)
-    const domSource = notes.map(note => NoteAction.noteToDomSource(note))
-    highlighter?.fromSource(domSource)
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-pdfBus.on((pageNumber) => {
-  drawHighlight(pageNumber)
-});
 
 </script>
 
