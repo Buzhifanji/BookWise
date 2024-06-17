@@ -14,10 +14,6 @@ const default_scale = 1 * window.devicePixelRatio
 
 const SCALE = useStorage<number>('pdf_reader_scale', default_scale) // 展示比例
 
-const dd = new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url)
-
-console.log(dd)
-
 GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url).href
 
 class PDFTool {
@@ -27,17 +23,7 @@ class PDFTool {
   async render(content: ArrayBuffer) {
     return new Promise(async (resolve, reject) => {
       try {
-        // if (!GlobalWorkerOptions.workerSrc) {
-        //   const pdfjs = (await import('pdfjs-dist/legacy/build/pdf.worker.min.js')).default
-        //   const workerSrc = new URL(
-        //     '../../../../../../node_modules/pdfjs-dist/legacy/build/pdf.worker.min.js',
-        //     import.meta.url
-        //   ).href
-        //   console.log(workerSrc)
-        //   GlobalWorkerOptions.workerSrc = workerSrc
-        // }
         const container = $(`#pdfViewer`) as HTMLDivElement
-        console.log(container)
         const eventBus = new EventBus()
 
         const linkService = new PDFLinkService({ eventBus })
@@ -62,12 +48,6 @@ class PDFTool {
 
         const pdfDocument = await loadingTask.promise
 
-        const outline = await pdfDocument.getOutline()
-
-        const metadata = await pdfDocument.getMetadata()
-
-        console.log(outline, metadata)
-
         view.setDocument(pdfDocument)
 
         linkService.setDocument(pdfDocument, null)
@@ -77,7 +57,9 @@ class PDFTool {
         this.pdfDocument = pdfDocument
 
         // 监听 页面渲染完成，通知上层绘制笔记内容
-        eventBus.on('textlayerrendered', (value: any) => {})
+        eventBus.on('textlayerrendered', (value: any) => {
+          resolve('')
+        })
 
         eventBus.on('pagesloaded', () => {
           view.currentScale = SCALE.value
@@ -89,8 +71,36 @@ class PDFTool {
   }
 
   async getOutline() {
-    return (await this.pdfDocument?.getOutline()) || []
+    const outline = (await this.pdfDocument?.getOutline()) || []
+    return outline.map(this.makeTOCItem)
   }
+
+  async pageJump(pageNumber: number) {
+    this.rendition!.scrollPageIntoView({ pageNumber })
+    return await this.finishRender()
+  }
+
+  async resolveHref(href: string) {
+    const parsed = JSON.parse(href)
+    const pdf = this.pdfDocument!
+    const dest = typeof parsed === 'string' ? await pdf.getDestination(parsed) : parsed
+    const index = await pdf.getPageIndex(dest[0])
+    return { index }
+  }
+
+  finishRender() {
+    return new Promise<string>((resovle) => {
+      this.rendition!.eventBus.on('pagesloaded', (value: any) => {
+        resovle('ok')
+      })
+    })
+  }
+
+  private makeTOCItem = (item: any) => ({
+    label: item.title,
+    href: JSON.stringify(item.dest),
+    subitems: item.items.length ? item.items.map(this.makeTOCItem) : null
+  })
 }
 
 export const PDF = new PDFTool()

@@ -128,16 +128,21 @@ function jumpAction(index: number, id?: string) {
     doubleReaderViewRef.value?.jump(index, id)
   }
 }
-function catalogJump({ href }: any) {
-  let index = 0;
-  if (href) {
-    const value = getBookHref(href)
-    if (value) {
-      index = value.index
+async function catalogJump({ href }: any) {
+  if (get(isPDF)) {
+    const { index } = await PDF.resolveHref(href)
+    await PDF.pageJump(index + 1)
+  } else {
+    let index = 0;
+    if (href) {
+      const value = getBookHref(href)
+      if (value) {
+        index = value.index
+      }
     }
-  }
 
-  jumpAction(index)
+    jumpAction(index)
+  }
 }
 
 async function noteJump(note: Note) {
@@ -211,7 +216,7 @@ onUnmounted(() => {
           </div>
           <!-- 书籍内容 -->
           <div class="flex-1 overflow-hidden relative selection:bg-info selection:text-base-content" :id="CONTINAER_ID">
-            <div id="pdfViewer" class="h-full w-full  absolute overflow-auto" v-if="isPDF">
+            <div id="pdfViewer" class="h-full w-full  absolute overflow-auto scroll-smooth" v-if="isPDF">
               <div id="view" class="pdfViewer scrollWrapped">
                 <PDFReadView />
               </div>
