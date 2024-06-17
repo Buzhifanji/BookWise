@@ -4,16 +4,19 @@ import { DrawerView, ErrorView, NoteAction, RingLoadingView, useToggleDrawer } f
 import { ReadMode } from '@renderer/enum';
 import { CETALOG_DRAWER, NOTE_DRAWER, isElectron } from '@renderer/shared';
 import { settingStore } from '@renderer/store';
-import { useToggle, useWindowSize } from '@vueuse/core';
+import { get, set, useToggle, useWindowSize } from '@vueuse/core';
 import { AlignJustify, Search } from 'lucide-vue-next';
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue';
+// import '../../assets/css/pdf.css';
 import CatalogView from './Catalog.vue';
 import NoteView from './NoteContainer.vue';
 import { CONTINAER_ID, highlighter, initHighlight } from './highlight';
 import DoubleReaderView from './mode/DoubleReader.vue';
 import ScrollReaderView from './mode/ScrollReader.vue';
 import SectionReaderView from './mode/SectionReader.vue';
-import { getBookHref, render, unMountedBookRender } from './render';
+import PDFReadView from './pdf/ReadView.vue';
+import { PDF } from './pdf/pdf';
+import { DPFUtil, getBookHref, render, unMountedBookRender } from './render';
 import NoteRichView from './toolbar/NoteRich.vue';
 import ToolbarView from './toolbar/Toolbar.vue';
 import { NoteBarStyle, ToolbarStyle } from './toolbar/action';
@@ -40,6 +43,7 @@ const { isLG: isNote, toggleDrawer: toggleNote } = useToggleDrawer() // 控制�
 const scrollReaderViewRef = ref<InstanceType<typeof ScrollReaderView>>() // 滚动视图
 const sectionReaderViewRef = ref<InstanceType<typeof SectionReaderView>>() // 章节视图
 const doubleReaderViewRef = ref<InstanceType<typeof DoubleReaderView>>() // 双栏视图
+const isPDF = DPFUtil.isPDF
 
 const isNoteRichShow = NoteBarStyle.show
 const isShowToolBar = ToolbarStyle.show
@@ -82,17 +86,35 @@ async function loadData() {
   bookContent.value = content
   console.log(info)
   console.log(content)
+  setLoading(false)
+
+  await nextTick()
+
+  if (get(isPDF)) {
+    await PDF.render(content.content)
+    const outline = await PDF.getOutline()
+    set(tocList, outline)
+  }
+
+  initHighlight(info);
+  // 笔记跳转
+  const note = localStorage.getItem('__note__')
+  if (note) {
+    noteJump(JSON.parse(note))
+    localStorage.removeItem('__note__')
+  }
 
   // 初始化高亮
-  setTimeout(() => {
-    initHighlight(info);
-    // 笔记跳转
-    const note = localStorage.getItem('__note__')
-    if (note) {
-      noteJump(JSON.parse(note))
-      localStorage.removeItem('__note__')
-    }
-  }, 0)
+  // setTimeout(() => {
+
+  //   initHighlight(info);
+  //   // 笔记跳转
+  //   const note = localStorage.getItem('__note__')
+  //   if (note) {
+  //     noteJump(JSON.parse(note))
+  //     localStorage.removeItem('__note__')
+  //   }
+  // }, 0)
 }
 
 
@@ -129,7 +151,7 @@ async function noteJump(note: Note) {
 }
 
 onMounted(() => {
-  loadData().then(() => setLoading(false))
+  loadData()
 })
 
 onUnmounted(() => {
@@ -156,7 +178,7 @@ onUnmounted(() => {
         <div class="flex h-full flex-col ">
           <!-- 头部 -->
           <div role="navigation" id="book-view_nav_bar" aria-label="Navbar"
-            class="navbar justify-between border-b border-base-200 px-3 py-0 min-h-12 shadow-2xl">
+            class="navbar justify-between border-b border-base-200 px-3 py-0 min-h-12 ">
             <div class="gap-3 flex">
               <!-- 控制侧边栏菜单栏 -->
               <label :for="CETALOG_DRAWER" class="cursor-pointer " v-if="isSM">
@@ -189,15 +211,22 @@ onUnmounted(() => {
           </div>
           <!-- 书籍内容 -->
           <div class="flex-1 overflow-hidden relative selection:bg-info selection:text-base-content" :id="CONTINAER_ID">
-            <!-- 滚动条模式 -->
-            <ScrollReaderView :section="section" ref="scrollReaderViewRef"
-              v-if="settingStore.readMode === ReadMode.sroll" />
-            <!-- 章节模式 -->
-            <SectionReaderView :section="section" ref="sectionReaderViewRef"
-              v-if="settingStore.readMode === ReadMode.section" />
-            <!-- 双栏模式 -->
-            <DoubleReaderView :section="section" ref="doubleReaderViewRef"
-              v-if="settingStore.readMode === ReadMode.double" />
+            <div id="pdfViewer" class="h-full w-full  absolute overflow-auto" v-if="isPDF">
+              <div id="view" class="pdfViewer scrollWrapped">
+                <PDFReadView />
+              </div>
+            </div>
+            <template v-else>
+              <!-- 滚动条模式 -->
+              <ScrollReaderView :section="section" ref="scrollReaderViewRef"
+                v-if="settingStore.readMode === ReadMode.sroll" />
+              <!-- 章节模式 -->
+              <SectionReaderView :section="section" ref="sectionReaderViewRef"
+                v-if="settingStore.readMode === ReadMode.section" />
+              <!-- 双栏模式 -->
+              <DoubleReaderView :section="section" ref="doubleReaderViewRef"
+                v-if="settingStore.readMode === ReadMode.double" />
+            </template>
 
             <!-- 工具栏 -->
             <ToolbarView v-if="isShowToolBar" />

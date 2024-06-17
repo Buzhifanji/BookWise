@@ -1,7 +1,17 @@
 import { Reader } from '@book-wise/reader'
 import { isElectron } from '@renderer/shared'
+import { set } from '@vueuse/core'
+import { ref, shallowReactive } from 'vue'
 
 export let bookRender: Reader | null = null
+
+// pdf 相关数据
+export class DPFUtil {
+  static isPDF = ref(false)
+  static size = shallowReactive({ width: 0, height: 0 })
+  static total = ref(0)
+  static sections: any[] = []
+}
 
 /**
  * 渲染阅读器
@@ -13,6 +23,10 @@ export const render = async (data: ArrayBuffer) => {
   const sections = await bookRender.getSections()
 
   const toc = bookRender.book.toc || []
+  const _isPDG = bookRender.book.type === 'pdf'
+
+  set(DPFUtil.isPDF, _isPDG)
+
   console.log(bookRender)
   return { sections, toc }
 }

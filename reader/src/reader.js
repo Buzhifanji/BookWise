@@ -100,9 +100,8 @@ const getBook = async (file) => {
       book = await new EPUB(loader).init()
     }
   } else if (await isPDF(file)) {
-    // todo 待处理
-    // const { makePDF } = await import('./pdf.js')
-    // book = await makePDF(file)
+    const { makePDF } = await import('./pdf.js')
+    book = await makePDF(file)
   } else {
     if (await isMOBI(file)) {
       book = await new MOBI({ unzlib: fflate.unzlibSync }).open(file)
@@ -165,22 +164,23 @@ export class Reader {
   }
 
   getSections = async () => {
-    const result = []
-    for (const section of this.book.sections) {
-      const id = section.id
-
-      const doc = await section.createDocument()
-      const body = doc.querySelector('body')
-      this.#handleLinks(body, section)
-      await this.#handleImg(body, section)
-      const html = body.innerHTML
-        .replace(/xmlns=".*?"/g, '')
-        .replace(/<([a-zA-Z0-9]+)(\s[^>]*)?>\s*<\/\1>/g, '') // 过滤掉空节点
-      // console.log(html)
-      result.push(html)
+    if (this.book.type !== 'pdf') {
+      const result = []
+      for (const section of this.book.sections) {
+        const id = section.id
+        const doc = await section.createDocument()
+        const body = doc.querySelector('body')
+        this.#handleLinks(body, section)
+        await this.#handleImg(body, section)
+        const html = body.innerHTML
+          .replace(/xmlns=".*?"/g, '')
+          .replace(/<([a-zA-Z0-9]+)(\s[^>]*)?>\s*<\/\1>/g, '') // 过滤掉空节点
+        result.push(html)
+      }
+      return result
+    } else {
+      return this.book.sections
     }
-
-    return result
   }
 
   /**
