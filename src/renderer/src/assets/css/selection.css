@@ -1,150 +1,166 @@
 /** 花词高亮 颜色 */
 
 .selection-info {
+  cursor: pointer;
   --tw-text-opacity: 1;
   --tw-bg-opacity: 1;
-  color: var(--fallback-bc, oklch(var(--bc) / var(--tw-text-opacity)));
+  color: var(--fallback-bc, oklch(var(--bc) / var(--tw-text-opacity))) !important;
   background-color: var(--fallback-in, oklch(var(--in) / var(--tw-bg-opacity)));
   cursor: pointer;
 }
 
 .selection-red {
+  cursor: pointer;
   --tw-text-opacity: 1;
   --tw-bg-opacity: 1;
-  color: rgb(127 29 29 / var(--tw-text-opacity));
+  color: rgb(127 29 29 / var(--tw-text-opacity)) !important;
   background-color: rgb(252 165 165 / var(--tw-bg-opacity));
   cursor: pointer;
 }
 
-.selection-orange {
+/* .selection-orange {
   --tw-text-opacity: 1;
   --tw-bg-opacity: 1;
-  color: rgb(124 45 18 / var(--tw-text-opacity));
+  color: rgb(124 45 18 / var(--tw-text-opacity))!important;
   background-color: rgb(253 186 116 / var(--tw-bg-opacity));
   cursor: pointer;
-}
+} */
 
-.selection-amber {
+/* .selection-amber {
   --tw-text-opacity: 1;
   --tw-bg-opacity: 1;
-  color: rgb(120 53 15 / var(--tw-text-opacity));
+  color: rgb(120 53 15 / var(--tw-text-opacity))!important;
   background-color: rgb(252 211 77 / var(--tw-bg-opacity));
   cursor: pointer;
-}
+} */
 
 .selection-yellow {
+  cursor: pointer;
   --tw-text-opacity: 1;
   --tw-bg-opacity: 1;
-  color: rgb(113 63 18 / var(--tw-text-opacity));
+  color: rgb(113 63 18 / var(--tw-text-opacity)) !important;
   background-color: rgb(253 224 71 / var(--tw-bg-opacity));
   cursor: pointer;
 }
 
-.selection-lime {
+/* .selection-lime {
   --tw-text-opacity: 1;
   --tw-bg-opacity: 1;
-  color: rgb(54 83 20 / var(--tw-text-opacity));
+  color: rgb(54 83 20 / var(--tw-text-opacity))!important;
   background-color: rgb(190 242 100 / var(--tw-bg-opacity));
   cursor: pointer;
-}
+} */
 
 .selection-emerald {
+  cursor: pointer;
   --tw-text-opacity: 1;
   --tw-bg-opacity: 1;
-  color: rgb(6 78 59 / var(--tw-text-opacity));
+  color: rgb(6 78 59 / var(--tw-text-opacity)) !important;
   background-color: rgb(110 231 183 / var(--tw-bg-opacity));
   cursor: pointer;
 }
 
 .selection-cyan {
+  cursor: pointer;
   --tw-text-opacity: 1;
   --tw-bg-opacity: 1;
-  color: rgb(22 78 99 / var(--tw-text-opacity));
+  color: rgb(22 78 99 / var(--tw-text-opacity)) !important;
   background-color: rgb(103 232 249 / var(--tw-bg-opacity));
   cursor: pointer;
 }
-
+/* 
 .selection-blue {
   --tw-text-opacity: 1;
   --tw-bg-opacity: 1;
-  color: rgb(30 58 138 / var(--tw-text-opacity));
+  color: rgb(30 58 138 / var(--tw-text-opacity))!important;
   background-color: rgb(147 197 253 / var(--tw-bg-opacity));
   cursor: pointer;
-}
+} */
 
 .selection-violet {
+  cursor: pointer;
   --tw-text-opacity: 1;
   --tw-bg-opacity: 1;
-  color: rgb(76 29 149 / var(--tw-text-opacity));
+  color: rgb(76 29 149 / var(--tw-text-opacity)) !important;
   background-color: rgb(196 181 253 / var(--tw-bg-opacity));
   cursor: pointer;
 }
 
-.selection-fuchsia {
+/* .selection-fuchsia {
   --tw-text-opacity: 1;
   --tw-bg-opacity: 1;
   color: rgb(112 26 117 / var(--tw-text-opacity));
   background-color: rgb(240 171 252 / var(--tw-bg-opacity));
   cursor: pointer;
-}
+} */
 
-.selection-rose {
+/* .selection-rose {
   --tw-text-opacity: 1;
   --tw-bg-opacity: 1;
   color: rgb(136 19 55 / var(--tw-text-opacity));
   background-color: rgb(253 164 175 / var(--tw-bg-opacity));
   cursor: pointer;
-}
+} */
 
 .beeline-red {
+  cursor: pointer;
   --tw-bg-opacity: 1;
   text-decoration: underline solid rgb(252 165 165 / var(--tw-bg-opacity)) 3px;
   text-underline-offset: 6px;
 }
 
 .beeline-yellow {
+  cursor: pointer;
   --tw-bg-opacity: 1;
   text-decoration: underline solid rgb(253 224 71 / var(--tw-bg-opacity)) 3px;
   text-underline-offset: 6px;
 }
 
 .beeline-emerald {
+  cursor: pointer;
   --tw-bg-opacity: 1;
   text-decoration: underline solid rgb(110 231 183 / var(--tw-bg-opacity)) 3px;
   text-underline-offset: 6px;
 }
 .beeline-cyan {
+  cursor: pointer;
   --tw-bg-opacity: 1;
   text-decoration: underline solid rgb(103 232 249 / var(--tw-bg-opacity)) 3px;
   text-underline-offset: 6px;
 }
 .beeline-violet {
+  cursor: pointer;
   --tw-bg-opacity: 1;
   text-decoration: underline solid rgb(196 181 253 / var(--tw-bg-opacity)) 3px;
   text-underline-offset: 6px;
 }
 
 .wavy-red {
+  cursor: pointer;
   --tw-bg-opacity: 1;
   text-decoration: rgb(252 165 165 / var(--tw-bg-opacity)) wavy underline 2px;
   text-underline-offset: 4px;
 }
 .wavy-yellow {
+  cursor: pointer;
   --tw-bg-opacity: 1;
   text-decoration: rgb(253 224 71 / var(--tw-bg-opacity)) wavy underline 2px;
   text-underline-offset: 4px;
 }
 .wavy-emerald {
+  cursor: pointer;
   --tw-bg-opacity: 1;
   text-decoration: rgb(110 231 183 / var(--tw-bg-opacity)) wavy underline 2px;
   text-underline-offset: 4px;
 }
 .wavy-cyan {
+  cursor: pointer;
   --tw-bg-opacity: 1;
   text-decoration: rgb(103 232 249 / var(--tw-bg-opacity)) wavy underline 2px;
   text-underline-offset: 4px;
 }
 .wavy-violet {
+  cursor: pointer;
   --tw-bg-opacity: 1;
   text-decoration: rgb(196 181 253 / var(--tw-bg-opacity)) wavy underline 2px;
   text-underline-offset: 4px;
