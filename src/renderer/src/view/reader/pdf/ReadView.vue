@@ -5,7 +5,6 @@ import { watchEffect } from 'vue';
 import { setSpreadMode } from './pdf';
 
 
-
 watchEffect(async () => {
   setSpreadMode(settingStore.value.readMode)
 })

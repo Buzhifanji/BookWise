@@ -19,13 +19,13 @@ const SCALE = useStorage<number>('pdf_reader_scale', default_scale) // 展示比
 GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url).href
 
 class PDFTool {
-  rendition: PDFViewer | null = null // pdf 上下文
+  pdfViewer: PDFViewer | null = null // pdf 上下文
   pdfDocument: PDFDocumentProxy | null = null
 
   async render(content: ArrayBuffer) {
     return new Promise(async (resolve, reject) => {
       try {
-        const container = $(`#pdfViewer`) as HTMLDivElement
+        const container = $(`#viewerContainer`) as HTMLDivElement
         const eventBus = new EventBus()
 
         const linkService = new PDFLinkService({ eventBus })
@@ -56,7 +56,7 @@ class PDFTool {
 
         linkService.setDocument(pdfDocument, null)
 
-        this.rendition = view
+        this.pdfViewer = view
 
         this.pdfDocument = pdfDocument
 
@@ -67,7 +67,7 @@ class PDFTool {
 
         eventBus.on('pagesloaded', () => {
           view.currentScale = SCALE.value
-
+          view.currentScaleValue = 'auto'
           setSpreadMode(settingStore.value.readMode)
         })
       } catch (error) {
@@ -82,14 +82,32 @@ class PDFTool {
   }
 
   async pageJump(pageNumber: number) {
-    this.rendition!.scrollPageIntoView({ pageNumber })
+    this.pdfViewer!.scrollPageIntoView({ pageNumber })
     return await this.finishRender()
   }
 
+  // 切换阅读模式
   setSpreadMode(mode: 0 | 1 | 2) {
-    if (this.rendition) {
-      this.rendition.spreadMode = mode
+    if (this.pdfViewer) {
+      this.pdfViewer.spreadMode = mode
     }
+  }
+
+  resize() {
+    const pdfViewer = this.pdfViewer
+    if (!pdfViewer) return
+
+    const currentScaleValue = pdfViewer.currentScaleValue
+    if (
+      currentScaleValue === 'auto' ||
+      currentScaleValue === 'page-fit' ||
+      currentScaleValue === 'page-width'
+    ) {
+      // Note: the scale is constant for 'page-actual'.
+      pdfViewer.currentScaleValue = currentScaleValue
+    }
+
+    pdfViewer.update()
   }
 
   async resolveHref(href: string) {
@@ -102,7 +120,7 @@ class PDFTool {
 
   finishRender() {
     return new Promise<string>((resovle) => {
-      this.rendition!.eventBus.on('pagesloaded', (value: any) => {
+      this.pdfViewer!.eventBus.on('pagesloaded', (value: any) => {
         resovle('ok')
       })
     })

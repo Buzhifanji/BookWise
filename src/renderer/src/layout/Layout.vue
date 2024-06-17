@@ -17,7 +17,7 @@ const { width } = useElementSize(contentRef)
 
 const debouncedFn = useDebounceFn(async () => {
   store.setWidth(width.value)
-}, 300)
+}, 200)
 
 useResizeObserver(contentRef, debouncedFn)
 
