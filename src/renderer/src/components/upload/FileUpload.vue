@@ -4,6 +4,7 @@ import { Book, db } from '@renderer/batabase';
 import { Toast } from '@renderer/components/toast';
 import { useDialog } from '@renderer/hooks';
 import { convertBlobToUint8Array, isElectron, now } from '@renderer/shared';
+import { PDFPageProxy, getDocument } from 'pdfjs-dist';
 import { v4 as uuidv4 } from 'uuid';
 import { defineExpose } from 'vue';
 import { readFiles } from './read-file';
@@ -12,6 +13,23 @@ const { dialogRef, openDialog, } = useDialog();
 
 
 defineExpose({ open: openDialog })
+
+const getPDFCover = async (page: PDFPageProxy) => {
+    const naturalPdfSize = page.getViewport({ scale: 1 })
+    const naturalPdfRatio = naturalPdfSize.width / naturalPdfSize.height
+    const appRatio = innerWidth / innerHeight
+    const pdfToAppResolutionRatio = appRatio / naturalPdfRatio
+
+    const scale = devicePixelRatio * pdfToAppResolutionRatio
+    const viewport = page.getViewport({ scale })
+
+    const canvas = document.createElement('canvas')
+    canvas.height = viewport.height
+    canvas.width = viewport.width
+    const canvasContext = canvas.getContext('2d')!
+    await page.render({ canvasContext, viewport }).promise
+    return await new Promise(resolve => canvas.toBlob(resolve))
+}
 
 async function uploadFile(event: Event) {
     const files = (event.target as HTMLInputElement).files;
@@ -41,16 +59,32 @@ async function uploadFile(event: Event) {
         const bookMetadata = await Promise.all(newBookData.map(async ({ data, hash, file }) => {
             const reader = new Reader()
             await reader.open(new File([data], ''))
-            const cover = await reader.getCover()
 
             let path = ''
             if (isElectron) {
                 path = await window.api.getFilePath(file)
             }
 
-            return {
-                ...reader.getMetadata(), md5: hash, cover: await convertBlobToUint8Array(cover), path, data
+            if (reader.book.type === 'pdf') {
+                const pdf = await getDocument({ data }).promise
+                const info = (await pdf.getMetadata())?.info as any
+                const metadata = {
+                    title: info?.Title,
+                    author: info?.Author,
+                }
+                const blob = await getPDFCover(await pdf.getPage(1)) as Blob
+                const cover = await convertBlobToUint8Array(blob)
+                return {
+                    ...metadata, md5: hash, cover: cover, path: path, data
+                }
+            } else {
+                const cover = await reader.getCover()
+
+                return {
+                    ...reader.getMetadata(), md5: hash, cover: await convertBlobToUint8Array(cover), path, data
+                }
             }
+
         }))
 
         const newBook: Book[] = bookMetadata.map(item => {
