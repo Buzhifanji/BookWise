@@ -216,7 +216,8 @@ onUnmounted(() => {
           </div>
           <!-- 书籍内容 -->
           <div class="flex-1 overflow-hidden relative selection:bg-info selection:text-base-content" :id="CONTINAER_ID">
-            <div id="pdfViewer" class="h-full w-full bg-base-200  absolute overflow-auto scroll-smooth" v-if="isPDF">
+            <div id="pdfViewer" class="h-full w-full bg-base-200  absolute overflow-auto scroll-smooth scrollbar-thin"
+              v-if="isPDF">
               <div id="view" class="pdfViewer scrollWrapped">
                 <PDFReadView />
               </div>

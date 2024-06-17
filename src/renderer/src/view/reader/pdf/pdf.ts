@@ -2,6 +2,8 @@ import { $ } from '@renderer/shared'
 import { useStorage } from '@vueuse/core'
 import { GlobalWorkerOptions, PDFDocumentProxy, getDocument } from 'pdfjs-dist'
 
+import { ReadMode } from '@renderer/enum'
+import { settingStore } from '@renderer/store'
 import {
   EventBus,
   GenericL10n,
@@ -48,6 +50,8 @@ class PDFTool {
 
         const pdfDocument = await loadingTask.promise
 
+        console.log(pdfDocument)
+
         view.setDocument(pdfDocument)
 
         linkService.setDocument(pdfDocument, null)
@@ -63,6 +67,8 @@ class PDFTool {
 
         eventBus.on('pagesloaded', () => {
           view.currentScale = SCALE.value
+
+          setSpreadMode(settingStore.value.readMode)
         })
       } catch (error) {
         reject(error)
@@ -78,6 +84,12 @@ class PDFTool {
   async pageJump(pageNumber: number) {
     this.rendition!.scrollPageIntoView({ pageNumber })
     return await this.finishRender()
+  }
+
+  setSpreadMode(mode: 0 | 1 | 2) {
+    if (this.rendition) {
+      this.rendition.spreadMode = mode
+    }
   }
 
   async resolveHref(href: string) {
@@ -96,6 +108,8 @@ class PDFTool {
     })
   }
 
+  async spreadMode() {}
+
   private makeTOCItem = (item: any) => ({
     label: item.title,
     href: JSON.stringify(item.dest),
@@ -104,3 +118,15 @@ class PDFTool {
 }
 
 export const PDF = new PDFTool()
+
+export function setSpreadMode(mode: ReadMode) {
+  if (mode === ReadMode.sroll) {
+    PDF.setSpreadMode(0)
+  } else if (mode === ReadMode.section) {
+    PDF.setSpreadMode(2)
+  } else if (mode === ReadMode.double) {
+    PDF.setSpreadMode(1)
+  } else {
+    PDF.setSpreadMode(0)
+  }
+}
