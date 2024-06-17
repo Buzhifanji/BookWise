@@ -4,7 +4,7 @@ import { DrawerView, ErrorView, NoteAction, RingLoadingView, useToggleDrawer } f
 import { ReadMode } from '@renderer/enum';
 import { CETALOG_DRAWER, NOTE_DRAWER, isElectron } from '@renderer/shared';
 import { settingStore } from '@renderer/store';
-import { get, set, useResizeObserver, useToggle, useWindowSize } from '@vueuse/core';
+import { get, set, useToggle, useWindowSize } from '@vueuse/core';
 import { AlignJustify, Search } from 'lucide-vue-next';
 import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue';
 // import '../../assets/css/pdf.css';
@@ -45,9 +45,7 @@ const scrollReaderViewRef = ref<InstanceType<typeof ScrollReaderView>>() // 滚�
 const sectionReaderViewRef = ref<InstanceType<typeof SectionReaderView>>() // 章节视图
 const doubleReaderViewRef = ref<InstanceType<typeof DoubleReaderView>>() // 双栏视图
 
-const PDFContainerRef = ref<HTMLElement | null>(null)
 const isPDF = DPFUtil.isPDF
-useResizeObserver(PDFContainerRef, () => PDF.resize())
 
 const isNoteRichShow = NoteBarStyle.show
 const isShowToolBar = ToolbarStyle.show
@@ -221,12 +219,7 @@ onUnmounted(() => {
           </div>
           <!-- 书籍内容 -->
           <div class="flex-1 overflow-hidden relative selection:bg-info selection:text-base-content" :id="CONTINAER_ID">
-            <div id="viewerContainer" ref="PDFContainerRef"
-              class="h-full w-full bg-base-200  absolute overflow-auto scroll-smooth scrollbar-thin" v-if="isPDF">
-              <div id="viewer" class="pdfViewer scrollWrapped">
-                <PDFReadView />
-              </div>
-            </div>
+            <PDFReadView v-if="isPDF" />
             <template v-else>
               <!-- 滚动条模式 -->
               <ScrollReaderView :section="section" ref="scrollReaderViewRef"

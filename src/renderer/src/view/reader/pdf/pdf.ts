@@ -1,4 +1,4 @@
-import { $ } from '@renderer/shared'
+import { $, pdfBus } from '@renderer/shared'
 import { useStorage } from '@vueuse/core'
 import { GlobalWorkerOptions, PDFDocumentProxy, getDocument } from 'pdfjs-dist'
 
@@ -62,13 +62,14 @@ class PDFTool {
 
         // 监听 页面渲染完成，通知上层绘制笔记内容
         eventBus.on('textlayerrendered', (value: any) => {
-          resolve('')
+          pdfBus.emit(value.pageNumber.toString())
         })
 
         eventBus.on('pagesloaded', () => {
           view.currentScale = SCALE.value
           view.currentScaleValue = 'auto'
           setSpreadMode(settingStore.value.readMode)
+          resolve('')
         })
       } catch (error) {
         reject(error)

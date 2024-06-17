@@ -1,5 +1,6 @@
 export * from './array'
 export * from './blob'
+export * from './bus'
 export * from './const'
 export * from './dom'
 export * from './platform'
