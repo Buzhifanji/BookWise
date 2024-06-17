@@ -67,4 +67,4 @@ function getModelValue(modelValue: SelectItem | string) {
       </li>
     </ul>
   </details>
-</template>./type
+</template>

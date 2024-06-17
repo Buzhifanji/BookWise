@@ -110,12 +110,35 @@ class PDFTool {
     pdfViewer.update()
   }
 
+  setScale(val: string | number) {
+    const pdfViewer = this.pdfViewer
+    if (!pdfViewer) return
+
+    pdfViewer.currentScaleValue = val
+  }
+
+  zoomIn() {
+    this.updateZoom(1)
+    return this.pdfViewer?.currentScale || 1
+  }
+
+  zoomOut() {
+    this.updateZoom(-1)
+    return this.pdfViewer?.currentScale || 1
+  }
+
   async resolveHref(href: string) {
     const parsed = JSON.parse(href)
     const pdf = this.pdfDocument!
     const dest = typeof parsed === 'string' ? await pdf.getDestination(parsed) : parsed
     const index = await pdf.getPageIndex(dest[0])
     return { index }
+  }
+
+  destroy() {
+    this.pdfDocument?.destroy()
+    this.pdfViewer = null
+    this.pdfDocument = null
   }
 
   finishRender() {
@@ -133,6 +156,22 @@ class PDFTool {
     href: JSON.stringify(item.dest),
     subitems: item.items.length ? item.items.map(this.makeTOCItem) : null
   })
+
+  private updateZoom(steps: number) {
+    const pdfViewer = this.pdfViewer
+    if (!pdfViewer) return
+
+    if (pdfViewer.isInPresentationMode) {
+      return
+    }
+
+    pdfViewer.updateScale({
+      drawingDelay: { value: 400, kind: 0x02 + 0x80 },
+      steps,
+      scaleFactor: undefined,
+      originL: undefined
+    })
+  }
 }
 
 export const PDF = new PDFTool()

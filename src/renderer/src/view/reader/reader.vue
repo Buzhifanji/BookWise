@@ -15,6 +15,7 @@ import DoubleReaderView from './mode/DoubleReader.vue';
 import ScrollReaderView from './mode/ScrollReader.vue';
 import SectionReaderView from './mode/SectionReader.vue';
 import PDFReadView from './pdf/ReadView.vue';
+import PDFToolbarView from './pdf/Toobar.vue';
 import { PDF } from './pdf/pdf';
 import { DPFUtil, getBookHref, render, unMountedBookRender } from './render';
 import NoteRichView from './toolbar/NoteRich.vue';
@@ -204,11 +205,12 @@ onUnmounted(() => {
             </div>
             <div>
               <!-- 文章标题 -->
-              <div class="tooltip tooltip-bottom" :data-tip="book.name">
+              <!-- <div class="tooltip tooltip-bottom" :data-tip="book.name">
                 <p class="text-lg font-bold line-clamp-1">{{ book.name }}</p>
-              </div>
+              </div> -->
             </div>
             <div class="flex gap-4">
+              <PDFToolbarView v-if="isPDF" />
               <label :for="NOTE_DRAWER" class="cursor-pointer " v-if="isSM">
                 <AlignJustify class="w-5 h-5" />
               </label>
