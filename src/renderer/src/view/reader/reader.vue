@@ -5,9 +5,11 @@ import { ReadMode } from '@renderer/enum';
 import { CETALOG_DRAWER, NOTE_DRAWER, isElectron } from '@renderer/shared';
 import { settingStore } from '@renderer/store';
 import { get, set, useToggle, useWindowSize } from '@vueuse/core';
-import { AlignJustify, Search } from 'lucide-vue-next';
+import { AlignJustify } from 'lucide-vue-next';
 import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue';
 // import '../../assets/css/pdf.css';
+import { SkipBack } from 'lucide-vue-next';
+import { useRouter } from 'vue-router';
 import CatalogView from './Catalog.vue';
 import NoteView from './NoteContainer.vue';
 import { CONTINAER_ID, highlighter, initHighlight } from './highlight';
@@ -25,6 +27,8 @@ import { NoteBarStyle, ToolbarStyle } from './toolbar/action';
 const props = defineProps({
   id: String,
 })
+
+const router = useRouter()
 
 const book = ref<Book>() // 书籍信息
 const bookContent = ref<BookContent>() // 书籍内容
@@ -149,6 +153,12 @@ async function noteJump(note: Note) {
   jumpAction(+page, id)
 }
 
+// 返回
+const showBack = ref(router.options.routes.length > 1 && !settingStore.value.isOpenNew)
+function goBack() {
+  router.go(-1)
+}
+
 onMounted(() => {
   loadData()
 })
@@ -187,11 +197,18 @@ onUnmounted(() => {
                 v-else>
                 <AlignJustify class="w-5 h-5" />
               </button>
+              <!-- 返回 （单页面需要） -->
+              <div v-if="showBack" class="tooltip tooltip-bottom" data-tip="返回到图书列表">
+                <button class="btn btn-sm btn-square btn-ghost" @click="goBack()">
+                  <SkipBack />
+                </button>
+              </div>
+
               <!-- 打开搜索框按钮 -->
-              <button aria-label="Search button"
+              <!-- <button aria-label="Search button"
                 class="btn hidden h-9 w-48 items-center justify-start gap-3 border-base-content/20 hover:border-transparent hover:bg-base-content/20 sm:flex btn-sm btn-outline">
                 <Search class="w-4 h-4" />
-              </button>
+              </button> -->
             </div>
             <div>
               <!-- 文章标题 -->
@@ -200,6 +217,7 @@ onUnmounted(() => {
               </div> -->
             </div>
             <div class="flex gap-4">
+              <!-- pdf控制缩放 -->
               <PDFToolbarView v-if="isPDF" />
               <label :for="NOTE_DRAWER" class="cursor-pointer " v-if="isSM">
                 <AlignJustify class="w-5 h-5" />
