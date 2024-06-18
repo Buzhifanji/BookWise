@@ -70,44 +70,52 @@ async function getBookContent(bookId: string, url: string) {
 }
 
 async function loadData() {
-  setLoading(true)
+  try {
 
-  const bookId = props.id
-  if (!bookId) return
 
-  // 获取书本信息
-  const info = await db.books.get(bookId)
-  if (!info) return
+    setLoading(true)
+    debugger
+    const bookId = props.id
+    if (!bookId) return
 
-  // 获取书本内容
-  const content = await getBookContent(bookId, info.path)
-  if (!content) return
+    // 获取书本信息
+    const info = await db.books.get(bookId)
+    if (!info) return
 
-  // 获取书本渲染器
-  const { sections, toc } = await render(content.content)
+    // 获取书本内容
+    const content = await getBookContent(bookId, info.path)
+    if (!content) return
 
-  section.value = sections
-  tocList.value = toc
-  book.value = info
-  bookContent.value = content
-  console.log(info)
-  console.log(content)
-  setLoading(false)
+    // 获取书本渲染器
+    const { sections, toc } = await render(new File([content.content], info.name))
 
-  await nextTick()
+    section.value = sections
+    tocList.value = toc
+    book.value = info
+    bookContent.value = content
+    console.log(info)
+    console.log(content)
+    setLoading(false)
 
-  if (get(isPDF)) {
-    await PDF.render(content.content, props.id)
-    const outline = await PDF.getOutline()
-    set(tocList, outline)
-  }
+    await nextTick()
 
-  initHighlight(info);
-  // 笔记跳转
-  const note = localStorage.getItem('__note__')
-  if (note) {
-    noteJump(JSON.parse(note))
-    localStorage.removeItem('__note__')
+    if (get(isPDF)) {
+      await PDF.render(content.content, props.id)
+      const outline = await PDF.getOutline()
+      set(tocList, outline)
+    }
+
+    initHighlight(info);
+    // 笔记跳转
+    const note = localStorage.getItem('__note__')
+    if (note) {
+      noteJump(JSON.parse(note))
+      localStorage.removeItem('__note__')
+    }
+  } catch (err) {
+    console.log(err)
+  } finally {
+    setLoading(false)
   }
 }
 

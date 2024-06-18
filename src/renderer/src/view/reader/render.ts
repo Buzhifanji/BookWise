@@ -17,9 +17,9 @@ export class DPFUtil {
  * 渲染阅读器
  * @param reader
  */
-export const render = async (data: ArrayBuffer) => {
+export const render = async (file: File) => {
   bookRender = new Reader()
-  await bookRender.open(new File([data], ''))
+  await bookRender.open(file)
   const sections = await bookRender.getSections()
 
   const toc = bookRender.book.toc || []

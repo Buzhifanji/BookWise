@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { defineExpose } from 'vue';
 import { readFiles } from './read-file';
 
-const { dialogRef, openDialog, } = useDialog();
+const { dialogRef, openDialog, closeDialog } = useDialog();
 
 
 defineExpose({ open: openDialog })
@@ -34,7 +34,6 @@ const getPDFCover = async (page: PDFPageProxy) => {
 async function uploadFile(event: Event) {
     const files = (event.target as HTMLInputElement).files;
     if (files === null) return
-
     try {
         const result = await readFiles(Array.from(files))
         if (result.length === 0) return
@@ -58,7 +57,7 @@ async function uploadFile(event: Event) {
         // 获取书本的元数据
         const bookMetadata = await Promise.all(newBookData.map(async ({ data, hash, file }) => {
             const reader = new Reader()
-            await reader.open(new File([data], ''))
+            await reader.open(file)
 
             let path = ''
             if (isElectron) {
@@ -143,7 +142,7 @@ async function uploadFile(event: Event) {
         <div class="modal-box">
             <h3 class="font-bold text-lg flex justify-between mb-4">
                 <span>上传文件</span>
-                <kbd class="kbd kbd-sm">ESC</kbd>
+                <kbd class="kbd kbd-sm cursor-pointer" @click="closeDialog()">ESC</kbd>
             </h3>
             <div class="flex items-center justify-center w-full">
                 <label
