@@ -1,48 +1,48 @@
+import { concatArrayBuffers } from '@renderer/shared'
 import SparkMD5 from 'spark-md5'
 
 const chunkSize = 1024 * 1024 * 10 // 每个分片的大小，以每片10MB大小来逐次读取;
 
-/**
- * 读取单个文件
- * @param file
- */
-export function readFile(file: File): Promise<{ data: ArrayBuffer; hash: string; file: File }> {
-  return new Promise((resolve, reject) => {
-    let offset = 0
-    const spark = new SparkMD5.ArrayBuffer() //创建SparkMD5的实例
-    const fileReader = new FileReader()
+function readChunk(chunk: Blob) {
+  return new Promise<ArrayBuffer>((resolve, reject) => {
+    const reader = new FileReader()
+    reader.readAsArrayBuffer(chunk)
 
-    fileReader.onload = function () {
-      const data = fileReader.result as ArrayBuffer
-      const chunk = data.slice(offset, offset + chunkSize)
-      offset += chunkSize
-
-      // 处理分片数据
-      spark.append(chunk)
-
-      if (offset < file.size) {
-        readNextChunk()
-      } else {
-        const hash = spark.end()
-        console.log('finished loading。computed hash is: ', hash)
-        resolve({ data, hash, file })
-      }
+    // 存储读取结果
+    reader.onload = function (event) {
+      resolve(event.target!.result as ArrayBuffer)
     }
 
-    fileReader.onerror = function () {
-      console.warn('oops, something went wrong.')
-      reject(`the ${File.name} file read error `)
+    reader.onerror = function (event) {
+      reject(event.target!.error)
     }
-
-    function readNextChunk() {
-      const slice = file.slice(offset, offset + chunkSize)
-      fileReader.readAsArrayBuffer(slice)
-    }
-
-    readNextChunk()
   })
 }
 
+/**
+ * 读取单个文件
+ * @param file
+ * @returns
+ */
+async function readFileInChunks(file: File) {
+  const size = file.size
+  const spark = new SparkMD5.ArrayBuffer()
+  let buffer = new ArrayBuffer(0)
+
+  for (let start = 0; start < size; start += chunkSize) {
+    const end = Math.min(start + chunkSize, size)
+    const chunkBlob = file.slice(start, end)
+    const chunk = await readChunk(chunkBlob)
+    buffer = concatArrayBuffers(buffer, chunk)
+    spark.append(chunk)
+  }
+
+  const hash = spark.end()
+  console.log('hash: ', hash)
+
+  return { data: buffer, hash, file }
+}
+
 export async function readFiles(files: File[]) {
-  return await Promise.all(files.map(readFile))
+  return await Promise.all(files.map(readFileInChunks))
 }

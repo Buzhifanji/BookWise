@@ -24,8 +24,24 @@ export function chuankArray<T>(arr: T[], size: number) {
  * @returns
  */
 export function concatArrayBuffers(buffer1: ArrayBuffer, buffer2: ArrayBuffer): ArrayBuffer {
-  const tmp = new Uint8Array(buffer1.byteLength + buffer2.byteLength)
-  tmp.set(new Uint8Array(buffer1), 0)
-  tmp.set(new Uint8Array(buffer2), buffer1.byteLength)
-  return tmp.buffer
+  const totalLength = buffer1.byteLength + buffer2.byteLength
+
+  const mergedArrayBuffer = new ArrayBuffer(totalLength)
+
+  const view1 = new Uint8Array(buffer1)
+  const view2 = new Uint8Array(buffer2)
+  const mergedView = new Uint8Array(mergedArrayBuffer)
+
+  mergedView.set(view1, 0)
+  mergedView.set(view2, view1.length)
+
+  return mergedArrayBuffer
+}
+
+export function cloneBuffer(buffer: ArrayBuffer) {
+  return new Uint8Array(buffer).slice().buffer
+}
+
+export function arrayBufferToFile(val: ArrayBuffer, fileName: string) {
+  return new File([new Blob([val])], fileName)
 }

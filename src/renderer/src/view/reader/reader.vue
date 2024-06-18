@@ -2,7 +2,7 @@
 import { Book, BookContent, Note, db } from '@renderer/batabase';
 import { DrawerView, ErrorView, NoteAction, RingLoadingView, useToggleDrawer } from '@renderer/components';
 import { ReadMode } from '@renderer/enum';
-import { CETALOG_DRAWER, NOTE_DRAWER, isElectron } from '@renderer/shared';
+import { CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, isElectron } from '@renderer/shared';
 import { settingStore } from '@renderer/store';
 import { get, set, useToggle, useWindowSize } from '@vueuse/core';
 import { AlignJustify } from 'lucide-vue-next';
@@ -85,9 +85,10 @@ async function loadData() {
     // 获取书本内容
     const content = await getBookContent(bookId, info.path)
     if (!content) return
+    const file = arrayBufferToFile(content.content, info.name || '');
 
     // 获取书本渲染器
-    const { sections, toc } = await render(new File([content.content], info.name))
+    const { sections, toc } = await render(file)
 
     section.value = sections
     tocList.value = toc

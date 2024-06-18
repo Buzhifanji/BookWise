@@ -1,6 +1,6 @@
 export interface BookContent {
   bookId: string
-  content: Uint8Array
+  content: ArrayBuffer
 }
 
 export const schemaBookContent = '&bookId, content'

@@ -3,16 +3,17 @@ import { Reader } from '@book-wise/reader';
 import { Book, db } from '@renderer/batabase';
 import { Toast } from '@renderer/components/toast';
 import { useDialog } from '@renderer/hooks';
-import { convertBlobToUint8Array, isElectron, now } from '@renderer/shared';
+import { cloneBuffer, convertBlobToUint8Array, isElectron, now } from '@renderer/shared';
 import { PDFPageProxy, getDocument } from 'pdfjs-dist';
 import { v4 as uuidv4 } from 'uuid';
-import { defineExpose } from 'vue';
+import { defineExpose, ref } from 'vue';
 import { readFiles } from './read-file';
 
 const { dialogRef, openDialog, closeDialog } = useDialog();
 
-
 defineExpose({ open: openDialog })
+
+const inputRef = ref<HTMLInputElement | null>(null)
 
 const getPDFCover = async (page: PDFPageProxy) => {
     const naturalPdfSize = page.getViewport({ scale: 1 })
@@ -45,7 +46,6 @@ async function uploadFile(event: Event) {
         // 过滤重复添加的文件
         const newBookData = result.filter(({ hash }) => {
             if (md5Set.has(hash)) {
-                console.log(hash)
                 Toast({ message: '文件已存在', type: 'alert-warning' })
                 return false
             } else {
@@ -65,7 +65,7 @@ async function uploadFile(event: Event) {
             }
 
             if (reader.book.type === 'pdf') {
-                const pdf = await getDocument({ data }).promise
+                const pdf = await getDocument({ data: cloneBuffer(data) }).promise
                 const info = (await pdf.getMetadata())?.info as any
                 const metadata = {
                     title: info?.Title,
@@ -86,6 +86,7 @@ async function uploadFile(event: Event) {
 
         }))
 
+        // 添加到数据库
         const newBook: Book[] = bookMetadata.map(item => {
             const { author, description, language, published, publisher, title, md5, cover, path } = item
             return {
@@ -112,17 +113,18 @@ async function uploadFile(event: Event) {
 
 
         if (newBook.length) {
-            db.books.bulkAdd(newBook)
+            await db.books.bulkAdd(newBook)
 
             // 网页版,不能获取文件路径，需要保存上传内容
             if (!isElectron) {
-                db.bookContents.bulkAdd(bookMetadata.map(item => {
+                const bookContents = bookMetadata.map(item => {
                     return {
                         bookId: newBook.find(e => e.md5 === item.md5)!.id,
                         content: item.data,
                         id: uuidv4(),
                     }
-                }))
+                })
+                db.bookContents.bulkAdd(bookContents)
             }
 
             newBook.map(item => Toast({ message: `上传成功：${item.name}`, type: 'alert-success' }))
@@ -131,6 +133,10 @@ async function uploadFile(event: Event) {
     } catch (error: any) {
         Toast({ message: error, type: 'alert-warning' })
         console.log(error)
+    } finally {
+        if (inputRef.value) {
+            inputRef.value.value = ''
+        }
     }
 
 }
@@ -157,7 +163,7 @@ async function uploadFile(event: Event) {
                             computer
                         </p>
                     </div>
-                    <input type="file" multiple class="hidden" @change="uploadFile">
+                    <input type="file" ref="inputRef" multiple class="hidden" @change="uploadFile">
                 </label>
             </div>
         </div>
