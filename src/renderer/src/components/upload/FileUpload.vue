@@ -87,7 +87,7 @@ async function uploadFile(event: Event) {
                 }
             } else {
                 const cover = await reader.getCover()
-                const pages = 0
+                const pages = reader.book.sections.length
                 return {
                     ...reader.getMetadata(), md5: hash, cover: await convertBlobToUint8Array(cover), path, data, size, pages
                 }
@@ -118,8 +118,6 @@ async function uploadFile(event: Event) {
                 isDelete: null,
             }
         })
-
-        console.log('newBook', newBook)
 
         if (newBook.length) {
             await db.books.bulkAdd(newBook)
