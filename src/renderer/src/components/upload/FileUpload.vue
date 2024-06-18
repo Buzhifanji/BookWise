@@ -59,6 +59,8 @@ async function uploadFile(event: Event) {
             const reader = new Reader()
             await reader.open(file)
 
+            const size = file.size
+
             let path = ''
             if (isElectron) {
                 path = await window.api.getFilePath(file)
@@ -67,20 +69,27 @@ async function uploadFile(event: Event) {
             if (reader.book.type === 'pdf') {
                 const pdf = await getDocument({ data: cloneBuffer(data) }).promise
                 const info = (await pdf.getMetadata())?.info as any
-                const metadata = {
-                    title: info?.Title,
-                    author: info?.Author,
-                }
                 const blob = await getPDFCover(await pdf.getPage(1)) as Blob
                 const cover = await convertBlobToUint8Array(blob)
+
+                const metadata = {
+                    title: info?.Title || file.name.replace('.pdf', ''),
+                    author: info?.Author || '',
+                    language: info?.Language || '',
+                    publishTime: info?.CreationDate ? info.CreationDate.replace('D:', '').split('+')[0] : '',
+                    publisher: info?.Producer || '',
+                    description: info?.Subject || '',
+                }
+                const pages = pdf.numPages || 0
+
                 return {
-                    ...metadata, md5: hash, cover: cover, path: path, data
+                    ...metadata, md5: hash, cover: cover, path, data, size, pages
                 }
             } else {
                 const cover = await reader.getCover()
-
+                const pages = 0
                 return {
-                    ...reader.getMetadata(), md5: hash, cover: await convertBlobToUint8Array(cover), path, data
+                    ...reader.getMetadata(), md5: hash, cover: await convertBlobToUint8Array(cover), path, data, size, pages
                 }
             }
 
@@ -88,7 +97,7 @@ async function uploadFile(event: Event) {
 
         // 添加到数据库
         const newBook: Book[] = bookMetadata.map(item => {
-            const { author, description, language, published, publisher, title, md5, cover, path } = item
+            const { author, description, language, published, publisher, title, md5, cover, path, size, pages } = item
             return {
                 id: uuidv4(),
                 md5: md5,
@@ -100,8 +109,8 @@ async function uploadFile(event: Event) {
                 publisher: publisher || '',
                 cover: cover,
                 path: path,
-                size: 0,
-                pages: 0,
+                size,
+                pages,
                 status: 0,
                 category: 0,
                 createTime: now(),
@@ -110,7 +119,7 @@ async function uploadFile(event: Event) {
             }
         })
 
-
+        console.log('newBook', newBook)
 
         if (newBook.length) {
             await db.books.bulkAdd(newBook)
