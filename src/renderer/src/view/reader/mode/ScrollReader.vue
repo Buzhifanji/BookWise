@@ -91,9 +91,3 @@ function linkClick(href: string) {
     </div>
   </div>
 </template>
-
-<style scoped>
-.prose-width {
-  max-width: var(--prose-max-width);
-}
-</style>

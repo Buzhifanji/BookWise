@@ -11,7 +11,7 @@ import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue';
 import { Select } from '@renderer/components';
 import { themes } from '@renderer/view/setting/theme';
 import { useCssVar } from '@vueuse/core';
-import { Bolt, SkipBack, ZoomIn, ZoomOut } from 'lucide-vue-next';
+import { AArrowDown, AArrowUp, Bolt, SkipBack, ZoomIn, ZoomOut } from 'lucide-vue-next';
 import { useRouter } from 'vue-router';
 import CatalogView from './Catalog.vue';
 import NoteView from './NoteContainer.vue';
@@ -191,6 +191,46 @@ function zoomOut() {
   }
 }
 
+const fontSize = useCssVar('--prose-font-size', document.documentElement)
+const lineHeight = useCssVar('--prose-line-height', document.documentElement)
+const fontSizeList = [
+  { size: '0.75rem', lineHeight: '1rem' },
+  { size: '0.875rem', lineHeight: '1.25rem' },
+  { size: '1rem', lineHeight: '1.5rem' },
+  { size: '1.125rem', lineHeight: '1.75rem' },
+  { size: '1.25rem', lineHeight: '1.75rem' },
+  { size: '1.5rem', lineHeight: '2rem' },
+  { size: '1.875rem', lineHeight: '2.25rem' },
+  { size: '2.25rem', lineHeight: '2.5rem' },
+  { size: '3rem', lineHeight: '1' },
+]
+const updateSize = (i: number) => {
+  set(fontSize, fontSizeList[i].size)
+  set(lineHeight, fontSizeList[i].lineHeight)
+}
+function sizeOut() {
+  const index = fontSizeList.findIndex(item => item.size === get(fontSize))
+  if (index === -1) {
+    updateSize(2)
+    return
+  }
+
+  if (index === 0) return
+
+  updateSize(index - 1)
+}
+
+function sizeIn() {
+  const index = fontSizeList.findIndex(item => item.size === get(fontSize))
+  if (index === -1) {
+    updateSize(2)
+    return
+  }
+
+  if (index === fontSizeList.length - 1) return
+  updateSize(index + 1)
+}
+
 onMounted(() => {
   loadData()
 })
@@ -267,8 +307,8 @@ onUnmounted(() => {
                   <Bolt />
                 </div>
                 <ul tabindex="0"
-                  class="dropdown-content z-[1] menu p-2  mt-2 shadow bg-base-100   border badge-accent badge-outline  rounded-box w-52">
-                  <li class="flex flex-row justify-between text-base-content">
+                  class="dropdown-content z-[1] menu p-2  mt-2 shadow bg-base-100   border badge-accent badge-outline  rounded-box w-52 divide-y ">
+                  <li class="flex flex-row justify-between text-base-content py-1">
                     <a @click="zoomOut()">
                       <ZoomOut />
                     </a>
@@ -276,6 +316,16 @@ onUnmounted(() => {
                       <ZoomIn />
                     </a>
                   </li>
+
+                  <li class="flex flex-row justify-between text-base-content py-1">
+                    <a @click="sizeOut()">
+                      <AArrowDown />
+                    </a>
+                    <a @click="sizeIn()">
+                      <AArrowUp />
+                    </a>
+                  </li>
+
                 </ul>
               </div>
 

@@ -4,6 +4,8 @@
 
 :root {
   --prose-max-width: 65ch;
+  --prose-font-size: 1rem;
+  --prose-line-height: 1.65;
 }
 
 html {
@@ -23,4 +25,10 @@ html {
   font-feature-settings: normal;
   font-variation-settings: normal;
   -webkit-tap-highlight-color: transparent;
+}
+
+.prose-width {
+  max-width: var(--prose-max-width);
+  font-size: var(--prose-font-size);
+  line-height: var(--prose-line-height);
 }
