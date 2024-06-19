@@ -3,7 +3,7 @@ import { Note } from '@renderer/batabase';
 import { NoteAction, NoteText, bookJump } from '@renderer/components';
 import { useDialog } from '@renderer/hooks';
 import { RouterName } from '@renderer/route';
-import { chuankArray, remToPx } from '@renderer/shared';
+import { chuankArray, remToPx, toastSuccess } from '@renderer/shared';
 import { useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
@@ -11,7 +11,6 @@ import { set } from '@vueuse/core';
 import dayjs from 'dayjs';
 import { Flag } from 'lucide-vue-next';
 import { computed, defineProps, ref, toRaw, withDefaults } from 'vue';
-import { Toast } from '../toast';
 import Card from './Card.vue';
 import NoteView from './Note.vue';
 
@@ -69,11 +68,7 @@ const removeBefore = (value: Note) => {
 const removeAction = async () => {
   await NoteAction.removeOne(selectData!.id)
   closeRemoveDialog()
-  Toast({
-    message: '删除笔记成功',
-    position: ['toast-top', 'toast-center'],
-    type: 'alert-success',
-  })
+  toastSuccess('删除笔记成功')
 }
 
 // 详情
@@ -87,11 +82,7 @@ const onDetail = (value: Note) => {
 const removeNote = async (index: number) => {
   noteList.value.splice(index, 1)
   await NoteAction.update(selectData!.id, { notes: JSON.stringify(noteList.value) })
-  Toast({
-    message: '删除笔记成功',
-    position: ['toast-top', 'toast-center'],
-    type: 'alert-success',
-  })
+  toastSuccess('删除笔记成功')
 }
 
 // 跳转

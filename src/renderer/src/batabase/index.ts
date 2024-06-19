@@ -9,6 +9,8 @@ const db = new Dexie('__BookWiseDatabase__') as Dexie & {
   notes: EntityTable<Note, 'id'>
 }
 
+console.log(db)
+
 const version = 1
 
 db.version(version).stores({

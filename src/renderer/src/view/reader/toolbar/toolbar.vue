@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Note } from '@renderer/batabase';
-import { NoteAction, NoteText, Toast } from '@renderer/components';
+import { NoteAction, NoteText } from '@renderer/components';
+import { toastSuccess } from '@renderer/shared';
 import { get, onClickOutside, set, useElementSize } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
 import { Baseline, Copy, Highlighter, MessageSquareMore, SpellCheck2, Trash } from 'lucide-vue-next';
@@ -77,11 +78,7 @@ const findNote = async () => {
 const removeNote = async (_: NoteText, index: number) => {
   noteList.value.splice(index, 1)
   await NoteAction.update(get(note)!.id, { notes: JSON.stringify(get(noteList)) })
-  Toast({
-    message: '删除笔记成功',
-    position: ['toast-top', 'toast-center'],
-    type: 'alert-success'
-  })
+  toastSuccess('删除笔记成功')
 }
 
 onClickOutside(noteRef, (e) => {

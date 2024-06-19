@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { Reader } from '@book-wise/reader';
-import { Book, db } from '@renderer/batabase';
-import { Toast } from '@renderer/components/toast';
+import { Book } from '@renderer/batabase';
 import { useDialog } from '@renderer/hooks';
-import { cloneBuffer, convertBlobToUint8Array, isElectron, now } from '@renderer/shared';
+import { cloneBuffer, convertBlobToUint8Array, isElectron, now, toastSuccess, toastWarning } from '@renderer/shared';
 import { PDFPageProxy, getDocument } from 'pdfjs-dist';
 import { v4 as uuidv4 } from 'uuid';
 import { defineExpose, ref } from 'vue';
+import { BookAction, BookContentAction } from '../book/action';
 import { readFiles } from './read-file';
 
 const { dialogRef, openDialog, closeDialog } = useDialog();
@@ -39,14 +39,14 @@ async function uploadFile(event: Event) {
         const result = await readFiles(Array.from(files))
         if (result.length === 0) return
 
-        const books = await db.books.toArray()
+        const books = await BookAction.getAll()
 
         const md5Set = new Set(books.map(book => book.md5));
 
         // 过滤重复添加的文件
         const newBookData = result.filter(({ hash }) => {
             if (md5Set.has(hash)) {
-                Toast({ message: '文件已存在', type: 'alert-warning' })
+                toastWarning('文件已存在')
                 return false
             } else {
                 md5Set.add(hash)
@@ -120,7 +120,7 @@ async function uploadFile(event: Event) {
         })
 
         if (newBook.length) {
-            await db.books.bulkAdd(newBook)
+            await BookAction.bulkAdd(newBook)
 
             // 网页版,不能获取文件路径，需要保存上传内容
             if (!isElectron) {
@@ -131,14 +131,15 @@ async function uploadFile(event: Event) {
                         id: uuidv4(),
                     }
                 })
-                db.bookContents.bulkAdd(bookContents)
+
+                await BookContentAction.bulkAdd(bookContents)
             }
 
-            newBook.map(item => Toast({ message: `上传成功：${item.name}`, type: 'alert-success' }))
+            newBook.map(item => toastSuccess(`上传成功：${item.name}`))
         }
 
     } catch (error: any) {
-        Toast({ message: error, type: 'alert-warning' })
+        toastWarning(error)
         console.log(error)
     } finally {
         if (inputRef.value) {

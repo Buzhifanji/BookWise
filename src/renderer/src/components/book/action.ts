@@ -1,31 +1,79 @@
-import { Book, db } from '@renderer/batabase'
+import { Book, BookContent, db } from '@renderer/batabase'
 import { RouterName, router } from '@renderer/route'
-import { isElectron, now } from '@renderer/shared'
+import { isElectron, now, toastError } from '@renderer/shared'
 import { settingStore } from '@renderer/store'
 import { useObservable } from '@vueuse/rxjs'
 import { liveQuery } from 'dexie'
 
 export class BookAction {
+  static bulkAdd(book: Book[]) {
+    try {
+      return db.books.bulkAdd(book)
+    } catch (error) {
+      toastError('导入图书失败')
+      return Promise.reject(error)
+    }
+  }
+
   static removeOne(id: string, isForce: boolean) {
-    if (isForce) {
-      return db.books.delete(id)
-    } else {
-      return db.books.update(id, { isDelete: now() })
+    try {
+      if (isForce) {
+        return db.books.delete(id)
+      } else {
+        return db.books.update(id, { isDelete: now() })
+      }
+    } catch (error) {
+      toastError('删除失败')
+      return Promise.reject(error)
     }
   }
 
   static editeOne(id: string, value: Partial<Book>) {
-    return db.books.update(id, { ...value })
+    try {
+      return db.books.update(id, { ...value })
+    } catch (error) {
+      toastError('编辑失败')
+      return Promise.reject(error)
+    }
   }
 
   static restoreOne(id: string) {
-    return db.books.update(id, { isDelete: null })
+    try {
+      return db.books.update(id, { isDelete: null })
+    } catch (error) {
+      toastError('还原失败')
+      return Promise.reject(error)
+    }
   }
 
-  static observable() {
-    return useObservable<Book[], Book[]>(
-      liveQuery(async () => (await db.books.toArray()).filter((item) => !item.isDelete)) as any
-    )
+  static fineOne(id: string) {
+    try {
+      return db.books.get(id)
+    } catch (error) {
+      toastError('获取图书失败')
+      return Promise.reject(error)
+    }
+  }
+  static getAll() {
+    try {
+      return db.books.toArray()
+    } catch (error) {
+      toastError('读取图书列表失败')
+      return Promise.reject(error)
+    }
+  }
+
+  static observable(isDelete = false) {
+    try {
+      return useObservable<Book[], Book[]>(
+        liveQuery(async () =>
+          (await db.books.toArray()).filter((item) => (isDelete ? item.isDelete : !item.isDelete))
+        ) as any
+      )
+    } catch (error) {
+      toastError('读取图书列表失败')
+      return [] as Book[]
+    }
   }
 }
 
@@ -47,5 +95,20 @@ export function bookJump(id: string) {
     } else {
       router.push({ name: RouterName.Reader, params: { id } })
     }
+  }
+}
+
+export class BookContentAction {
+  static bulkAdd(bookContentList: BookContent[]) {
+    try {
+      return db.bookContents.bulkPut(bookContentList)
+    } catch (error) {
+      toastError('导入图书内容失败')
+      return Promise.reject(error)
+    }
+  }
+
+  static async findOne(bookId: string) {
+    return await db.bookContents.where('bookId').equals(bookId).first()
   }
 }

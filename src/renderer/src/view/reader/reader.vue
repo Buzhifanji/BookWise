@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Book, BookContent, Note, db } from '@renderer/batabase';
-import { DrawerView, ErrorView, NoteAction, RingLoadingView, useToggleDrawer } from '@renderer/components';
+import { Book, BookContent, Note } from '@renderer/batabase';
+import { BookAction, BookContentAction, DrawerView, ErrorView, NoteAction, RingLoadingView, useToggleDrawer } from '@renderer/components';
 import { ReadMode } from '@renderer/enum';
 import { CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, isElectron } from '@renderer/shared';
 import { settingStore } from '@renderer/store';
@@ -8,6 +8,8 @@ import { get, set, useToggle, useWindowSize } from '@vueuse/core';
 import { AlignJustify } from 'lucide-vue-next';
 import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue';
 // import '../../assets/css/pdf.css';
+import { Select } from '@renderer/components';
+import { themes } from '@renderer/view/setting/theme';
 import { ChevronFirst, ChevronLast, SkipBack } from 'lucide-vue-next';
 import { useRouter } from 'vue-router';
 import CatalogView from './Catalog.vue';
@@ -62,7 +64,7 @@ async function getBookContent(bookId: string, url: string) {
       return { content, bookId }
     } else {
       // 网页从数据库中获取
-      return await db.bookContents.where('bookId').equals(bookId).first()
+      return BookContentAction.findOne(bookId)
     }
   } catch (err) {
     return null
@@ -71,15 +73,12 @@ async function getBookContent(bookId: string, url: string) {
 
 async function loadData() {
   try {
-
-
     setLoading(true)
-    debugger
     const bookId = props.id
     if (!bookId) return
 
     // 获取书本信息
-    const info = await db.books.get(bookId)
+    const info = await BookAction.fineOne(bookId)
     if (!info) return
 
     // 获取书本内容
@@ -212,7 +211,8 @@ onUnmounted(() => {
                   <SkipBack />
                 </button>
               </div>
-
+              <!-- 主题 -->
+              <Select v-model="settingStore.theme" :is-cloce="false" :list="themes" />
               <!-- 翻页 -->
               <div class="join">
                 <button class="btn btn-sm  rounded-l-full join-item" @click="">

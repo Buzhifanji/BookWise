@@ -1,6 +1,6 @@
 import { DomSource } from '@book-wise/web-highlight'
 import { Note, db } from '@renderer/batabase'
-import { now } from '@renderer/shared'
+import { now, toastError } from '@renderer/shared'
 import { useObservable } from '@vueuse/rxjs'
 import { liveQuery } from 'dexie'
 import { v4 as uuidv4 } from 'uuid'
@@ -22,29 +22,39 @@ export class NoteAction {
     chapterName: string
     notes: string
   }) {
-    if (sources.length === 0) return null
-    const sourceId = sources[0].id
-    const isExist = await this.findBySourceId(sourceId)
-    if (isExist) return null
+    try {
+      if (sources.length === 0) return null
+      const sourceId = sources[0].id
+      const isExist = await this.findBySourceId(sourceId)
+      if (isExist) return null
 
-    const res: Note = {
-      id: uuidv4(),
-      sourceId: sourceId,
-      eBookId,
-      notes,
-      chapterName,
-      domSource: JSON.stringify(sources),
-      createTime: now(),
-      updateTime: now(),
-      isDelete: null
+      const res: Note = {
+        id: uuidv4(),
+        sourceId: sourceId,
+        eBookId,
+        notes,
+        chapterName,
+        domSource: JSON.stringify(sources),
+        createTime: now(),
+        updateTime: now(),
+        isDelete: null
+      }
+
+      await db.notes.put(res)
+      return res
+    } catch (error) {
+      toastError('添加笔记失败')
+      return Promise.reject(error)
     }
-
-    await db.notes.add(res)
-    return res
   }
 
   static removeOne(id: string) {
-    return db.notes.delete(id)
+    try {
+      return db.notes.delete(id)
+    } catch (error) {
+      toastError('删除失败')
+      return Promise.reject(error)
+    }
   }
 
   static removeBySoureIds(sourceId: string[]) {
@@ -52,30 +62,52 @@ export class NoteAction {
   }
 
   static update(id: string, value: Partial<Note>) {
-    return db.notes.update(id, { ...value })
+    try {
+      return db.notes.update(id, { ...value })
+    } catch (error) {
+      toastError('更新失败')
+      return Promise.reject(error)
+    }
   }
 
   static async updateBySourceId(sourceId: string, value: Partial<Note>) {
-    const note = await this.findBySourceId(sourceId)
-    if (note) {
-      await this.update(note.id, value)
-      return true
+    try {
+      const note = await this.findBySourceId(sourceId)
+      if (note) {
+        await this.update(note.id, value)
+        return true
+      }
+      return false
+    } catch (error) {
+      toastError('更新失败')
+      return Promise.reject(error)
     }
-    return false
   }
 
   static observable() {
-    return useObservable<Note[], Note[]>(
-      liveQuery(async () => (await db.notes.toArray()).filter((item) => !item.isDelete)) as any
-    )
+    try {
+      return useObservable<Note[], Note[]>(
+        liveQuery(async () => (await db.notes.toArray()).filter((item) => !item.isDelete)) as any
+      )
+    } catch (error) {
+      toastError('读取笔记列表失败')
+      return [] as Note[]
+    }
   }
 
   static observableByEBookId(eBookId: string) {
-    return useObservable<Note[], Note[]>(
-      liveQuery(async () =>
-        (await db.notes.where('eBookId').equals(eBookId).toArray()).filter((item) => !item.isDelete)
-      ) as any
-    )
+    try {
+      return useObservable<Note[], Note[]>(
+        liveQuery(async () =>
+          (await db.notes.where('eBookId').equals(eBookId).toArray()).filter(
+            (item) => !item.isDelete
+          )
+        ) as any
+      )
+    } catch (error) {
+      toastError('读取笔记列表失败')
+      return [] as Note[]
+    }
   }
 
   static async findByEBookId(eBookId: string) {

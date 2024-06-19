@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { RingLoadingView, Toast } from '@renderer/components';
-import { $, wait } from '@renderer/shared';
+import { RingLoadingView } from '@renderer/components';
+import { $, toastWarning, wait } from '@renderer/shared';
 import { set, useResizeObserver, useThrottleFn, useToggle } from '@vueuse/core';
 import { nextTick, onMounted, ref } from 'vue';
 import { CONTINAER_ID } from '../highlight';
@@ -118,7 +118,7 @@ async function prev() {
 
     dom.scrollTo({ left: dom.scrollWidth })
   } else {
-    Toast({ position: ['toast-top', 'toast-center'], type: 'alert-warning', message: '已经是第一页了', })
+    toastWarning('已经是第一页了')
   }
 }
 
@@ -128,7 +128,7 @@ async function next() {
     await updateSection()
 
   } else {
-    Toast({ position: ['toast-top', 'toast-center'], type: 'alert-warning', message: '已经是最后一页了', })
+    toastWarning('已经是最后一页了')
   }
 }
 

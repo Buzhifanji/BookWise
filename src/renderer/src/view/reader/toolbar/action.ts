@@ -1,7 +1,7 @@
 import { DomSource } from '@book-wise/web-highlight'
 import { Note } from '@renderer/batabase'
-import { NoteAction, NoteText, Toast } from '@renderer/components'
-import { now } from '@renderer/shared'
+import { NoteAction, NoteText } from '@renderer/components'
+import { now, toastSuccess, toastWarning } from '@renderer/shared'
 import { get, set, useClipboard } from '@vueuse/core'
 import { Ref, ref, shallowReactive } from 'vue'
 import { highlighter } from '../highlight'
@@ -147,11 +147,7 @@ export class NoteToolBarAction {
     const { copy } = useClipboard()
     const val = source.reduce((acc, cur) => (acc += cur.text), '')
     copy(val)
-    Toast({
-      message: '已复制到剪贴板',
-      position: ['toast-top', 'toast-center'],
-      type: 'alert-success'
-    })
+    toastSuccess('已复制到剪贴板')
     return true
   }
 
@@ -229,11 +225,7 @@ export class NoteRichAction {
   async firstAdd(source: DomSource[]) {
     const value = get(this.value)
     if (!value) {
-      Toast({
-        message: '请输入笔记内容',
-        position: ['toast-top', 'toast-center'],
-        type: 'alert-warning'
-      })
+      toastWarning('请输入笔记内容')
       return
     }
 
@@ -249,11 +241,7 @@ export class NoteRichAction {
 
     highlighter.remove(sources[0].id)
     highlighter.fromSource(sources)
-    Toast({
-      message: '添加笔记成功',
-      position: ['toast-top', 'toast-center'],
-      type: 'alert-success'
-    })
+    toastSuccess('添加笔记成功')
   }
 
   /**
@@ -264,36 +252,25 @@ export class NoteRichAction {
   async addInNoNotes() {
     const value = get(this.value)
     if (!value) {
-      Toast({
-        message: '请输入笔记内容',
-        position: ['toast-top', 'toast-center'],
-        type: 'alert-warning'
-      })
+      toastSuccess('请输入笔记内容')
       return
     }
 
     const id = this.noteDetail?.id
     if (!id) return
 
-    this.notes.value.push({ value, time: now() })
     await NoteAction.update(id, { notes: JSON.stringify(get(this.notes)) })
-    Toast({
-      message: '添加笔记成功',
-      position: ['toast-top', 'toast-center'],
-      type: 'alert-success'
-    })
+    this.notes.value.push({ value, time: now() })
+
+    toastSuccess('添加笔记成功')
   }
 
   async remove(index: number) {
     const id = this.noteDetail?.id
     if (!id) return
 
-    this.notes.value.splice(index, 1)
     await NoteAction.update(id, { notes: JSON.stringify(get(this.notes)) })
-    Toast({
-      message: '删除笔记成功',
-      position: ['toast-top', 'toast-center'],
-      type: 'alert-success'
-    })
+    this.notes.value.splice(index, 1)
+    toastSuccess('删除笔记成功')
   }
 }

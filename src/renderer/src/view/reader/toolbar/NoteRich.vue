@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Note } from '@renderer/batabase';
-import { NoteAction, NoteText, Toast } from '@renderer/components';
+import { NoteAction, NoteText } from '@renderer/components';
+import { toastError } from '@renderer/shared';
 import { get, onClickOutside, onKeyStroke, useElementBounding, useParentElement } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
 import { computed, onMounted, ref } from 'vue';
@@ -66,11 +67,7 @@ async function init() {
 
   note = await NoteAction.findBySourceId(domSource[0].id)
   if (!note) {
-    Toast({
-      message: '数据丢失：本地未找到笔记',
-      position: ['toast-top', 'toast-center'],
-      type: 'alert-error',
-    })
+    toastError('数据丢失：本地未找到笔记')
     NoteBarStyle.close()
   } else {
     noteRichAction.setNotes(note)
@@ -82,8 +79,8 @@ async function submit() {
   if (!value) return
 
   if (NoteBarStyle.isPainted) {
-     // 新增，之前有高亮,但无笔记内容
-     noteRichAction.addInNoNotes()
+    // 新增，之前有高亮,但无笔记内容
+    noteRichAction.addInNoNotes()
   } else {
     // 第一次新增，无高亮
     noteRichAction.firstAdd(get(source))
@@ -107,7 +104,8 @@ init()
 
 <template>
   <div class="fixed inset-0 transition ease-in-out">
-    <div class="card w-96 bg-base-100 border border-primary absolute bottom-8 cursor-pointer bar-shadow select-none max-h-full overflow-auto"
+    <div
+      class="card w-96 bg-base-100 border border-primary absolute bottom-8 cursor-pointer bar-shadow select-none max-h-full overflow-auto"
       :style="style" ref="cardRef">
       <div class="card-body">
         <div class="flex flex-row justify-between items-center mb-2">
