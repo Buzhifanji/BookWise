@@ -3,6 +3,7 @@ import { settingStore } from '@renderer/store';
 import { get, onKeyStroke, useElementSize, useResizeObserver, useThrottleFn } from '@vueuse/core';
 import 'pdfjs-dist/web/pdf_viewer.css';
 import { onUnmounted, ref, watchEffect } from 'vue';
+import { toNextView, toPrewView } from '../scroll';
 import { PDF, setSpreadMode } from './pdf';
 
 const PDFContainerRef = ref<HTMLElement | null>(null)
@@ -16,28 +17,24 @@ watchEffect(async () => {
 
 onUnmounted(() => PDF.destroy())
 
-const prewView = useThrottleFn(() => {
-  const dom = PDFContainerRef.value
-  if (!dom) return
+const getScrollData = () => {
+  const dom = PDFContainerRef.value!
   const { height } = dom.getBoundingClientRect()
+  return { dom, height, scrollTop: dom.scrollTop }
+}
 
-  let val = dom.scrollTop - height
-  if (val < 0) val = 0
-
-  PDFContainerRef.value!.scrollTo({ top: val, behavior: 'smooth' })
+const prewView = useThrottleFn(() => {
+  if (!get(PDFContainerRef)) return
+  const { dom, height, scrollTop } = getScrollData()
+  toPrewView(dom, scrollTop, height)
 }, 300)
 
 const { height: totalHeight } = useElementSize(contentRef)
 
 const nextView = useThrottleFn(() => {
-  const dom = PDFContainerRef.value
-  if (!dom) return
-  const { height } = dom.getBoundingClientRect()
-
-  let val = dom.scrollTop + height
-  if (val > get(totalHeight)) val = get(totalHeight)
-
-  PDFContainerRef.value!.scrollTo({ top: val, behavior: 'smooth' })
+  if (!get(PDFContainerRef)) return
+  const { dom, height, scrollTop } = getScrollData()
+  toNextView(dom, scrollTop, height, get(totalHeight))
 }, 300)
 
 onKeyStroke(['ArrowRight'], nextView)

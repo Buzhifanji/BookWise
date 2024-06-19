@@ -4,6 +4,7 @@ import { useVirtualizer } from '@tanstack/vue-virtual';
 import { get, onKeyStroke, useThrottleFn } from '@vueuse/core';
 import { computed, ref } from 'vue';
 import { getBookHref, isExternal, openExternal } from '../render';
+import { toNextView, toPrewView } from '../scroll';
 import { getSourceTarget } from '../source';
 import SectionView from './Section.vue';
 
@@ -74,30 +75,48 @@ function linkClick(href: string) {
   }
 }
 
-const prewView = useThrottleFn(() => {
-  const dom = containerRef.value
-  if (!dom) return
-  const { height } = dom.getBoundingClientRect()
+const getHeight = (h?: number) => {
+  const dom = containerRef.value!
+  let result = 0
+  if (h) {
+    result = h
+  } else {
+    const { height } = dom.getBoundingClientRect()
+    result = height
+  }
+  return { height: result, dom, scrollTop: dom.scrollTop }
+}
 
-  let val = dom.scrollTop - height
-  if (val < 0) val = 0
+const prewViewAction = (h?: number) => {
+  if (!get(containerRef)) return
+  const { height, dom, scrollTop } = getHeight(h)
 
-  dom.scrollTo({ top: val, behavior: 'smooth' })
-}, 300)
+  toPrewView(dom, scrollTop, height)
+}
 
-const nextView = useThrottleFn(() => {
-  const dom = containerRef.value
-  if (!dom) return
-  const { height } = dom.getBoundingClientRect()
+// 上一页
+const prewView = useThrottleFn(() => prewViewAction(), 300)
+onKeyStroke(['ArrowLeft'], prewView)
 
-  let val = dom.scrollTop + height
-  if (val > totalSize.value) val = totalSize.value
+// 向上翻一点点
+const littlePrewView = useThrottleFn(() => prewViewAction(10), 100)
+onKeyStroke(['ArrowUp'], littlePrewView)
 
-  dom.scrollTo({ top: val, behavior: 'smooth' })
-}, 300)
+const nextViewAction = (h?: number) => {
+  if (!get(containerRef)) return
+  const { height, dom, scrollTop } = getHeight(h)
 
-onKeyStroke(['ArrowDown', 'ArrowRight'], nextView)
-onKeyStroke(['ArrowUp', 'ArrowLeft'], prewView)
+  toNextView(dom, scrollTop, height, get(totalSize))
+}
+
+// 下一页
+const nextView = useThrottleFn(() => nextViewAction(), 300)
+onKeyStroke(['ArrowRight'], nextView)
+
+// 向下翻一点点
+const littleNextView = useThrottleFn(() => nextViewAction(10), 100)
+onKeyStroke(['ArrowDown'], littleNextView)
+
 </script>
 
 <template>

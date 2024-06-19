@@ -4,6 +4,7 @@ import { get, onKeyStroke, set, useThrottleFn } from '@vueuse/core';
 import { computed, ref } from 'vue';
 import { CONTINAER_ID } from '../highlight';
 import { getBookHref, isExternal, openExternal } from '../render';
+import { toNextView, toPrewView } from '../scroll';
 import { getSourceTarget } from '../source';
 import SectionView from './Section.vue';
 
@@ -88,11 +89,16 @@ const jumpToPrewView = async () => {
 
   containerRef.value!.scrollTo({ top: containerRef.value!.scrollHeight })
 }
-const prewView = useThrottleFn(async () => {
-  const dom = containerRef.value
-  if (!dom) return
+
+const getScrollData = () => {
+  const dom = containerRef.value!
   const { height } = dom.getBoundingClientRect()
   const { scrollHeight, scrollTop } = dom
+  return { height, scrollHeight, scrollTop, dom }
+}
+const prewView = useThrottleFn(async () => {
+  if (!get(containerRef)) return
+  const { height, scrollHeight, scrollTop, dom } = getScrollData()
 
   if (scrollHeight <= height) {
     // 无滚动条
@@ -102,13 +108,11 @@ const prewView = useThrottleFn(async () => {
       // 已经再顶部了
       await jumpToPrewView()
     } else {
-      let val = scrollTop - height
-      if (val < 0) val = 0
-
-      dom.scrollTo({ top: val, behavior: 'smooth' })
+      toPrewView(dom, scrollTop, height)
     }
   }
 }, 300)
+onKeyStroke(['ArrowLeft'], prewView)
 
 // 下一页
 const jumpToNextView = async () => {
@@ -120,10 +124,8 @@ const jumpToNextView = async () => {
   containerRef.value!.scrollTo({ top: 0 })
 }
 const nextView = useThrottleFn(() => {
-  const dom = containerRef.value
-  if (!dom) return
-  const { height } = dom.getBoundingClientRect()
-  const { scrollHeight, scrollTop } = dom
+  if (!get(containerRef)) return
+  const { height, scrollHeight, scrollTop, dom } = getScrollData()
   if (scrollHeight <= height) {
     // 无滚动条
     jumpToNextView()
@@ -132,18 +134,35 @@ const nextView = useThrottleFn(() => {
       // 已经在底部了
       jumpToNextView()
     } else {
-      const total = scrollHeight - height
-      let val = scrollTop + height
-      if (val > total) val = total
-
-      dom.scrollTo({ top: val, behavior: 'smooth' })
+      toNextView(dom, scrollTop, height, scrollHeight - height)
     }
   }
-
 }, 300)
+onKeyStroke(['ArrowRight'], nextView)
 
-onKeyStroke(['ArrowDown', 'ArrowRight'], nextView)
-onKeyStroke(['ArrowUp', 'ArrowLeft'], prewView)
+// 向上翻一点点
+const littlePrevView = () => {
+  if (!get(containerRef)) return
+  const { height, scrollHeight, scrollTop, dom } = getScrollData()
+  if (scrollHeight > height) {
+    if (scrollTop !== 0) {
+      toPrewView(dom, scrollTop, 10)
+    }
+  }
+}
+onKeyStroke(['ArrowUp'], littlePrevView)
+
+// 向下翻一点点
+const littleNextView = () => {
+  if (!get(containerRef)) return
+  const { height, scrollHeight, scrollTop, dom } = getScrollData()
+  if (scrollHeight > height) {
+    if (scrollTop + height < scrollHeight) {
+      toNextView(dom, scrollTop, 10, scrollHeight - height)
+    }
+  }
+}
+onKeyStroke(['ArrowDown'], littleNextView)
 </script>
 
 <template>
