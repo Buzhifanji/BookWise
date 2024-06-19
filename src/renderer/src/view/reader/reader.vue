@@ -6,7 +6,7 @@ import { $, $$, CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, isElectron } fro
 import { settingStore } from '@renderer/store';
 import { get, set, useToggle, useWindowSize } from '@vueuse/core';
 import { AlignJustify } from 'lucide-vue-next';
-import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue';
+import { computed, nextTick, onMounted, onUnmounted, ref, watchEffect } from 'vue';
 // import '../../assets/css/pdf.css';
 import { Select } from '@renderer/components';
 import { themes } from '@renderer/view/setting/theme';
@@ -181,6 +181,7 @@ function zoomIn() {
 
   if (width < sectionWidth - 200) {
     const val = +get(zoomSize.value).replace('ch', '')
+    console.log(val)
     set(zoomSize, `${val + 2}ch`)
   }
 }
@@ -190,6 +191,11 @@ function zoomOut() {
     set(zoomSize, `${val - 2}ch`)
   }
 }
+watchEffect(() => {
+  if (settingStore.value.readMode === ReadMode.double) {
+    set(zoomSize, `${65 * 2}ch`)
+  }
+})
 
 const fontSize = useCssVar('--prose-font-size', document.documentElement)
 const lineHeight = useCssVar('--prose-line-height', document.documentElement)
@@ -302,12 +308,13 @@ onUnmounted(() => {
               <PDFToolbarView v-if="isPDF" />
 
               <!-- 操作 -->
-              <div class="dropdown dropdown-end dropdown-open" v-else>
+              <div class="dropdown dropdown-end " v-else>
                 <div tabindex="0" role="button" class="btn btn-sm ">
                   <Bolt />
                 </div>
                 <ul tabindex="0"
                   class="dropdown-content z-[1] menu p-2  mt-2 shadow bg-base-100   border badge-accent badge-outline  rounded-box w-52 divide-y ">
+                  <!-- 调节宽带 -->
                   <li class="flex flex-row justify-between text-base-content py-1">
                     <a @click="zoomOut()">
                       <ZoomOut />
@@ -317,6 +324,7 @@ onUnmounted(() => {
                     </a>
                   </li>
 
+                  <!-- 调节字体大小 行高 -->
                   <li class="flex flex-row justify-between text-base-content py-1">
                     <a @click="sizeOut()">
                       <AArrowDown />
