@@ -2,7 +2,7 @@
 import { Book, BookContent, Note } from '@renderer/batabase';
 import { BookAction, BookContentAction, DrawerView, ErrorView, NoteAction, RingLoadingView, useToggleDrawer } from '@renderer/components';
 import { ReadMode } from '@renderer/enum';
-import { CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, isElectron } from '@renderer/shared';
+import { $, $$, CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, isElectron } from '@renderer/shared';
 import { settingStore } from '@renderer/store';
 import { get, set, useToggle, useWindowSize } from '@vueuse/core';
 import { AlignJustify } from 'lucide-vue-next';
@@ -10,7 +10,8 @@ import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue';
 // import '../../assets/css/pdf.css';
 import { Select } from '@renderer/components';
 import { themes } from '@renderer/view/setting/theme';
-import { SkipBack } from 'lucide-vue-next';
+import { useCssVar } from '@vueuse/core';
+import { Bolt, SkipBack, ZoomIn, ZoomOut } from 'lucide-vue-next';
 import { useRouter } from 'vue-router';
 import CatalogView from './Catalog.vue';
 import NoteView from './NoteContainer.vue';
@@ -167,6 +168,29 @@ function goBack() {
   router.go(-1)
 }
 
+// 排版
+const zoomSize = useCssVar('--prose-max-width', document.documentElement)
+function zoomIn() {
+  const doms = $$('.prose-width') as unknown as HTMLElement[]
+  if (doms.length === 0) return
+  const sectionDom = $(`#${CONTINAER_ID}`) as HTMLElement
+  if (!sectionDom) return
+
+  const { width } = doms[0].getBoundingClientRect()
+  const { width: sectionWidth } = sectionDom.getBoundingClientRect()
+
+  if (width < sectionWidth - 200) {
+    const val = +get(zoomSize.value).replace('ch', '')
+    set(zoomSize, `${val + 2}ch`)
+  }
+}
+function zoomOut() {
+  const val = +get(zoomSize.value).replace('ch', '')
+  if (val > 8) {
+    set(zoomSize, `${val - 2}ch`)
+  }
+}
+
 onMounted(() => {
   loadData()
 })
@@ -213,6 +237,8 @@ onUnmounted(() => {
               </div>
               <!-- 主题 -->
               <Select :class-name="'!w-36 select-sm'" v-model="settingStore.theme" :is-cloce="false" :list="themes" />
+
+
               <!-- 翻页 -->
               <!-- <div class="join">
                 <button class="btn btn-sm  rounded-l-full join-item" @click="">
@@ -230,14 +256,29 @@ onUnmounted(() => {
               </button> -->
             </div>
             <div>
-              <!-- 文章标题 -->
-              <!-- <div class="tooltip tooltip-bottom" :data-tip="book.name">
-                <p class="text-lg font-bold line-clamp-1">{{ book.name }}</p>
-              </div> -->
             </div>
             <div class="flex gap-4">
               <!-- pdf控制缩放 -->
               <PDFToolbarView v-if="isPDF" />
+
+              <!-- 操作 -->
+              <div class="dropdown dropdown-end dropdown-open" v-else>
+                <div tabindex="0" role="button" class="btn btn-sm ">
+                  <Bolt />
+                </div>
+                <ul tabindex="0"
+                  class="dropdown-content z-[1] menu p-2  mt-2 shadow bg-base-100   border badge-accent badge-outline  rounded-box w-52">
+                  <li class="flex flex-row justify-between text-base-content">
+                    <a @click="zoomOut()">
+                      <ZoomOut />
+                    </a>
+                    <a @click="zoomIn()">
+                      <ZoomIn />
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
               <label :for="NOTE_DRAWER" class="cursor-pointer " v-if="isSM">
                 <AlignJustify class="w-5 h-5" />
               </label>

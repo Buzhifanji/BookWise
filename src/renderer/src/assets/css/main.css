@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --prose-max-width: 65ch;
+}
+
 html {
   line-height: 1.5;
   -webkit-text-size-adjust: 100%;
