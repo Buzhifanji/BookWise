@@ -1,17 +1,13 @@
 <script setup lang="ts">
 import { Book, BookContent, Note } from '@renderer/batabase';
-import { BookAction, BookContentAction, DrawerView, ErrorView, NoteAction, RingLoadingView, useToggleDrawer } from '@renderer/components';
+import { BookAction, BookContentAction, DrawerView, ErrorView, NoteAction, RingLoadingView, Select, useToggleDrawer } from '@renderer/components';
 import { ReadMode } from '@renderer/enum';
 import { $, $$, CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, isElectron } from '@renderer/shared';
 import { settingStore } from '@renderer/store';
-import { get, set, useToggle, useWindowSize } from '@vueuse/core';
-import { AlignJustify } from 'lucide-vue-next';
+import { readModeList, themes } from '@renderer/view/setting';
+import { get, set, useCssVar, useToggle, useWindowSize } from '@vueuse/core';
+import { AArrowDown, AArrowUp, AlignJustify, Bolt, SkipBack, ZoomIn, ZoomOut } from 'lucide-vue-next';
 import { computed, nextTick, onMounted, onUnmounted, ref, watchEffect } from 'vue';
-// import '../../assets/css/pdf.css';
-import { Select } from '@renderer/components';
-import { themes } from '@renderer/view/setting/theme';
-import { useCssVar } from '@vueuse/core';
-import { AArrowDown, AArrowUp, Bolt, SkipBack, ZoomIn, ZoomOut } from 'lucide-vue-next';
 import { useRouter } from 'vue-router';
 import CatalogView from './Catalog.vue';
 import NoteView from './NoteContainer.vue';
@@ -283,7 +279,9 @@ onUnmounted(() => {
               </div>
               <!-- 主题 -->
               <Select :class-name="'!w-36 select-sm'" v-model="settingStore.theme" :is-cloce="false" :list="themes" />
-
+              <!-- 阅读模式 -->
+              <Select :class-name="'!w-36 select-sm'" v-model="settingStore.readMode" :is-cloce="false"
+                :list="readModeList" />
 
               <!-- 翻页 -->
               <!-- <div class="join">

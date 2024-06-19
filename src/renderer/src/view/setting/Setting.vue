@@ -1,21 +1,10 @@
 <script setup lang="ts">
 import { CheckBoxView, Select, SelectView } from '@renderer/components';
-import { BookshelftMode, ReadMode } from '@renderer/enum';
 import { settingStore } from '@renderer/store';
 import { langs } from './language';
+import { bookshelfModeList, readModeList } from './mode';
 import { themes } from './theme';
 
-const readModeList = [
-  { id: ReadMode.sroll, value: '滚动模式' },
-  { id: ReadMode.section, value: '章节模式' },
-  { id: ReadMode.double, value: '双页模式' },
-]
-
-const bookshelfModeList = [
-  { id: BookshelftMode.bookshelf, value: '书架模式' },
-  { id: BookshelftMode.card, value: '卡片模式' },
-  { id: BookshelftMode.list, value: '列表模式' },
-]
 
 const textOpacity = { '--tw-text-opacity': 0.6 };
 
