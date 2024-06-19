@@ -7,12 +7,14 @@ import { SelectItem } from './type';
 interface Props {
   modelValue?: SelectItem | string
   list: SelectItem[]
-  isCloce?: boolean
+  isCloce?: boolean,
+  className?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   list: () => [],
-  isCloce: true
+  isCloce: true,
+  className: ''
 })
 
 const emit = defineEmits(['update:modelValue'])
@@ -54,7 +56,7 @@ function getModelValue(modelValue: SelectItem | string) {
 
 <template>
   <details class="dropdown " :class="position" ref="detailsRef">
-    <summary ref="summaryRef" class=" cursor-pointer select select-bordered items-center w-full">
+    <summary ref="summaryRef" class="cursor-pointer select select-bordered items-center w-full" :class="className">
       {{ getModelValue(modelValue!) }}
     </summary>
     <ul

@@ -10,7 +10,7 @@ import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue';
 // import '../../assets/css/pdf.css';
 import { Select } from '@renderer/components';
 import { themes } from '@renderer/view/setting/theme';
-import { ChevronFirst, ChevronLast, SkipBack } from 'lucide-vue-next';
+import { SkipBack } from 'lucide-vue-next';
 import { useRouter } from 'vue-router';
 import CatalogView from './Catalog.vue';
 import NoteView from './NoteContainer.vue';
@@ -212,9 +212,9 @@ onUnmounted(() => {
                 </button>
               </div>
               <!-- 主题 -->
-              <Select v-model="settingStore.theme" :is-cloce="false" :list="themes" />
+              <Select :class-name="'!w-36 select-sm'" v-model="settingStore.theme" :is-cloce="false" :list="themes" />
               <!-- 翻页 -->
-              <div class="join">
+              <!-- <div class="join">
                 <button class="btn btn-sm  rounded-l-full join-item" @click="">
                   <ChevronFirst />
                 </button>
@@ -222,7 +222,7 @@ onUnmounted(() => {
                 <button class="btn btn-sm join-item rounded-r-full" @click="">
                   <ChevronLast />
                 </button>
-              </div>
+              </div> -->
               <!-- 打开搜索框按钮 -->
               <!-- <button aria-label="Search button"
                 class="btn hidden h-9 w-48 items-center justify-start gap-3 border-base-content/20 hover:border-transparent hover:bg-base-content/20 sm:flex btn-sm btn-outline">

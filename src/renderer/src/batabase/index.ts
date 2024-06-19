@@ -19,5 +19,11 @@ db.version(version).stores({
   notes: schemaNote // 笔记
 })
 
+export const clearDB = () => {
+  db.books.clear()
+  db.bookContents.clear()
+  db.notes.clear()
+}
+
 export { db }
 export type { Book, BookContent, Note }
