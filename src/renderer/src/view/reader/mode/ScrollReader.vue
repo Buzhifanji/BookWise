@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { wait } from '@renderer/shared';
 import { useVirtualizer } from '@tanstack/vue-virtual';
-import { get } from '@vueuse/core';
+import { get, onKeyStroke, useThrottleFn } from '@vueuse/core';
 import { computed, ref } from 'vue';
 import { getBookHref, isExternal, openExternal } from '../render';
 import { getSourceTarget } from '../source';
@@ -74,7 +74,30 @@ function linkClick(href: string) {
   }
 }
 
+const prewView = useThrottleFn(() => {
+  const dom = containerRef.value
+  if (!dom) return
+  const { height } = dom.getBoundingClientRect()
 
+  let val = dom.scrollTop - height
+  if (val < 0) val = 0
+
+  dom.scrollTo({ top: val, behavior: 'smooth' })
+}, 300)
+
+const nextView = useThrottleFn(() => {
+  const dom = containerRef.value
+  if (!dom) return
+  const { height } = dom.getBoundingClientRect()
+
+  let val = dom.scrollTop + height
+  if (val > totalSize.value) val = totalSize.value
+
+  dom.scrollTo({ top: val, behavior: 'smooth' })
+}, 300)
+
+onKeyStroke(['ArrowDown', 'ArrowRight'], nextView)
+onKeyStroke(['ArrowUp', 'ArrowLeft'], prewView)
 </script>
 
 <template>

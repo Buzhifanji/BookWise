@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RingLoadingView } from '@renderer/components';
 import { $, toastWarning, wait } from '@renderer/shared';
-import { set, useResizeObserver, useThrottleFn, useToggle } from '@vueuse/core';
+import { onKeyStroke, set, useResizeObserver, useThrottleFn, useToggle } from '@vueuse/core';
 import { nextTick, onMounted, ref } from 'vue';
 import { CONTINAER_ID } from '../highlight';
 import { getBookHref, isExternal, openExternal } from '../render';
@@ -108,6 +108,7 @@ async function jump(i: number, id?: string) {
   }
 }
 
+
 async function prev() {
   if (index.value > 0) {
     index.value -= 1
@@ -177,6 +178,9 @@ const nextView = useThrottleFn(() => {
     next()
   }
 }, 300)
+
+onKeyStroke(['ArrowDown', 'ArrowRight'], nextView)
+onKeyStroke(['ArrowUp', 'ArrowLeft'], prewView)
 
 
 // 点击书本链接

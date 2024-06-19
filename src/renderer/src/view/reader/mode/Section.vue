@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { NoteAction } from '@renderer/components';
-import { get } from '@vueuse/core';
+import { useElementPageStore } from '@renderer/store';
+import { get, useIntersectionObserver } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
 import { onMounted, ref } from 'vue';
 import { highlighter } from '../highlight';
@@ -20,6 +21,7 @@ const emit = defineEmits(['linkClick'])
 const contianer = ref<HTMLElement | null>(null)
 
 const bookParam = useRouteParams<string>('id')
+const elementPageStore = useElementPageStore()
 
 // 图片绑定blob
 function mountBlobToImg() {
@@ -57,7 +59,14 @@ onMounted(() => {
   drawHighlight()
 })
 
-
+useIntersectionObserver(contianer, ([{ isIntersecting }]) => {
+  if (isIntersecting) {
+    elementPageStore.setElementPage(props.index)
+    console.log(props.index, '进入')
+  } else {
+    // console.log(props.index, '离开')
+  }
+})
 </script>
 
 <template>
