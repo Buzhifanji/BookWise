@@ -11,8 +11,6 @@ const db = new Dexie('__BookWiseDatabase__') as Dexie & {
   readTime: EntityTable<ReadTime, 'id'>
 }
 
-console.log(db)
-
 const version = 1
 
 db.version(version).stores({

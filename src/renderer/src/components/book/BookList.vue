@@ -110,7 +110,7 @@ const onEdite = () => {
   openEditeDiaglog()
 }
 const submitEdite = handleSubmit(values => {
-  BookAction.editeOne(selectData.value!.id, values)
+  BookAction.update(selectData.value!.id, values)
   closeEditeDialog()
 });
 

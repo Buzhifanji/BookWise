@@ -21,7 +21,7 @@ const defaultState: SettingState = {
   readMode: ReadMode.sroll,
   bookself: BookshelftMode.bookshelf,
   isOpenRecyleBin: true,
-  isNoteShowClass: true,
+  isNoteShowClass: false,
   isAutoHighlight: true,
   isRemeberPosition: true,
   theme: 'light',

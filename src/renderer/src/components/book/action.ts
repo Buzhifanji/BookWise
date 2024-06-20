@@ -28,7 +28,7 @@ export class BookAction {
     }
   }
 
-  static editeOne(id: string, value: Partial<Book>) {
+  static update(id: string, value: Partial<Book>) {
     try {
       return db.books.update(id, { ...value })
     } catch (error) {

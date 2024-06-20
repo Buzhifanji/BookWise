@@ -109,6 +109,10 @@ async function loadData() {
       noteJump(JSON.parse(note))
       localStorage.removeItem('__note__')
     }
+
+    // 更新打开次数
+    const count = (info.count || 0) + 1
+    BookAction.update(info.id, { count })
   } catch (err) {
     console.log(err)
   } finally {

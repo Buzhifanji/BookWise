@@ -116,6 +116,8 @@ async function uploadFile(event: Event) {
                 createTime: now(),
                 updateTime: now(),
                 isDelete: null,
+                count: 0,
+                lastReadPosition: '',
             }
         })
 
