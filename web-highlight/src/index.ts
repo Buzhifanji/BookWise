@@ -239,6 +239,11 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
     this.emit(EventTypeEnum.CLICK, { target }, this, event)
   }
 
+  // todo 双击直接整个段落文本高亮
+  dbclick = (event: MouseOrTouchEvent) => {
+    const target = event.target as HTMLElement
+  }
+
   hover = (event: MouseOrTouchEvent) => {
     const target = event.target as HTMLElement
 
@@ -276,6 +281,7 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
       listener(root, this._event.PointerTap, this.click as EventListenerOrEventListenerObject)
 
       listener(root, this._event.PointerEnd, this._handleSelection)
+      listener(root, this._event.PointerOver, this.dbclick as EventListenerOrEventListenerObject)
     }
   }
 
@@ -285,6 +291,7 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
     unListener(root, this._event.PointerOver, this.hover as EventListenerOrEventListenerObject)
 
     unListener(root, this._event.PointerTap, this.click as EventListenerOrEventListenerObject)
+    unListener(root, this._event.PointerTap, this.dbclick as EventListenerOrEventListenerObject)
 
     unListener(root, this._event.PointerEnd, this._handleSelection)
   }

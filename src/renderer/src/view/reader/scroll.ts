@@ -11,3 +11,6 @@ export function toNextView(node: HTMLElement, top: number, height: number, total
 
   node.scrollTo({ top: val, behavior: 'smooth' })
 }
+
+/// 记录滚动位置
+export function recordScrollPosition() {}
