@@ -12,7 +12,7 @@ import {
   PDFViewer
 } from 'pdfjs-dist/web/pdf_viewer'
 import { highlighter } from '../highlight'
-import { getSourceTarget } from '../source'
+import { getSourceTarget } from '../util'
 
 GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url).href
 
@@ -101,6 +101,10 @@ class PDFTool {
     } catch (err) {
       console.log(err)
     }
+  }
+
+  getCurrentPageNumber() {
+    return this.pdfViewer?.currentPageNumber
   }
 
   // 切换阅读模式

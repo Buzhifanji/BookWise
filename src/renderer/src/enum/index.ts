@@ -2,13 +2,19 @@
  * 阅读模式
  */
 export enum ReadMode {
-  sroll = 'sroll', // 滚动
-  section = 'section', // 章节模式
-  double = 'dobule' // 双栏
+  /** 滚动模式 */
+  sroll = 'sroll',
+  /** 章节模式 */
+  section = 'section',
+  /**双栏 */
+  double = 'dobule'
 }
 
 export enum BookshelftMode {
-  list = 'list', // 列表模式
-  card = 'card', // 卡片模式
-  bookshelf = 'bookshelf' // 书架模式
+  /** 列表模式 */
+  list = 'list',
+  /** 卡片模式 */
+  card = 'card',
+  /** 书架模式 */
+  bookshelf = 'bookshelf'
 }

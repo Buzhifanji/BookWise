@@ -8,7 +8,7 @@ import { Baseline, Copy, Highlighter, MessageSquareMore, SpellCheck2, Trash } fr
 import { Ref, computed, ref } from 'vue';
 import { highlighter } from '../highlight';
 import { HighlightType, highlightColor } from '../highlight-color';
-import { getSectionContainer } from '../source';
+import { getSectionContainer } from '../util';
 import NoteListView from './NoteList.vue';
 import { NoteBarStyle, NoteToolBarAction, ToolbarStyle } from './action';
 

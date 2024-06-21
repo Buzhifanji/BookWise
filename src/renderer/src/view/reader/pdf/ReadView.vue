@@ -3,7 +3,7 @@ import { settingStore } from '@renderer/store';
 import { get, onKeyStroke, useElementSize, useResizeObserver, useThrottleFn } from '@vueuse/core';
 import 'pdfjs-dist/web/pdf_viewer.css';
 import { onUnmounted, ref, watchEffect } from 'vue';
-import { toNextView, toPrewView } from '../scroll';
+import { toNextView, toPrewView } from '../util';
 import { PDF, setSpreadMode } from './pdf';
 
 const PDFContainerRef = ref<HTMLElement | null>(null)

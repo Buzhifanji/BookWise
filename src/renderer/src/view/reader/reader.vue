@@ -2,12 +2,12 @@
 import { Book, BookContent, Note } from '@renderer/batabase';
 import { BookAction, BookContentAction, DrawerView, ErrorView, NoteAction, RingLoadingView, Select, useToggleDrawer } from '@renderer/components';
 import { ReadMode } from '@renderer/enum';
-import { $, $$, CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, isElectron } from '@renderer/shared';
-import { settingStore } from '@renderer/store';
+import { $, $$, CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, isElectron, wait } from '@renderer/shared';
+import { settingStore, useElementPageStore } from '@renderer/store';
 import { readModeList, themes } from '@renderer/view/setting';
 import { get, set, useCssVar, useToggle, useWindowSize } from '@vueuse/core';
 import { AArrowDown, AArrowUp, AlignJustify, Bolt, SkipBack, ZoomIn, ZoomOut } from 'lucide-vue-next';
-import { computed, nextTick, onMounted, onUnmounted, ref, watchEffect } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, onUnmounted, ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 import CatalogView from './Catalog.vue';
 import NoteView from './NoteContainer.vue';
@@ -22,6 +22,8 @@ import { DPFUtil, getBookHref, render, unMountedBookRender } from './render';
 import NoteRichView from './toolbar/NoteRich.vue';
 import ToolbarView from './toolbar/Toolbar.vue';
 import { NoteBarStyle, ToolbarStyle } from './toolbar/action';
+import { Position } from './type';
+import { getSectionContainer, getSectionFirstChild } from './util';
 
 const props = defineProps({
   id: String,
@@ -109,6 +111,7 @@ async function loadData() {
       noteJump(JSON.parse(note))
       localStorage.removeItem('__note__')
     }
+    restorePostion()
 
     // 更新打开次数
     const count = (info.count || 0) + 1
@@ -122,12 +125,12 @@ async function loadData() {
 
 
 // 目录跳转
-async function jumpAction(index: number, id?: string) {
+async function jumpAction(index: number, id?: string, position?: Position) {
   if (get(isPDF)) {
     await PDF.pageJump(index, id)
   } else {
     if (settingStore.value.readMode === ReadMode.sroll) {
-      scrollReaderViewRef.value?.jump(index, id)
+      scrollReaderViewRef.value?.jump(index, id, position)
     } else if (settingStore.value.readMode === ReadMode.section) {
       sectionReaderViewRef.value?.jump(index, id)
     } else {
@@ -169,6 +172,8 @@ function goBack() {
 }
 
 // 排版
+
+// 缩放
 const zoomSize = useCssVar('--prose-max-width', document.documentElement)
 function zoomIn() {
   const doms = $$('.prose-width') as unknown as HTMLElement[]
@@ -197,6 +202,7 @@ watchEffect(() => {
   }
 })
 
+// 字体大小和行高
 const fontSize = useCssVar('--prose-font-size', document.documentElement)
 const lineHeight = useCssVar('--prose-line-height', document.documentElement)
 const fontSizeList = [
@@ -237,10 +243,46 @@ function sizeIn() {
   updateSize(index + 1)
 }
 
+// 阅读位置
+const elementPageStore = useElementPageStore()
+function recordPosition() {
+  const info = get(book)
+  if (!info) return
+
+  let postion: Position
+  if (get(isPDF)) {
+    const page = PDF.getCurrentPageNumber() || 0
+    postion = { page, index: -1, tagName: '' }
+  } else {
+    const page = get(elementPageStore.elementPage)
+    const contianer = getSectionContainer(page)
+    if (!contianer) return
+    postion = getSectionFirstChild(page) || { page, index: -1, tagName: '' }
+  }
+  BookAction.update(info.id, { lastReadPosition: JSON.stringify(postion) })
+}
+async function restorePostion() {
+  const postion = get(book)?.lastReadPosition
+  if (!postion) return
+
+  const data = JSON.parse(postion) as Position
+  if (get(isPDF)) {
+    PDF.pageJump(data.page)
+    return
+  } else {
+    await wait(1000)
+    jumpAction(data.page, undefined, data)
+  }
+
+}
+
 onMounted(() => {
   loadData()
 })
 
+onBeforeUnmount(() => {
+  recordPosition()
+})
 onUnmounted(() => {
   unMountedBookRender()
   highlighter?.dispose()
@@ -306,8 +348,11 @@ onUnmounted(() => {
             <div>
             </div>
             <div class="flex gap-4">
+              <button class="btn btn-sm" @click="recordPosition()">test</button>
+
               <!-- pdf控制缩放 -->
               <PDFToolbarView v-if="isPDF" />
+
 
               <!-- 操作 -->
               <div class="dropdown dropdown-end " v-else>

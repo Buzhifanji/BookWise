@@ -2,10 +2,11 @@
 import { wait } from '@renderer/shared';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { get, onKeyStroke, useThrottleFn } from '@vueuse/core';
+import { ReceiptPoundSterlingIcon } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import { getBookHref, isExternal, openExternal } from '../render';
-import { toNextView, toPrewView } from '../scroll';
-import { getSourceTarget } from '../source';
+import { Position } from '../type';
+import { getSectionContainer, getSourceTarget, toNextView, toPrewView } from '../util';
 import SectionView from './Section.vue';
 
 interface Props {
@@ -46,20 +47,57 @@ const measureElement = (element: any) => {
   return undefined
 }
 
-// 目录跳转
-async function jump(index: number, id?: string) {
+const calculateElementDistance = (target: HTMLElement, sectionContainer: HTMLElement) => {
+  const targetRect = target.getBoundingClientRect()
+  const sectionContainerRect = sectionContainer.getBoundingClientRect()
+  return targetRect.top - sectionContainerRect.top
+}
+
+/**
+ * 目录跳转
+ * @param index page index
+ * @param id  高亮内容id
+ * @param position 上次阅读位置
+ */
+async function jump(index: number, id?: string, position?: Position) {
+  console.log('page: ', index)
   rowVirtualizer.value.scrollToIndex(index, { align: 'start', behavior: 'smooth' })
-  if (!id) return
-
-  await wait()
-  const target = getSourceTarget(index, id)
-  if (!target) return
-
-  const rect = target.getBoundingClientRect()
 
   const scrollTop = get(containerRef)?.scrollTop || 0
-  if (scrollTop) {
-    rowVirtualizer.value.scrollToOffset(scrollTop + rect.top, { align: 'center', behavior: 'smooth' })
+
+  // 跳转到高亮内容
+  if (id) {
+    await wait()
+    const target = getSourceTarget(index, id)
+    if (!target) return
+
+    const rect = target.getBoundingClientRect()
+
+    if (scrollTop) {
+      rowVirtualizer.value.scrollToOffset(scrollTop + rect.top, { align: 'center', behavior: 'smooth' })
+    }
+  }
+
+  // 跳转到之前的阅读位置
+  if (position) {
+    await wait()
+    const sectionContainer = getSectionContainer(index)
+    console.log(sectionContainer)
+    ReceiptPoundSterlingIcon
+    const tagNameNodes = sectionContainer?.querySelectorAll(position.tagName) || []
+    const target = tagNameNodes[position.index] as HTMLElement
+    if (!target) return
+    console.log(target)
+    const distanceToParentTop = calculateElementDistance(target, sectionContainer)
+    rowVirtualizer.value.scrollToOffset(scrollTop + distanceToParentTop, { align: 'start', behavior: 'smooth' })
+    // console.log(target)
+    // if (target) {
+    //   const { top } = target.getBoundingClientRect()
+    //   const navBarRect = getNavbarRect()
+    //   if (navBarRect) {
+    //     rowVirtualizer.value.scrollToOffset(scrollTop + top, { align: 'start', behavior: 'smooth' })
+    //   }
+    // }
   }
 }
 

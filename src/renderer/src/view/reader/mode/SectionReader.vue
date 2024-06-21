@@ -4,8 +4,7 @@ import { get, onKeyStroke, set, useThrottleFn } from '@vueuse/core';
 import { computed, ref } from 'vue';
 import { CONTINAER_ID } from '../highlight';
 import { getBookHref, isExternal, openExternal } from '../render';
-import { toNextView, toPrewView } from '../scroll';
-import { getSourceTarget } from '../source';
+import { getSourceTarget, toNextView, toPrewView } from '../util';
 import SectionView from './Section.vue';
 
 interface Props {
