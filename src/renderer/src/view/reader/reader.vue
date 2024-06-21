@@ -2,7 +2,7 @@
 import { Book, BookContent, Note } from '@renderer/batabase';
 import { BookAction, BookContentAction, DrawerView, ErrorView, NoteAction, RingLoadingView, Select, useToggleDrawer } from '@renderer/components';
 import { ReadMode } from '@renderer/enum';
-import { $, $$, CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, isElectron, wait } from '@renderer/shared';
+import { $, $$, CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, isElectron } from '@renderer/shared';
 import { settingStore, useElementPageStore } from '@renderer/store';
 import { readModeList, themes } from '@renderer/view/setting';
 import { get, set, useCssVar, useToggle, useWindowSize } from '@vueuse/core';
@@ -270,8 +270,8 @@ async function restorePostion() {
     PDF.pageJump(data.page)
     return
   } else {
-    await wait(1000)
-    jumpAction(data.page, undefined, data)
+    // await wait(1000)
+    // jumpAction(data.page, undefined, data)
   }
 
 }

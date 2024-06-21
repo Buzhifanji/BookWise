@@ -32,3 +32,9 @@ html {
   font-size: var(--prose-font-size);
   line-height: var(--prose-line-height);
 }
+
+.prose-hidden {
+  position: fixed;
+  visibility: hidden;
+  z-index: -999;
+}

@@ -114,6 +114,15 @@ const getBook = async (file) => {
   return book
 }
 
+// 预估高度
+const estimatedHeight = (node) => {
+  node.classList.add('prose', 'prose-width', 'prose-hidden')
+  document.body.appendChild(node)
+  const height = window.getComputedStyle(node).height
+  document.body.removeChild(node)
+  return +height.replace('px', '')
+}
+
 export class Reader {
   blobs = new Map() // 保存图片 blob内容
   book
@@ -170,12 +179,13 @@ export class Reader {
         const id = section.id
         const doc = await section.createDocument()
         const body = doc.querySelector('body')
+        const height = estimatedHeight(body.cloneNode(true))
         this.#handleLinks(body, section)
         await this.#handleImg(body, section)
         const html = body.innerHTML
           .replace(/xmlns=".*?"/g, '')
           .replace(/<([a-zA-Z0-9]+)(\s[^>]*)?>\s*<\/\1>/g, '') // 过滤掉空节点
-        result.push(html)
+        result.push({ height, html, id })
       }
       return result
     } else {

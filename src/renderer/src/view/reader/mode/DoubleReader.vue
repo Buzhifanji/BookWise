@@ -35,13 +35,13 @@ useResizeObserver(containerRef, resize)
 
 const index = ref<number>(0)
 
-const section = ref<string>(props.section[0] || '')
+const section = ref<string>(props.section[0]?.html || '')
 
 // 更新章节内容
 async function updateSection() {
   setLoading(true)
   currentIndex = 0
-  section.value = props.section[index.value] || ''
+  section.value = props.section[index.value].html || ''
   await wait(200)
   setLoading(false)
 }

@@ -2,7 +2,6 @@
 import { wait } from '@renderer/shared';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { get, onKeyStroke, useThrottleFn } from '@vueuse/core';
-import { ReceiptPoundSterlingIcon } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import { getBookHref, isExternal, openExternal } from '../render';
 import { Position } from '../type';
@@ -28,7 +27,7 @@ const rowVirtualizerOptions = computed(() => {
     count: props.section.length,
     overscan: 5,
     getScrollElement: () => containerRef.value,
-    estimateSize: () => 1024,
+    estimateSize: (i: number) => props.section[i].height,
   }
 })
 const rowVirtualizer = useVirtualizer(rowVirtualizerOptions)
@@ -60,14 +59,16 @@ const calculateElementDistance = (target: HTMLElement, sectionContainer: HTMLEle
  * @param position 上次阅读位置
  */
 async function jump(index: number, id?: string, position?: Position) {
-  console.log('page: ', index)
   rowVirtualizer.value.scrollToIndex(index, { align: 'start', behavior: 'smooth' })
 
   const scrollTop = get(containerRef)?.scrollTop || 0
 
+  console.log(scrollTop)
+
   // 跳转到高亮内容
   if (id) {
     await wait()
+
     const target = getSourceTarget(index, id)
     if (!target) return
 
@@ -83,21 +84,17 @@ async function jump(index: number, id?: string, position?: Position) {
     await wait()
     const sectionContainer = getSectionContainer(index)
     console.log(sectionContainer)
-    ReceiptPoundSterlingIcon
     const tagNameNodes = sectionContainer?.querySelectorAll(position.tagName) || []
     const target = tagNameNodes[position.index] as HTMLElement
     if (!target) return
     console.log(target)
     const distanceToParentTop = calculateElementDistance(target, sectionContainer)
     rowVirtualizer.value.scrollToOffset(scrollTop + distanceToParentTop, { align: 'start', behavior: 'smooth' })
-    // console.log(target)
-    // if (target) {
-    //   const { top } = target.getBoundingClientRect()
-    //   const navBarRect = getNavbarRect()
-    //   if (navBarRect) {
-    //     rowVirtualizer.value.scrollToOffset(scrollTop + top, { align: 'start', behavior: 'smooth' })
-    //   }
-    // }
+    console.log(target)
+    if (target) {
+      const { top } = target.getBoundingClientRect()
+      rowVirtualizer.value.scrollToOffset(scrollTop + top, { align: 'start', behavior: 'smooth' })
+    }
   }
 }
 
@@ -115,6 +112,7 @@ function linkClick(href: string) {
 
 const getHeight = (h?: number) => {
   const dom = containerRef.value!
+  console.log('dom.scrollTop', dom.scrollTop)
   let result = 0
   if (h) {
     result = h
@@ -159,12 +157,12 @@ onKeyStroke(['ArrowDown'], littleNextView)
 
 <template>
   <!-- 书籍内容 -->
-  <div class=" bg-base-100 h-full cursor-pointer  overflow-auto scrollbar-thin " ref="containerRef">
+  <div class=" bg-base-100 h-full cursor-pointer  overflow-auto  scrollbar-thin " ref="containerRef">
     <div class="relative w-full" :style="{ height: `${totalSize}px` }">
       <div class="absolute top-0 left-0 w-full " :style="{ transform: `translateY(${virtualRows[0]?.start ?? 0}px)` }">
         <div v-for="virtualRow in virtualRows" :key="virtualRow.key" :data-index="virtualRow.index"
           :data-page-number="virtualRow.index" :ref="measureElement" class="prose mx-auto my-0 mb-12 prose-width">
-          <SectionView :data="section[virtualRow.index]" :index="virtualRow.index" @link-click="linkClick">
+          <SectionView :data="section[virtualRow.index].html" :index="virtualRow.index" @link-click="linkClick">
           </SectionView>
         </div>
       </div>

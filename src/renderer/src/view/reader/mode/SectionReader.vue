@@ -22,7 +22,7 @@ const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
 
 const index = ref<number>(0)
 
-const section = computed(() => props.section[index.value])
+const section = computed(() => props.section[index.value].html)
 
 // 目录跳转
 async function jump(i: number, id?: string) {
