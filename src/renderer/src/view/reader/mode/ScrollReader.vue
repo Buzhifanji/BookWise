@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { wait } from '@renderer/shared';
-import { useVirtualizer } from '@tanstack/vue-virtual';
+import { observeElementOffset, useVirtualizer } from '@tanstack/vue-virtual';
 import { get, onKeyStroke, useThrottleFn } from '@vueuse/core';
 import { computed, ref } from 'vue';
 import { getBookHref, isExternal, openExternal } from '../render';
 import { Position } from '../type';
-import { getSectionContainer, getSourceTarget, toNextView, toPrewView } from '../util';
+import { getNavbarRect, getSectionContainer, getSourceTarget, toNextView, toPrewView } from '../util';
 import SectionView from './Section.vue';
 
 interface Props {
@@ -21,36 +20,12 @@ defineExpose({ jump })
 
 const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
 
-// 虚拟列表
-const rowVirtualizerOptions = computed(() => {
-  return {
-    count: props.section.length,
-    overscan: 5,
-    getScrollElement: () => containerRef.value,
-    estimateSize: (i: number) => props.section[i].height,
-  }
-})
-const rowVirtualizer = useVirtualizer(rowVirtualizerOptions)
 
-const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems())
 
-const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
-
-const measureElement = (element: any) => {
-  if (!element) {
-    return
-  }
-  setTimeout(() => {
-    rowVirtualizer.value.measureElement(element)
-  })
-  return undefined
-}
-
-const calculateElementDistance = (target: HTMLElement, sectionContainer: HTMLElement) => {
-  const targetRect = target.getBoundingClientRect()
-  const sectionContainerRect = sectionContainer.getBoundingClientRect()
-  return targetRect.top - sectionContainerRect.top
-}
+let isJump = false
+let highlightId: string | undefined = undefined // 高亮跳转id
+let lastReadPosition: Position | undefined = undefined // 上次阅读位置
+let jumpPage: number = -1 // 跳转的页面
 
 /**
  * 目录跳转
@@ -61,41 +36,76 @@ const calculateElementDistance = (target: HTMLElement, sectionContainer: HTMLEle
 async function jump(index: number, id?: string, position?: Position) {
   rowVirtualizer.value.scrollToIndex(index, { align: 'start', behavior: 'smooth' })
 
-  const scrollTop = get(containerRef)?.scrollTop || 0
+  jumpPage = index
+  highlightId = id
+  lastReadPosition = position
+  isJump = true
+}
 
-  console.log(scrollTop)
-
-  // 跳转到高亮内容
-  if (id) {
-    await wait()
-
-    const target = getSourceTarget(index, id)
+function jumpToHighlight() {
+  if (highlightId && jumpPage !== -1) {
+    const target = getSourceTarget(jumpPage, highlightId)
     if (!target) return
 
     const rect = target.getBoundingClientRect()
+    const scrollTop = get(containerRef)?.scrollTop || 0
 
     if (scrollTop) {
       rowVirtualizer.value.scrollToOffset(scrollTop + rect.top, { align: 'center', behavior: 'smooth' })
     }
   }
+}
 
-  // 跳转到之前的阅读位置
-  if (position) {
-    await wait()
-    const sectionContainer = getSectionContainer(index)
-    console.log(sectionContainer)
-    const tagNameNodes = sectionContainer?.querySelectorAll(position.tagName) || []
-    const target = tagNameNodes[position.index] as HTMLElement
+function jumpToPosition() {
+  if (lastReadPosition && jumpPage !== -1) {
+    const scrollTop = get(containerRef)?.scrollTop || 0
+    const sectionContainer = getSectionContainer(jumpPage)
+    const { tagName, index } = lastReadPosition
+    const tagNameNodes = sectionContainer?.querySelectorAll(tagName) || []
+    const target = tagNameNodes[index] as HTMLElement
     if (!target) return
-    console.log(target)
-    const distanceToParentTop = calculateElementDistance(target, sectionContainer)
-    rowVirtualizer.value.scrollToOffset(scrollTop + distanceToParentTop, { align: 'start', behavior: 'smooth' })
-    console.log(target)
-    if (target) {
-      const { top } = target.getBoundingClientRect()
-      rowVirtualizer.value.scrollToOffset(scrollTop + top, { align: 'start', behavior: 'smooth' })
-    }
+    const navBarRect = getNavbarRect()?.height || 0
+    const { top } = target.getBoundingClientRect()
+    rowVirtualizer.value.scrollToOffset(scrollTop + top - navBarRect - 10, { align: 'start', behavior: 'smooth' })
   }
+}
+
+function resetJump() {
+  highlightId = undefined
+  jumpPage = -1
+  lastReadPosition = undefined
+}
+
+
+// 虚拟列表
+const rowVirtualizerOptions = computed(() => {
+  return {
+    count: props.section.length,
+    overscan: 5,
+    getScrollElement: () => containerRef.value,
+    estimateSize: (i: number) => props.section[i].height,
+    observeElementOffset: (instance: any, cb: any) => observeElementOffset(instance, (offset, isScrolling) => {
+      cb(offset, isScrolling)
+      // 滚动停止
+      if (!isScrolling && isJump) {
+        jumpToHighlight()
+        jumpToPosition()
+        resetJump()
+      }
+    })
+  }
+})
+const rowVirtualizer = useVirtualizer(rowVirtualizerOptions)
+const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems())
+const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
+const measureElement = (element: any) => {
+  if (!element) {
+    return
+  }
+  setTimeout(() => {
+    rowVirtualizer.value.measureElement(element)
+  })
+  return undefined
 }
 
 // 点击书本链接
@@ -112,7 +122,6 @@ function linkClick(href: string) {
 
 const getHeight = (h?: number) => {
   const dom = containerRef.value!
-  console.log('dom.scrollTop', dom.scrollTop)
   let result = 0
   if (h) {
     result = h

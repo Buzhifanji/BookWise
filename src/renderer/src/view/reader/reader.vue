@@ -245,7 +245,7 @@ function sizeIn() {
 
 // 阅读位置
 const elementPageStore = useElementPageStore()
-function recordPosition() {
+async function recordPosition() {
   const info = get(book)
   if (!info) return
 
@@ -259,7 +259,8 @@ function recordPosition() {
     if (!contianer) return
     postion = getSectionFirstChild(page) || { page, index: -1, tagName: '' }
   }
-  BookAction.update(info.id, { lastReadPosition: JSON.stringify(postion) })
+
+  await BookAction.update(info.id, { lastReadPosition: JSON.stringify(postion) })
 }
 async function restorePostion() {
   const postion = get(book)?.lastReadPosition
@@ -270,18 +271,21 @@ async function restorePostion() {
     PDF.pageJump(data.page)
     return
   } else {
-    // await wait(1000)
-    // jumpAction(data.page, undefined, data)
+    jumpAction(data.page, undefined, data)
   }
 
 }
 
 onMounted(() => {
   loadData()
+
+  // 监听 浏览器窗口关闭
+  window.addEventListener("beforeunload", recordPosition);
 })
 
-onBeforeUnmount(() => {
+onBeforeUnmount(async () => {
   recordPosition()
+  window.removeEventListener("beforeunload", recordPosition);
 })
 onUnmounted(() => {
   unMountedBookRender()
