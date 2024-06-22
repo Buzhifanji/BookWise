@@ -111,7 +111,10 @@ async function loadData() {
       noteJump(JSON.parse(note))
       localStorage.removeItem('__note__')
     }
-    restorePostion()
+    // 恢复上次阅读位置
+    if(settingStore.value.isRemeberPosition) {
+      restorePostion()
+    }
 
     // 更新打开次数
     const count = (info.count || 0) + 1
