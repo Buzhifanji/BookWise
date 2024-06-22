@@ -8,10 +8,11 @@ import { settingStore, useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
 import dayjs from 'dayjs';
-import { BellElectric, PencilLine, Plus, Trash2, UndoDot } from 'lucide-vue-next';
+import { BellElectric, PencilLine, Plus, Trash2, UndoDot,Star } from 'lucide-vue-next';
 import { useForm } from 'vee-validate';
 import { computed, defineProps, onMounted, ref, toRaw, withDefaults } from 'vue';
 import { BookAction } from './action';
+import { get } from '@vueuse/core';
 
 interface Props {
   data: Book[],
@@ -116,6 +117,56 @@ const submitEdite = handleSubmit(values => {
 
 // 详情
 const { dialogRef: detailDialogRef, openDialog: openDetailDiaglog, closeDialog: closeDetailDialog } = useDialog();
+
+// 评分
+const { dialogRef: scoreDialogRef, openDialog: openScoreDiaglog, closeDialog: closeScoreDialog } = useDialog();
+const { defineField: defineScoreField, handleSubmit: handleScoreSubmit, errors:  editeScoreError } = useForm<{score: number}>({
+  validationSchema: {
+    score: (value: unknown) => value || value === 0 ? true :  '请输入评分',
+  },
+});
+const [score, scoreProps] = defineScoreField('score')
+const onScore = () => {
+  if (!selectData.value) return
+  score.value = selectData.value.score
+  openScoreDiaglog()
+}
+const submitScore = handleScoreSubmit(value => {
+  value.score = +value.score.toFixed(1)
+  BookAction.update(selectData.value!.id, value)
+  closeScoreDialog()
+
+})
+const scoreContainerRef = ref<HTMLElement | null>(null)
+const chooseScore = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  if(target.tagName === 'INPUT') {
+    const index = target.getAttribute('data-index')
+    if(index === null) return 
+    const isHalf = target.classList.contains('mask-half-1')
+    score.value = +index - (isHalf ? 0.5 : 0)
+  }
+}
+const checkedScore = (index: number, isHalf: boolean) => {
+  const val = get(score)
+  if(val === -1) return false
+  if(val === 0) return false
+
+  if(isHalf) {
+    // 0 - 0.5
+    if(val > (index - 1) && val <= (index - 0.5)) {
+      return true
+    } else {
+      return false
+    }
+  } else {
+    if(val > (index - 0.5) && val <= index) {
+      return true
+    } else {
+      return false
+    }
+  }
+}
 
 
 // 删除
@@ -249,6 +300,11 @@ function restoreOneBook() {
             <PencilLine class="h-5 w-5" />编辑
           </a>
         </li>
+        <li @click="onScore()">
+          <a>
+            <Star class="h-5 w-5" />评分
+          </a>
+        </li>
         <li @click="openDetailDiaglog()">
           <a>
             <BellElectric class="h-5 w-5" />详情
@@ -272,6 +328,42 @@ function restoreOneBook() {
           <button class="btn btn-outline" @click="closeDialog">取消</button>
           <button class="btn btn-outline  btn-error ml-4" @click="removeOneBook">确认</button>
         </div>
+      </div>
+    </dialog>
+
+    <!-- 评分 -->
+    <dialog class="modal" ref="scoreDialogRef">
+      <div class="modal-box" v-on-click-outside="closeScoreDialog">
+        <div class="flex flex-row justify-between items-center mb-5">
+          <h3 class="font-bold text-lg">评分</h3>
+          <div @click="closeScoreDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
+
+        </div>
+        <form @submit="submitScore">
+          <div class="flex flex-col gap-4">
+            <div>
+              <label class="input input-bordered flex items-center gap-2" for="name"
+                :class="{ 'input-error': editeScoreError.score }">
+                数值
+                <input type="number" max="10" min="0" step="0.1" class="grow" name="score" v-model="score"  v-bind="scoreProps" placeholder="请输入评分" />
+              </label>
+              <div class="label" v-if="editeScoreError.score">
+                <span class="label-text text-error">{{ editeScoreError.score }}</span>
+              </div>
+            </div>
+            <div class="rating rating-md rating-half" ref="scoreContainerRef" @click="chooseScore">
+              <input type="radio" name="rating-10" class="rating-hidden" :checked="score === 0" />
+              <template v-for="item in 10" :key="item">
+              <input type="radio" :data-index="item" name="rating-10" class="bg-orange-400 mask mask-star-2 mask-half-1" :checked="checkedScore(item, true)" />
+              <input type="radio" :data-index="item" name="rating-10" class="bg-orange-500 mask mask-star-2 mask-half-2" :checked="checkedScore(item, false)" />
+            </template>
+            </div>
+          </div>
+          <div class="modal-action">
+            <button class="btn btn-outline " @click="closeScoreDialog">取消</button>
+            <button class="btn btn-success ml-4" type="submit">确认</button>
+          </div>
+        </form>
       </div>
     </dialog>
 
