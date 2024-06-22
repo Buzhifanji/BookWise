@@ -118,6 +118,9 @@ async function uploadFile(event: Event) {
                 isDelete: null,
                 count: 0,
                 lastReadPosition: '',
+                score: -1,
+                progress: 0,
+                group: '',
             }
         })
 

@@ -18,7 +18,10 @@ export interface Book {
   md5: string // 文件md5
   count: number // 打开次数
   lastReadPosition: string // 最后一次阅读位置
+  score: number // 评分
+  progress: number // 进度
+  group: string // 分组
 }
 
 export const schemaBook =
-  '&id, name, author, cover, description, category, size, pages, path, language, publisher, publishTime, createTime, updateTime, isDelete, &md5, count, lastReadPosition'
+  '&id, name, author, cover, description, category, size, pages, path, language, publisher, publishTime, createTime, updateTime, isDelete, &md5, count, lastReadPosition,score,progress,group'
