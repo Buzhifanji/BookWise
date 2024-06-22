@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import favicon from '@renderer/assets/favicon.ico';
 import { set, useFavicon } from '@vueuse/core';
-import { watchEffect } from 'vue';
+import { onMounted, onUnmounted, watchEffect } from 'vue';
 import './dayjs';
 import { settingStore } from './store';
 import { setI18nLanguage } from './view/setting/language';
+import { listenChannel, unlistenChannel } from './shared';
+import { BookAction } from './components';
 
 
 watchEffect(() => {
@@ -15,8 +17,28 @@ watchEffect(() => {
   setI18nLanguage(lang)
 })
 
+// 设置icon
 const icon = useFavicon()
 set(icon, favicon)
+
+// 监听跨窗口的消息
+// 记录最新阅读位置
+function recordPosition(value: MessageEvent) {
+  console.log('postion: ',value.data)
+  if(value.origin !== window.origin) return
+  const { bookId, value: lastReadPosition} = value.data
+   BookAction.update(bookId, { lastReadPosition })
+}
+
+listenChannel(recordPosition)
+
+onMounted(() => {
+
+})
+
+onUnmounted(() => {
+  unlistenChannel(recordPosition)
+})
 </script>
 
 <template>

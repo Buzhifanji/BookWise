@@ -2,7 +2,7 @@
 import { Book, BookContent, Note } from '@renderer/batabase';
 import { BookAction, BookContentAction, DrawerView, ErrorView, NoteAction, RingLoadingView, Select, useToggleDrawer } from '@renderer/components';
 import { ReadMode } from '@renderer/enum';
-import { $, $$, CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, isElectron } from '@renderer/shared';
+import { $, $$, CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, channelPostMessage, isElectron } from '@renderer/shared';
 import { settingStore, useElementPageStore } from '@renderer/store';
 import { readModeList, themes } from '@renderer/view/setting';
 import { get, set, useCssVar, useToggle, useWindowSize } from '@vueuse/core';
@@ -262,14 +262,20 @@ async function recordPosition() {
     if (!contianer) return
     postion = getSectionFirstChild(page) || { page, index: -1, tagName: '' }
   }
-
-  await BookAction.update(info.id, { lastReadPosition: JSON.stringify(postion) })
+  const lastReadPosition = JSON.stringify(postion) 
+  if(get(showBack)) {
+    // 单页面
+   await BookAction.update(info.id, { lastReadPosition })
+  } else {
+    channelPostMessage({bookId: info.id, value: lastReadPosition})
+  }
 }
 async function restorePostion() {
   const postion = get(book)?.lastReadPosition
   if (!postion) return
 
   const data = JSON.parse(postion) as Position
+  console.log('page： ', data.page)
   if (get(isPDF)) {
     PDF.pageJump(data.page)
     return
