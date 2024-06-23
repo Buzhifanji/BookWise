@@ -2,7 +2,7 @@
 import { Book, BookContent, Note } from '@renderer/batabase';
 import { BookAction, BookContentAction, DrawerView, ErrorView, NoteAction, RingLoadingView, Select, useToggleDrawer } from '@renderer/components';
 import { ReadMode } from '@renderer/enum';
-import { $, $$, CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, channelPostMessage, isElectron } from '@renderer/shared';
+import { $, $$, CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, isElectron } from '@renderer/shared';
 import { settingStore, useElementPageStore } from '@renderer/store';
 import { readModeList, themes } from '@renderer/view/setting';
 import { get, set, useCssVar, useToggle, useWindowSize } from '@vueuse/core';
@@ -24,6 +24,7 @@ import ToolbarView from './toolbar/Toolbar.vue';
 import { NoteBarStyle, ToolbarStyle } from './toolbar/action';
 import { Position } from './type';
 import { getSectionContainer, getSectionFirstChild } from './util';
+import { isReload } from '@renderer/shared/navigation';
 
 const props = defineProps({
   id: String,
@@ -263,19 +264,24 @@ async function recordPosition() {
     postion = getSectionFirstChild(page) || { page, index: -1, tagName: '' }
   }
   const lastReadPosition = JSON.stringify(postion) 
-  if(get(showBack)) {
-    // 单页面
-   await BookAction.update(info.id, { lastReadPosition })
-  } else {
-    channelPostMessage({bookId: info.id, value: lastReadPosition})
-  }
+  // 当页面刷新的时候，保存到数据库的数据是异步，所以得用sessionStorage同步存储
+  sessionStorage.setItem('book-wise_refrersh', lastReadPosition)
+  await BookAction.update(info.id, { lastReadPosition })
+
 }
 async function restorePostion() {
-  const postion = get(book)?.lastReadPosition
+  let postion: string | null | undefined = undefined
+  if(isReload()) {
+    // 页面刷新，直接从localStorage取
+   postion = sessionStorage.getItem('book-wise_refrersh')
+  } else {
+    postion = get(book)?.lastReadPosition
+  }
+  sessionStorage.removeItem('book-wise_refrersh')
+
   if (!postion) return
 
   const data = JSON.parse(postion) as Position
-  console.log('page： ', data.page)
   if (get(isPDF)) {
     PDF.pageJump(data.page)
     return

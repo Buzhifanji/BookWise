@@ -66,7 +66,7 @@ function jumpToPosition() {
     if (!target) return
     const navBarRect = getNavbarRect()?.height || 0
     const { top } = target.getBoundingClientRect()
-    rowVirtualizer.value.scrollToOffset(scrollTop + top - navBarRect - 10, { align: 'start', behavior: 'smooth' })
+    rowVirtualizer.value.scrollToOffset(scrollTop + top - navBarRect, { align: 'start', behavior: 'smooth' })
   }
 }
 
