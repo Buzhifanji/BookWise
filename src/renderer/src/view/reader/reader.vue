@@ -267,8 +267,8 @@ async function recordPosition() {
   // 当页面刷新的时候，保存到数据库的数据是异步，所以得用sessionStorage同步存储
   sessionStorage.setItem('book-wise_refrersh', lastReadPosition)
   await BookAction.update(info.id, { lastReadPosition })
-
 }
+
 async function restorePostion() {
   let postion: string | null | undefined = undefined
   if(isReload()) {
@@ -367,7 +367,6 @@ onUnmounted(() => {
             <div>
             </div>
             <div class="flex gap-4">
-              <button class="btn btn-sm" @click="recordPosition()">test</button>
 
               <!-- pdf控制缩放 -->
               <PDFToolbarView v-if="isPDF" />

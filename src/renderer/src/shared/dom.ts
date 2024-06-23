@@ -60,3 +60,15 @@ export function findDomIndex(root: HTMLElement, target: HTMLElement) {
   const nodes = root.querySelectorAll(target.tagName)
   return Array.from(nodes).indexOf(target)
 }
+
+
+export function getDialogContainer() {
+  const container = $('.dialog-container')
+  if(container) return container
+
+  const result = createElement('div')
+  result.className = 'dialog-container'
+  document.body.appendChild(result)
+
+  return result
+}

@@ -13,6 +13,7 @@ import { useForm } from 'vee-validate';
 import { computed, defineProps, onMounted, ref, toRaw, withDefaults } from 'vue';
 import { BookAction } from './action';
 import { get } from '@vueuse/core';
+import { scroreDialog } from './score';
 
 interface Props {
   data: Book[],
@@ -128,8 +129,10 @@ const { defineField: defineScoreField, handleSubmit: handleScoreSubmit, errors: 
 const [score, scoreProps] = defineScoreField('score')
 const onScore = () => {
   if (!selectData.value) return
-  score.value = selectData.value.score
-  openScoreDiaglog()
+  scroreDialog(selectData.value)
+  // const val = selectData.value.score
+  // score.value = val === -1 ? 0 : val
+  // openScoreDiaglog()
 }
 const submitScore = handleScoreSubmit(value => {
   value.score = +value.score.toFixed(1)
@@ -205,7 +208,7 @@ function restoreOneBook() {
 </script>
 
 <template>
-  <div ref="parentRef" class="p-6 flex h-full overflow-auto" v-if="data.length">
+  <div ref="parentRef" id="book-list-dialog"  class="p-6 flex h-full overflow-auto" v-if="data.length">
     <div class="relative w-full" :style="{
       height: `${totalSize}px`,
     }">
