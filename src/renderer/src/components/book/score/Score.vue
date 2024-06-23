@@ -79,6 +79,13 @@ initScore()
           <div class="flex flex-col gap-4">
             <div>
               <label class="input input-bordered flex items-center gap-2" for="name"
+               >
+                书名
+                <input type="text" readonly class="grow" name="name" :value="book.name" placeholder="请输入书名" />
+              </label>
+            </div>
+            <div>
+              <label class="input input-bordered flex items-center gap-2" for="name"
                 :class="{ 'input-error': errors.score }">
                 数值
                 <input type="number" max="10" min="0" step="0.1" class="grow" name="score" v-model="score"  v-bind="scoreProps" placeholder="请输入评分" />

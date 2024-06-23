@@ -2,17 +2,14 @@
 import { Book } from '@renderer/batabase';
 import { FileUploadView } from '@renderer/components';
 import { BookshelftMode } from '@renderer/enum';
-import { useBgOpacity, useDialog, useRightClick } from '@renderer/hooks';
+import { useBgOpacity, useRightClick } from '@renderer/hooks';
 import { chuankArray, convertUint8ArrayToURL, remToPx } from '@renderer/shared';
 import { settingStore, useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
-import dayjs from 'dayjs';
 import { BellElectric, PencilLine, Plus, Trash2, UndoDot,Star } from 'lucide-vue-next';
-import { useForm } from 'vee-validate';
 import { computed, defineProps, onMounted, ref, toRaw, withDefaults } from 'vue';
 import { BookAction } from './action';
-import { get } from '@vueuse/core';
 import { scroreDialog } from './score';
 import { editDialog } from './edit';
 import { detailDialog } from './detail';
