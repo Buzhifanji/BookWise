@@ -3,7 +3,7 @@ import { Book } from '@renderer/batabase';
 import { useDialog } from '@renderer/hooks';
 import { useForm } from 'vee-validate';
 import { BookAction } from '../action';
-import { nextTick, ref } from 'vue';
+import { nextTick } from 'vue';
 import { get } from '@vueuse/core';
 import { vOnClickOutside } from '@vueuse/components';
 
@@ -31,7 +31,6 @@ const submitScore = handleSubmit(value => {
   value.score = +value.score.toFixed(1)
   BookAction.update(props.book.id, value)
   closeDialog()
-
 })
 
 const chooseScore = (event: Event) => {

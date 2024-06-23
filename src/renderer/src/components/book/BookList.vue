@@ -14,6 +14,7 @@ import { computed, defineProps, onMounted, ref, toRaw, withDefaults } from 'vue'
 import { BookAction } from './action';
 import { get } from '@vueuse/core';
 import { scroreDialog } from './score';
+import { editDialog } from './edit';
 
 interface Props {
   data: Book[],
@@ -95,82 +96,21 @@ const { rightEvent, closeRight, rightInfo, selectData } = useRightClick<Book>()
 const { dialogRef, openDialog, closeDialog } = useDialog();
 
 // 编辑
-const { dialogRef: editeDialogRef, openDialog: openEditeDiaglog, closeDialog: closeEditeDialog } = useDialog();
-type editeData = { name: string, author: string }
-const { defineField, handleSubmit, errors: editeError } = useForm<editeData>({
-  validationSchema: {
-    name: (value: unknown) => value ? true : '请输入书名',
-    author: (value: unknown) => value ? true : '请输入作者名',
-  },
-});
-const [name, nameProps] = defineField('name')
-const [author, authorProps] = defineField('author')
 const onEdite = () => {
   if (!selectData.value) return
-  name.value = selectData.value.name
-  author.value = selectData.value.author
-  openEditeDiaglog()
+  editDialog(selectData.value)
+  closeRight()
 }
-const submitEdite = handleSubmit(values => {
-  BookAction.update(selectData.value!.id, values)
-  closeEditeDialog()
-});
 
 // 详情
 const { dialogRef: detailDialogRef, openDialog: openDetailDiaglog, closeDialog: closeDetailDialog } = useDialog();
 
 // 评分
-const { dialogRef: scoreDialogRef, openDialog: openScoreDiaglog, closeDialog: closeScoreDialog } = useDialog();
-const { defineField: defineScoreField, handleSubmit: handleScoreSubmit, errors:  editeScoreError } = useForm<{score: number}>({
-  validationSchema: {
-    score: (value: unknown) => value || value === 0 ? true :  '请输入评分',
-  },
-});
-const [score, scoreProps] = defineScoreField('score')
 const onScore = () => {
   if (!selectData.value) return
   scroreDialog(selectData.value)
-  // const val = selectData.value.score
-  // score.value = val === -1 ? 0 : val
-  // openScoreDiaglog()
+  closeRight()
 }
-const submitScore = handleScoreSubmit(value => {
-  value.score = +value.score.toFixed(1)
-  BookAction.update(selectData.value!.id, value)
-  closeScoreDialog()
-
-})
-const scoreContainerRef = ref<HTMLElement | null>(null)
-const chooseScore = (event: Event) => {
-  const target = event.target as HTMLInputElement
-  if(target.tagName === 'INPUT') {
-    const index = target.getAttribute('data-index')
-    if(index === null) return 
-    const isHalf = target.classList.contains('mask-half-1')
-    score.value = +index - (isHalf ? 0.5 : 0)
-  }
-}
-const checkedScore = (index: number, isHalf: boolean) => {
-  const val = get(score)
-  if(val === -1) return false
-  if(val === 0) return false
-
-  if(isHalf) {
-    // 0 - 0.5
-    if(val > (index - 1) && val <= (index - 0.5)) {
-      return true
-    } else {
-      return false
-    }
-  } else {
-    if(val > (index - 0.5) && val <= index) {
-      return true
-    } else {
-      return false
-    }
-  }
-}
-
 
 // 删除
 let _isForce = false;
@@ -331,80 +271,6 @@ function restoreOneBook() {
           <button class="btn btn-outline" @click="closeDialog">取消</button>
           <button class="btn btn-outline  btn-error ml-4" @click="removeOneBook">确认</button>
         </div>
-      </div>
-    </dialog>
-
-    <!-- 评分 -->
-    <dialog class="modal" ref="scoreDialogRef">
-      <div class="modal-box" v-on-click-outside="closeScoreDialog">
-        <div class="flex flex-row justify-between items-center mb-5">
-          <h3 class="font-bold text-lg">评分</h3>
-          <div @click="closeScoreDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
-
-        </div>
-        <form @submit="submitScore">
-          <div class="flex flex-col gap-4">
-            <div>
-              <label class="input input-bordered flex items-center gap-2" for="name"
-                :class="{ 'input-error': editeScoreError.score }">
-                数值
-                <input type="number" max="10" min="0" step="0.1" class="grow" name="score" v-model="score"  v-bind="scoreProps" placeholder="请输入评分" />
-              </label>
-              <div class="label" v-if="editeScoreError.score">
-                <span class="label-text text-error">{{ editeScoreError.score }}</span>
-              </div>
-            </div>
-            <div class="rating rating-md rating-half" ref="scoreContainerRef" @click="chooseScore">
-              <input type="radio" name="rating-10" class="rating-hidden" :checked="score === 0" />
-              <template v-for="item in 10" :key="item">
-              <input type="radio" :data-index="item" name="rating-10" class="bg-orange-400 mask mask-star-2 mask-half-1" :checked="checkedScore(item, true)" />
-              <input type="radio" :data-index="item" name="rating-10" class="bg-orange-500 mask mask-star-2 mask-half-2" :checked="checkedScore(item, false)" />
-            </template>
-            </div>
-          </div>
-          <div class="modal-action">
-            <button class="btn btn-outline " @click="closeScoreDialog">取消</button>
-            <button class="btn btn-success ml-4" type="submit">确认</button>
-          </div>
-        </form>
-      </div>
-    </dialog>
-
-    <!-- 编辑 -->
-    <dialog class="modal" ref="editeDialogRef">
-      <div class="modal-box max-w-5xl" v-on-click-outside="closeEditeDialog">
-        <div class="flex flex-row justify-between items-center mb-5">
-          <h3 class="font-bold text-lg ">编辑书籍</h3>
-          <div @click="closeEditeDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
-        </div>
-        <form @submit="submitEdite">
-          <div class="flex flex-col gap-4">
-            <div>
-              <label class="input input-bordered flex items-center gap-2" for="name"
-                :class="{ 'input-error': editeError.name }">
-                书名
-                <input type="text" class="grow" name="name" v-model="name" v-bind="nameProps" placeholder="请输入书名" />
-              </label>
-              <div class="label" v-if="editeError.name">
-                <span class="label-text text-error">{{ editeError.name }}</span>
-              </div>
-            </div>
-            <div>
-              <label class="input input-bordered flex items-center gap-2" :class="{ 'input-error': editeError.author }">
-                作者
-                <input type="text" class="grow" name="author" v-model="author" v-bind="authorProps"
-                  placeholder="请输入作者名" />
-              </label>
-              <div class="label" v-if="editeError.author">
-                <span class="label-text text-error">{{ editeError.author }}</span>
-              </div>
-            </div>
-          </div>
-          <div class="modal-action">
-            <button class="btn btn-outline " @click="closeEditeDialog">取消</button>
-            <button class="btn btn-success ml-4" type="submit">确认</button>
-          </div>
-        </form>
       </div>
     </dialog>
 

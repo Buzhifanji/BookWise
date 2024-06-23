@@ -13,6 +13,8 @@ import FileUploadView from './upload/FileUpload.vue'
 
 export * from './toast/type'
 
+export * from './book/score'
+export * from './book/edit'
 export * from './book/action'
 export * from './drawer/toggle'
 export * from './note/action'
