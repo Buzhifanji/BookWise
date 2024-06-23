@@ -15,6 +15,8 @@ import { BookAction } from './action';
 import { get } from '@vueuse/core';
 import { scroreDialog } from './score';
 import { editDialog } from './edit';
+import { detailDialog } from './detail';
+import { removeDialog } from './remove';
 
 interface Props {
   data: Book[],
@@ -92,55 +94,34 @@ function uploadAction() {
 // 右键
 const { rightEvent, closeRight, rightInfo, selectData } = useRightClick<Book>()
 
-// 消息确认弹出
-const { dialogRef, openDialog, closeDialog } = useDialog();
+const dialogAction = (cb:Function) => {
+  if (!selectData.value) return
+  cb(selectData.value)
+  closeRight()
+}
 
 // 编辑
-const onEdite = () => {
-  if (!selectData.value) return
-  editDialog(selectData.value)
-  closeRight()
-}
+const onEdite = () => dialogAction(editDialog)
 
 // 详情
-const { dialogRef: detailDialogRef, openDialog: openDetailDiaglog, closeDialog: closeDetailDialog } = useDialog();
+const onDetail = () => dialogAction(detailDialog)
 
 // 评分
-const onScore = () => {
-  if (!selectData.value) return
-  scroreDialog(selectData.value)
-  closeRight()
-}
+const onScore = () => dialogAction(scroreDialog)
 
 // 删除
-let _isForce = false;
-function removeBefore(isForce: boolean) {
+function onRemove(isForce: boolean) {
   const id = selectData.value?.id
   if (!id) return
-  _isForce = isForce;
-  openDialog()
+  removeDialog(selectData.value!, props.isRecycleBin, isForce)
   closeRight()
-}
-function removeOneBook() {
-  const id = selectData.value?.id
-  if (!id) return
-
-  if (!_isForce) {
-    _isForce = !settingStore.value.isOpenRecyleBin
-  }
-
-  BookAction.removeOne(id, _isForce)
-
-  closeDialog()
 }
 
 // 恢复
 function restoreOneBook() {
   const id = selectData.value?.id
   if (!id) return
-
   BookAction.restoreOne(id)
-
   closeRight()
 }
 
@@ -226,14 +207,14 @@ function restoreOneBook() {
             <UndoDot class="h-5 w-5" />恢复
           </a>
         </li>
-        <li @click="removeBefore(true)">
+        <li @click="onRemove(true)">
           <a class="text-error">
             <Trash2 class="h-5 w-5" />永久删除
           </a>
         </li>
       </template>
       <template v-else>
-        <li @click="removeBefore(false)">
+        <li @click="onRemove(false)">
           <a class="text-error">
             <Trash2 class="h-5 w-5" />删除
           </a>
@@ -248,78 +229,13 @@ function restoreOneBook() {
             <Star class="h-5 w-5" />评分
           </a>
         </li>
-        <li @click="openDetailDiaglog()">
+        <li @click="onDetail()">
           <a>
             <BellElectric class="h-5 w-5" />详情
           </a>
         </li>
       </template>
     </ul>
-
-    <!-- 确认删除 -->
-    <dialog class="modal" ref="dialogRef">
-      <div class="modal-box" v-on-click-outside="closeDialog">
-        <div class="flex flex-row justify-between items-center">
-          <h3 class="font-bold text-lg">删除书籍</h3>
-          <div @click="closeDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
-
-        </div>
-        <p class="py-4">{{ selectData?.name }}</p>
-        <p v-if="settingStore.isOpenRecyleBin && !isRecycleBin" class="text-warning">将本书移入回收站</p>
-        <p v-else class="text-warning">将本书永久删除</p>
-        <div class="modal-action">
-          <button class="btn btn-outline" @click="closeDialog">取消</button>
-          <button class="btn btn-outline  btn-error ml-4" @click="removeOneBook">确认</button>
-        </div>
-      </div>
-    </dialog>
-
-    <!-- 详情 -->
-    <dialog class="modal" ref="detailDialogRef">
-      <div class="modal-box max-w-5xl " v-on-click-outside="closeDetailDialog">
-        <div class="flex flex-row justify-between items-center mb-5">
-          <h3 class="font-bold text-lg ">书籍详情</h3>
-          <div @click="closeDetailDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
-        </div>
-        <div class="columns-1 md:columns-2 gap-x-8 gap-y-6 ">
-          <div class="flex gap-4 mb-3">
-            <div>书名</div>
-            <div class="stat-title">{{ selectData?.name }}</div>
-          </div>
-          <div class="flex gap-4 mb-3">
-            <div>作者</div>
-            <div class="stat-title">{{ selectData?.author }}</div>
-          </div>
-          <div class="flex gap-4 mb-3">
-            <div>大小</div>
-            <div class="stat-title">{{ selectData?.size }}</div>
-          </div>
-          <div class="flex gap-4 mb-3">
-            <div>页数</div>
-            <div class="stat-title">{{ selectData?.pages }}</div>
-          </div>
-          <div class="flex gap-4 mb-3">
-            <div>出版商</div>
-            <div class="stat-title">{{ selectData?.publisher }}</div>
-          </div>
-          <div class="flex gap-4 mb-3">
-            <div>出版时间</div>
-            <div class="stat-title">{{ selectData?.publishTime }}</div>
-          </div>
-          <div class="flex gap-4 mb-3" v-if="selectData?.createTime">
-            <div>创建时间</div>
-            <div class="stat-title">{{ dayjs(selectData.createTime).format('L LT') }}</div>
-          </div>
-          <div class="flex gap-4 mb-3" v-if="selectData?.updateTime">
-            <div>更新时间</div>
-            <div class="stat-title"> {{ dayjs(selectData.updateTime).format('L LT') }}</div>
-          </div>
-        </div>
-        <div class="modal-action">
-          <button class="btn btn-outline " @click="closeDetailDialog">关闭</button>
-        </div>
-      </div>
-    </dialog>
   </div>
   <div class="hero min-h-screen bg-base-200" v-else>
     <div class="hero-content text-center">
