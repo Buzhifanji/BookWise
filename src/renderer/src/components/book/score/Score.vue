@@ -75,7 +75,6 @@ initScore()
             </div>
           </div>
           <div class="rating rating-md rating-half" @click="chooseScore">
-            <input type="radio" name="rating-10" class="rating-hidden" :checked="score === 0" />
             <ScoreInput :value="score" :readonly="false" />
           </div>
         </div>

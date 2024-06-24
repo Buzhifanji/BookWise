@@ -1,10 +1,5 @@
-import { createApp } from "vue"
-import Score from "./Score.vue"
-import { Book } from "@renderer/batabase"
-import {  getDialogContainer } from "@renderer/shared"
+import { Book } from '@renderer/batabase'
+import { createDialog } from '@renderer/shared'
+import Score from './Score.vue'
 
-export const scroreDialog = (book: Book) => {
-    const dialog = createApp(Score, {book})
-    const container = getDialogContainer()
-    dialog.mount(container)
-}
+export const scroreDialog = (book: Book) => createDialog(Score, { book })
