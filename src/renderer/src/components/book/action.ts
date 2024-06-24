@@ -5,6 +5,9 @@ import { settingStore } from '@renderer/store'
 import { useObservable } from '@vueuse/rxjs'
 import { liveQuery } from 'dexie'
 
+/**
+ * 图书操作
+ */
 export class BookAction {
   static bulkAdd(book: Book[]) {
     try {
@@ -88,6 +91,10 @@ export class BookAction {
   }
 }
 
+/**
+ * 图书跳转
+ * @param id
+ */
 export function bookJump(id: string) {
   const isBlank = settingStore.value.isOpenNew
   if (isElectron) {
@@ -109,6 +116,9 @@ export function bookJump(id: string) {
   }
 }
 
+/**
+ * 书籍内容
+ */
 export class BookContentAction {
   static bulkAdd(bookContentList: BookContent[]) {
     try {

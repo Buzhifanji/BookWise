@@ -2,9 +2,9 @@
 import { Book, BookContent, Note } from '@renderer/batabase';
 import { BookAction, BookContentAction, DrawerView, DropdownView, ErrorView, List, NoteAction, RingLoadingView, useToggleDrawer } from '@renderer/components';
 import { ReadMode } from '@renderer/enum';
-import { $, $$, CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, isElectron } from '@renderer/shared';
+import { $, $$, CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, channelPostMessage, isElectron, toastSuccess } from '@renderer/shared';
 import { isReload } from '@renderer/shared/navigation';
-import { settingStore, useElementPageStore } from '@renderer/store';
+import { bookPositionStore, settingStore, useElementPageStore } from '@renderer/store';
 import { getSelectReadMode, readModeList, themes } from '@renderer/view/setting';
 import { get, set, useCssVar, useToggle, useWindowSize } from '@vueuse/core';
 import { AArrowDown, AArrowUp, AlignJustify, Bolt, SkipBack, ZoomIn, ZoomOut } from 'lucide-vue-next';
@@ -264,7 +264,16 @@ async function recordPosition() {
   const lastReadPosition = JSON.stringify(postion)
   // 当页面刷新的时候，保存到数据库的数据是异步，所以得用sessionStorage同步存储
   sessionStorage.setItem('book-wise_refrersh', lastReadPosition)
-  await BookAction.update(info.id, { lastReadPosition })
+
+  if (get(showBack)) {
+    // 单页面
+    await BookAction.update(info.id, { lastReadPosition })
+  } else {
+    // 多页面 
+    // 当其它页面都关闭完了的时候，channelPostMessage会失效，只能借做localstorage来存储
+    bookPositionStore.value[info.id] = lastReadPosition
+    channelPostMessage({ bookId: info.id, value: lastReadPosition })
+  }
 }
 
 async function restorePostion() {
@@ -279,6 +288,8 @@ async function restorePostion() {
 
   if (!postion) return
 
+  toastSuccess('跳转到上次阅读位置')
+
   const data = JSON.parse(postion) as Position
   if (get(isPDF)) {
     PDF.pageJump(data.page)
@@ -286,10 +297,7 @@ async function restorePostion() {
   } else {
     jumpAction(data.page, undefined, data)
   }
-
 }
-
-
 
 onMounted(() => {
   loadData()
