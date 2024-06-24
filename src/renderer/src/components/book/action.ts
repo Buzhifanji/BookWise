@@ -63,6 +63,17 @@ export class BookAction {
     }
   }
 
+  static observableOne(id: string): any {
+    try {
+      return useObservable<Book[], Book[]>(
+        liveQuery(async () => (await db.books.toArray()).find((item) => item.id === id)) as any
+      )
+    } catch (error) {
+      toastError('读取图书列表失败')
+      return undefined
+    }
+  }
+
   static observable(isDelete = false) {
     try {
       return useObservable<Book[], Book[]>(

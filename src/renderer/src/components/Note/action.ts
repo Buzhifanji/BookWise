@@ -4,6 +4,7 @@ import { now, toastError } from '@renderer/shared'
 import { useObservable } from '@vueuse/rxjs'
 import { liveQuery } from 'dexie'
 import { v4 as uuidv4 } from 'uuid'
+import { ref } from 'vue'
 
 export interface NoteText {
   value: string
@@ -91,7 +92,7 @@ export class NoteAction {
       )
     } catch (error) {
       toastError('读取笔记列表失败')
-      return [] as Note[]
+      return ref([] as Note[])
     }
   }
 
@@ -106,7 +107,7 @@ export class NoteAction {
       )
     } catch (error) {
       toastError('读取笔记列表失败')
-      return [] as Note[]
+      return ref([] as Note[])
     }
   }
 

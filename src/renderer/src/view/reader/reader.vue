@@ -7,8 +7,8 @@ import { isReload } from '@renderer/shared/navigation';
 import { settingStore, useElementPageStore } from '@renderer/store';
 import { getSelectReadMode, readModeList, themes } from '@renderer/view/setting';
 import { get, set, useCssVar, useToggle, useWindowSize } from '@vueuse/core';
-import { AArrowDown, AArrowUp, AlignJustify, Bolt, Eclipse, Palette, SkipBack, ZoomIn, ZoomOut } from 'lucide-vue-next';
-import { computed, nextTick, onBeforeUnmount, onMounted, onUnmounted, ref, watchEffect } from 'vue';
+import { AArrowDown, AArrowUp, AlignJustify, Bolt, SkipBack, ZoomIn, ZoomOut } from 'lucide-vue-next';
+import { Ref, computed, nextTick, onBeforeUnmount, onMounted, onUnmounted, ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 import CatalogView from './Catalog.vue';
 import NoteView from './NoteContainer.vue';
@@ -32,13 +32,13 @@ const props = defineProps({
 
 const router = useRouter()
 
-const book = ref<Book>() // 书籍信息
+const book = BookAction.observableOne(props.id!) as Ref<Book>// 书籍信息
+
 const bookContent = ref<BookContent>() // 书籍内容
 
 const [isLoading, setLoading] = useToggle(false)
 const section = ref<any[]>([]) // 章节内容
 const tocList = ref<any[]>([]) // 目录
-
 
 const { width } = useWindowSize(); // 适配不能尺寸窗口
 const isSM = computed(() => width.value < 1024);
@@ -76,7 +76,6 @@ async function loadData() {
     setLoading(true)
     const bookId = props.id
     if (!bookId) return
-
     // 获取书本信息
     const info = await BookAction.fineOne(bookId)
     if (!info) return
@@ -91,7 +90,6 @@ async function loadData() {
 
     section.value = sections
     tocList.value = toc
-    book.value = info
     bookContent.value = content
     console.log(info)
     console.log(content)
@@ -344,37 +342,19 @@ onUnmounted(() => {
                   <SkipBack />
                 </button>
               </div>
-
-              <!-- 翻页 -->
-              <!-- <div class="join">
-                <button class="btn btn-sm  rounded-l-full join-item" @click="">
-                  <ChevronFirst />
-                </button>
-                <input type="number" class="input input-sm w-20 input-bordered join-item" placeholder="number" />
-                <button class="btn btn-sm join-item rounded-r-full" @click="">
-                  <ChevronLast />
-                </button>
-              </div> -->
-              <!-- 打开搜索框按钮 -->
-              <!-- <button aria-label="Search button"
-                class="btn hidden h-9 w-48 items-center justify-start gap-3 border-base-content/20 hover:border-transparent hover:bg-base-content/20 sm:flex btn-sm btn-outline">
-                <Search class="w-4 h-4" />
-              </button> -->
             </div>
             <div>
             </div>
             <div class="flex gap-4">
-
               <!-- pdf控制缩放 -->
               <PDFToolbarView v-if="isPDF" />
-
               <!-- 操作 -->
               <DropdownView details-class="dropdown-bottom dropdown-end" summary-class="btn btn-sm m-1">
                 <template v-slot:summary>
                   <Bolt />
                 </template>
                 <ul
-                  class="dropdown-content z-[1] menu p-2  mt-2 shadow bg-base-100 border border-accent  rounded-box  divide-y ">
+                  class="dropdown-content z-[1] menu p-2  mt-1 shadow bg-base-100 border border-accent  rounded-box  divide-y ">
                   <!-- 调节宽带 -->
                   <template v-if="!isPDF">
                     <li class="flex flex-row justify-between  py-1">
@@ -385,7 +365,6 @@ onUnmounted(() => {
                         <ZoomIn />
                       </a>
                     </li>
-
                     <!-- 调节字体大小 行高 -->
                     <li class="flex flex-row justify-between  py-1">
                       <a @click="sizeOut()">
@@ -395,40 +374,37 @@ onUnmounted(() => {
                         <AArrowUp />
                       </a>
                     </li>
-                    <!-- 主题 -->
-                    <li>
-                      <a class="!p-0  my-1">
-                        <DropdownView summary-class="flex flex-row justify-between  w-48 dropdown-left px-4 py-2">
-                          <template v-slot:summary>
-                            <Palette class="w-5 h-5" />
-                            <div class="badge badge-outline">{{ settingStore.theme }}</div>
-                          </template>
-                          <List
-                            class="dropdown-content !top-0 !right-[12.5rem]  !border-secondary  rounded-s-lg rounded-ee-lg z-[2] w-52"
-                            :list="themes" v-model="settingStore.theme" />
-                        </DropdownView>
-                      </a>
-                    </li>
-                    <!-- 阅读模式 -->
-                    <li>
-                      <a class="!p-0 my-1">
-                        <DropdownView summary-class="flex flex-row justify-between  w-48 dropdown-left px-4 py-2">
-                          <template v-slot:summary>
-                            <Eclipse class="w-5 h-5" />
-                            <div class="badge badge-outline">{{ getSelectReadMode(settingStore.readMode) }}</div>
-                          </template>
-                          <List
-                            class="dropdown-content !top-0 !right-[12.5rem]  !border-secondary  rounded-s-lg rounded-ee-lg z-[2] w-52"
-                            :list="readModeList" v-model="settingStore.readMode" />
-                        </DropdownView>
-                      </a>
-                    </li>
                   </template>
-
+                  <!-- 主题 -->
+                  <li>
+                    <a class="!p-0  my-1">
+                      <DropdownView summary-class="flex flex-row justify-between  w-52 dropdown-left px-4 py-2">
+                        <template v-slot:summary>
+                          <span class="stat-title">主题</span>
+                          <div class="badge badge-outline">{{ settingStore.theme }}</div>
+                        </template>
+                        <List
+                          class="dropdown-content !top-0 !right-[13.5rem]  !border-secondary  rounded-s-lg rounded-ee-lg z-[2] w-52"
+                          :list="themes" v-model="settingStore.theme" />
+                      </DropdownView>
+                    </a>
+                  </li>
+                  <!-- 阅读模式 -->
+                  <li>
+                    <a class="!p-0 my-1">
+                      <DropdownView summary-class="flex flex-row justify-between  w-52  dropdown-left px-4 py-2">
+                        <template v-slot:summary>
+                          <span class="stat-title">阅读模式</span>
+                          <div class="badge badge-outline">{{ getSelectReadMode(settingStore.readMode) }}</div>
+                        </template>
+                        <List
+                          class="dropdown-content !top-0 !right-[13.5rem]  !border-secondary  rounded-s-lg rounded-ee-lg z-[2] w-52"
+                          :list="readModeList" v-model="settingStore.readMode" />
+                      </DropdownView>
+                    </a>
+                  </li>
                 </ul>
               </DropdownView>
-
-
               <label :for="NOTE_DRAWER" class="cursor-pointer " v-if="isSM">
                 <AlignJustify class="w-5 h-5" />
               </label>

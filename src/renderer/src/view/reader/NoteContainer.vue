@@ -2,13 +2,13 @@
 import { Book, Note } from '@renderer/batabase';
 import { NoteAction, NoteText } from '@renderer/components';
 import { useBgOpacity } from '@renderer/hooks';
-import { $, convertUint8ArrayToURL } from '@renderer/shared';
+import { $ } from '@renderer/shared';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { get, onClickOutside, onKeyStroke, set, useElementSize, useThrottleFn, useWindowSize } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
-import dayjs from 'dayjs';
 import { Baseline, Copy, Highlighter, SpellCheck2, Trash } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
+import BookDetailView from './BookDetail.vue';
 import { HighlightType, highlightColor } from './highlight-color';
 import NoteListView from './toolbar/NoteList.vue';
 import SourceListView from './toolbar/SourceList.vue';
@@ -171,46 +171,8 @@ const throttleClick = useThrottleFn((val: Note) => {
     </div>
     <div class="flex-1 transition ease-in-out p-3 relative">
       <!-- 书籍信息 -->
-      <div class="flex flex-col" v-if="activeTab === 'book'">
-        <div class="flex flex-row gap-3">
-          <div class="avatar">
-            <div class="w-28 rounded">
-              <img :src="convertUint8ArrayToURL(book.cover)" />
-            </div>
-          </div>
-          <div class="flex-1 flex flex-col gap-2 overflow-hidden">
-            <div class="font-bold whitespace-normal">
-              <span>{{ book.name }}</span>
-            </div>
-            <div class="stat-title whitespace-normal">{{ book.author }}</div>
-          </div>
-        </div>
-        <div class="flex gap-4 ml-3 mt-5 mb-2">
-          <div>出版商</div>
-          <div class="stat-title">{{ book.publisher }}</div>
-        </div>
-        <div class="flex flex-nowrap gap-4 ml-3 mb-2  overflow-hidden">
-          <div class="flex-none">出版时间</div>
-          <div class="stat-title shrink ">{{ book.publishTime ? dayjs(book.publishTime).format('L LT') : '' }}</div>
-        </div>
-        <div class="flex gap-4 ml-3 mb-2">
-          <div>创建时间</div>
-          <div class="stat-title ">{{ dayjs(book.createTime).format('L LT') }}</div>
-        </div>
-        <div class="flex gap-4 ml-3 mb-2">
-          <div>更新时间</div>
-          <div class="stat-title ">{{ dayjs(book.updateTime).format('L LT') }}</div>
-        </div>
-        <div class="flex gap-4 ml-3 mb-2">
-          <div>大小</div>
-          <div class="stat-title">{{ book.size }}</div>
-        </div>
-        <div class="flex gap-4 ml-3 mb-2">
-          <div>页数</div>
-          <div class="stat-title">{{ book.pages }}</div>
-        </div>
+      <BookDetailView v-if="activeTab === 'book'" :book="book" />
 
-      </div>
       <!-- 笔记 -->
       <div v-else class="absolute inset-0 ">
         <div class="h-full p-3 bg-base-100 overflow-y-auto scrollbar-none hover:scrollbar-thin" ref="containerRef">
