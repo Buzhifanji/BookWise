@@ -171,7 +171,7 @@ const throttleClick = useThrottleFn((val: Note) => {
     </div>
     <div class="flex-1 transition ease-in-out p-3 relative">
       <!-- 书籍信息 -->
-      <BookDetailView v-if="activeTab === 'book'" :book="book" />
+      <BookDetailView v-if="activeTab === 'book'" :book="book" :notes="notes" />
 
       <!-- 笔记 -->
       <div v-else class="absolute inset-0 ">

@@ -1,4 +1,5 @@
 import BookListView from './book/BookList.vue'
+import ScoreInputView from './book/score/ScoreInput.vue'
 import CheckBoxView from './checkbox/CheckBox.vue'
 import DrawerView from './drawer/Drawer.vue'
 import DropdownView from './dropdown/Dropdown.vue'
@@ -34,6 +35,7 @@ export {
   List,
   NoteListView,
   RingLoadingView,
+  ScoreInputView,
   Select,
   SelectView
 }

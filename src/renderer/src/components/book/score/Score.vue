@@ -3,10 +3,10 @@ import { Book } from '@renderer/batabase';
 import { useDialog } from '@renderer/hooks';
 import { isUndefined } from '@renderer/shared';
 import { vOnClickOutside } from '@vueuse/components';
-import { get } from '@vueuse/core';
 import { useForm } from 'vee-validate';
 import { nextTick } from 'vue';
 import { BookAction } from '../action';
+import ScoreInput from './ScoreInput.vue';
 
 const props = defineProps<{ book: Book }>()
 
@@ -44,28 +44,6 @@ const chooseScore = (event: Event) => {
   }
 }
 
-const checkedScore = (index: number, isHalf: boolean) => {
-  const val = get(score)
-  if (isUndefined(val)) return false
-  if (val === -1) return false
-  if (val === 0) return false
-
-  if (isHalf) {
-    // 0 - 0.5
-    if (val > (index - 1) && val <= (index - 0.5)) {
-      return true
-    } else {
-      return false
-    }
-  } else {
-    if (val > (index - 0.5) && val <= index) {
-      return true
-    } else {
-      return false
-    }
-  }
-}
-
 initScore()
 </script>
 
@@ -98,12 +76,7 @@ initScore()
           </div>
           <div class="rating rating-md rating-half" @click="chooseScore">
             <input type="radio" name="rating-10" class="rating-hidden" :checked="score === 0" />
-            <template v-for="item in 10" :key="item">
-              <input type="radio" :data-index="item" name="rating-10" class="bg-orange-400 mask mask-star-2 mask-half-1"
-                :checked="checkedScore(item, true)" />
-              <input type="radio" :data-index="item" name="rating-10" class="bg-orange-500 mask mask-star-2 mask-half-2"
-                :checked="checkedScore(item, false)" />
-            </template>
+            <ScoreInput :value="score" :readonly="false" />
           </div>
         </div>
         <div class="modal-action">

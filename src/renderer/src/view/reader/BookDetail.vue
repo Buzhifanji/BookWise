@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { Book } from '@renderer/batabase';
-import { scroreDialog } from '@renderer/components';
+import { Book, Note } from '@renderer/batabase';
+import { ScoreInputView, scroreDialog } from '@renderer/components';
 import { convertUint8ArrayToURL, formatFileSize, isUndefined, toastSuccess } from '@renderer/shared';
 import { useClipboard } from '@vueuse/core';
 import dayjs from 'dayjs';
 import { Copy } from 'lucide-vue-next';
+import { computed } from 'vue';
 
-const props = defineProps<{ book: Book }>()
+const props = withDefaults(defineProps<{ book: Book, notes: Note[] }>(), {
+  notes: () => [],
+})
 
 const { copy } = useClipboard()
 
@@ -18,6 +21,11 @@ const copyAction = (val: string) => {
 }
 
 const openBookScore = () => scroreDialog(props.book)
+
+
+const highlightLen = computed(() => props.notes.filter(item => item.notes === '').length)
+const notesLen = computed(() => props.notes.filter(item => item.notes !== '').length)
+
 </script>
 
 <template>
@@ -69,7 +77,23 @@ const openBookScore = () => scroreDialog(props.book)
     </div>
     <div class="flex gap-4 ml-3 mb-2 cursor-pointer" @click="openBookScore()">
       <div>评分</div>
-      <div class="stat-title">{{ isUndefined(book.score) || book.score === -1 ? '未知' : book.score }}</div>
+      <div class="rating rating-md rating-half" @click="openBookScore()">
+        <ScoreInputView :value="book.score" :readonly="true" />
+      </div>
+      <div class="link  text-orange-400">{{ isUndefined(book.score) || book.score === -1 ? '未知' : book.score }}
+      </div>
+    </div>
+    <div class="flex gap-4 ml-3 mb-2">
+      <div>阅读次数</div>
+      <div class="stat-title">{{ book.count }}</div>
+    </div>
+    <div class="flex gap-4 ml-3 mb-2">
+      <div>高亮数量</div>
+      <div class="stat-title">{{ highlightLen }}</div>
+    </div>
+    <div class="flex gap-4 ml-3 mb-2">
+      <div>笔记数量</div>
+      <div class="stat-title">{{ notesLen }}</div>
     </div>
   </div>
 </template>
