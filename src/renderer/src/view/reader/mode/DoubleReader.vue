@@ -5,6 +5,8 @@ import { onKeyStroke, set, useResizeObserver, useThrottleFn, useToggle } from '@
 import { nextTick, onMounted, ref } from 'vue';
 import { CONTINAER_ID } from '../highlight';
 import { getBookHref, isExternal, openExternal } from '../render';
+import { Position } from '../type';
+import { findPositionDom } from '../util';
 import SectionView from './Section.vue';
 
 interface Props {
@@ -86,26 +88,44 @@ function resetScrollLeft() {
   }
 }
 
+function domToView(target: HTMLElement) {
+  const dom = containerRef.value!
+  const { left } = target.getBoundingClientRect()
+  const container = $(`#${CONTINAER_ID}`) as HTMLElement
+  const content = container.querySelector('.prose') as HTMLElement
+  const { left: cLeft } = content.getBoundingClientRect()
+  const { offsetWidth } = dom
+
+  const l = left - cLeft
+  const remainder = +(l / offsetWidth).toFixed(0)
+  if (dom.scrollLeft !== remainder * offsetWidth) {
+    containerRef.value!.scrollLeft = remainder * offsetWidth
+  }
+}
+
 
 // 目录跳转
-async function jump(i: number, id?: string) {
+async function jump(i: number, id?: string, position?: Position) {
   index.value = i
   await updateSection()
 
-  await wait(210)
-  const dom = containerRef.value!
-  const target = dom?.querySelector(`span[data-web-highlight_id='${id}']`) as HTMLElement
-  if (target) {
-    const { left } = target.getBoundingClientRect()
-    const container = $(`#${CONTINAER_ID}`) as HTMLElement
-    const content = container.querySelector('.prose') as HTMLElement
-    const { left: cLeft } = content.getBoundingClientRect()
-    const { offsetWidth } = dom
-
-    const l = left - cLeft
-    const remainder = +(l / offsetWidth).toFixed(0)
-    dom.scrollLeft = remainder * offsetWidth
+  if (id) {
+    await nextTick()
+    const dom = containerRef.value!
+    const target = dom?.querySelector(`span[data-web-highlight_id='${id}']`) as HTMLElement
+    if (target) {
+      domToView(target)
+    }
   }
+
+  if (position) {
+    await nextTick()
+    const target = findPositionDom(i, position)
+    if (target) {
+      domToView(target)
+    }
+  }
+
 }
 
 
@@ -205,7 +225,7 @@ function linkClick(href: string) {
         <RingLoadingView v-if="isLoading" class="rounded-3xl" />
         <template v-else>
           <div ref="containerRef" :data-page-number="index"
-            class="columns-1 scroll-smooth transition ease-in-out lg:columns-2 gap-x-16 h-full overflow-auto  scrollbar-none p-8 pb-12 double-container relative">
+            class="columns-1 scroll-smooth transition ease-in-out lg:columns-2 gap-x-16 h-full overflow-auto scrollbar-none p-8 pb-12 double-container relative">
             <SectionView :key="index" :index="index" :data="section" @link-click="linkClick">
             </SectionView>
             <div ref="remendyRef" :style="style"></div>

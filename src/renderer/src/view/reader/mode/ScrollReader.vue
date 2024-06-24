@@ -4,7 +4,7 @@ import { get, onKeyStroke, useThrottleFn } from '@vueuse/core';
 import { computed, ref } from 'vue';
 import { getBookHref, isExternal, openExternal } from '../render';
 import { Position } from '../type';
-import { getNavbarRect, getSectionContainer, getSourceTarget, toNextView, toPrewView } from '../util';
+import { findPositionDom, getNavbarRect, getSourceTarget, toNextView, toPrewView } from '../util';
 import SectionView from './Section.vue';
 
 interface Props {
@@ -59,10 +59,7 @@ function jumpToHighlight() {
 function jumpToPosition() {
   if (lastReadPosition && jumpPage !== -1) {
     const scrollTop = get(containerRef)?.scrollTop || 0
-    const sectionContainer = getSectionContainer(jumpPage)
-    const { tagName, index } = lastReadPosition
-    const tagNameNodes = sectionContainer?.querySelectorAll(tagName) || []
-    const target = tagNameNodes[index] as HTMLElement
+    const target = findPositionDom(jumpPage, lastReadPosition)
     if (!target) return
     const navBarRect = getNavbarRect()?.height || 0
     const { top } = target.getBoundingClientRect()

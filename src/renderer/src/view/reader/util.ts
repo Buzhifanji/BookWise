@@ -1,4 +1,5 @@
 import { $, findDomIndex, getFirstLastElementChild, lastElementsToArray } from '@renderer/shared'
+import { Position } from './type'
 
 export function getSectionContainer(page: string | number) {
   return $(`div[data-page-number='${page}']`) as HTMLElement
@@ -41,6 +42,18 @@ export function getNavbarRect() {
   return navBar.getBoundingClientRect()
 }
 
+export function findPositionDom(page: number, position: Position) {
+  const sectionContainer = getSectionContainer(page)
+  const { tagName, index } = position
+  const tagNameNodes = sectionContainer?.querySelectorAll(tagName) || []
+  return tagNameNodes[index] as HTMLElement
+}
+
+/**
+ * 获取上下滑动的与顶部相交的元素第一个元素的位置信息
+ * @param page
+ * @returns
+ */
 export function getSectionFirstChild(page: number) {
   const contianer = getSectionContainer(page)
   if (!contianer) return null
@@ -66,10 +79,29 @@ export function getSectionFirstChild(page: number) {
     const doms = lastElementsToArray(contianer)
     for (const dom of doms) {
       if (isFirstInView(dom, offsetTop)) {
-        console.log(dom)
         return getDomPosition(contianer, dom, page)
       }
     }
+    return null
+  }
+}
+
+/**
+ * 获取上下滑动的可视窗口左上角的一个元素的位置信息
+ * @param contianer
+ * @param page
+ * @returns
+ */
+export function getSectionLeftFfirstChild(contianer: HTMLElement, page: number) {
+  const rect = contianer.getBoundingClientRect()
+  const doms = lastElementsToArray(contianer)
+  const firstElement = doms.find((item) => {
+    const { left, width } = item.getBoundingClientRect()
+    return left > rect.left && left < rect.left + width
+  })
+  if (firstElement) {
+    return getDomPosition(contianer, firstElement, page)
+  } else {
     return null
   }
 }

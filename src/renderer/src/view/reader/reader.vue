@@ -24,7 +24,7 @@ import NoteRichView from './toolbar/NoteRich.vue';
 import ToolbarView from './toolbar/Toolbar.vue';
 import { NoteBarStyle, ToolbarStyle } from './toolbar/action';
 import { Position } from './type';
-import { getSectionContainer, getSectionFirstChild } from './util';
+import { getSectionContainer, getSectionFirstChild, getSectionLeftFfirstChild } from './util';
 
 const props = defineProps({
   id: String,
@@ -134,9 +134,9 @@ async function jumpAction(index: number, id?: string, position?: Position) {
     if (settingStore.value.readMode === ReadMode.sroll) {
       scrollReaderViewRef.value?.jump(index, id, position)
     } else if (settingStore.value.readMode === ReadMode.section) {
-      sectionReaderViewRef.value?.jump(index, id)
+      sectionReaderViewRef.value?.jump(index, id, position)
     } else {
-      doubleReaderViewRef.value?.jump(index, id)
+      doubleReaderViewRef.value?.jump(index, id, position)
     }
   }
 }
@@ -251,7 +251,7 @@ async function recordPosition() {
   const info = get(book)
   if (!info) return
 
-  let postion: Position
+  let postion: Position | null = null
   if (get(isPDF)) {
     const page = PDF.getCurrentPageNumber() || 0
     postion = { page, index: -1, tagName: '' }
@@ -259,8 +259,16 @@ async function recordPosition() {
     const page = get(elementPageStore.elementPage)
     const contianer = getSectionContainer(page)
     if (!contianer) return
-    postion = getSectionFirstChild(page) || { page, index: -1, tagName: '' }
+    if (settingStore.value.readMode === ReadMode.double) {
+      // 双栏模式左右滑动
+      postion = getSectionLeftFfirstChild(contianer, page)
+
+    } else {
+      postion = getSectionFirstChild(page)
+    }
+    postion = postion || { page, index: -1, tagName: '' }
   }
+
   const lastReadPosition = JSON.stringify(postion)
   // 当页面刷新的时候，保存到数据库的数据是异步，所以得用sessionStorage同步存储
   sessionStorage.setItem('book-wise_refrersh', lastReadPosition)

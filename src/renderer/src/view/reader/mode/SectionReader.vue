@@ -4,7 +4,8 @@ import { get, onKeyStroke, set, useThrottleFn } from '@vueuse/core';
 import { computed, ref } from 'vue';
 import { CONTINAER_ID } from '../highlight';
 import { getBookHref, isExternal, openExternal } from '../render';
-import { getSourceTarget, toNextView, toPrewView } from '../util';
+import { Position } from '../type';
+import { findPositionDom, getSourceTarget, toNextView, toPrewView } from '../util';
 import SectionView from './Section.vue';
 
 interface Props {
@@ -25,24 +26,27 @@ const index = ref<number>(0)
 const section = computed(() => props.section[index.value].html)
 
 // 目录跳转
-async function jump(i: number, id?: string) {
+async function jump(i: number, id?: string, position?: Position) {
   if (containerRef.value && !id) {
     containerRef.value.scrollTop = 0
   }
 
   index.value = i
 
-  if (!id) return
-  await wait(100)
+  if (id) {
+    await wait(100)
+    getSourceTarget(i, id)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
 
-  const target = getSourceTarget(i, id)
-  if (!target) return
-
-  target.scrollIntoView({
-    behavior: 'smooth',
-    block: 'center'
-  })
+  if (position) {
+    await wait(100)
+    const target = findPositionDom(i, position)
+    if (!target) return
+    const { top } = target.getBoundingClientRect()
+    containerRef.value?.scrollTo({ top: top, behavior: 'smooth' })
+  }
 }
+
 
 // 上一章
 function prevSection() {
