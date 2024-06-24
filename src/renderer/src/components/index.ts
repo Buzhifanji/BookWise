@@ -1,7 +1,9 @@
 import BookListView from './book/BookList.vue'
 import CheckBoxView from './checkbox/CheckBox.vue'
 import DrawerView from './drawer/Drawer.vue'
+import DropdownView from './dropdown/Dropdown.vue'
 import ErrorView from './error/404.vue'
+import List from './list/List.vue'
 import RingLoadingView from './loading/RingLoading.vue'
 import NoteListView from './note/NoteList.vue'
 import Select from './select/Select.vue'
@@ -13,9 +15,9 @@ import FileUploadView from './upload/FileUpload.vue'
 
 export * from './toast/type'
 
-export * from './book/score'
-export * from './book/edit'
 export * from './book/action'
+export * from './book/edit'
+export * from './book/score'
 export * from './drawer/toggle'
 export * from './note/action'
 export * from './toast'
@@ -24,10 +26,12 @@ export {
   BookListView,
   CheckBoxView,
   DrawerView,
+  DropdownView,
   ErrorView,
   ExpandTreeView,
   FileUploadView,
   FoldTreeView,
+  List,
   NoteListView,
   RingLoadingView,
   Select,

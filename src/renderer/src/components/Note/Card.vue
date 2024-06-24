@@ -35,7 +35,7 @@ const onMouseLeave = () => className.value = ''
                         <Ellipsis class="w-5 h-5" />
                     </button>
                     <ul tabindex="0"
-                        class="dropdown-content z-[1] menu p-2  shadow-2xl border  badge-primary badge-outline bg-base-100 rounded-md w-48">
+                        class="dropdown-content z-[1] menu p-2  shadow-2xl border border-primary bg-base-100 rounded-md w-48">
                         <li @click="emit('delete', data)">
                             <a class="text-error no-underline">
                                 <Trash2 class="h-5 w-5" />删除

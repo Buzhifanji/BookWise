@@ -74,7 +74,7 @@ onClickOutside(containerRef, onCloce)
         {{ value }}
       </summary>
       <ul
-        class="p-2  mt-2  dropdown-content  z-[10]  w-full overflow-auto border badge-accent badge-outline  rounded-md menu flex-nowrap  bg-base-100 shadow-2xl  gap-1 scrollbar-thin ">
+        class="p-2  mt-2  dropdown-content  z-[10]  w-full overflow-auto border border-accent  rounded-md menu flex-nowrap  bg-base-100 shadow-2xl  gap-1 scrollbar-thin ">
         <li v-for="item in list" :key="item.value" @click="onClick(item.id)" class="text-base-content">
           <a :class="{ 'active': state === item.id }">
             {{ item.value }}

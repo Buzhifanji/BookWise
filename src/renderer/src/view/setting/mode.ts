@@ -6,6 +6,10 @@ export const readModeList = [
   { id: ReadMode.double, value: '双页模式' }
 ]
 
+export const getSelectReadMode = (readMode: ReadMode) => {
+  return readModeList.find((item) => item.id === readMode)?.value
+}
+
 export const bookshelfModeList = [
   { id: BookshelftMode.bookshelf, value: '书架模式' },
   { id: BookshelftMode.card, value: '卡片模式' },

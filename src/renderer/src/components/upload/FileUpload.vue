@@ -165,7 +165,7 @@ async function uploadFile(event: Event) {
             </h3>
             <div class="flex items-center justify-center w-full">
                 <label
-                    class="flex flex-col rounded-lg border-4 border-dashed badge-accent badge-outline cursor-pointer  w-full h-60 p-10 group text-center">
+                    class="flex flex-col rounded-lg border-4 border-dashed border-accent  cursor-pointer  w-full h-60 p-10 group text-center">
                     <div class="h-full w-full text-center flex flex-col  justify-center items-center  ">
                         <div class="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
                             <!-- <img class="has-mask h-36 object-center" src="https://img.freepik.com/free-vector/image-upload-concept-landing-page_52683-27130.jpg?size=338&ext=jpg" alt="freepik image"> -->
