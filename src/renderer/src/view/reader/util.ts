@@ -45,8 +45,10 @@ export function getNavbarRect() {
 export function findPositionDom(page: number, position: Position) {
   const sectionContainer = getSectionContainer(page)
   const { tagName, index } = position
-  const tagNameNodes = sectionContainer?.querySelectorAll(tagName) || []
-  return tagNameNodes[index] as HTMLElement
+  if (tagName && index !== -1) {
+    return (sectionContainer?.querySelectorAll(tagName) || [])[index] as HTMLElement
+  }
+  return null
 }
 
 /**

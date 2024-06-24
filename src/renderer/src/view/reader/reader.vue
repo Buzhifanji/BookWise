@@ -46,7 +46,7 @@ const isSM = computed(() => width.value < 1024);
 const { isLG: isCatalog, toggleDrawer: toggleCatalog } = useToggleDrawer(); // 控制目录是否显示
 const { isLG: isNote, toggleDrawer: toggleNote } = useToggleDrawer() // 控制笔记是否显示
 
-
+const readMode = ref(settingStore.value.readMode) // 阅读模式
 const scrollReaderViewRef = ref<InstanceType<typeof ScrollReaderView>>() // 滚动视图
 const sectionReaderViewRef = ref<InstanceType<typeof SectionReaderView>>() // 章节视图
 const doubleReaderViewRef = ref<InstanceType<typeof DoubleReaderView>>() // 双栏视图
@@ -131,9 +131,10 @@ async function jumpAction(index: number, id?: string, position?: Position) {
   if (get(isPDF)) {
     await PDF.pageJump(index, id)
   } else {
-    if (settingStore.value.readMode === ReadMode.sroll) {
+    const mode = get(readMode)
+    if (mode === ReadMode.sroll) {
       scrollReaderViewRef.value?.jump(index, id, position)
-    } else if (settingStore.value.readMode === ReadMode.section) {
+    } else if (mode === ReadMode.section) {
       sectionReaderViewRef.value?.jump(index, id, position)
     } else {
       doubleReaderViewRef.value?.jump(index, id, position)
@@ -198,10 +199,18 @@ function zoomOut() {
     set(zoomSize, `${val - 2}ch`)
   }
 }
-watchEffect(() => {
-  if (settingStore.value.readMode === ReadMode.double) {
+watchEffect(async () => {
+  const mode = settingStore.value.readMode
+  if (mode === ReadMode.double) {
     set(zoomSize, `${65 * 2}ch`)
   }
+  if (mode === get(readMode)) return
+
+  // 切换阅读模式的时候，需要跳转到对应的浏览位置 
+  await recordPosition()
+  set(readMode, mode)
+  await nextTick()
+  restorePostion()
 })
 
 // 字体大小和行高
@@ -259,7 +268,7 @@ async function recordPosition() {
     const page = get(elementPageStore.elementPage)
     const contianer = getSectionContainer(page)
     if (!contianer) return
-    if (settingStore.value.readMode === ReadMode.double) {
+    if (get(readMode) === ReadMode.double) {
       // 双栏模式左右滑动
       postion = getSectionLeftFfirstChild(contianer, page)
 
@@ -284,7 +293,7 @@ async function recordPosition() {
   }
 }
 
-async function restorePostion() {
+function restorePostion() {
   let postion: string | null | undefined = undefined
   if (isReload()) {
     // 页面刷新，直接从localStorage取
@@ -434,14 +443,11 @@ onUnmounted(() => {
             <PDFReadView v-if="isPDF" />
             <template v-else>
               <!-- 滚动条模式 -->
-              <ScrollReaderView :section="section" ref="scrollReaderViewRef"
-                v-if="settingStore.readMode === ReadMode.sroll" />
+              <ScrollReaderView :section="section" ref="scrollReaderViewRef" v-if="readMode === ReadMode.sroll" />
               <!-- 章节模式 -->
-              <SectionReaderView :section="section" ref="sectionReaderViewRef"
-                v-if="settingStore.readMode === ReadMode.section" />
+              <SectionReaderView :section="section" ref="sectionReaderViewRef" v-if="readMode === ReadMode.section" />
               <!-- 双栏模式 -->
-              <DoubleReaderView :section="section" ref="doubleReaderViewRef"
-                v-if="settingStore.readMode === ReadMode.double" />
+              <DoubleReaderView :section="section" ref="doubleReaderViewRef" v-if="readMode === ReadMode.double" />
             </template>
 
             <!-- 工具栏 -->
