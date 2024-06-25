@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Book, Note } from '@renderer/batabase';
 import { ScoreInputView, scroreDialog } from '@renderer/components';
-import { convertUint8ArrayToURL, formatFileSize, isUndefined, toastSuccess } from '@renderer/shared';
+import { convertUint8ArrayToURL, formatDecimal, formatFileSize, isUndefined, toastSuccess } from '@renderer/shared';
 import { useClipboard } from '@vueuse/core';
 import dayjs from 'dayjs';
 import { Copy } from 'lucide-vue-next';
@@ -86,6 +86,10 @@ const notesLen = computed(() => props.notes.filter(item => item.notes !== '').le
     <div class="flex gap-4 ml-3 mb-2">
       <div>阅读次数</div>
       <div class="stat-title">{{ book.count }}</div>
+    </div>
+    <div class="flex gap-4 ml-3 mb-2">
+      <div>阅读进度</div>
+      <div class="stat-title">{{ formatDecimal(book.progress * 100) }}%</div>
     </div>
     <div class="flex gap-4 ml-3 mb-2">
       <div>高亮数量</div>

@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import { formatDecimal } from '@renderer/shared';
 import { observeElementOffset, useVirtualizer } from '@tanstack/vue-virtual';
-import { get, onKeyStroke, useThrottleFn } from '@vueuse/core';
+import { get, onKeyStroke, useDebounceFn, useThrottleFn } from '@vueuse/core';
 import { computed, ref } from 'vue';
 import { getBookHref, isExternal, openExternal } from '../render';
 import { Position } from '../type';
 import { findPositionDom, getNavbarRect, getSourceTarget, toNextView, toPrewView } from '../util';
 import SectionView from './Section.vue';
 
+const debouncedFn = useDebounceFn(() => {
+  // do something
+}, 1000)
+
+window.addEventListener('resize', debouncedFn)
 interface Props {
   section: any[]
 }
@@ -17,6 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 
 defineExpose({ jump })
+const emit = defineEmits(['progress'])
 
 const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
 
@@ -74,6 +81,16 @@ function resetJump() {
 }
 
 
+// 计算进度
+const calculateProgress = useDebounceFn((offset: number) => {
+  const total = get(totalSize)
+  if (total) {
+    const height = getNavbarRect()?.height || 0
+    const current = Math.min(offset + window.innerHeight - height, total)
+    emit('progress', formatDecimal(current / total, 4))
+  }
+}, 200)
+
 // 虚拟列表
 const rowVirtualizerOptions = computed(() => {
   return {
@@ -83,6 +100,7 @@ const rowVirtualizerOptions = computed(() => {
     estimateSize: (i: number) => props.section[i].height,
     observeElementOffset: (instance: any, cb: any) => observeElementOffset(instance, (offset, isScrolling) => {
       cb(offset, isScrolling)
+      calculateProgress(offset)
       // 滚动停止
       if (!isScrolling && isJump) {
         jumpToHighlight()
@@ -158,6 +176,8 @@ onKeyStroke(['ArrowRight'], nextView)
 // 向下翻一点点
 const littleNextView = useThrottleFn(() => nextViewAction(10), 100)
 onKeyStroke(['ArrowDown'], littleNextView)
+
+
 
 </script>
 

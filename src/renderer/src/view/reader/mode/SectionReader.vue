@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { wait } from '@renderer/shared';
-import { get, onKeyStroke, set, useThrottleFn } from '@vueuse/core';
-import { computed, ref } from 'vue';
+import { formatDecimal, wait } from '@renderer/shared';
+import { get, onKeyStroke, set, useDebounceFn, useScroll, useThrottleFn } from '@vueuse/core';
+import { computed, nextTick, ref, watchEffect } from 'vue';
 import { CONTINAER_ID } from '../highlight';
 import { getBookHref, isExternal, openExternal } from '../render';
 import { Position } from '../type';
-import { findPositionDom, getSourceTarget, toNextView, toPrewView } from '../util';
+import { findPositionDom, getSectionSize, getSourceTarget, toNextView, toPrewView } from '../util';
 import SectionView from './Section.vue';
 
 interface Props {
@@ -18,12 +18,44 @@ const props = withDefaults(defineProps<Props>(), {
 
 
 defineExpose({ jump })
+const emit = defineEmits(['progress'])
 
 const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
 
 const index = ref<number>(0)
 
 const section = computed(() => props.section[index.value].html)
+
+const { y } = useScroll(containerRef)
+
+// 计算进度
+const calculateProgress = useDebounceFn((progress: number) => {
+  emit('progress', progress)
+}, 200)
+
+watchEffect(async () => {
+  let dom = get(containerRef)
+  const page = get(index)
+  const top = get(y)
+  await nextTick()
+  dom = get(containerRef)
+  if (dom) {
+    const size = getSectionSize(page)
+    if (size) {
+      // 是否有滚动条
+      const { offsetHeight, scrollHeight, firstElementChild } = dom
+      if (firstElementChild!.clientHeight > offsetHeight) {
+        const progress = formatDecimal((top + offsetHeight) / scrollHeight, 4)
+        const res = formatDecimal(size.progress - size.current + progress * size.current, 4)
+        calculateProgress(res)
+      } else {
+        emit('progress', size.progress)
+      }
+    }
+  }
+})
+
+
 
 // 目录跳转
 async function jump(i: number, id?: string, position?: Position) {

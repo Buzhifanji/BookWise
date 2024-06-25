@@ -1,4 +1,11 @@
-import { $, findDomIndex, getFirstLastElementChild, lastElementsToArray } from '@renderer/shared'
+import {
+  $,
+  findDomIndex,
+  formatDecimal,
+  getFirstLastElementChild,
+  lastElementsToArray
+} from '@renderer/shared'
+import { bookRender } from './render'
 import { Position } from './type'
 
 export function getSectionContainer(page: string | number) {
@@ -105,5 +112,28 @@ export function getSectionLeftFfirstChild(contianer: HTMLElement, page: number) 
     return getDomPosition(contianer, firstElement, page)
   } else {
     return null
+  }
+}
+
+const cache: { progress: number; current: number }[] = []
+export function getSectionSize(page: number) {
+  if (cache.length) {
+    return cache[page]
+  } else {
+    if (!bookRender) return null
+
+    const sections = bookRender.book.sections
+    const total = sections.reduce((p: any, c: any) => p + c.size, 0)
+
+    let reduce = 0
+    for (let i = 0; i < sections.length; i++) {
+      const size = sections[i].size
+      reduce += size
+      cache.push({
+        progress: formatDecimal(reduce / total, 4),
+        current: formatDecimal(size / total, 4)
+      })
+    }
+    return cache[page]
   }
 }

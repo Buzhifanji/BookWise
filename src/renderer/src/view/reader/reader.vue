@@ -316,6 +316,11 @@ function restorePostion() {
   }
 }
 
+// 进度
+const updateProgress = (val: number) => {
+  BookAction.update(get(book)!.id, { progress: val })
+}
+
 onMounted(() => {
   loadData()
 
@@ -348,6 +353,10 @@ onUnmounted(() => {
         <CatalogView :class="{ 'hide': isCatalog }" :data="tocList" @click="catalogJump" />
       </div>
       <div class="w-full max-w-full h-screen ">
+        <progress v-if="book.progress"
+          class="progress progress-primary w-full fixed top-0 left-0 right-0 z-[9999999] h-[2px]"
+          :value="book.progress * 100" max="100"></progress>
+
         <div class="flex h-full flex-col ">
           <!-- 头部 -->
           <div role="navigation" id="book-view_nav_bar" aria-label="Navbar"
@@ -443,11 +452,14 @@ onUnmounted(() => {
             <PDFReadView v-if="isPDF" />
             <template v-else>
               <!-- 滚动条模式 -->
-              <ScrollReaderView :section="section" ref="scrollReaderViewRef" v-if="readMode === ReadMode.sroll" />
+              <ScrollReaderView :section="section" ref="scrollReaderViewRef" v-if="readMode === ReadMode.sroll"
+                @progress="updateProgress" />
               <!-- 章节模式 -->
-              <SectionReaderView :section="section" ref="sectionReaderViewRef" v-if="readMode === ReadMode.section" />
+              <SectionReaderView :section="section" ref="sectionReaderViewRef" v-if="readMode === ReadMode.section"
+                @progress="updateProgress" />
               <!-- 双栏模式 -->
-              <DoubleReaderView :section="section" ref="doubleReaderViewRef" v-if="readMode === ReadMode.double" />
+              <DoubleReaderView :section="section" ref="doubleReaderViewRef" v-if="readMode === ReadMode.double"
+                @progress="updateProgress" />
             </template>
 
             <!-- 工具栏 -->

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { RingLoadingView } from '@renderer/components';
-import { $, toastWarning, wait } from '@renderer/shared';
-import { onKeyStroke, set, useResizeObserver, useThrottleFn, useToggle } from '@vueuse/core';
-import { nextTick, onMounted, ref } from 'vue';
+import { $, formatDecimal, toastWarning, wait } from '@renderer/shared';
+import { get, onKeyStroke, set, useDebounceFn, useResizeObserver, useScroll, useThrottleFn, useToggle } from '@vueuse/core';
+import { nextTick, onMounted, ref, watchEffect } from 'vue';
 import { CONTINAER_ID } from '../highlight';
 import { getBookHref, isExternal, openExternal } from '../render';
 import { Position } from '../type';
-import { findPositionDom } from '../util';
+import { findPositionDom, getSectionSize } from '../util';
 import SectionView from './Section.vue';
 
 interface Props {
@@ -16,7 +16,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   section: () => []
 })
-
+const emit = defineEmits(['progress'])
 
 defineExpose({ jump })
 
@@ -38,6 +38,34 @@ useResizeObserver(containerRef, resize)
 const index = ref<number>(0)
 
 const section = ref<string>(props.section[0]?.html || '')
+
+// 进度
+const { x } = useScroll(containerRef)
+const calculateProgress = useDebounceFn((progress: number) => {
+  emit('progress', progress)
+}, 200)
+watchEffect(async () => {
+  let dom = get(containerRef)
+  const page = get(index)
+  const left = get(x)
+  await nextTick()
+  dom = get(containerRef)
+  if (dom) {
+    const size = getSectionSize(page)
+    if (size) {
+      // 是否有滚动条
+      const { offsetWidth, scrollWidth, firstElementChild } = dom
+      if (firstElementChild!.clientHeight > offsetWidth) {
+        const progress = formatDecimal((left + offsetWidth) / scrollWidth, 4)
+        const res = formatDecimal(size.progress - size.current + Math.min(progress, 1) * size.current, 4)
+        calculateProgress(res)
+      } else {
+        emit('progress', size.progress)
+      }
+    }
+  }
+})
+
 
 // 更新章节内容
 async function updateSection() {
