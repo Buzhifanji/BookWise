@@ -23,12 +23,23 @@ export const render = async (file: File) => {
   const sections = await bookRender.getSections()
 
   const toc = bookRender.book.toc || []
+  handleToc(toc)
+
   const _isPDG = bookRender.book.type === 'pdf'
 
   set(DPFUtil.isPDF, _isPDG)
 
   // console.log(bookRender)
   return { sections, toc }
+}
+
+function handleToc(toc: any[]) {
+  toc.forEach((item) => {
+    item.page = bookRender!.resolveNavigation(item.href).index
+    if (Array.isArray(item.subitems)) {
+      handleToc(item.subitems)
+    }
+  })
 }
 
 /**

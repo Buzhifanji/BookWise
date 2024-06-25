@@ -13,16 +13,3 @@ export const useContentCantianerStore = defineStore('useContentCantianerStore', 
 
   return { width, setWidth }
 })
-
-/**
- * 存储当前浏览页数
- */
-export const useElementPageStore = defineStore('useElementPageStore', () => {
-  const elementPage = ref(0)
-
-  function setElementPage(value: number) {
-    elementPage.value = value
-  }
-
-  return { elementPage, setElementPage }
-})

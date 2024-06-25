@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RingLoadingView } from '@renderer/components';
 import { $, formatDecimal, toastWarning, wait } from '@renderer/shared';
+import { useBookPageStore } from '@renderer/store';
 import { get, onKeyStroke, set, useDebounceFn, useResizeObserver, useScroll, useThrottleFn, useToggle } from '@vueuse/core';
 import { nextTick, onMounted, ref, watchEffect } from 'vue';
 import { CONTINAER_ID } from '../highlight';
@@ -23,7 +24,7 @@ defineExpose({ jump })
 let currentIndex = 0;
 
 const [isLoading, setLoading] = useToggle(false)
-
+const bookPageStore = useBookPageStore()
 const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
 const remendyRef = ref<HTMLElement | null>(null) // 监听dom变化
 
@@ -47,6 +48,7 @@ const calculateProgress = useDebounceFn((progress: number) => {
 watchEffect(async () => {
   let dom = get(containerRef)
   const page = get(index)
+  bookPageStore.setPage(page)
   const left = get(x)
   await nextTick()
   dom = get(containerRef)

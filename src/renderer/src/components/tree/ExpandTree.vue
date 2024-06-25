@@ -2,12 +2,14 @@
 
 interface Props {
   data: any[],
-  deps?: number
+  deps?: number,
+  active: number,
 }
 
 withDefaults(defineProps<Props>(), {
   data: () => [],
-  deps: 0
+  deps: 0,
+  active: 0,
 })
 
 const emit = defineEmits(['click'])
@@ -21,9 +23,9 @@ const handleClick = (e: any) => {
 <template>
   <ul :class="{ 'menu': deps === 0 }">
     <li v-for="item in data" :key="item.herf" @click.stop="handleClick(item)">
-      <a class="whitespace-normal">{{ item.label }}</a>
+      <a class="whitespace-normal" :class="{ active: active === item.page }">{{ item.label }}</a>
       <template v-if="item.subitems && item.subitems.length > 0">
-        <ExpandTreeView :data="item.subitems" :deps="deps + 1" @click="handleClick" />
+        <ExpandTreeView :data="item.subitems" :active="active" :deps="deps + 1" @click="handleClick" />
       </template>
     </li>
   </ul>

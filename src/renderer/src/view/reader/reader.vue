@@ -4,7 +4,7 @@ import { BookAction, BookContentAction, DrawerView, DropdownView, ErrorView, Lis
 import { ReadMode } from '@renderer/enum';
 import { $, $$, CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, getInterval, isElectron, now, toastSuccess } from '@renderer/shared';
 import { isReload } from '@renderer/shared/navigation';
-import { bookPositionStore, bookReadTimeStore, settingStore, useElementPageStore } from '@renderer/store';
+import { bookPositionStore, bookReadTimeStore, settingStore, useBookPageStore } from '@renderer/store';
 import { getSelectReadMode, readModeList, themes } from '@renderer/view/setting';
 import { get, set, useCssVar, useToggle, useWindowSize } from '@vueuse/core';
 import { AArrowDown, AArrowUp, AlignJustify, Bolt, SkipBack, ZoomIn, ZoomOut } from 'lucide-vue-next';
@@ -19,7 +19,7 @@ import SectionReaderView from './mode/SectionReader.vue';
 import PDFReadView from './pdf/ReadView.vue';
 import PDFToolbarView from './pdf/Toobar.vue';
 import { PDF } from './pdf/pdf';
-import { DPFUtil, getBookHref, render, unMountedBookRender } from './render';
+import { DPFUtil, render, unMountedBookRender } from './render';
 import NoteRichView from './toolbar/NoteRich.vue';
 import ToolbarView from './toolbar/Toolbar.vue';
 import { NoteBarStyle, ToolbarStyle } from './toolbar/action';
@@ -141,20 +141,12 @@ async function jumpAction(index: number, id?: string, position?: Position) {
     }
   }
 }
-async function catalogJump({ href }: any) {
+async function catalogJump({ href, page }: any) {
   if (get(isPDF)) {
     const { index } = await PDF.resolveHref(href)
     await jumpAction(index + 1)
   } else {
-    let index = 0;
-    if (href) {
-      const value = getBookHref(href)
-      if (value) {
-        index = value.index
-      }
-    }
-
-    jumpAction(index)
+    jumpAction(page || 0)
   }
 }
 
@@ -255,7 +247,7 @@ function sizeIn() {
 }
 
 // 阅读位置
-const elementPageStore = useElementPageStore()
+const bookPageStore = useBookPageStore()
 async function recordPosition() {
   const info = get(book)
   if (!info) return
@@ -265,7 +257,7 @@ async function recordPosition() {
     const page = PDF.getCurrentPageNumber() || 0
     postion = { page, index: -1, tagName: '' }
   } else {
-    const page = get(elementPageStore.elementPage)
+    const page = get(bookPageStore.page)
     const contianer = getSectionContainer(page)
     if (!contianer) return
     if (get(readMode) === ReadMode.double) {
@@ -386,7 +378,6 @@ onMounted(() => {
 })
 
 onBeforeUnmount(async () => {
-  console.log('on before unmount')
   recordAction()
   window.removeEventListener("beforeunload", recordAction);
   document.removeEventListener('visibilitychange', viewVisibityChange)

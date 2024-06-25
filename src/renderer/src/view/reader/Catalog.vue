@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useBookPageStore } from '@renderer/store';
+
 
 interface Props {
   data: any[],
@@ -13,12 +15,14 @@ const emit = defineEmits(['click'])
 const handleClick = (e: any) => {
   emit('click', e)
 }
+
+const bookPageStore = useBookPageStore()
 </script>
 
 <template>
   <div class="catalog-wrapper bg-base-100 overflow-auto hover:scrollbar-thin scrollbar-none">
     <!-- <FoldTreeView :data="data" v-if="settingStore.isFoldCatalog" /> -->
-    <ExpandTreeView :data="data" @click="handleClick" />
+    <ExpandTreeView :data="data" :active="bookPageStore.page" @click="handleClick" />
   </div>
 </template>
 

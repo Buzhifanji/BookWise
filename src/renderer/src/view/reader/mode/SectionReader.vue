@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { formatDecimal, wait } from '@renderer/shared';
+import { useBookPageStore } from '@renderer/store';
 import { get, onKeyStroke, set, useDebounceFn, useScroll, useThrottleFn } from '@vueuse/core';
 import { computed, nextTick, ref, watchEffect } from 'vue';
 import { CONTINAER_ID } from '../highlight';
@@ -21,9 +22,8 @@ defineExpose({ jump })
 const emit = defineEmits(['progress'])
 
 const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
-
 const index = ref<number>(0)
-
+const bookPageStore = useBookPageStore()
 const section = computed(() => props.section[index.value].html)
 
 const { y } = useScroll(containerRef)
@@ -36,6 +36,7 @@ const calculateProgress = useDebounceFn((progress: number) => {
 watchEffect(async () => {
   let dom = get(containerRef)
   const page = get(index)
+  bookPageStore.setPage(page)
   const top = get(y)
   await nextTick()
   dom = get(containerRef)
