@@ -15,3 +15,13 @@ export function wait(time: number = 300) {
 export function now() {
   return new Date().getTime()
 }
+
+/**
+ * 获取两个时间的时间差（分钟）
+ * @param start
+ * @param end
+ * @returns
+ */
+export function getInterval(start: number, end: number) {
+  return +((end - start) / 1000 / 60).toFixed()
+}

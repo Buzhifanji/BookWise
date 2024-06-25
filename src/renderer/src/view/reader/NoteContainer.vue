@@ -16,6 +16,7 @@ import { NoteRichAction, NoteToolBarAction } from './toolbar/action';
 
 interface Props {
   book: Book,
+  readTime: number
 }
 
 const props = defineProps<Props>()
@@ -149,6 +150,8 @@ const removeNote = (_: NoteText, index: number) => {
 const throttleClick = useThrottleFn((val: Note) => {
   emit('jump', val)
 }, 800)
+
+
 </script>
 
 <template>
@@ -171,7 +174,7 @@ const throttleClick = useThrottleFn((val: Note) => {
     </div>
     <div class="flex-1 transition ease-in-out p-3 relative">
       <!-- 书籍信息 -->
-      <BookDetailView v-if="activeTab === 'book'" :book="book" :notes="notes" />
+      <BookDetailView v-if="activeTab === 'book'" :book="book" :notes="notes" :time="readTime" />
 
       <!-- 笔记 -->
       <div v-else class="absolute inset-0 ">

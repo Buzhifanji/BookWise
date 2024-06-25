@@ -27,7 +27,7 @@ export const render = async (file: File) => {
 
   set(DPFUtil.isPDF, _isPDG)
 
-  console.log(bookRender)
+  // console.log(bookRender)
   return { sections, toc }
 }
 

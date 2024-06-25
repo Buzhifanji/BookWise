@@ -2,13 +2,13 @@
 import { Book, BookContent, Note } from '@renderer/batabase';
 import { BookAction, BookContentAction, DrawerView, DropdownView, ErrorView, List, NoteAction, RingLoadingView, useToggleDrawer } from '@renderer/components';
 import { ReadMode } from '@renderer/enum';
-import { $, $$, CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, channelPostMessage, isElectron, toastSuccess } from '@renderer/shared';
+import { $, $$, CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, getInterval, isElectron, now, toastSuccess } from '@renderer/shared';
 import { isReload } from '@renderer/shared/navigation';
-import { bookPositionStore, settingStore, useElementPageStore } from '@renderer/store';
+import { bookPositionStore, bookReadTimeStore, settingStore, useElementPageStore } from '@renderer/store';
 import { getSelectReadMode, readModeList, themes } from '@renderer/view/setting';
 import { get, set, useCssVar, useToggle, useWindowSize } from '@vueuse/core';
 import { AArrowDown, AArrowUp, AlignJustify, Bolt, SkipBack, ZoomIn, ZoomOut } from 'lucide-vue-next';
-import { Ref, computed, nextTick, onBeforeUnmount, onMounted, onUnmounted, ref, watchEffect } from 'vue';
+import { Ref, computed, nextTick, onBeforeUnmount, onMounted, ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 import CatalogView from './Catalog.vue';
 import NoteView from './NoteContainer.vue';
@@ -91,8 +91,8 @@ async function loadData() {
     section.value = sections
     tocList.value = toc
     bookContent.value = content
-    console.log(info)
-    console.log(content)
+    // console.log(info)
+    // console.log(content)
     setLoading(false)
 
     await nextTick()
@@ -289,7 +289,6 @@ async function recordPosition() {
     // 多页面 
     // 当其它页面都关闭完了的时候，channelPostMessage会失效，只能借做localstorage来存储
     bookPositionStore.value[info.id] = lastReadPosition
-    channelPostMessage({ bookId: info.id, value: lastReadPosition })
   }
 }
 
@@ -321,18 +320,79 @@ const updateProgress = (val: number) => {
   BookAction.update(get(book)!.id, { progress: val })
 }
 
+// 记录阅读时长
+const startTime = ref(0);
+const endTime = ref(0)
+const readTime = computed(() => getInterval(get(startTime), get(endTime)))
+let timer: NodeJS.Timeout | null = null
+
+const startReading = () => set(startTime, now())
+const endReading = () => set(endTime, now())
+
+function resetReadTime() {
+  if (timer) {
+    clearInterval(timer)
+  }
+  timer = setInterval(endReading, 1000 * 60)
+  startReading()
+  endReading()
+}
+
+function recordReadTime() {
+  const info = get(book)
+  if (!info) return
+  const spaceTime = +get(readTime)
+  if (spaceTime >= 1) {
+    const data = {
+      startTime: get(startTime),
+      endTime: get(endTime),
+      eBookId: info.id,
+    }
+    bookReadTimeStore.value[info.id] = JSON.stringify(data)
+  }
+}
+
+// 页面是否可见
+const viewVisibityChange = () => {
+  if (document.hidden) {
+    if (timer) {
+      clearInterval(timer)
+    }
+  } else {
+    const interval = getInterval(get(endTime), now())
+    if (interval > 1) {
+      // 再次恢复阅读界面，中间间隔超过了一分钟，就重新记录阅读时长
+      recordReadTime()
+      resetReadTime()
+    } else {
+      // 不超过一分钟，继续阅读
+      endReading()
+      timer = setInterval(endReading, 1000 * 60)
+    }
+  }
+}
+
+function recordAction() {
+  recordPosition()
+  recordReadTime()
+}
+
 onMounted(() => {
   loadData()
-
+  resetReadTime()
   // 监听 浏览器窗口关闭、刷新
-  window.addEventListener("beforeunload", recordPosition);
+  window.addEventListener("beforeunload", recordAction);
+  document.addEventListener('visibilitychange', viewVisibityChange)
 })
 
 onBeforeUnmount(async () => {
-  recordPosition()
-  window.removeEventListener("beforeunload", recordPosition);
-})
-onUnmounted(() => {
+  console.log('on before unmount')
+  recordAction()
+  window.removeEventListener("beforeunload", recordAction);
+  document.removeEventListener('visibilitychange', viewVisibityChange)
+  if (timer) {
+    clearInterval(timer)
+  }
   unMountedBookRender()
   highlighter?.dispose()
 })
@@ -473,11 +533,11 @@ onUnmounted(() => {
       <!-- 笔记 -->
       <div class="block lg:hidden">
         <DrawerView :id="NOTE_DRAWER" :is-right="true">
-          <NoteView :book="book" @jump="noteJump" />
+          <NoteView :book="book" @jump="noteJump" :read-time="readTime" />
         </DrawerView>
       </div>
       <div class="hidden lg:block">
-        <NoteView :book="book" @jump="noteJump" :class="{ 'hide': isNote }" />
+        <NoteView :book="book" :read-time="readTime" @jump="noteJump" :class="{ 'hide': isNote }" />
       </div>
     </template>
     <ErrorView v-else />

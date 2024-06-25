@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import { Book, Note } from '@renderer/batabase';
-import { ScoreInputView, scroreDialog } from '@renderer/components';
-import { convertUint8ArrayToURL, formatDecimal, formatFileSize, isUndefined, toastSuccess } from '@renderer/shared';
+import { BookReadTimeAction, ScoreInputView, scroreDialog } from '@renderer/components';
+import { convertUint8ArrayToURL, formatDecimal, formatFileSize, getInterval, isUndefined, toastSuccess } from '@renderer/shared';
 import { useClipboard } from '@vueuse/core';
 import dayjs from 'dayjs';
 import { Copy } from 'lucide-vue-next';
 import { computed } from 'vue';
 
-const props = withDefaults(defineProps<{ book: Book, notes: Note[] }>(), {
+const props = withDefaults(defineProps<{ book: Book, notes: Note[], time: number }>(), {
   notes: () => [],
 })
 
 const { copy } = useClipboard()
-
 const copyAction = (val: string) => {
   if (val) {
     copy(val)
@@ -22,9 +21,15 @@ const copyAction = (val: string) => {
 
 const openBookScore = () => scroreDialog(props.book)
 
-
 const highlightLen = computed(() => props.notes.filter(item => item.notes === '').length)
 const notesLen = computed(() => props.notes.filter(item => item.notes !== '').length)
+
+const readTimeList = BookReadTimeAction.observableOne(props.book!.id)
+const totalReadTime = computed(() => {
+  const list = readTimeList.value || []
+  const history = list.reduce((pre: any, cur: any) => pre + getInterval(cur.startTime, cur.endTime), 0)
+  return (history + props.time).toFixed(0)
+})
 
 </script>
 
@@ -90,6 +95,14 @@ const notesLen = computed(() => props.notes.filter(item => item.notes !== '').le
     <div class="flex gap-4 ml-3 mb-2">
       <div>阅读进度</div>
       <div class="stat-title">{{ formatDecimal(book.progress * 100) }}%</div>
+    </div>
+    <div class="flex gap-4 ml-3 mb-2">
+      <div>本次阅读时长</div>
+      <div class="stat-title">{{ time }}分</div>
+    </div>
+    <div class="flex gap-4 ml-3 mb-2">
+      <div>阅读总时长</div>
+      <div class="stat-title">{{ totalReadTime }}分</div>
     </div>
     <div class="flex gap-4 ml-3 mb-2">
       <div>高亮数量</div>
