@@ -6,7 +6,7 @@ import { EventHandlerMap, InteractEvent, MouseOrTouchEvent } from './interface'
 export { INTERNAL_ERROR_EVENT } from './const'
 export { EventEmitter } from './event-emitter'
 export { EventTypeEnum, errorEventEimtter }
-export type { MouseOrTouchEvent, EventHandlerMap, EventErrorData }
+export type { EventErrorData, EventHandlerMap, MouseOrTouchEvent }
 
 export function getInteraction(): InteractEvent {
   const isMobile = detectMobile(window.navigator.userAgent)
@@ -16,5 +16,6 @@ export function getInteraction(): InteractEvent {
     PointerTap: isMobile ? UserInputEvent.touchstart : UserInputEvent.click,
     // hover and click will be the same event in mobile
     PointerOver: isMobile ? UserInputEvent.touchstart : UserInputEvent.mouseover,
+    PinterDb: isMobile ? UserInputEvent.touchstart : UserInputEvent.dbclick
   }
 }

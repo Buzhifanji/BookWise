@@ -3,7 +3,8 @@ export enum UserInputEvent {
   mouseup = 'mouseup',
   touchstart = 'touchstart',
   click = 'click',
-  mouseover = 'mouseover',
+  dbclick = 'dblclick',
+  mouseover = 'mouseover'
 }
 
 export enum EventTypeEnum {
@@ -13,10 +14,10 @@ export enum EventTypeEnum {
   MODIFY = 'selection:modify',
   HOVER = 'selection:hover',
   HOVER_OUT = 'selection:hover-out',
-  CLICK = 'selection:click',
+  CLICK = 'selection:click'
 }
 
 export enum CreateFrom {
   source = 'source',
-  rang = 'rang',
+  rang = 'rang'
 }

@@ -5,6 +5,7 @@ export interface InteractEvent {
   PointerEnd: UserInputEvent
   PointerTap: UserInputEvent
   PointerOver: UserInputEvent
+  PinterDb: UserInputEvent
 }
 
 export type MouseOrTouchEvent = MouseEvent | TouchEvent
