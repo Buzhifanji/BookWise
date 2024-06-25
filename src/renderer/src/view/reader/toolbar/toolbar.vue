@@ -2,6 +2,7 @@
 import { Note } from '@renderer/batabase';
 import { NoteAction, NoteText } from '@renderer/components';
 import { toastSuccess } from '@renderer/shared';
+import { settingStore } from '@renderer/store';
 import { get, onClickOutside, set, useElementSize } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
 import { Baseline, Copy, Highlighter, MessageSquareMore, SpellCheck2, Trash } from 'lucide-vue-next';
@@ -114,10 +115,18 @@ const list = [
     <div ref="container"
       class="absolute bg-base-100 border border-info z-50 bar-shadow rounded-md flex flex-col divide-y ease-in-out  shadow-cyan-500/50"
       :style="style" @click.stop>
-      <div class="flex flex-row gap-3 cursor-pointer p-2.5">
-        <div v-for="item in highlightColor.getColors()" class="badge badge-lg" @click="noteToolBar.changeColor(item)"
-          :class="highlightColor.getBadgeColor(item)" :key="item">
-          {{ item === activeColor ? '✓' : '' }}
+      <div class="flex flex-row justify-between items-center">
+        <div class="flex flex-row gap-3 cursor-pointer p-2.5">
+          <div v-for="item in highlightColor.getColors()" class="badge badge-lg" @click="noteToolBar.changeColor(item)"
+            :class="highlightColor.getBadgeColor(item)" :key="item">
+            {{ item === activeColor ? '✓' : '' }}
+          </div>
+        </div>
+        <div class="flex pr-2.5">
+          <div class="tooltip flex" data-tip="自动高亮">
+            <input type="checkbox" class="toggle toggle-sm toggle-success" v-model="settingStore.isAutoHighlight"
+              :checked="settingStore.isAutoHighlight" />
+          </div>
         </div>
       </div>
       <ul class="menu menu-horizontal p-1 m-0">
