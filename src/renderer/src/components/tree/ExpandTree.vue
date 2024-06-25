@@ -19,7 +19,7 @@ const handleClick = (e: any) => {
   emit('click', e)
 }
 
-const isActive = (item: any, active: number) => active >= item.page && active < item.nextPage 
+const isActive = (item: any, active: number) => active >= item.page && active < item.nextPage
 </script>
 
 <template>
