@@ -141,10 +141,9 @@ async function jumpAction(index: number, id?: string, position?: Position) {
     }
   }
 }
-async function catalogJump({ href, page }: any) {
+async function catalogJump({  page }: any) {
   if (get(isPDF)) {
-    const { index } = await PDF.resolveHref(href)
-    await jumpAction(index + 1)
+    await jumpAction(page)
   } else {
     jumpAction(page || 0)
   }

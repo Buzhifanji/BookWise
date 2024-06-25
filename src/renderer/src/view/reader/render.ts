@@ -34,12 +34,28 @@ export const render = async (file: File) => {
 }
 
 function handleToc(toc: any[]) {
-  toc.forEach((item) => {
+  const list: any = []
+  const eachToc = (data: any[]) => {
+    data.forEach((item) => {
+      list.push(item)
+      if (Array.isArray(item.subitems)) {
+        eachToc(item.subitems)
+      }
+    })
+  }
+  eachToc(toc)
+
+  list.forEach((item: any) => {
     item.page = bookRender!.resolveNavigation(item.href).index
-    if (Array.isArray(item.subitems)) {
-      handleToc(item.subitems)
-    }
   })
+
+  for (let i = 0; i < list.length; i++) {
+    const currunt = list[i]
+    const next = list[i + 1]
+    if (next) {
+      currunt.nextPage = next.page
+    }
+  }
 }
 
 /**

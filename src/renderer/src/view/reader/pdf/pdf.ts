@@ -76,7 +76,9 @@ class PDFTool {
 
   async getOutline() {
     const outline = (await this.pdfDocument?.getOutline()) || []
-    return outline.map(this.makeTOCItem)
+    const result = outline.map(this.makeTOCItem)
+    await this.handleToc(result)
+    return result
   }
 
   async pageJump(pageNumber: number, id?: string) {
@@ -172,6 +174,32 @@ class PDFTool {
   }
 
   async spreadMode() {}
+
+  private async handleToc(toc: any[]) {
+    const list: any = []
+    const eachToc = (data: any[]) => {
+      data.forEach((item) => {
+        list.push(item)
+        if (Array.isArray(item.subitems)) {
+          eachToc(item.subitems)
+        }
+      })
+    }
+    eachToc(toc)
+    await Promise.all(
+      list.map(async (item: any) => {
+        const res = await this.resolveHref(item.href)
+        item.page = res.index + 1
+      })
+    )
+    for (let i = 0; i < list.length; i++) {
+      const currunt = list[i]
+      const next = list[i + 1]
+      if (next) {
+        currunt.nextPage = next.page
+      }
+    }
+  }
 
   private makeTOCItem = (item: any) => ({
     label: item.title,

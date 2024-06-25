@@ -9,7 +9,7 @@ const detailsRef = ref<HTMLDetailsElement | null>(null)
 const summaryRef = ref<HTMLElement | null>(null)
 const containerRef = ref<HTMLElement | null>(null)
 
-const state = useStorage('__book__wise_pdf_zoom', 'automatic-zoom', localStorage,
+const state = useStorage('__book__wise_pdf_zoom', 'auto', localStorage,
   { mergeDefaults: true })
 
 const list = [

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 
+
 interface Props {
   data: any[],
   deps?: number,
@@ -18,12 +19,14 @@ const handleClick = (e: any) => {
   emit('click', e)
 }
 
+const isActive = (item: any, active: number) => active >= item.page && active < item.nextPage 
 </script>
 
 <template>
   <ul :class="{ 'menu': deps === 0 }">
     <li v-for="item in data" :key="item.herf" @click.stop="handleClick(item)">
-      <a class="whitespace-normal" :class="{ active: active === item.page }">{{ item.label }}</a>
+      <a class="whitespace-normal" :class="{ active: isActive(item, active) }">{{ item.label
+        }}</a>
       <template v-if="item.subitems && item.subitems.length > 0">
         <ExpandTreeView :data="item.subitems" :active="active" :deps="deps + 1" @click="handleClick" />
       </template>
