@@ -6,6 +6,13 @@ import { onUnmounted, ref, watchEffect } from 'vue';
 import { toNextView, toPrewView } from '../util';
 import { PDF, setSpreadMode } from './pdf';
 
+interface Props {
+  isScrollLocked: boolean,
+}
+const props = withDefaults(defineProps<Props>(), {
+  isScrollLocked: false,
+})
+
 const PDFContainerRef = ref<HTMLElement | null>(null)
 const contentRef = ref<HTMLElement | null>(null)
 const bookPageStore = useBookPageStore()
@@ -25,6 +32,7 @@ const getScrollData = () => {
 }
 
 const prewView = useThrottleFn(() => {
+  if (props.isScrollLocked) return
   if (!get(PDFContainerRef)) return
   const { dom, height, scrollTop } = getScrollData()
   toPrewView(dom, scrollTop, height)
@@ -33,6 +41,7 @@ const prewView = useThrottleFn(() => {
 const { height: totalHeight } = useElementSize(contentRef)
 
 const nextView = useThrottleFn(() => {
+  if (props.isScrollLocked) return
   if (!get(PDFContainerRef)) return
   const { dom, height, scrollTop } = getScrollData()
   toNextView(dom, scrollTop, height, get(totalHeight))

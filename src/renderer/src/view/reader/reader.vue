@@ -500,7 +500,7 @@ onBeforeUnmount(async () => {
           </div>
           <!-- 书籍内容 -->
           <div class="flex-1 overflow-hidden relative selection:bg-info selection:text-base-content" :id="CONTINAER_ID">
-            <PDFReadView v-if="isPDF" />
+            <PDFReadView v-if="isPDF" :isScrollLocked="isScrollLocked" />
             <template v-else>
               <!-- 滚动条模式 -->
               <ScrollReaderView :section="section" :isScrollLocked="isScrollLocked" ref="scrollReaderViewRef"
