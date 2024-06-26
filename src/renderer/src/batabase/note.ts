@@ -8,7 +8,7 @@ export interface Note {
   isDelete: number | null // 是否删除（记录删除时间）
   sourceId: string // source id
   domSource: string // 节点数据（json)
-  tag: string // 标签
+  tag: string // 标签 (json)
 }
 
 export const schemaNote =

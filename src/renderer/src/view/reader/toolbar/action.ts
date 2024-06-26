@@ -1,17 +1,11 @@
 import { DomSource } from '@book-wise/web-highlight'
 import { Note, Tag } from '@renderer/batabase'
-import { NoteAction, NoteText } from '@renderer/components'
+import { NoteAction, NoteText, TagAction } from '@renderer/components'
 import { now, toastSuccess, toastWarning } from '@renderer/shared'
 import { get, set, useClipboard } from '@vueuse/core'
 import { Ref, ref, shallowReactive } from 'vue'
 import { highlighter } from '../highlight'
 import { ColorKeys, HighlightType, highlightColor } from '../highlight-color'
-
-const tagToString = (tag: Tag[]) => {
-  const data = tag.map((item) => item.id)
-  const setStore = new Set(data)
-  return [...setStore].join(',')
-}
 
 export class ToolbarStyle {
   static style = shallowReactive({ top: 0, left: 0 })
@@ -117,7 +111,7 @@ export class NoteToolBarAction {
     } else {
       // 新增
       highlighter.fromSource(source)
-      const tag = tagToString(tags)
+      const tag = TagAction.toJSON(tags)
       await NoteAction.add({
         sources: source,
         eBookId: get(this.bookParam),
@@ -239,7 +233,7 @@ export class NoteRichAction {
 
     if (source.length === 0) return
 
-    const tag = tagToString(tags)
+    const tag = TagAction.toJSON(tags)
     this.notes.value.push({ value, time: now() })
 
     const sources = source.map((item) => {
@@ -260,18 +254,17 @@ export class NoteRichAction {
    */
   async addInNoNotes(tags: Tag[] = []) {
     const value = get(this.value)
-    // if (!value &&) {
-    //   toastWarning('请输入笔记内容')
-    //   return
-    // }
 
     const id = this.noteDetail?.id
     if (!id) return
-    const tag = tagToString(tags)
+    const tag = TagAction.toJSON(tags)
     if (value) {
       this.notes.value.push({ value, time: now() })
     }
-    await NoteAction.update(id, { notes: JSON.stringify(get(this.notes)), tag })
+    await NoteAction.update(id, {
+      notes: JSON.stringify(get(this.notes)),
+      tag
+    })
 
     toastSuccess('添加笔记成功')
   }

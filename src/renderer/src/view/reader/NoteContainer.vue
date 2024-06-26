@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Book, Note } from '@renderer/batabase';
-import { NoteAction, NoteText } from '@renderer/components';
+import { Book, Note, Tag } from '@renderer/batabase';
+import { NoteAction, NoteText, TagAction, TagInputView, TagListView } from '@renderer/components';
 import { useBgOpacity } from '@renderer/hooks';
 import { $ } from '@renderer/shared';
 import { useVirtualizer } from '@tanstack/vue-virtual';
@@ -66,6 +66,7 @@ const closeHover = () => {
 }
 
 // 编辑（工具栏）
+const tags = ref<Tag[]>([]) // 标签
 const selectNote = ref<Note>() // 选中的笔记
 const noteTop = ref(0) // 选中的dom 距离可视化区域的顶部距离
 const toolbarRef = ref<HTMLElement | null>(null) //工具栏dom
@@ -81,6 +82,7 @@ const openEidteBar = async (index: number) => {
   const dom = $(`.note-item[data-index='${index}']`) as HTMLElement
   if (dom) {
     const note = get(notes)[index]
+    set(tags, TagAction.toTag(note.tag))
     set(selectNote, note)
     hoverAction(0.3, index)
 
@@ -134,13 +136,15 @@ const lineList = [
   { name: '波浪线', icon: SpellCheck2, click: () => noteToolBar.wavy(), active: HighlightType.wavy },
 ]
 
+
 // 笔记操作
-const addNote = () => {
+const addNote = async () => {
   const note = get(selectNote)
   if (!note) return
 
   // 新增，之前有高亮,但无笔记内容
-  noteRichAction.addInNoNotes()
+  await noteRichAction.addInNoNotes(get(tags))
+  set(selectNote, undefined)
 }
 const removeNote = (_: NoteText, index: number) => {
   noteRichAction.remove(index)
@@ -197,6 +201,11 @@ const throttleClick = useThrottleFn((val: Note) => {
                     <div class="grid grid-cols-1 divide-y divide-neutral">
                       <NoteListView :show="false" :data="NoteAction.getNoteText(notes[virtualRow.index].notes)"
                         :opacity="indexBgOpacity(virtualRow.index)" />
+                      <!-- 笔记标签 -->
+                      <div v-if="TagAction.toTag(notes[virtualRow.index].tag).length"
+                        class="pt-2 flex flex-wrap flex-row gap-2">
+                        <TagListView :tag="TagAction.toTag(notes[virtualRow.index].tag)" :show="false" />
+                      </div>
                     </div>
                     <div class="flex flex-row-reverse">
                       <button class="btn btn-sm btn-outline btn-primary"
@@ -248,6 +257,7 @@ const throttleClick = useThrottleFn((val: Note) => {
               <NoteListView class-name="rounded-lg" :data="noteList" @remove="removeNote" />
               <textarea v-model="textareaValue" rows="4"
                 class="textarea textarea-accent w-full bg-base-200 rounded-lg my-3" placeholder="写下此时的想法..."></textarea>
+              <TagInputView v-model="tags" />
               <div class="card-actions justify-end">
                 <button class="btn btn-sm btn-success" @click="addNote()">添加</button>
               </div>

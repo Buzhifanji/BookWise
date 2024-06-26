@@ -55,4 +55,17 @@ export class TagAction {
   static findOne(id: string) {
     return db.tag.where('id').equals(id).first()
   }
+
+  static toJSON(tag: Tag[]) {
+    const result = tag.map((item) => ({ id: item.id, tagName: item.tagName }))
+    return JSON.stringify(result)
+  }
+
+  static toTag(val: string) {
+    try {
+      return JSON.parse(val)
+    } catch (error) {
+      return []
+    }
+  }
 }

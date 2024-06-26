@@ -10,7 +10,8 @@ import NoteListView from './note/NoteList.vue'
 import Select from './select/Select.vue'
 import SelectView from './select/SelectView.vue'
 import { SelectItem } from './select/type'
-import TagView from './tag/Tag.vue'
+import TagInputView from './tag/TagInput.vue'
+import TagListView from './tag/TagList.vue'
 import ExpandTreeView from './tree/ExpandTree.vue'
 import FoldTreeView from './tree/FoldTree.vue'
 import FileUploadView from './upload/FileUpload.vue'
@@ -40,7 +41,8 @@ export {
   ScoreInputView,
   Select,
   SelectView,
-  TagView
+  TagInputView,
+  TagListView
 }
 
 export { type SelectItem }

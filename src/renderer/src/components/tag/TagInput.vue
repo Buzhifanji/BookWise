@@ -2,9 +2,9 @@
 import { Tag } from '@renderer/batabase';
 import { isInClientRectTop } from '@renderer/shared';
 import { get, set, useThrottleFn } from '@vueuse/core';
-import { X } from 'lucide-vue-next';
 import scrollIntoView from 'scroll-into-view-if-needed';
 import { computed, defineProps, ref, watchEffect, withDefaults } from 'vue';
+import TagListView from './TagList.vue';
 import { TagAction } from './action';
 
 interface Props {
@@ -133,10 +133,7 @@ const onTab = () => {
     </li>
   </ul>
   <label class="input input-bordered flex items-center gap-2 flex-wrap min-h-12 h-auto py-2" ref="container">
-    <div class="badge badge-info gap-2" v-for="item, index in list">
-      {{ item.tagName }}
-      <X class="w-4 h-4 cursor-pointer" @click="onRemove(index)" />
-    </div>
+    <TagListView :tag="list" @remove="onRemove" />
     <input type="text" class="grow" v-model="tagValue" placeholder="请输入标签" @keydown.enter="onAdd()"
       @keydown.prevent.down="onDown()" @keydown.prevent.up="onUp()" @keydown.prevent.tab="onTab()" />
   </label>

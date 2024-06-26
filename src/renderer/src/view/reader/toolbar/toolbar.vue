@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Note } from '@renderer/batabase';
-import { NoteAction, NoteText } from '@renderer/components';
+import { Note, Tag } from '@renderer/batabase';
+import { NoteAction, NoteText, TagAction, TagListView } from '@renderer/components';
 import { toastSuccess } from '@renderer/shared';
 import { settingStore } from '@renderer/store';
 import { get, onClickOutside, set, useElementSize } from '@vueuse/core';
@@ -44,6 +44,14 @@ onClickOutside(container, (e) => {
   closeDom(noteRef, e)
 })
 
+// 标签
+const tags = ref<Tag[]>([]) // 标签
+const removeTag = async (index: number) => {
+  tags.value.splice(index, 1)
+  const tag = TagAction.toJSON(get(tags))
+  await NoteAction.update(get(note)!.id, { tag })
+  toastSuccess('删除标签成功')
+}
 
 // 笔记
 const note = ref<Note>()
@@ -72,8 +80,11 @@ const noteStyle = computed(() => {
 const findNote = async () => {
   if (get(isEdite) && ToolbarStyle.source.length) {
     const val = await NoteAction.findBySourceId(ToolbarStyle.source[0].id)
-    set(note, val)
-    set(noteList, NoteAction.getNoteText(val?.notes))
+    if (val) {
+      set(tags, TagAction.toTag(val.tag))
+      set(note, val)
+      set(noteList, NoteAction.getNoteText(val.notes))
+    }
   }
 }
 const removeNote = async (_: NoteText, index: number) => {
@@ -146,6 +157,9 @@ const list = [
       class="absolute  bg-base-100 border border-info bar-shadow rounded-md flex flex-col ease-in-out divide-y"
       @click.stop :style="noteStyle">
       <NoteListView class-name="rounded-md" :data="noteList" @remove="removeNote" />
+      <div class="p-2 bg-base-200 flex flex-wrap flex-row gap-2" :style="{ '--tw-bg-opacity': 0.5 }" v-if="tags.length">
+        <TagListView :tag="tags" @remove="removeTag" />
+      </div>
     </div>
   </div>
 

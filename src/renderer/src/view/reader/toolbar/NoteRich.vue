@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Note, Tag } from '@renderer/batabase';
-import { NoteAction, NoteText, TagAction, TagView } from '@renderer/components';
+import { NoteAction, NoteText, TagAction, TagInputView } from '@renderer/components';
 import { toastError, toastWarning } from '@renderer/shared';
 import { get, onClickOutside, onKeyStroke, set, useElementBounding, useParentElement } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
@@ -71,8 +71,7 @@ async function init() {
     toastError('数据丢失：本地未找到笔记')
     NoteBarStyle.close()
   } else {
-    const tagList = await TagAction.findByIds(note.tag)
-    set(tags, tagList)
+    set(tags, TagAction.toTag(note.tag))
     noteRichAction.setNotes(note)
   }
 }
@@ -127,7 +126,7 @@ init()
         <textarea ref="textareatRef" v-model="textareaValue" rows="6"
           class="textarea textarea-accent w-full bg-base-200 my-3 rounded-lg" placeholder="写下此时的想法..."></textarea>
         <div>
-          <TagView v-model="tags" />
+          <TagInputView v-model="tags" />
         </div>
         <div class="card-actions justify-end">
           <button class="btn btn-success" @click="submit">添加</button>
