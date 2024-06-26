@@ -83,9 +83,18 @@ class PDFTool {
 
   async pageJump(pageNumber: number, id?: string) {
     this.pdfViewer!.scrollPageIntoView({ pageNumber })
-    await this.drawHighlight(pageNumber.toString())
+
     if (id) {
+      // try {
+      //   await this.drawHighlight(pageNumber.toString())
+      // } catch (err) {
+      //   console.log('drawHighlight', err)
+      // }
+
+      // todo 等待 高亮渲染完成
+
       const target = getSourceTarget(pageNumber, id)
+      console.log(target)
       if (!target) return
 
       target.scrollIntoView()

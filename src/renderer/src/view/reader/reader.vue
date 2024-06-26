@@ -151,6 +151,7 @@ async function catalogJump({ page }: any) {
 }
 
 async function noteJump(note: Note) {
+  console.log('note', note)
   const source = NoteAction.getDomSource(note.domSource)
   if (source.length === 0) return
 
