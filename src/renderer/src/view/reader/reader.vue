@@ -55,6 +55,7 @@ const isPDF = DPFUtil.isPDF
 
 const isNoteRichShow = NoteBarStyle.show
 const isShowToolBar = ToolbarStyle.show
+const isScrollLocked = computed(() => get(isNoteRichShow) || get(isShowToolBar)) // 打开高亮工具栏的时候，锁住滚动条
 
 // 获取书本内容
 async function getBookContent(bookId: string, url: string) {
@@ -141,7 +142,7 @@ async function jumpAction(index: number, id?: string, position?: Position) {
     }
   }
 }
-async function catalogJump({  page }: any) {
+async function catalogJump({ page }: any) {
   if (get(isPDF)) {
     await jumpAction(page)
   } else {
@@ -502,14 +503,14 @@ onBeforeUnmount(async () => {
             <PDFReadView v-if="isPDF" />
             <template v-else>
               <!-- 滚动条模式 -->
-              <ScrollReaderView :section="section" ref="scrollReaderViewRef" v-if="readMode === ReadMode.sroll"
-                @progress="updateProgress" />
+              <ScrollReaderView :section="section" :isScrollLocked="isScrollLocked" ref="scrollReaderViewRef"
+                v-if="readMode === ReadMode.sroll" @progress="updateProgress" />
               <!-- 章节模式 -->
-              <SectionReaderView :section="section" ref="sectionReaderViewRef" v-if="readMode === ReadMode.section"
-                @progress="updateProgress" />
+              <SectionReaderView :section="section" :isScrollLocked="isScrollLocked" ref="sectionReaderViewRef"
+                v-if="readMode === ReadMode.section" @progress="updateProgress" />
               <!-- 双栏模式 -->
-              <DoubleReaderView :section="section" ref="doubleReaderViewRef" v-if="readMode === ReadMode.double"
-                @progress="updateProgress" />
+              <DoubleReaderView :section="section" :isScrollLocked="isScrollLocked" ref="doubleReaderViewRef"
+                v-if="readMode === ReadMode.double" @progress="updateProgress" />
             </template>
 
             <!-- 工具栏 -->

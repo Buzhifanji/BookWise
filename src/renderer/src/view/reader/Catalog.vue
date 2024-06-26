@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useBookPageStore } from '@renderer/store';
 import { useDebounceFn } from '@vueuse/core';
-import { ref, watchEffect } from 'vue';
-
+import scrollIntoView from 'scroll-into-view-if-needed';
+import { defineProps, ref, watchEffect, withDefaults } from 'vue';
 
 interface Props {
   data: any[],
@@ -26,9 +26,7 @@ const scroll = useDebounceFn((_: number) => {
   if (dom) {
     const acitveDom = dom.querySelector('a.active')
     if (acitveDom) {
-      const targetRect = acitveDom.getBoundingClientRect();
-      const targetTop = targetRect.top + dom.scrollTop - 50
-      dom.scrollTo({ top: targetTop, behavior: 'smooth' })
+      scrollIntoView(acitveDom, { behavior: 'smooth', scrollMode: 'if-needed' })
     }
   }
 }, 100)

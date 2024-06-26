@@ -14,11 +14,13 @@ const debouncedFn = useDebounceFn(() => {
 
 window.addEventListener('resize', debouncedFn)
 interface Props {
-  section: any[]
+  section: any[],
+  isScrollLocked: boolean,
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  section: () => []
+  section: () => [],
+  isScrollLocked: false,
 })
 
 
@@ -26,8 +28,6 @@ defineExpose({ jump })
 const emit = defineEmits(['progress'])
 
 const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
-
-
 
 let isJump = false
 let highlightId: string | undefined = undefined // 高亮跳转id
@@ -148,10 +148,12 @@ const getHeight = (h?: number) => {
 }
 
 const prewViewAction = (h?: number) => {
-  if (!get(containerRef)) return
-  const { height, dom, scrollTop } = getHeight(h)
+  if (!props.isScrollLocked) {
+    if (!get(containerRef)) return
+    const { height, dom, scrollTop } = getHeight(h)
 
-  toPrewView(dom, scrollTop, height)
+    toPrewView(dom, scrollTop, height)
+  }
 }
 
 // 上一页
@@ -159,14 +161,20 @@ const prewView = useThrottleFn(() => prewViewAction(), 300)
 onKeyStroke(['ArrowLeft'], prewView)
 
 // 向上翻一点点
-const littlePrewView = useThrottleFn(() => prewViewAction(10), 100)
+const littlePrewView = useThrottleFn(() => {
+  if (!props.isScrollLocked) {
+    prewViewAction(10)
+  }
+}, 100)
 onKeyStroke(['ArrowUp'], littlePrewView)
 
 const nextViewAction = (h?: number) => {
-  if (!get(containerRef)) return
-  const { height, dom, scrollTop } = getHeight(h)
+  if (!props.isScrollLocked) {
+    if (!get(containerRef)) return
+    const { height, dom, scrollTop } = getHeight(h)
 
-  toNextView(dom, scrollTop, height, get(totalSize))
+    toNextView(dom, scrollTop, height, get(totalSize))
+  }
 }
 
 // 下一页
@@ -174,10 +182,12 @@ const nextView = useThrottleFn(() => nextViewAction(), 300)
 onKeyStroke(['ArrowRight'], nextView)
 
 // 向下翻一点点
-const littleNextView = useThrottleFn(() => nextViewAction(10), 100)
+const littleNextView = useThrottleFn(() => {
+  if (!props.isScrollLocked) {
+    nextViewAction(10)
+  }
+}, 100)
 onKeyStroke(['ArrowDown'], littleNextView)
-
-
 
 </script>
 

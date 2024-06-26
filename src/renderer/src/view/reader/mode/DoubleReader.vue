@@ -11,11 +11,13 @@ import { findPositionDom, getSectionSize } from '../util';
 import SectionView from './Section.vue';
 
 interface Props {
-  section: any[]
+  section: any[],
+  isScrollLocked: boolean,
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  section: () => []
+  section: () => [],
+  isScrollLocked: false,
 })
 const emit = defineEmits(['progress'])
 
@@ -184,6 +186,8 @@ async function next() {
 }
 
 const prewView = useThrottleFn(() => {
+  if (props.isScrollLocked) return
+
   const dom = containerRef.value
   if (dom) {
     const { scrollWidth, offsetWidth, scrollLeft } = dom
@@ -210,6 +214,8 @@ const prewView = useThrottleFn(() => {
 
 
 const nextView = useThrottleFn(() => {
+  if (props.isScrollLocked) return
+
   const dom = containerRef.value
   if (dom) {
     const { scrollWidth, offsetWidth, scrollLeft } = dom

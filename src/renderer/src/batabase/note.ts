@@ -8,7 +8,8 @@ export interface Note {
   isDelete: number | null // 是否删除（记录删除时间）
   sourceId: string // source id
   domSource: string // 节点数据（json)
+  tag: string // 标签
 }
 
 export const schemaNote =
-  '&id, eBookId,sourceId, chapterIndex, chapterName, bookText, notes, domSource, createTime, updateTime, isDelete, colorName'
+  '&id, eBookId,sourceId, chapterIndex, chapterName, bookText, notes, domSource, createTime, updateTime, isDelete, colorName, tag'

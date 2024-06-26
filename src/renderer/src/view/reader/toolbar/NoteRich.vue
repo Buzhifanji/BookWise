@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Note } from '@renderer/batabase';
-import { NoteAction, NoteText } from '@renderer/components';
-import { toastError } from '@renderer/shared';
-import { get, onClickOutside, onKeyStroke, useElementBounding, useParentElement } from '@vueuse/core';
+import { Note, Tag } from '@renderer/batabase';
+import { NoteAction, NoteText, TagAction, TagView } from '@renderer/components';
+import { toastError, toastWarning } from '@renderer/shared';
+import { get, onClickOutside, onKeyStroke, set, useElementBounding, useParentElement } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
 import { computed, onMounted, ref } from 'vue';
 import { highlighter } from '../highlight';
@@ -43,8 +43,8 @@ const source = NoteBarStyle.source
 
 const noteList = noteRichAction.notes
 
+const tags = ref<Tag[]>([]) // 标签
 let note: Note | undefined = undefined;
-
 
 function closeNoteRich() {
   // 处理直接新增笔记的特殊情况
@@ -66,33 +66,43 @@ async function init() {
   if (domSource.length === 0) return
 
   note = await NoteAction.findBySourceId(domSource[0].id)
+
   if (!note) {
     toastError('数据丢失：本地未找到笔记')
     NoteBarStyle.close()
   } else {
+    const tagList = await TagAction.findByIds(note.tag)
+    set(tags, tagList)
     noteRichAction.setNotes(note)
   }
 }
 
 async function submit() {
   const value = get(textareaValue)
-  if (!value) return
-
-  if (NoteBarStyle.isPainted) {
-    // 新增，之前有高亮,但无笔记内容
-    noteRichAction.addInNoNotes()
-  } else {
-    // 第一次新增，无高亮
-    noteRichAction.firstAdd(get(source))
+  if (!value && get(tags).length === 0) {
+    toastWarning('请输入笔记内容')
+    return
   }
-  NoteBarStyle.close()
+  try {
+    if (NoteBarStyle.isPainted) {
+      // 新增，之前有高亮,但无笔记内容
+      await noteRichAction.addInNoNotes(get(tags))
+    } else {
+      // 第一次新增，无高亮
+      await noteRichAction.firstAdd(get(source), get(tags))
+    }
+  } catch (error) {
+    console.log(error)
+  } finally {
+    NoteBarStyle.close()
+  }
+
 }
 
 // 删除
 async function remove(_: NoteText, index: number) {
   noteRichAction.remove(index)
 }
-
 
 onMounted(() => {
   textareatRef.value?.focus()
@@ -114,8 +124,11 @@ init()
         </div>
         <SourceListView :data="source" />
         <NoteListView class-name="rounded-md" :data="noteList" @remove="remove" />
-        <textarea ref="textareatRef" v-model="textareaValue" rows="4"
+        <textarea ref="textareatRef" v-model="textareaValue" rows="6"
           class="textarea textarea-accent w-full bg-base-200 my-3 rounded-lg" placeholder="写下此时的想法..."></textarea>
+        <div>
+          <TagView v-model="tags" />
+        </div>
         <div class="card-actions justify-end">
           <button class="btn btn-success" @click="submit">添加</button>
         </div>

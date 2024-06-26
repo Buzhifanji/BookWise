@@ -10,6 +10,7 @@ import NoteListView from './note/NoteList.vue'
 import Select from './select/Select.vue'
 import SelectView from './select/SelectView.vue'
 import { SelectItem } from './select/type'
+import TagView from './tag/Tag.vue'
 import ExpandTreeView from './tree/ExpandTree.vue'
 import FoldTreeView from './tree/FoldTree.vue'
 import FileUploadView from './upload/FileUpload.vue'
@@ -21,6 +22,7 @@ export * from './book/edit'
 export * from './book/score'
 export * from './drawer/toggle'
 export * from './note/action'
+export * from './tag/action'
 export * from './toast'
 
 export {
@@ -37,7 +39,8 @@ export {
   RingLoadingView,
   ScoreInputView,
   Select,
-  SelectView
+  SelectView,
+  TagView
 }
 
 export { type SelectItem }

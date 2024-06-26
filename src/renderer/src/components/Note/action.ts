@@ -16,12 +16,14 @@ export class NoteAction {
     sources,
     eBookId,
     chapterName,
-    notes
+    notes,
+    tag
   }: {
     sources: DomSource[]
     eBookId: string
     chapterName: string
     notes: string
+    tag: string
   }) {
     try {
       if (sources.length === 0) return null
@@ -38,6 +40,7 @@ export class NoteAction {
         domSource: JSON.stringify(sources),
         createTime: now(),
         updateTime: now(),
+        tag,
         isDelete: null
       }
 

@@ -10,11 +10,13 @@ import { findPositionDom, getSectionSize, getSourceTarget, toNextView, toPrewVie
 import SectionView from './Section.vue';
 
 interface Props {
-  section: any[]
+  section: any[],
+  isScrollLocked: boolean,
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  section: () => []
+  section: () => [],
+  isScrollLocked: false,
 })
 
 
@@ -22,6 +24,7 @@ defineExpose({ jump })
 const emit = defineEmits(['progress'])
 
 const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
+
 const index = ref<number>(0)
 const bookPageStore = useBookPageStore()
 const section = computed(() => props.section[index.value].html)
@@ -133,6 +136,7 @@ const getScrollData = () => {
   return { height, scrollHeight, scrollTop, dom }
 }
 const prewView = useThrottleFn(async () => {
+  if (props.isScrollLocked) return
   if (!get(containerRef)) return
   const { height, scrollHeight, scrollTop, dom } = getScrollData()
 
@@ -160,6 +164,7 @@ const jumpToNextView = async () => {
   containerRef.value!.scrollTo({ top: 0 })
 }
 const nextView = useThrottleFn(() => {
+  if (props.isScrollLocked) return
   if (!get(containerRef)) return
   const { height, scrollHeight, scrollTop, dom } = getScrollData()
   if (scrollHeight <= height) {
@@ -178,6 +183,7 @@ onKeyStroke(['ArrowRight'], nextView)
 
 // 向上翻一点点
 const littlePrevView = () => {
+  if (props.isScrollLocked) return
   if (!get(containerRef)) return
   const { height, scrollHeight, scrollTop, dom } = getScrollData()
   if (scrollHeight > height) {
@@ -190,6 +196,7 @@ onKeyStroke(['ArrowUp'], littlePrevView)
 
 // 向下翻一点点
 const littleNextView = () => {
+  if (props.isScrollLocked) return
   if (!get(containerRef)) return
   const { height, scrollHeight, scrollTop, dom } = getScrollData()
   if (scrollHeight > height) {
