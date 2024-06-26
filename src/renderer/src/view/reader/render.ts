@@ -54,6 +54,8 @@ function handleToc(toc: any[]) {
     const next = list[i + 1]
     if (next) {
       currunt.nextPage = next.page
+    } else {
+      currunt.nextPage = currunt.page * 2
     }
   }
 }

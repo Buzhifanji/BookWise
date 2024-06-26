@@ -197,6 +197,8 @@ class PDFTool {
       const next = list[i + 1]
       if (next) {
         currunt.nextPage = next.page
+      } else {
+        currunt.nextPage = this.pdfDocument!.numPages + 1
       }
     }
   }

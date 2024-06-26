@@ -27,7 +27,7 @@ const scroll = useDebounceFn((_: number) => {
     const acitveDom = dom.querySelector('a.active')
     if (acitveDom) {
       const targetRect = acitveDom.getBoundingClientRect();
-      const targetTop = targetRect.top + dom.scrollTop
+      const targetTop = targetRect.top + dom.scrollTop - 50
       dom.scrollTo({ top: targetTop, behavior: 'smooth' })
     }
   }
