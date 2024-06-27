@@ -31,3 +31,19 @@ export const convertUint8ArrayToURL = (buffer: Uint8Array) => {
   const blob = new Blob([buffer], { type: 'application/octet-stream' })
   return URL.createObjectURL(blob)
 }
+
+export const fileToUint8Array = (file: File) => {
+  return new Promise<Uint8Array>((resolve, reject) => {
+    const reader = new FileReader()
+
+    reader.onload = () => {
+      resolve(new Uint8Array(reader.result as ArrayBuffer))
+    }
+
+    reader.onerror = (error) => {
+      reject(error)
+    }
+
+    reader.readAsArrayBuffer(file)
+  })
+}

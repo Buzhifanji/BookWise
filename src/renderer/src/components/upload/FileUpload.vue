@@ -121,6 +121,9 @@ async function uploadFile(event: Event) {
                 score: -1,
                 progress: 0,
                 group: '',
+                isLove: false,
+                isReadDone: false,
+                format: '',
             }
         })
 
