@@ -49,7 +49,7 @@ initScore()
 
 <template>
   <dialog class="modal" ref="dialogRef">
-    <div class="modal-box " v-on-click-outside="closeDialog">
+    <div class="modal-box max-w-3xl" v-on-click-outside="closeDialog">
       <div class="flex flex-row justify-between items-center mb-5">
         <h3 class="font-bold text-lg">评分</h3>
         <div @click="closeDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>

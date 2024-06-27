@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Book, Note } from '@renderer/batabase';
-import { BookReadTimeAction, ScoreInputView, scroreDialog } from '@renderer/components';
+import { BookReadTimeAction, ScoreInputView, editDialog, scroreDialog } from '@renderer/components';
 import { convertUint8ArrayToURL, formatDecimal, formatFileSize, getInterval, isUndefined, toastSuccess } from '@renderer/shared';
 import { useClipboard } from '@vueuse/core';
 import dayjs from 'dayjs';
@@ -20,6 +20,7 @@ const copyAction = (val: string) => {
 }
 
 const openBookScore = () => scroreDialog(props.book)
+const openBookEdite = () => editDialog(props.book)
 
 const highlightLen = computed(() => props.notes.filter(item => item.notes === '').length)
 const notesLen = computed(() => props.notes.filter(item => item.notes !== '').length)
@@ -37,19 +38,19 @@ const totalReadTime = computed(() => {
   <div class="flex flex-col select-none">
     <div class="flex flex-row gap-3">
       <div class="avatar">
-        <div class="w-28 min-h-36 rounded">
+        <div class="w-28 min-h-36 rounded" @click="openBookEdite()">
           <img :src="convertUint8ArrayToURL(book.cover)" />
         </div>
       </div>
       <div class="flex-1 flex flex-col gap-2 overflow-hidden">
         <div class="font-bold whitespace-normal ">
-          <span>{{ book.name }}</span>
+          <span @click="openBookEdite()">{{ book.name }}</span>
           <button class="btn btn-xs btn-ghost" @click="copyAction(book.name)">
             <Copy class="w-4 h-4" />
           </button>
         </div>
         <div class="stat-title whitespace-normal">
-          <span>{{ book.author }}</span>
+          <span @click="openBookEdite()">{{ book.author }}</span>
           <button class="btn btn-xs btn-ghost" @click="copyAction(book.author)">
             <Copy class="w-4 h-4" />
           </button>
