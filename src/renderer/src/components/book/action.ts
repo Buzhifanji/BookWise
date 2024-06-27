@@ -163,4 +163,13 @@ export class BookReadTimeAction {
       return []
     }
   }
+
+  static findByEbookId(eBookId: string) {
+    try {
+      return db.readTime.where('eBookId').equals(eBookId).toArray()
+    } catch (error) {
+      toastError('读取图书阅读时长列表失败' + error)
+      return []
+    }
+  }
 }
