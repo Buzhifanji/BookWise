@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Book, Note } from '@renderer/batabase';
-import { BookReadTimeAction, ScoreInputView, editDialog, scroreDialog } from '@renderer/components';
+import { BookReadTimeAction, BookshelfAction, ScoreInputView, editDialog, scroreDialog } from '@renderer/components';
 import { convertUint8ArrayToURL, formatDecimal, formatFileSize, getInterval, isUndefined, toastSuccess } from '@renderer/shared';
 import { useClipboard } from '@vueuse/core';
 import dayjs from 'dayjs';
@@ -112,6 +112,10 @@ const totalReadTime = computed(() => {
     <div class="flex gap-4 ml-3 mb-2">
       <div>笔记数量</div>
       <div class="stat-title">{{ notesLen }}</div>
+    </div>
+    <div class="flex gap-4 ml-3 mb-2" v-if="book.group">
+      <div>书架</div>
+      <div class="badge badge-accent">{{ BookshelfAction.toBookshelf(book.group).name }}</div>
     </div>
   </div>
 </template>

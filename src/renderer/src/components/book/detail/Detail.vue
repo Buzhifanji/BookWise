@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
-import { BookReadTimeAction, NoteAction, ScoreInputView } from '@renderer/components';
+import { BookReadTimeAction, BookshelfAction, NoteAction, ScoreInputView } from '@renderer/components';
 import { useDialog } from '@renderer/hooks';
 import { convertUint8ArrayToURL, formatDecimal, formatFileSize, getInterval, isUndefined } from '@renderer/shared';
 import { vOnClickOutside } from '@vueuse/components';
@@ -109,6 +109,10 @@ initEdite()
             <div class="flex gap-4 mb-3">
               <div>笔记数量</div>
               <div class="stat-title">{{ notesLen }}</div>
+            </div>
+            <div class="flex gap-4 mb-3" v-if="book.group">
+              <div>书架</div>
+              <div class="badge badge-accent">{{ BookshelfAction.toBookshelf(book.group).name }}</div>
             </div>
           </div>
         </div>

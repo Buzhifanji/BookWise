@@ -57,11 +57,9 @@ initScore()
       </div>
       <form @submit="submitScore">
         <div class="flex flex-col gap-4">
-          <div>
-            <label class="input input-bordered flex items-center gap-2" for="name">
-              书名
-              <input type="text" readonly class="grow" name="name" :value="book.name" placeholder="请输入书名" />
-            </label>
+          <div class="h-12 px-4 rounded-lg bg-base-200 flex flex-row gap-2 items-center">
+            <span>书名</span>
+            <div>{{ book.name }}</div>
           </div>
           <div>
             <label class="input input-bordered flex items-center gap-2" for="name"

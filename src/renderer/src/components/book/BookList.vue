@@ -7,9 +7,10 @@ import { chuankArray, convertUint8ArrayToURL, remToPx, toastSuccess } from '@ren
 import { settingStore, useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
-import { BellElectric, Heart, HeartOff, PencilLine, Plus, Star, Trash2, UndoDot } from 'lucide-vue-next';
+import { BellElectric, Heart, HeartOff, PencilLine, Plus, SquareLibrary, Star, Trash2, UndoDot } from 'lucide-vue-next';
 import { computed, defineProps, onMounted, ref, toRaw, withDefaults } from 'vue';
 import { BookAction } from './action';
+import { bookshelfDialog } from './bookshelf';
 import { detailDialog } from './detail';
 import { editDialog } from './edit';
 import { removeDialog } from './remove';
@@ -133,6 +134,9 @@ function onLove() {
   }
 }
 
+// 书架
+const onBookshelf = () => dialogAction(bookshelfDialog)
+
 </script>
 
 <template>
@@ -142,7 +146,8 @@ function onLove() {
     }">
       <template v-for="virtualRow in virtualRows" :key="virtualRow.key">
         <div :ref="measureElement" :data-index="virtualRow.index" class="absolute top-0 left-0  w-full "
-          :class="[bookMode(BookshelftMode.list) ? 'pb-5' : 'pb-10']" :style="{
+          :class="[bookMode(BookshelftMode.list) ? 'pb-4' : bookMode(BookshelftMode.bookshelf) ? 'pb-10' : 'pb-5']"
+          :style="{
             transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin
               }px)`,
           }">
@@ -165,7 +170,7 @@ function onLove() {
             <div class="shelf-shadows shadow-2xl"></div>
             <div class="shelf bg-base-100"></div>
           </div>
-          <div v-else-if="bookMode(BookshelftMode.card)" class="flex w-full justify-start  gap-10">
+          <div v-else-if="bookMode(BookshelftMode.card)" class="flex w-full justify-start  gap-8">
             <!-- 卡片模式 -->
             <template v-for="item in list[virtualRow.index] as Book[]">
               <div
@@ -206,8 +211,8 @@ function onLove() {
     </div>
 
     <!-- 右键 -->
-    <ul class="fixed menu bg-base-100 rounded-md shadow-2xl gap-1 min-w-40 z-[99]" v-on-click-outside="closeRight"
-      v-if="rightInfo.show" :style="{ top: rightInfo.top, left: rightInfo.left }">
+    <ul class="fixed menu bg-base-100 border border-accent rounded-md shadow-2xl gap-1 min-w-40 z-[99]"
+      v-on-click-outside="closeRight" v-if="rightInfo.show" :style="{ top: rightInfo.top, left: rightInfo.left }">
       <template v-if="isRecycleBin">
         <li @click="restoreOneBook()">
           <a>
@@ -227,6 +232,11 @@ function onLove() {
           </a>
           <a v-else>
             <Heart class="h-5 w-5" />添加最爱
+          </a>
+        </li>
+        <li @click="onBookshelf()">
+          <a>
+            <SquareLibrary class="h-5 w-5" />添加书架
           </a>
         </li>
         <li @click="onRemove(false)">

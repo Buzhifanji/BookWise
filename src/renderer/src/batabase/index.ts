@@ -1,6 +1,7 @@
 import Dexie, { type EntityTable } from 'dexie'
 import { Book, schemaBook, schemaBookId2 } from './book'
 import { BookContent, schemaBookContent } from './book-content'
+import { Bookshelf, schemaBookshelf } from './bookshelf'
 import { Note, schemaNote } from './note'
 import { ReadTime, schemeReadTime } from './read-time'
 import { Tag, schemaTag } from './tag'
@@ -11,6 +12,7 @@ const db = new Dexie('__BookWiseDatabase__') as Dexie & {
   notes: EntityTable<Note, 'id'>
   readTime: EntityTable<ReadTime, 'id'>
   tag: EntityTable<Tag, 'id'>
+  bookshelf: EntityTable<Bookshelf, 'id'>
 }
 
 db.version(1).stores({
@@ -27,10 +29,10 @@ db.version(3)
     bookContents: schemaBookContent, // 书本内容
     notes: schemaNote, // 笔记
     readTime: schemeReadTime, // 阅读时间
-    tag: schemaTag // 标签
+    tag: schemaTag, // 标签
+    bookshelf: schemaBookshelf // 书架
   })
   .upgrade((transaction) => {
-    console.log('upgrade')
     transaction
       .table('books')
       .toCollection()
@@ -46,7 +48,8 @@ export const clearDB = () => {
   db.notes.clear()
   db.readTime.clear()
   db.tag.clear()
+  db.bookshelf.clear()
 }
 
 export { db }
-export type { Book, BookContent, Note, Tag }
+export type { Book, BookContent, Bookshelf, Note, Tag }
