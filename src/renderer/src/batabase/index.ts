@@ -36,7 +36,6 @@ db.version(3)
       .toCollection()
       .modify((item) => {
         item.isReadDone = false
-
         item.format = ''
       })
   })

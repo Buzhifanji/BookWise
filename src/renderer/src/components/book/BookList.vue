@@ -3,17 +3,17 @@ import { Book } from '@renderer/batabase';
 import { FileUploadView } from '@renderer/components';
 import { BookshelftMode } from '@renderer/enum';
 import { useBgOpacity, useRightClick } from '@renderer/hooks';
-import { chuankArray, convertUint8ArrayToURL, remToPx } from '@renderer/shared';
+import { chuankArray, convertUint8ArrayToURL, remToPx, toastSuccess } from '@renderer/shared';
 import { settingStore, useContentCantianerStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
-import { BellElectric, PencilLine, Plus, Trash2, UndoDot,Star } from 'lucide-vue-next';
+import { BellElectric, Heart, HeartOff, PencilLine, Plus, Star, Trash2, UndoDot } from 'lucide-vue-next';
 import { computed, defineProps, onMounted, ref, toRaw, withDefaults } from 'vue';
 import { BookAction } from './action';
-import { scroreDialog } from './score';
-import { editDialog } from './edit';
 import { detailDialog } from './detail';
+import { editDialog } from './edit';
 import { removeDialog } from './remove';
+import { scroreDialog } from './score';
 
 interface Props {
   data: Book[],
@@ -91,7 +91,7 @@ function uploadAction() {
 // 右键
 const { rightEvent, closeRight, rightInfo, selectData } = useRightClick<Book>()
 
-const dialogAction = (cb:Function) => {
+const dialogAction = (cb: Function) => {
   if (!selectData.value) return
   cb(selectData.value)
   closeRight()
@@ -122,11 +122,21 @@ function restoreOneBook() {
   closeRight()
 }
 
+// 最爱
+function onLove() {
+  const data = selectData.value
+  if (data) {
+    const isLove = !data.isLove
+    BookAction.update(data.id, { isLove })
+    isLove ? toastSuccess('添加成功') : toastSuccess('移除成功')
+    closeRight()
+  }
+}
 
 </script>
 
 <template>
-  <div ref="parentRef" id="book-list-dialog"  class="p-6 flex h-full overflow-auto" v-if="data.length">
+  <div ref="parentRef" id="book-list-dialog" class="p-6 flex h-full overflow-auto" v-if="data.length">
     <div class="relative w-full" :style="{
       height: `${totalSize}px`,
     }">
@@ -196,7 +206,7 @@ function restoreOneBook() {
     </div>
 
     <!-- 右键 -->
-    <ul class="fixed menu bg-base-100 rounded-md shadow-2xl gap-1 w-40 z-[99]" v-on-click-outside="closeRight"
+    <ul class="fixed menu bg-base-100 rounded-md shadow-2xl gap-1 min-w-40 z-[99]" v-on-click-outside="closeRight"
       v-if="rightInfo.show" :style="{ top: rightInfo.top, left: rightInfo.left }">
       <template v-if="isRecycleBin">
         <li @click="restoreOneBook()">
@@ -211,6 +221,14 @@ function restoreOneBook() {
         </li>
       </template>
       <template v-else>
+        <li @click="onLove()">
+          <a v-if="selectData?.isLove">
+            <HeartOff class="h-5 w-5" />移除最爱
+          </a>
+          <a v-else>
+            <Heart class="h-5 w-5" />添加最爱
+          </a>
+        </li>
         <li @click="onRemove(false)">
           <a class="text-error">
             <Trash2 class="h-5 w-5" />删除

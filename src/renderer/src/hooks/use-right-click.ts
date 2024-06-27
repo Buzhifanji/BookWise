@@ -1,4 +1,4 @@
-import { shallowReactive, shallowRef } from 'vue'
+import { ref, shallowReactive } from 'vue'
 
 /**
  * 右键
@@ -11,7 +11,7 @@ export const useRightClick = <T>() => {
     left: '0px'
   })
 
-  const selectData = shallowRef<T>()
+  const selectData = ref<T>()
 
   function rightEvent({ target, clientY, clientX }: MouseEvent, value: T, height: number = 180) {
     const mid = document.body.clientHeight / 2

@@ -1,4 +1,5 @@
 export enum BookState {
+  inbox, // 书架
   idle, // 闲置
   wantToRead, // 想读
   laterRead, // 稍后读
