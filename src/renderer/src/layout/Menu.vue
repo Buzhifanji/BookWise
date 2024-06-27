@@ -46,7 +46,7 @@ watchEffect(() => {
         </li>
       </ul>
     </div>
-    <div class="mx-4 hidden rounded bg-base-200 px-3 py-4 lg:block">
+    <div class="mx-4 hidden  rounded bg-base-200 px-3 py-4 lg:hidden">
       自家推荐
     </div>
   </div>

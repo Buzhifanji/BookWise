@@ -94,7 +94,7 @@ const jump = (value: Note) => {
 </script>
 
 <template>
-  <div ref="parentRef" class="p-6 flex h-full overflow-auto" v-if="data.length">
+  <div ref="parentRef" class="p-6  h-full overflow-auto" v-if="data.length">
     <div class="relative w-full" :style="{ height: `${totalSize}px`, }">
       <template v-for="virtualRow in virtualRows" :key="virtualRow.key">
         <div :ref="measureElement" :data-index="virtualRow.index" class="flex gap-4 absolute top-0 left-0  w-full pb-5"

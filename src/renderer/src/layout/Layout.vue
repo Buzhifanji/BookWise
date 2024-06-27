@@ -35,7 +35,7 @@ useResizeObserver(contentRef, debouncedFn)
   <div class="w-full max-w-full h-screen ">
     <div class="flex h-full flex-col ">
       <Navbar @toggle-sidebar="toggleDrawer" />
-      <div ref="contentRef" class="flex-1 bg-base-200 overflow-hidden">
+      <div ref="contentRef" class="flex-1 bg-base-200 overflow-hidden relative">
         <router-view></router-view>
       </div>
     </div>
