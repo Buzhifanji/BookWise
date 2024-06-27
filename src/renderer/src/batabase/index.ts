@@ -1,5 +1,5 @@
 import Dexie, { type EntityTable } from 'dexie'
-import { Book, schemaBook } from './book'
+import { Book, schemaBook, schemaBookId2 } from './book'
 import { BookContent, schemaBookContent } from './book-content'
 import { Note, schemaNote } from './note'
 import { ReadTime, schemeReadTime } from './read-time'
@@ -13,15 +13,33 @@ const db = new Dexie('__BookWiseDatabase__') as Dexie & {
   tag: EntityTable<Tag, 'id'>
 }
 
-const version = 1
-
-db.version(version).stores({
+db.version(1).stores({
   books: schemaBook, //
   bookContents: schemaBookContent, // 书本内容
   notes: schemaNote, // 笔记
   readTime: schemeReadTime, // 阅读时间
   tag: schemaTag // 标签
 })
+
+db.version(3)
+  .stores({
+    books: schemaBookId2, //
+    bookContents: schemaBookContent, // 书本内容
+    notes: schemaNote, // 笔记
+    readTime: schemeReadTime, // 阅读时间
+    tag: schemaTag // 标签
+  })
+  .upgrade((transaction) => {
+    console.log('upgrade')
+    transaction
+      .table('books')
+      .toCollection()
+      .modify((item) => {
+        item.isReadDone = false
+
+        item.format = ''
+      })
+  })
 
 export const clearDB = () => {
   db.books.clear()

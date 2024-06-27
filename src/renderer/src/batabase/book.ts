@@ -21,7 +21,11 @@ export interface Book {
   score: number // 评分
   progress: number // 进度
   group: string // 分组
+  isReadDone: boolean // 是否阅读完毕
+  format: string // 书籍格式
 }
 
 export const schemaBook =
   '&id, name, author, cover, description, category, size, pages, path, language, publisher, publishTime, createTime, updateTime, isDelete, &md5, count, lastReadPosition,score,progress,group'
+
+export const schemaBookId2 = schemaBook + ',isReadDone,format'
