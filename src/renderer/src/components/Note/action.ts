@@ -139,6 +139,10 @@ export class NoteAction {
     return result
   }
 
+  static getAll() {
+    return db.notes.toArray()
+  }
+
   static noteToDomSource(note: Note): DomSource {
     const source = this.getDomSource(note.domSource)[0]
     return {

@@ -151,6 +151,10 @@ export class BookReadTimeAction {
     }
   }
 
+  static async getAll() {
+    return db.readTime.toArray()
+  }
+
   static observableOne(eBookId: string): any {
     try {
       return useObservable<Book[], Book[]>(
