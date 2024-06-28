@@ -150,7 +150,6 @@ const jump = (value: Note) => {
         <template v-if="noteList.length">
           <NoteView :data="noteList" :show-remove="false" />
         </template>
-        <p class="text-warning mt-4">将该笔记永久删除</p>
         <div class="modal-action">
           <button class="btn btn-outline " @click="closeDetailDialog">关闭</button>
         </div>

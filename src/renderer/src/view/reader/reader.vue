@@ -349,19 +349,12 @@ function recordReadTime() {
 const viewVisibityChange = () => {
   if (document.hidden) {
     if (timer) {
+      // 页面不可见，暂停阅读时长记录
       clearInterval(timer)
     }
   } else {
-    const interval = getInterval(get(endTime), now())
-    if (interval > 1) {
-      // 再次恢复阅读界面，中间间隔超过了一分钟，就重新记录阅读时长
-      recordReadTime()
-      resetReadTime()
-    } else {
-      // 不超过一分钟，继续阅读
-      endReading()
-      timer = setInterval(endReading, 1000 * 60)
-    }
+    recordReadTime()
+    resetReadTime()
   }
 }
 
