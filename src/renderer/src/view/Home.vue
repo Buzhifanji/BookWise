@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
-import { BookAction, BookReadTimeAction, NoteAction } from '@renderer/components';
+import { BookAction, BookReadTimeAction, NoteAction, bookJump } from '@renderer/components';
 import { convertUint8ArrayToURL, getInterval, remToPx } from '@renderer/shared';
 import { useContentCantianerStore } from '@renderer/store';
-import { set, useToggle } from '@vueuse/core';
+import { get, set, useToggle } from '@vueuse/core';
 import dayjs from 'dayjs';
 import { Annoyed, CircleCheckBig, Clock, MoveUp, NotebookPen } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
@@ -17,7 +17,8 @@ const statistical = ref([
   { title: '时长', desc: '总时长', total: 175, percentage: '21.2%', detailTitle: '本月阅读时长', detailNum: 5.5, detailUit: '小时', icon: Clock, isUp: false },
 ])
 const store = useContentCantianerStore()
-const sortedBook = ref<Book[]>([])
+const totalRecentBook = ref<Book[]>([])
+const totalLoveBook = ref<Book[]>([])
 const [loading, setLoading] = useToggle(false)
 
 function handlePercentage(num1: number, num2: number) {
@@ -51,7 +52,6 @@ async function init() {
       BookReadTimeAction.getAll(),
     ])
     allBook.sort((a, b) => b.updateTime - a.updateTime)
-    sortedBook.value = allBook.slice(0, 100)
 
     // 在读
     const allReadingBook = allBook.filter(item => item.count !== 0)
@@ -126,6 +126,8 @@ async function init() {
       },
     ])
 
+    set(totalRecentBook, allReadingBook.slice(0, 100))
+    set(totalLoveBook, allBook.filter(item => item.isLove).slice(0, 100))
   } catch (err) {
 
   } finally {
@@ -136,9 +138,14 @@ async function init() {
 // 最近在读
 const recentBook = computed(() => {
   const count = parseInt(((store.width) / (bookshelfWidht + remToPx(2.5))).toString())
-  return sortedBook.value.slice(0, count)
+  return get(totalRecentBook).slice(0, count)
 })
 
+// 我的最爱
+const loveBook = computed(() => {
+  const count = parseInt(((store.width) / (bookshelfWidht + remToPx(2.5))).toString())
+  return get(totalLoveBook).slice(0, count)
+})
 
 init()
 </script>
@@ -194,12 +201,19 @@ init()
             <div class="skeleton h-40 w-full mt-4"></div>
           </template>
           <template v-else>
-            <div v-for="item in recentBook" class="cursor-pointer">
-              <div class="rounded over-hidden "
-                :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight + remToPx(3.5)}px` }">
-                <img :src="convertUint8ArrayToURL(item.cover)" class="w-full h-full rounded object-cover" alt="书籍封面">
+            <template v-if="recentBook.length > 0">
+              <div v-for="item in recentBook" class="cursor-pointer" @click="bookJump(item.id)">
+                <div class="rounded over-hidden "
+                  :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight + remToPx(3.5)}px` }">
+                  <img :src="convertUint8ArrayToURL(item.cover)" class="w-full h-full rounded object-cover" alt="书籍封面">
+                </div>
+                <div class="line-clamp-2 mx-1 mb-1 text-sm" :style="{ width: `${bookshelfWidht}px`, }">{{ item.name }}
+                </div>
               </div>
-              <div class="line-clamp-2 mx-1 mb-1 text-sm" :style="{ width: `${bookshelfWidht}px`, }">{{ item.name }}
+            </template>
+            <div class="flex justify-center items-center w-full" v-else>
+              <div class="btn">
+                <div class="badge">空空如也</div>
               </div>
             </div>
           </template>
@@ -214,12 +228,19 @@ init()
             <div class="skeleton h-40 w-full mt-4"></div>
           </template>
           <template v-else>
-            <div v-for="item in recentBook" class="cursor-pointer">
-              <div class="rounded over-hidden "
-                :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight + remToPx(3.5)}px` }">
-                <img :src="convertUint8ArrayToURL(item.cover)" class="w-full h-full rounded object-cover" alt="书籍封面">
+            <template v-if="loveBook.length > 0">
+              <div v-for="item in loveBook" class="cursor-pointer" @click="bookJump(item.id)">
+                <div class="rounded over-hidden "
+                  :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight + remToPx(3.5)}px` }">
+                  <img :src="convertUint8ArrayToURL(item.cover)" class="w-full h-full rounded object-cover" alt="书籍封面">
+                </div>
+                <div class="line-clamp-2 mx-1 mb-1 text-sm" :style="{ width: `${bookshelfWidht}px`, }">{{ item.name }}
+                </div>
               </div>
-              <div class="line-clamp-2 mx-1 mb-1 text-sm" :style="{ width: `${bookshelfWidht}px`, }">{{ item.name }}
+            </template>
+            <div class="flex justify-center items-center w-full" v-else>
+              <div class="btn">
+                <div class="badge">空空如也</div>
               </div>
             </div>
           </template>
