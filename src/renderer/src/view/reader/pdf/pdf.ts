@@ -4,6 +4,7 @@ import { GlobalWorkerOptions, PDFDocumentProxy, getDocument } from 'pdfjs-dist'
 import { NoteAction } from '@renderer/components'
 import { ReadMode } from '@renderer/enum'
 import { settingStore } from '@renderer/store'
+
 import {
   EventBus,
   GenericL10n,
@@ -17,7 +18,7 @@ import { getSourceTarget } from '../util'
 GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url).href
 
 class PDFTool {
-  pdfViewer: PDFViewer | null = null // pdf 上下文
+  pdfViewer: any | null = null // pdf 上下文
   pdfDocument: PDFDocumentProxy | null = null
   bookId: string | null = null
 
@@ -63,7 +64,7 @@ class PDFTool {
           this.drawHighlight(value.pageNumber.toString())
         })
 
-        eventBus.on('pagesloaded', (value: any) => {
+        eventBus.on('pagesloaded', () => {
           view.currentScaleValue = 'auto'
           setSpreadMode(settingStore.value.readMode)
           resolve('')
@@ -175,7 +176,7 @@ class PDFTool {
 
   finishRender() {
     return new Promise<string>((resovle) => {
-      this.pdfViewer!.eventBus.on('textlayerrendered', (value: any) => {
+      this.pdfViewer!.eventBus.on('textlayerrendered', () => {
         console.log('================')
         resovle('ok')
       })

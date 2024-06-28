@@ -12,7 +12,6 @@ import {
   appendChild,
   createFragment,
   getAttr,
-  removeAllClass,
   selctorAll,
   selector,
   setAttr
@@ -62,18 +61,18 @@ const getPaintedIds = (selectNodes: SelectNode[]) => {
   return result
 }
 
-const getUpperLevelDom = (node: Node) => {
-  const parent = node.parentNode as HTMLElement
-  const prev = node.previousSibling as Node
-  const next = node.nextSibling as Node
-  return { parent, prev, next }
-}
+// const getUpperLevelDom = (node: Node) => {
+//   const parent = node.parentNode as HTMLElement
+//   const prev = node.previousSibling as Node
+//   const next = node.nextSibling as Node
+//   return { parent, prev, next }
+// }
 
-const getNodeExtraId = (node: HTMLElement) => {
-  const id = getAttr(node, DATA_WEB_HIGHLIGHT)
-  const extraId = getAttr(node, DATA_WEB_HIGHLIGHT_EXTRA)
-  return extraId ? extraId + ID_DIVIDION + id : id
-}
+// const getNodeExtraId = (node: HTMLElement) => {
+//   const id = getAttr(node, DATA_WEB_HIGHLIGHT)
+//   const extraId = getAttr(node, DATA_WEB_HIGHLIGHT_EXTRA)
+//   return extraId ? extraId + ID_DIVIDION + id : id
+// }
 
 const getWrapId = (selectNode: SelectNode) => {
   let result: string = ''
@@ -108,41 +107,41 @@ const createWrap = ({ node, id, className, tagName }: WrapNode) => {
   return wrap
 }
 
-const spliteWrap = ({ node, id, className, tagName }: WrapNode) => {
-  const fragment = createFragment()
+// const spliteWrap = ({ node, id, className, tagName }: WrapNode) => {
+//   const fragment = createFragment()
 
-  const { parent, prev, next } = getUpperLevelDom(node)
+//   const { parent, prev, next } = getUpperLevelDom(node)
 
-  const extraInfo = getNodeExtraId(parent) || ''
+//   const extraInfo = getNodeExtraId(parent) || ''
 
-  const wrap = createEleByTagName(tagName, id, className, extraInfo)
+//   const wrap = createEleByTagName(tagName, id, className, extraInfo)
 
-  appendChild(wrap, node)
+//   appendChild(wrap, node)
 
-  const cloneNode = (node: Node) => {
-    if (node) {
-      const span = parent.cloneNode(false)
+//   const cloneNode = (node: Node) => {
+//     if (node) {
+//       const span = parent.cloneNode(false)
 
-      span.textContent = node.textContent
+//       span.textContent = node.textContent
 
-      fragment.appendChild(span)
-    }
-  }
+//       fragment.appendChild(span)
+//     }
+//   }
 
-  // prev
-  cloneNode(prev)
+//   // prev
+//   cloneNode(prev)
 
-  fragment.appendChild(wrap)
+//   fragment.appendChild(wrap)
 
-  // next
-  cloneNode(next)
+//   // next
+//   cloneNode(next)
 
-  parent.parentNode?.replaceChild(fragment, parent)
+//   parent.parentNode?.replaceChild(fragment, parent)
 
-  parent.parentNode?.normalize()
+//   parent.parentNode?.normalize()
 
-  return wrap
-}
+//   return wrap
+// }
 
 const paintItemNode = (wrapNode: WrapNode) => {
   const result = createWrap(wrapNode)
@@ -154,23 +153,23 @@ const paintItemNode = (wrapNode: WrapNode) => {
   return result
 }
 
-const updateWrapAttr = ({ node, id, className }: WrapNode) => {
-  const wrap = node.parentNode as HTMLElement
+// const updateWrapAttr = ({ node, id, className }: WrapNode) => {
+//   const wrap = node.parentNode as HTMLElement
 
-  removeAllClass(wrap)
+//   removeAllClass(wrap)
 
-  addClass(wrap, className)
+//   addClass(wrap, className)
 
-  setAttr(wrap, DATA_WEB_HIGHLIGHT, id)
+//   setAttr(wrap, DATA_WEB_HIGHLIGHT, id)
 
-  const extraId = getNodeExtraId(wrap)
+//   const extraId = getNodeExtraId(wrap)
 
-  if (extraId) {
-    setAttr(wrap, DATA_WEB_HIGHLIGHT_EXTRA, extraId)
-  }
+//   if (extraId) {
+//     setAttr(wrap, DATA_WEB_HIGHLIGHT_EXTRA, extraId)
+//   }
 
-  return wrap
-}
+//   return wrap
+// }
 
 const warpToRemove = (nodes: HTMLElement[]) => {
   nodes.forEach((node) => {

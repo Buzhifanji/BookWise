@@ -1,15 +1,18 @@
-import { DomSource } from "../interface"
-import { SelectNode } from "../paint/interface"
-import { Hook } from "./hooks"
+import { DomSource } from '../interface'
+import { Hook } from './hooks'
+
+interface SelectNode {
+  node: Node
+}
 
 export interface HookMap {
   render: {
     UUID: Hook<string>
     selectNodes: Hook<SelectNode[]>
     wrapNode: Hook<HTMLElement>
-  },
+  }
   record: {
-    saveSource: Hook<DomSource>,
+    saveSource: Hook<DomSource>
     removeSource: Hook<HTMLElement>
   }
 }
