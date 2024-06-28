@@ -2,36 +2,43 @@
 import { Book } from '@renderer/batabase';
 import { BookReadTimeAction, BookshelfAction, NoteAction, ScoreInputView } from '@renderer/components';
 import { useDialog } from '@renderer/hooks';
-import { convertUint8ArrayToURL, formatDecimal, formatFileSize, getInterval, isUndefined } from '@renderer/shared';
+import { convertUint8ArrayToURL, formatDecimal, formatFileSize, getInterval, isUndefined, toastError } from '@renderer/shared';
 import { vOnClickOutside } from '@vueuse/components';
+import { useToggle } from '@vueuse/core';
 import dayjs from 'dayjs';
 import { nextTick, ref } from 'vue';
 
 const props = defineProps<{ book: Book }>()
 
 const { dialogRef, openDialog, closeDialog } = useDialog();
-
+const [loading, setLoading] = useToggle(false)
 const totalReadTime = ref(0)
 const highlightLen = ref(0)
 const notesLen = ref(0)
 
-
 const initEdite = async () => {
-  openDialog()
-  await nextTick()
-  openDialog()
-  const id = props.book!.id;
-  // 阅读时长
-  const [readTimeList, notes] = await Promise.all([
-    BookReadTimeAction.findByEbookId(id),
-    NoteAction.findByEBookId(id),
-  ])
-  const totalTime = readTimeList.reduce((pre: any, cur: any) => pre + getInterval(cur.startTime, cur.endTime), 0)
-  totalReadTime.value = +totalTime.toFixed(0)
+  try {
+    setLoading(true)
+    openDialog()
+    await nextTick()
+    openDialog()
+    const id = props.book!.id;
+    // 阅读时长
+    const [readTimeList, notes] = await Promise.all([
+      BookReadTimeAction.findByEbookId(id),
+      NoteAction.findByEBookId(id),
+    ])
+    const totalTime = readTimeList.reduce((pre: any, cur: any) => pre + getInterval(cur.startTime, cur.endTime), 0)
+    totalReadTime.value = +totalTime.toFixed(0)
 
-  // 笔记
-  highlightLen.value = notes.filter(item => item.notes === '').length
-  notesLen.value = notes.filter(item => item.notes !== '').length
+    // 笔记
+    highlightLen.value = notes.filter(item => item.notes === '').length
+    notesLen.value = notes.filter(item => item.notes !== '').length
+  } catch (err) {
+    toastError(`读取书籍详情失败: ${err}`)
+  } finally {
+    setLoading(false)
+  }
 }
 
 initEdite()
@@ -44,7 +51,24 @@ initEdite()
         <h3 class="font-bold text-lg ">书籍详情</h3>
         <div @click="closeDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
       </div>
-      <div class="hero ">
+      <div class="flex w-full flex-col gap-4" v-if="loading">
+        <div class="flex items-center gap-4">
+          <div class="skeleton h-16 w-16 shrink-0 rounded-full"></div>
+          <div class="flex flex-col gap-4 w-full">
+            <div class="skeleton h-4 w-1/2"></div>
+            <div class="skeleton h-4 w-full"></div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="skeleton h-16 w-16 shrink-0 rounded-full"></div>
+          <div class="flex flex-col gap-4 w-full">
+            <div class="skeleton h-4 w-1/2"></div>
+            <div class="skeleton h-4 w-full"></div>
+          </div>
+        </div>
+        <div class="skeleton h-32 w-full"></div>
+      </div>
+      <div class="hero" v-else>
         <div class="hero-content flex-col lg:flex-row">
           <div class="w-32 min-h-44 rounded mr-4">
             <img :src="convertUint8ArrayToURL(book.cover)" />

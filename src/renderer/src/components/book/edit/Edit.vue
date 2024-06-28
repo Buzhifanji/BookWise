@@ -11,7 +11,6 @@ import { BookAction } from '../action';
 const props = defineProps<{ book: Book }>()
 
 const { dialogRef, openDialog, closeDialog } = useDialog();
-
 type editeData = { name: string, author: string }
 
 const { defineField, handleSubmit, errors: editeError } = useForm<editeData>({
@@ -44,6 +43,7 @@ async function uploadCover(event: Event) {
     if (inputRef.value) {
       inputRef.value.value = ''
     }
+
   }
 }
 
@@ -69,7 +69,7 @@ initEdite()
               <img :src="convertUint8ArrayToURL(cover)" class="w-full h-full rounded object-cover" alt="书籍封面">
             </div>
             <label>
-              <a type="button" value="Input" class="btn btn-sm btn-outline btn-info">
+              <a type="button" value="Input" class="btn btn-sm btn-neutral">
                 上传封面
               </a>
               <input type="file" ref="inputRef" accept="image/*" class="hidden" @change="uploadCover">
