@@ -6,6 +6,7 @@ import DropdownView from './dropdown/Dropdown.vue'
 import ErrorView from './error/404.vue'
 import List from './list/List.vue'
 import RingLoadingView from './loading/RingLoading.vue'
+import SkeletonView from './loading/Skeleton.vue'
 import NoteListView from './note/NoteList.vue'
 import Select from './select/Select.vue'
 import SelectView from './select/SelectView.vue'
@@ -43,6 +44,7 @@ export {
   ScoreInputView,
   Select,
   SelectView,
+  SkeletonView,
   TagInputView,
   TagListView
 }

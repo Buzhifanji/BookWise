@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Note, Tag } from '@renderer/batabase';
-import { NoteAction, NoteText, TagAction, TagInputView } from '@renderer/components';
+import { NoteAction, NoteText, SkeletonView, TagAction, TagInputView } from '@renderer/components';
 import { toastError, toastWarning } from '@renderer/shared';
-import { get, onClickOutside, onKeyStroke, set, useElementBounding, useParentElement } from '@vueuse/core';
+import { get, onClickOutside, onKeyStroke, set, useElementBounding, useParentElement, useToggle } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
 import { computed, onMounted, ref } from 'vue';
 import { highlighter } from '../highlight';
@@ -23,6 +23,8 @@ onKeyStroke('Escape', () => {
   closeNoteRich()
 })
 
+const [loading, setLoading] = useToggle(false)
+const [submitLoading, setSubmitLoading] = useToggle(false)
 const { width, left, } = useElementBounding(parentEl)
 const bookParam = useRouteParams<string>('id')
 
@@ -57,23 +59,31 @@ function closeNoteRich() {
 }
 
 async function init() {
-  // 手动绘制，直接添加笔记
-  if (!NoteBarStyle.isPainted) {
-    return
+  try {
+    setLoading(true)
+    // 手动绘制，直接添加笔记
+    if (!NoteBarStyle.isPainted) {
+      return
+    }
+
+    const domSource = get(source)
+    if (domSource.length === 0) return
+
+    note = await NoteAction.findBySourceId(domSource[0].id)
+
+    if (!note) {
+      toastError('数据丢失：本地未找到笔记')
+      NoteBarStyle.close()
+    } else {
+      set(tags, TagAction.toTag(note.tag))
+      noteRichAction.setNotes(note)
+    }
+  } catch (err) {
+    toastError(`获取笔记失败：${err}`)
+  } finally {
+    setLoading(false)
   }
 
-  const domSource = get(source)
-  if (domSource.length === 0) return
-
-  note = await NoteAction.findBySourceId(domSource[0].id)
-
-  if (!note) {
-    toastError('数据丢失：本地未找到笔记')
-    NoteBarStyle.close()
-  } else {
-    set(tags, TagAction.toTag(note.tag))
-    noteRichAction.setNotes(note)
-  }
 }
 
 async function submit() {
@@ -83,6 +93,8 @@ async function submit() {
     return
   }
   try {
+    if (get(submitLoading)) return
+    setSubmitLoading(true)
     if (NoteBarStyle.isPainted) {
       // 新增，之前有高亮,但无笔记内容
       await noteRichAction.addInNoNotes(get(tags))
@@ -93,6 +105,7 @@ async function submit() {
   } catch (error) {
     console.log(error)
   } finally {
+    setSubmitLoading(false)
     NoteBarStyle.close()
   }
 
@@ -121,16 +134,21 @@ init()
           <h3 class="font-bold text-lg">我的笔记</h3>
           <div @click="closeNoteRich()"> <kbd class="kbd">Esc</kbd></div>
         </div>
-        <SourceListView :data="source" />
-        <NoteListView class-name="rounded-md" :data="noteList" @remove="remove" />
-        <textarea ref="textareatRef" v-model="textareaValue" rows="6"
-          class="textarea textarea-accent w-full bg-base-200 my-3 rounded-lg" placeholder="写下此时的想法..."></textarea>
-        <div>
-          <TagInputView v-model="tags" />
-        </div>
-        <div class="card-actions justify-end">
-          <button class="btn btn-success" @click="submit">添加</button>
-        </div>
+        <SkeletonView v-if="loading" />
+        <template v-else>
+          <SourceListView :data="source" />
+          <NoteListView class-name="rounded-md" :data="noteList" @remove="remove" />
+          <textarea ref="textareatRef" v-model="textareaValue" rows="6"
+            class="textarea textarea-accent w-full bg-base-200 my-3 rounded-lg" placeholder="写下此时的想法..."></textarea>
+          <div>
+            <TagInputView v-model="tags" />
+          </div>
+          <div class="card-actions justify-end">
+            <button class="btn btn-success" @click="submit">
+              <span class="loading loading-spinner" v-if="submitLoading"></span>
+              添加</button>
+          </div>
+        </template>
       </div>
     </div>
   </div>

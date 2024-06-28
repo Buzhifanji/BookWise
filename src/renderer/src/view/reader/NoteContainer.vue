@@ -2,9 +2,9 @@
 import { Book, Note, Tag } from '@renderer/batabase';
 import { NoteAction, NoteText, TagAction, TagInputView, TagListView } from '@renderer/components';
 import { useBgOpacity } from '@renderer/hooks';
-import { $ } from '@renderer/shared';
+import { $, toastError } from '@renderer/shared';
 import { useVirtualizer } from '@tanstack/vue-virtual';
-import { get, onClickOutside, onKeyStroke, set, useElementSize, useThrottleFn, useWindowSize } from '@vueuse/core';
+import { get, onClickOutside, onKeyStroke, set, useElementSize, useThrottleFn, useToggle, useWindowSize } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
 import { Baseline, Copy, Highlighter, SpellCheck2, Trash } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
@@ -25,7 +25,7 @@ const emit = defineEmits<{
 }>()
 
 const bookParam = useRouteParams<string>('id')
-
+const [loading, setLoading] = useToggle(false)
 // tab
 const activeTab = ref('book')
 const changeTab = (tab: string) => {
@@ -139,12 +139,22 @@ const lineList = [
 
 // 笔记操作
 const addNote = async () => {
-  const note = get(selectNote)
-  if (!note) return
+  try {
+    if (get(loading)) return
+    setLoading(true)
+    const note = get(selectNote)
+    if (!note) return
 
-  // 新增，之前有高亮,但无笔记内容
-  await noteRichAction.addInNoNotes(get(tags))
-  set(selectNote, undefined)
+    // 新增，之前有高亮,但无笔记内容
+    await noteRichAction.addInNoNotes(get(tags))
+  } catch (err) {
+    toastError(`新增笔记失败：${err}`)
+  } finally {
+    setLoading(false)
+    set(selectNote, undefined)
+
+  }
+
 }
 const removeNote = (_: NoteText, index: number) => {
   noteRichAction.remove(index)
@@ -259,7 +269,9 @@ const throttleClick = useThrottleFn((val: Note) => {
                 class="textarea textarea-accent w-full bg-base-200 rounded-lg my-3" placeholder="写下此时的想法..."></textarea>
               <TagInputView v-model="tags" />
               <div class="card-actions justify-end">
-                <button class="btn btn-sm btn-success" @click="addNote()">添加</button>
+                <button class="btn btn-sm btn-success" @click="addNote()">
+                  <span class="loading loading-spinner" v-if="loading"></span>
+                  添加</button>
               </div>
             </div>
           </div>

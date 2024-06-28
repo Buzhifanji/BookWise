@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
-import { BookReadTimeAction, BookshelfAction, NoteAction, ScoreInputView } from '@renderer/components';
+import { BookReadTimeAction, BookshelfAction, NoteAction, ScoreInputView, SkeletonView } from '@renderer/components';
 import { useDialog } from '@renderer/hooks';
 import { convertUint8ArrayToURL, formatDecimal, formatFileSize, getInterval, isUndefined, toastError } from '@renderer/shared';
 import { vOnClickOutside } from '@vueuse/components';
@@ -51,23 +51,7 @@ initEdite()
         <h3 class="font-bold text-lg ">书籍详情</h3>
         <div @click="closeDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
       </div>
-      <div class="flex w-full flex-col gap-4" v-if="loading">
-        <div class="flex items-center gap-4">
-          <div class="skeleton h-16 w-16 shrink-0 rounded-full"></div>
-          <div class="flex flex-col gap-4 w-full">
-            <div class="skeleton h-4 w-1/2"></div>
-            <div class="skeleton h-4 w-full"></div>
-          </div>
-        </div>
-        <div class="flex items-center gap-4">
-          <div class="skeleton h-16 w-16 shrink-0 rounded-full"></div>
-          <div class="flex flex-col gap-4 w-full">
-            <div class="skeleton h-4 w-1/2"></div>
-            <div class="skeleton h-4 w-full"></div>
-          </div>
-        </div>
-        <div class="skeleton h-32 w-full"></div>
-      </div>
+      <SkeletonView v-if="loading" />
       <div class="hero" v-else>
         <div class="hero-content flex-col lg:flex-row">
           <div class="w-32 min-h-44 rounded mr-4">
