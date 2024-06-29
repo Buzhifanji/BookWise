@@ -10,7 +10,20 @@
     "chooseTheme": "Thema wählen",
     "language": "Sprache",
     "theme": "Thema",
-    "userSetting": "Benutzereinstellungen"
+    "userSetting": "Benutzereinstellungen",
+    "autoHighlightDesc": "Wenn nach dem Öffnen Text ausgewählt wird, wird er automatisch hervorgehoben.",
+    "autoHighlightTitle": "Ob automatisch hervorgehoben werden soll",
+    "bookMode": "Bücherregalmodus",
+    "mode": "Modell",
+    "noteShowClassDesc": "Nach dem Schließen wird der Hervorhebungsstil nur dann angezeigt, wenn die Maus darüber fährt.",
+    "noteShowClassTitle": "Ob Notizen den Hervorhebungsstil anzeigen",
+    "openNewDesc": "Andernfalls befindet sich der Leser nur auf der aktuellen Seite.",
+    "openNewTitle": "Ob der Leser eine neue Seite öffnet",
+    "openRecyleBinDesc": "Schließen Sie den Papierkorb. Wenn Sie ein Buch löschen, wird es dauerhaft gelöscht, anstatt in den Papierkorb verschoben zu werden.",
+    "openRecyleBinTitle": "Schalten Sie die Papierkorbfunktion ein",
+    "readMode": "Lesemodus",
+    "remeberPositionDesc": "Nach dem Öffnen wird beim erneuten Aufrufen der Leseoberfläche automatisch zur letzten Leseposition gesprungen.",
+    "remeberPositionTitle": "Ob die letzte Leseposition gespeichert werden soll"
   },
   "unfound": {
     "desc": "Leider können wir die Seite nicht finden. \nAuf der Homepage gibt es viel zu entdecken.",
@@ -28,5 +41,15 @@
   },
   "common": {
     "or": "oder"
+  },
+  "readMode": {
+    "double": "Doppelseitenmodus",
+    "scroll": "Scroll-Modus",
+    "section": "Kapitelmodus"
+  },
+  "bookMode": {
+    "bookshelf": "Bücherregalmodus",
+    "card": "Kartenmodus",
+    "list": "Listenmodus"
   }
 }

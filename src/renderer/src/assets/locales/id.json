@@ -10,7 +10,20 @@
     "chooseTheme": "Pilih tema",
     "language": "bahasa",
     "theme": "tema",
-    "userSetting": "pengaturan pengguna"
+    "userSetting": "pengaturan pengguna",
+    "autoHighlightDesc": "Setelah dibuka, ketika teks dipilih, teks tersebut akan disorot secara otomatis.",
+    "autoHighlightTitle": "Apakah akan menyorot secara otomatis",
+    "bookMode": "mode rak buku",
+    "mode": "model",
+    "noteShowClassDesc": "Setelah ditutup, gaya highlight hanya akan ditampilkan ketika mouse menggesernya.",
+    "noteShowClassTitle": "Apakah catatan menampilkan gaya sorotan",
+    "openNewDesc": "Jika tidak, pembaca hanya akan berada di halaman saat ini.",
+    "openNewTitle": "Apakah pembaca membuka halaman baru",
+    "openRecyleBinDesc": "Tutup Recycle Bin. Saat Anda menghapus buku, buku tersebut akan terhapus secara permanen dan bukannya dipindahkan ke Recycle Bin.",
+    "openRecyleBinTitle": "Aktifkan fungsi recycle bin",
+    "readMode": "modus membaca",
+    "remeberPositionDesc": "Setelah dibuka, masuk kembali ke antarmuka membaca akan otomatis melompat ke posisi membaca terakhir.",
+    "remeberPositionTitle": "Apakah akan mengingat posisi membaca terakhir"
   },
   "unfound": {
     "desc": "Maaf, kami tidak dapat menemukan halamannya. \nAnda akan menemukan banyak hal untuk dijelajahi di beranda.",
@@ -28,5 +41,15 @@
   },
   "common": {
     "or": "atau"
+  },
+  "readMode": {
+    "double": "Mode halaman ganda",
+    "scroll": "mode gulir",
+    "section": "Modus bab"
+  },
+  "bookMode": {
+    "bookshelf": "mode rak buku",
+    "card": "modus kartu",
+    "list": "modus daftar"
   }
 }

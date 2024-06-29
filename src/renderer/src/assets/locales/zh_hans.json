@@ -10,7 +10,20 @@
     "language": "语言",
     "theme": "主题",
     "chooseLanguage": "选择语言",
-    "chooseTheme": "选择主题"
+    "chooseTheme": "选择主题",
+    "mode": "模式",
+    "bookMode": "书架模式",
+    "readMode": "阅读模式",
+    "openNewTitle": "阅读器是否打开新页面",
+    "openNewDesc": "如果是否，将阅读器只会在当前页面。",
+    "openRecyleBinTitle": "开启回收站功能",
+    "openRecyleBinDesc": "关闭回收站，删除书籍的时候，将会被永久删除，而不是移到回收站",
+    "noteShowClassTitle": "笔记是否显示高亮样式",
+    "noteShowClassDesc": "关闭后，当鼠标滑过的时候，才会显示高亮样式",
+    "autoHighlightTitle": "是否自动高亮",
+    "autoHighlightDesc": "打开后，在选中文字的时候，会自动高亮",
+    "remeberPositionTitle": "是否记住上次阅读位置",
+    "remeberPositionDesc": "打开后，再次进入阅读界面，将会自动跳转到上次阅读的位置"
   },
   "unfound": {
     "title": "页面不见了",
@@ -28,5 +41,15 @@
   },
   "common": {
     "or": "或"
+  },
+  "readMode": {
+    "scroll": "滚动模式",
+    "section": "章节模式",
+    "double": "双页模式"
+  },
+  "bookMode": {
+    "bookshelf": "书架模式",
+    "card": "卡片模式",
+    "list": "列表模式"
   }
 }

@@ -10,7 +10,20 @@
     "chooseTheme": "Wybierz motyw",
     "language": "język",
     "theme": "temat",
-    "userSetting": "ustawienia użytkownika"
+    "userSetting": "ustawienia użytkownika",
+    "autoHighlightDesc": "Po otwarciu, gdy tekst zostanie zaznaczony, zostanie on automatycznie podświetlony.",
+    "autoHighlightTitle": "Czy automatycznie podświetlać",
+    "bookMode": "tryb półki na książki",
+    "mode": "Model",
+    "noteShowClassDesc": "Po zamknięciu styl podświetlenia zostanie wyświetlony dopiero po najechaniu na niego myszką.",
+    "noteShowClassTitle": "Określa, czy notatki mają wyświetlać styl wyróżnienia",
+    "openNewDesc": "Jeśli nie, czytelnik będzie tylko na bieżącej stronie.",
+    "openNewTitle": "Czy czytelnik otwiera nową stronę",
+    "openRecyleBinDesc": "Zamknij Kosz. Gdy usuniesz książkę, zostanie ona trwale usunięta, a nie przeniesiona do Kosza.",
+    "openRecyleBinTitle": "Włącz funkcję kosza",
+    "readMode": "tryb czytania",
+    "remeberPositionDesc": "Po jego otwarciu ponowne wejście do interfejsu czytania spowoduje automatyczne przejście do ostatniej pozycji czytania.",
+    "remeberPositionTitle": "Czy zapamiętać ostatnią pozycję do czytania"
   },
   "unfound": {
     "desc": "Przepraszamy, nie możemy znaleźć strony. \nNa stronie głównej znajdziesz wiele do odkrycia.",
@@ -28,5 +41,15 @@
   },
   "common": {
     "or": "Lub"
+  },
+  "readMode": {
+    "double": "Tryb podwójnej strony",
+    "scroll": "tryb przewijania",
+    "section": "Tryb rozdziału"
+  },
+  "bookMode": {
+    "bookshelf": "tryb półki na książki",
+    "card": "tryb karty",
+    "list": "tryb listy"
   }
 }

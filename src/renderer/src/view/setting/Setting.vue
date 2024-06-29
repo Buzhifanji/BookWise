@@ -33,22 +33,25 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
         </div>
         <div class="card w-full bg-base-100 shadow">
           <div class="card-body">
-            <h2 class="card-title">模式</h2>
-            <SelectView v-model="settingStore.bookself" :list="bookshelfModeList" :label="'书架模式'" />
-            <SelectView v-model="settingStore.readMode" :list="readModeList" :label="'阅读模式'" />
+            <h2 class="card-title">{{ $t('setting.mode') }}</h2>
+            <SelectView v-model="settingStore.bookself" :list="bookshelfModeList" :label="$t('setting.bookMode')" />
+            <SelectView v-model="settingStore.readMode" :list="readModeList" :label="$t('setting.readMode')" />
           </div>
         </div>
       </div>
       <div class="col-span-full lg:col-span-2">
         <div class="card bg-base-100 shadow w-full">
           <div class="card-body">
-            <CheckBoxView v-model="settingStore.isOpenNew" title="阅读器是否打开新页面" desc="如果是否，将阅读器只会在当前页面。" />
-            <CheckBoxView v-model="settingStore.isOpenRecyleBin" title="开启回收站功能"
-              desc="关闭回收站，删除书籍的时候，将会被永久删除，而不是移到回收站" />
-            <CheckBoxView v-model="settingStore.isNoteShowClass" title="笔记是否显示高亮样式" desc="关闭后，当鼠标滑过的时候，才会显示高亮样式" />
-            <CheckBoxView v-model="settingStore.isAutoHighlight" title="是否自动高亮" desc="打开后，在选中文字的时候，会自动高亮" />
-            <CheckBoxView v-model="settingStore.isRemeberPosition" title="是否记住上次阅读位置"
-              desc="打开后，再次进入阅读界面，将会自动跳转到上次阅读的位置" />
+            <CheckBoxView v-model="settingStore.isOpenNew" :title="$t('setting.openNewTitle')"
+              :desc="$t('setting.openNewDesc')" />
+            <CheckBoxView v-model="settingStore.isOpenRecyleBin" :title="$t('setting.openRecyleBinTitle')"
+              :desc="$t('setting.openRecyleBinDesc')" />
+            <CheckBoxView v-model="settingStore.isNoteShowClass" :title="$t('setting.noteShowClassTitle')"
+              :desc="$t('setting.noteShowClassDesc')" />
+            <CheckBoxView v-model="settingStore.isAutoHighlight" title="$t('setting.autoHighlightTitle')"
+              :desc="$t('setting.autoHighlightDesc')" />
+            <CheckBoxView v-model="settingStore.isRemeberPosition" :title="$t('setting.remeberPositionTitle')"
+              :desc="$t('setting.remeberPositionDesc')" />
           </div>
         </div>
       </div>

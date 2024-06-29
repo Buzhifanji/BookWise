@@ -10,7 +10,20 @@
     "chooseTheme": "Välj tema",
     "language": "språk",
     "theme": "tema",
-    "userSetting": "användarinställningar"
+    "userSetting": "användarinställningar",
+    "autoHighlightDesc": "Efter öppning, när text är markerad, kommer den att markeras automatiskt.",
+    "autoHighlightTitle": "Om automatiskt markeras",
+    "bookMode": "bokhylla läge",
+    "mode": "modell",
+    "noteShowClassDesc": "Efter stängning kommer markeringsstilen endast att visas när musen glider över den.",
+    "noteShowClassTitle": "Huruvida anteckningar visar markeringsstil",
+    "openNewDesc": "Om inte, kommer läsaren bara att finnas på den aktuella sidan.",
+    "openNewTitle": "Om läsaren öppnar en ny sida",
+    "openRecyleBinDesc": "Stäng papperskorgen När du tar bort en bok raderas den permanent istället för att flyttas till papperskorgen.",
+    "openRecyleBinTitle": "Slå på papperskorgen",
+    "readMode": "läsläge",
+    "remeberPositionDesc": "Efter att ha öppnat den, kommer att gå in i läsgränssnittet igen och automatiskt hoppa till den sista läspositionen.",
+    "remeberPositionTitle": "Om man ska komma ihåg den senaste läspositionen"
   },
   "unfound": {
     "desc": "Tyvärr, vi kan inte hitta sidan. \nDu hittar mycket att utforska på hemsidan.",
@@ -28,5 +41,15 @@
   },
   "common": {
     "or": "eller"
+  },
+  "readMode": {
+    "double": "Dubbelsidigt läge",
+    "scroll": "rullningsläge",
+    "section": "Kapitelläge"
+  },
+  "bookMode": {
+    "bookshelf": "bokhylla läge",
+    "card": "kortläge",
+    "list": "listläge"
   }
 }

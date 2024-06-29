@@ -10,7 +10,20 @@
     "chooseTheme": "Pilih tema",
     "language": "bahasa",
     "theme": "tema",
-    "userSetting": "tetapan pengguna"
+    "userSetting": "tetapan pengguna",
+    "autoHighlightDesc": "Selepas dibuka, apabila teks dipilih, ia akan diserlahkan secara automatik.",
+    "autoHighlightTitle": "Sama ada hendak menyerlahkan secara automatik",
+    "bookMode": "mod rak buku",
+    "mode": "model",
+    "noteShowClassDesc": "Selepas ditutup, gaya serlahan hanya akan dipaparkan apabila tetikus meluncur ke atasnya.",
+    "noteShowClassTitle": "Sama ada nota memaparkan gaya sorotan",
+    "openNewDesc": "Jika tidak, pembaca hanya akan berada di halaman semasa.",
+    "openNewTitle": "Sama ada pembaca membuka halaman baharu",
+    "openRecyleBinDesc": "Tutup Tong Kitar Semula Apabila anda memadamkan buku, ia akan dipadamkan secara kekal dan bukannya dialihkan ke Tong Kitar Semula.",
+    "openRecyleBinTitle": "Hidupkan fungsi tong kitar semula",
+    "readMode": "mod membaca",
+    "remeberPositionDesc": "Selepas membukanya, memasuki antara muka bacaan sekali lagi secara automatik akan melompat ke kedudukan bacaan terakhir.",
+    "remeberPositionTitle": "Sama ada untuk mengingati kedudukan bacaan terakhir"
   },
   "unfound": {
     "desc": "Maaf, kami tidak dapat mencari halaman. \nAnda akan temui banyak perkara untuk diterokai di halaman utama.",
@@ -28,5 +41,15 @@
   },
   "common": {
     "or": "atau"
+  },
+  "readMode": {
+    "double": "Mod muka surat dua",
+    "scroll": "mod tatal",
+    "section": "Mod bab"
+  },
+  "bookMode": {
+    "bookshelf": "mod rak buku",
+    "card": "mod kad",
+    "list": "mod senarai"
   }
 }

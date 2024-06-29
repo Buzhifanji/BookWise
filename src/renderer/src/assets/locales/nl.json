@@ -10,7 +10,20 @@
     "chooseTheme": "Selecteer thema",
     "language": "taal",
     "theme": "thema",
-    "userSetting": "gebruikersinstellingen"
+    "userSetting": "gebruikersinstellingen",
+    "autoHighlightDesc": "Wanneer na het openen tekst wordt geselecteerd, wordt deze automatisch gemarkeerd.",
+    "autoHighlightTitle": "Of automatisch moet worden gemarkeerd",
+    "bookMode": "boekenplankmodus",
+    "mode": "model",
+    "noteShowClassDesc": "Na het sluiten wordt de markeringsstijl alleen weergegeven als de muis erover beweegt.",
+    "noteShowClassTitle": "Of notities de markeringsstijl weergeven",
+    "openNewDesc": "Als dit niet het geval is, bevindt de lezer zich alleen op de huidige pagina.",
+    "openNewTitle": "Of de lezer een nieuwe pagina opent",
+    "openRecyleBinDesc": "Sluit de Prullenbak Wanneer u een boek verwijdert, wordt het permanent verwijderd in plaats van dat het naar de Prullenbak wordt verplaatst.",
+    "openRecyleBinTitle": "Schakel de prullenbakfunctie in",
+    "readMode": "leesmodus",
+    "remeberPositionDesc": "Na het openen springt het opnieuw openen van de leesinterface automatisch naar de laatste leespositie.",
+    "remeberPositionTitle": "Of u de laatste leespositie wilt onthouden"
   },
   "unfound": {
     "desc": "Sorry, we kunnen de pagina niet vinden. \nOp de startpagina valt veel te ontdekken.",
@@ -28,5 +41,15 @@
   },
   "common": {
     "or": "of"
+  },
+  "readMode": {
+    "double": "Dubbele paginamodus",
+    "scroll": "scroll-modus",
+    "section": "Hoofdstukmodus"
+  },
+  "bookMode": {
+    "bookshelf": "boekenplankmodus",
+    "card": "kaartmodus",
+    "list": "lijstmodus"
   }
 }

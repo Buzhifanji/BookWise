@@ -10,7 +10,20 @@
     "chooseTheme": "Select theme",
     "language": "language",
     "theme": "theme",
-    "userSetting": "user settings"
+    "userSetting": "user settings",
+    "autoHighlightDesc": "After opening, when text is selected, it will be automatically highlighted.",
+    "autoHighlightTitle": "Whether to automatically highlight",
+    "bookMode": "bookshelf mode",
+    "mode": "model",
+    "noteShowClassDesc": "After closing, the highlight style will only be displayed when the mouse slides over it.",
+    "noteShowClassTitle": "Whether notes display highlight style",
+    "openNewDesc": "If not, the reader will only be on the current page.",
+    "openNewTitle": "Whether the reader opens a new page",
+    "openRecyleBinDesc": "Close the Recycle Bin. When you delete a book, it will be permanently deleted instead of being moved to the Recycle Bin.",
+    "openRecyleBinTitle": "Turn on the recycle bin function",
+    "readMode": "reading mode",
+    "remeberPositionDesc": "After opening it, entering the reading interface again will automatically jump to the last reading position.",
+    "remeberPositionTitle": "Whether to remember the last reading position"
   },
   "unfound": {
     "desc": "Sorry, we can't find the page. \nYou'll find a lot to explore on the home page.",
@@ -28,5 +41,15 @@
   },
   "common": {
     "or": "or"
+  },
+  "readMode": {
+    "double": "Double page mode",
+    "scroll": "scroll mode",
+    "section": "Chapter mode"
+  },
+  "bookMode": {
+    "bookshelf": "bookshelf mode",
+    "card": "card mode",
+    "list": "list mode"
   }
 }

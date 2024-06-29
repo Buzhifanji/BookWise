@@ -10,7 +10,20 @@
     "chooseTheme": "Velg tema",
     "language": "Språk",
     "theme": "tema",
-    "userSetting": "brukerinstillinger"
+    "userSetting": "brukerinstillinger",
+    "autoHighlightDesc": "Etter åpning, når tekst er valgt, vil den automatisk utheves.",
+    "autoHighlightTitle": "Om det skal fremheves automatisk",
+    "bookMode": "bokhyllemodus",
+    "mode": "modell",
+    "noteShowClassDesc": "Etter lukking vil fremhevingsstilen bare vises når musen glir over den.",
+    "noteShowClassTitle": "Om notater viser fremhevingsstil",
+    "openNewDesc": "Hvis ikke, vil leseren kun være på den gjeldende siden.",
+    "openNewTitle": "Om leseren åpner en ny side",
+    "openRecyleBinDesc": "Lukk papirkurven Når du sletter en bok, slettes den permanent i stedet for å bli flyttet til papirkurven.",
+    "openRecyleBinTitle": "Slå på papirkurvfunksjonen",
+    "readMode": "lesemodus",
+    "remeberPositionDesc": "Etter å ha åpnet den, vil en gang til lesegrensesnittet igjen hoppe til siste leseposisjon.",
+    "remeberPositionTitle": "Om du skal huske siste lesestilling"
   },
   "unfound": {
     "desc": "Beklager, vi finner ikke siden. \nDu finner mye å utforske på hjemmesiden.",
@@ -28,5 +41,15 @@
   },
   "common": {
     "or": "eller"
+  },
+  "readMode": {
+    "double": "Dobbeltsidemodus",
+    "scroll": "rullemodus",
+    "section": "Kapittelmodus"
+  },
+  "bookMode": {
+    "bookshelf": "bokhyllemodus",
+    "card": "kortmodus",
+    "list": "listemodus"
   }
 }

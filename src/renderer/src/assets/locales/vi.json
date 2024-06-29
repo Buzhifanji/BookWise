@@ -10,7 +10,20 @@
     "chooseTheme": "Chọn chủ đề",
     "language": "ngôn ngữ",
     "theme": "chủ đề",
-    "userSetting": "thiết lập người dùng"
+    "userSetting": "thiết lập người dùng",
+    "autoHighlightDesc": "Sau khi mở, khi văn bản được chọn, nó sẽ tự động được tô sáng.",
+    "autoHighlightTitle": "Có tự động đánh dấu hay không",
+    "bookMode": "chế độ giá sách",
+    "mode": "người mẫu",
+    "noteShowClassDesc": "Sau khi đóng, kiểu tô sáng sẽ chỉ được hiển thị khi trượt chuột qua nó.",
+    "noteShowClassTitle": "Ghi chú có hiển thị kiểu đánh dấu hay không",
+    "openNewDesc": "Nếu không, người đọc sẽ chỉ ở trang hiện tại.",
+    "openNewTitle": "Người đọc có mở trang mới hay không",
+    "openRecyleBinDesc": "Đóng Thùng rác Khi bạn xóa một cuốn sách, nó sẽ bị xóa vĩnh viễn thay vì được chuyển vào Thùng rác.",
+    "openRecyleBinTitle": "Bật chức năng thùng rác",
+    "readMode": "chế độ đọc",
+    "remeberPositionDesc": "Sau khi mở ra, vào lại giao diện đọc sẽ tự động nhảy về vị trí đọc cuối cùng.",
+    "remeberPositionTitle": "Có nhớ vị trí đọc cuối cùng hay không"
   },
   "unfound": {
     "desc": "Xin lỗi, chúng tôi không thể tìm thấy trang này. \nBạn sẽ tìm thấy rất nhiều điều để khám phá trên trang chủ.",
@@ -28,5 +41,15 @@
   },
   "common": {
     "or": "hoặc"
+  },
+  "readMode": {
+    "double": "Chế độ trang đôi",
+    "scroll": "chế độ cuộn",
+    "section": "Chế độ chương"
+  },
+  "bookMode": {
+    "bookshelf": "chế độ giá sách",
+    "card": "chế độ thẻ",
+    "list": "chế độ danh sách"
   }
 }

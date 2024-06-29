@@ -10,7 +10,20 @@
     "chooseTheme": "Selecione o tema",
     "language": "linguagem",
     "theme": "tema",
-    "userSetting": "Configurações do Usuário"
+    "userSetting": "Configurações do Usuário",
+    "autoHighlightDesc": "Após a abertura, quando o texto for selecionado, ele será automaticamente destacado.",
+    "autoHighlightTitle": "Se deve destacar automaticamente",
+    "bookMode": "modo estante",
+    "mode": "modelo",
+    "noteShowClassDesc": "Após fechar, o estilo de destaque só será exibido quando o mouse passar sobre ele.",
+    "noteShowClassTitle": "Se as notas exibem o estilo de destaque",
+    "openNewDesc": "Caso contrário, o leitor estará apenas na página atual.",
+    "openNewTitle": "Se o leitor abre uma nova página",
+    "openRecyleBinDesc": "Feche a Lixeira Ao excluir um livro, ele será excluído permanentemente em vez de ser movido para a Lixeira.",
+    "openRecyleBinTitle": "Ative a função de lixeira",
+    "readMode": "modo de leitura",
+    "remeberPositionDesc": "Após abri-lo, entrar novamente na interface de leitura saltará automaticamente para a última posição de leitura.",
+    "remeberPositionTitle": "Se deve lembrar a última posição de leitura"
   },
   "unfound": {
     "desc": "Desculpe, não conseguimos encontrar a página. \nVocê encontrará muito para explorar na página inicial.",
@@ -28,5 +41,15 @@
   },
   "common": {
     "or": "ou"
+  },
+  "readMode": {
+    "double": "Modo página dupla",
+    "scroll": "modo de rolagem",
+    "section": "Modo capítulo"
+  },
+  "bookMode": {
+    "bookshelf": "modo estante",
+    "card": "modo de cartão",
+    "list": "modo de lista"
   }
 }

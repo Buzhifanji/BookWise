@@ -10,7 +10,20 @@
     "chooseTheme": "テーマの選択",
     "language": "言語",
     "theme": "テーマ",
-    "userSetting": "ユーザー設定"
+    "userSetting": "ユーザー設定",
+    "autoHighlightDesc": "開いた後、テキストを選択すると、自動的に強調表示されます。",
+    "autoHighlightTitle": "自動的に強調表示するかどうか",
+    "bookMode": "本棚モード",
+    "mode": "モデル",
+    "noteShowClassDesc": "閉じた後、ハイライト スタイルはマウスをその上にスライドさせた場合にのみ表示されます。",
+    "noteShowClassTitle": "ノートにハイライトスタイルを表示するかどうか",
+    "openNewDesc": "そうでない場合、読者は現在のページのみにアクセスすることになります。",
+    "openNewTitle": "読者が新しいページを開くかどうか",
+    "openRecyleBinDesc": "ごみ箱を閉じます。書籍を削除すると、その書籍はごみ箱に移動されずに完全に削除されます。",
+    "openRecyleBinTitle": "ごみ箱機能をオンにする",
+    "readMode": "読書モード",
+    "remeberPositionDesc": "開いた後、再度読み取りインターフェイスに入ると、最後の読み取り位置に自動的にジャンプします。",
+    "remeberPositionTitle": "最後に読んだ位置を記憶するかどうか"
   },
   "unfound": {
     "desc": "申し訳ありませんが、ページが見つかりません。\nホームページでは調べられることがたくさん見つかります。",
@@ -28,5 +41,15 @@
   },
   "common": {
     "or": "または"
+  },
+  "readMode": {
+    "double": "見開きモード",
+    "scroll": "スクロールモード",
+    "section": "チャプターモード"
+  },
+  "bookMode": {
+    "bookshelf": "本棚モード",
+    "card": "カードモード",
+    "list": "リストモード"
   }
 }

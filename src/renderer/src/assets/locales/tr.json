@@ -10,7 +10,20 @@
     "chooseTheme": "Tema seçin",
     "language": "dil",
     "theme": "tema",
-    "userSetting": "Kullanıcı ayarları"
+    "userSetting": "Kullanıcı ayarları",
+    "autoHighlightDesc": "Açıldıktan sonra metin seçildiğinde otomatik olarak vurgulanacaktır.",
+    "autoHighlightTitle": "Otomatik olarak vurgulanıp vurgulanmayacağı",
+    "bookMode": "kitaplık modu",
+    "mode": "modeli",
+    "noteShowClassDesc": "Kapattıktan sonra, vurgulama stili yalnızca fare bunun üzerine kaydırıldığında görüntülenecektir.",
+    "noteShowClassTitle": "Notların vurgu stilini gösterip göstermediği",
+    "openNewDesc": "Aksi takdirde okuyucu yalnızca geçerli sayfada olacaktır.",
+    "openNewTitle": "Okuyucunun yeni bir sayfa açıp açmaması",
+    "openRecyleBinDesc": "Geri Dönüşüm Kutusu'nu kapatın Bir kitabı sildiğinizde, kitap Geri Dönüşüm Kutusu'na taşınmak yerine kalıcı olarak silinir.",
+    "openRecyleBinTitle": "Geri dönüşüm kutusu işlevini açın",
+    "readMode": "okuma modu",
+    "remeberPositionDesc": "Açtıktan sonra okuma arayüzüne tekrar girildiğinde otomatik olarak son okuma pozisyonuna atlanacaktır.",
+    "remeberPositionTitle": "Son okuma konumunun hatırlanıp hatırlanmayacağı"
   },
   "unfound": {
     "desc": "Üzgünüz, sayfayı bulamıyoruz. \nAna sayfada keşfedecek çok şey bulacaksınız.",
@@ -28,5 +41,15 @@
   },
   "common": {
     "or": "veya"
+  },
+  "readMode": {
+    "double": "Çift sayfa modu",
+    "scroll": "kaydırma modu",
+    "section": "Bölüm modu"
+  },
+  "bookMode": {
+    "bookshelf": "kitaplık modu",
+    "card": "kart modu",
+    "list": "liste modu"
   }
 }

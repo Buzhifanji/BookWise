@@ -10,7 +10,20 @@
     "chooseTheme": "Seleziona il tema",
     "language": "lingua",
     "theme": "tema",
-    "userSetting": "impostazioni utente"
+    "userSetting": "impostazioni utente",
+    "autoHighlightDesc": "Dopo l'apertura, quando il testo viene selezionato, verrà automaticamente evidenziato.",
+    "autoHighlightTitle": "Se evidenziare automaticamente",
+    "bookMode": "modalità libreria",
+    "mode": "modello",
+    "noteShowClassDesc": "Dopo la chiusura, lo stile di evidenziazione verrà visualizzato solo quando il mouse vi scorre sopra.",
+    "noteShowClassTitle": "Indica se le note visualizzano lo stile di evidenziazione",
+    "openNewDesc": "In caso contrario, il lettore si troverà solo sulla pagina corrente.",
+    "openNewTitle": "Se il lettore apre una nuova pagina",
+    "openRecyleBinDesc": "Chiudi il Cestino Quando elimini un libro, verrà eliminato definitivamente invece di essere spostato nel Cestino.",
+    "openRecyleBinTitle": "Attiva la funzione cestino",
+    "readMode": "modalità di lettura",
+    "remeberPositionDesc": "Dopo averlo aperto, accedendo nuovamente all'interfaccia di lettura si passerà automaticamente all'ultima posizione di lettura.",
+    "remeberPositionTitle": "Se ricordare l'ultima posizione di lettura"
   },
   "unfound": {
     "desc": "Siamo spiacenti, non riusciamo a trovare la pagina. \nTroverai molto da esplorare sulla home page.",
@@ -28,5 +41,15 @@
   },
   "common": {
     "or": "O"
+  },
+  "readMode": {
+    "double": "Modalità doppia pagina",
+    "scroll": "modalità di scorrimento",
+    "section": "Modalità capitolo"
+  },
+  "bookMode": {
+    "bookshelf": "modalità libreria",
+    "card": "modalità carta",
+    "list": "modalità elenco"
   }
 }

@@ -10,7 +10,20 @@
     "chooseTheme": "Sélectionne un thème",
     "language": "langue",
     "theme": "thème",
-    "userSetting": "paramètres utilisateur"
+    "userSetting": "paramètres utilisateur",
+    "autoHighlightDesc": "Après ouverture, lorsque le texte est sélectionné, il sera automatiquement mis en surbrillance.",
+    "autoHighlightTitle": "S'il faut mettre automatiquement en surbrillance",
+    "bookMode": "mode bibliothèque",
+    "mode": "modèle",
+    "noteShowClassDesc": "Après la fermeture, le style de surbrillance ne s'affichera que lorsque la souris passera dessus.",
+    "noteShowClassTitle": "Si les notes affichent le style de surbrillance",
+    "openNewDesc": "Dans le cas contraire, le lecteur ne sera que sur la page en cours.",
+    "openNewTitle": "Si le lecteur ouvre une nouvelle page",
+    "openRecyleBinDesc": "Fermez la corbeille Lorsque vous supprimez un livre, il sera définitivement supprimé au lieu d'être déplacé vers la corbeille.",
+    "openRecyleBinTitle": "Activez la fonction corbeille",
+    "readMode": "mode lecture",
+    "remeberPositionDesc": "Après l'avoir ouvert, entrer à nouveau dans l'interface de lecture passera automatiquement à la dernière position de lecture.",
+    "remeberPositionTitle": "S'il faut mémoriser la dernière position de lecture"
   },
   "unfound": {
     "desc": "Désolé, nous ne trouvons pas la page. \nVous trouverez beaucoup de choses à explorer sur la page d'accueil.",
@@ -28,5 +41,15 @@
   },
   "common": {
     "or": "ou"
+  },
+  "readMode": {
+    "double": "Mode double page",
+    "scroll": "mode défilement",
+    "section": "Mode chapitre"
+  },
+  "bookMode": {
+    "bookshelf": "mode bibliothèque",
+    "card": "mode carte",
+    "list": "mode liste"
   }
 }

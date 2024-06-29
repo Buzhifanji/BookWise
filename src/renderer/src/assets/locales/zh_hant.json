@@ -10,7 +10,20 @@
     "language": "語言",
     "theme": "主題",
     "chooseLanguage": "選擇語言",
-    "chooseTheme": "選擇主題"
+    "chooseTheme": "選擇主題",
+    "mode": "模式",
+    "bookMode": "書架模式",
+    "readMode": "閱讀模式",
+    "openNewTitle": "閱讀器是否開啟新頁面",
+    "openNewDesc": "如果是「是」，閱讀器將開啟新頁面；如果是「否」，則閱讀器只會在當前頁面。",
+    "openRecycleBinTitle": "開啟回收站功能",
+    "openRecycleBinDesc": "關閉回收站後，刪除書籍時，將會被永久刪除，而不是移到回收站。",
+    "noteShowClassTitle": "筆記是否顯示高亮樣式",
+    "noteShowClassDesc": "關閉後，當鼠標滑過時，才會顯示高亮樣式。",
+    "autoHighlightTitle": "是否自動高亮",
+    "autoHighlightDesc": "開啟後，在選中文字時，將會自動高亮。",
+    "rememberPositionTitle": "是否記住上次閱讀位置",
+    "rememberPositionDesc": "開啟後，再次進入閱讀界面時，將會自動跳轉到上次閱讀的位置。"
   },
   "unfound": {
     "title": "頁面不見了",
@@ -23,10 +36,20 @@
     "dragFile": "拖拽文件到此處",
     "exist": "文件已存在",
     "releaseMouse": "釋放鼠標",
-    "supportFormate": "支持格式：",
-    "uploadSucess": "上傳成功"
+    "supportFormat": "支持格式：",
+    "uploadSuccess": "上傳成功"
   },
   "common": {
     "or": "或"
+  },
+  "readMode": {
+    "scroll": "滾動模式",
+    "section": "章節模式",
+    "double": "雙頁模式"
+  },
+  "bookMode": {
+    "bookshelf": "書架模式",
+    "card": "卡片模式",
+    "list": "列表模式"
   }
 }
