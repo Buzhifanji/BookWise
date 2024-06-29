@@ -2,6 +2,7 @@
 import { Book } from '@renderer/batabase';
 import { useDialog } from '@renderer/hooks';
 import { isUndefined } from '@renderer/shared';
+import { t } from '@renderer/view/setting';
 import { vOnClickOutside } from '@vueuse/components';
 import { useForm } from 'vee-validate';
 import { nextTick } from 'vue';
@@ -14,7 +15,7 @@ const { dialogRef, openDialog, closeDialog } = useDialog();
 
 const { defineField, handleSubmit, errors } = useForm<{ score: number }>({
   validationSchema: {
-    score: (value: unknown) => value || value === 0 ? true : '请输入评分',
+    score: (value: unknown) => value || value === 0 ? true : t('book.needScore'),
   },
 });
 
@@ -51,22 +52,22 @@ initScore()
   <dialog class="modal" ref="dialogRef">
     <div class="modal-box max-w-3xl" v-on-click-outside="closeDialog">
       <div class="flex flex-row justify-between items-center mb-5">
-        <h3 class="font-bold text-lg">评分</h3>
+        <h3 class="font-bold text-lg">{{ t('book.score') }}</h3>
         <div @click="closeDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
 
       </div>
       <form @submit="submitScore">
         <div class="flex flex-col gap-4">
           <div class="h-12 px-4 rounded-lg bg-base-200 flex flex-row gap-2 items-center">
-            <span>书名</span>
+            <span>{{ t('book.name') }}</span>
             <div>{{ book.name }}</div>
           </div>
           <div>
             <label class="input input-bordered flex items-center gap-2" for="name"
               :class="{ 'input-error': errors.score }">
-              数值
+              {{ t('book.score') }}
               <input type="number" max="10" min="0" step="0.1" class="grow" name="score" v-model="score"
-                v-bind="scoreProps" placeholder="请输入评分" />
+                v-bind="scoreProps" :placeholder="t('book.needScore')" />
             </label>
             <div class="label" v-if="errors.score">
               <span class="label-text text-error">{{ errors.score }}</span>
@@ -77,8 +78,8 @@ initScore()
           </div>
         </div>
         <div class="modal-action">
-          <button class="btn btn-outline " @click="closeDialog">取消</button>
-          <button class="btn btn-success ml-4" type="submit">确认</button>
+          <button class="btn btn-outline " @click="closeDialog">{{ t('common.cancel') }}</button>
+          <button class="btn btn-success ml-4" type="submit">{{ t('common.sure') }}</button>
         </div>
       </form>
     </div>

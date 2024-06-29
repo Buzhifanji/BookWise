@@ -5,7 +5,7 @@ import { ReadMode } from '@renderer/enum';
 import { $, $$, CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, getInterval, isElectron, now, toastSuccess } from '@renderer/shared';
 import { isReload } from '@renderer/shared/navigation';
 import { bookPositionStore, bookReadTimeStore, settingStore, useBookPageStore } from '@renderer/store';
-import { getSelectReadMode, readModeList, themes } from '@renderer/view/setting';
+import { getSelectReadMode, readModeList, t, themes } from '@renderer/view/setting';
 import { get, set, useCssVar, useToggle, useWindowSize } from '@vueuse/core';
 import { AArrowDown, AArrowUp, AlignJustify, Bolt, SkipBack, ZoomIn, ZoomOut } from 'lucide-vue-next';
 import { Ref, computed, nextTick, onBeforeUnmount, onMounted, ref, watchEffect } from 'vue';
@@ -297,7 +297,7 @@ function restorePostion() {
 
   if (!postion) return
 
-  toastSuccess('跳转到上次阅读位置')
+  toastSuccess(t('book.jumpToLastPosition'))
 
   const data = JSON.parse(postion) as Position
   if (get(isPDF)) {
@@ -461,7 +461,7 @@ onBeforeUnmount(() => {
                     <a class="!p-0  my-1">
                       <DropdownView summary-class="flex flex-row justify-between  w-52 dropdown-left px-4 py-2">
                         <template v-slot:summary>
-                          <span class="stat-title">主题</span>
+                          <span class="stat-title">{{ t('setting.theme') }}</span>
                           <div class="badge badge-outline">{{ settingStore.theme }}</div>
                         </template>
                         <List
@@ -475,7 +475,7 @@ onBeforeUnmount(() => {
                     <a class="!p-0 my-1">
                       <DropdownView summary-class="flex flex-row justify-between  w-52  dropdown-left px-4 py-2">
                         <template v-slot:summary>
-                          <span class="stat-title">阅读模式</span>
+                          <span class="stat-title">{{ t('setting.readMode') }}</span>
                           <div class="badge badge-outline">{{ getSelectReadMode(settingStore.readMode) }}</div>
                         </template>
                         <List

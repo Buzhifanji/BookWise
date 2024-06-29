@@ -44,14 +44,14 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
           <div class="card-body">
             <CheckBoxView v-model="settingStore.isOpenNew" :title="$t('setting.openNewTitle')"
               :desc="$t('setting.openNewDesc')" />
-            <CheckBoxView v-model="settingStore.isOpenRecyleBin" :title="$t('setting.openRecyleBinTitle')"
-              :desc="$t('setting.openRecyleBinDesc')" />
+            <CheckBoxView v-model="settingStore.isOpenRecycleBin" :title="$t('setting.openRecycleBinTitle')"
+              :desc="$t('setting.openRecycleBinDesc')" />
             <CheckBoxView v-model="settingStore.isNoteShowClass" :title="$t('setting.noteShowClassTitle')"
               :desc="$t('setting.noteShowClassDesc')" />
             <CheckBoxView v-model="settingStore.isAutoHighlight" title="$t('setting.autoHighlightTitle')"
               :desc="$t('setting.autoHighlightDesc')" />
-            <CheckBoxView v-model="settingStore.isRemeberPosition" :title="$t('setting.remeberPositionTitle')"
-              :desc="$t('setting.remeberPositionDesc')" />
+            <CheckBoxView v-model="settingStore.isRemeberPosition" :title="$t('setting.rememberPositionTitle')"
+              :desc="$t('setting.rememberPositionDesc')" />
           </div>
         </div>
       </div>

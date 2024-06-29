@@ -26,7 +26,7 @@ const removeNote = (index: number) => {
       <div class="flex flex-row justify-between items-center mt-3">
         <div class="stat-desc">{{ dayjs(item.time).format('L LT') }}</div>
         <div v-if="showRemove">
-          <button class="btn btn-outline btn-error btn-xs" @click="removeNote(index)">删除</button>
+          <button class="btn btn-outline btn-error btn-xs" @click="removeNote(index)">{{ $t('common.remove') }}</button>
         </div>
       </div>
       <p class="my-2">{{ item.value }}</p>

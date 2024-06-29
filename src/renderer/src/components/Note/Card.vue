@@ -2,6 +2,7 @@
 import { Note } from '@renderer/batabase';
 import { NoteAction } from '@renderer/components';
 import { settingStore } from '@renderer/store';
+import { t } from '@renderer/view/setting';
 import dayjs from 'dayjs';
 import { BellElectric, Ellipsis, Trash2 } from 'lucide-vue-next';
 import { computed, defineProps, ref } from 'vue';
@@ -38,12 +39,12 @@ const onMouseLeave = () => className.value = ''
                         class="dropdown-content z-[1] menu p-2  shadow-2xl border border-primary bg-base-100 rounded-md w-48">
                         <li @click="emit('delete', data)">
                             <a class="text-error no-underline">
-                                <Trash2 class="h-5 w-5" />删除
+                                <Trash2 class="h-5 w-5" />{{ t('common.remove') }}
                             </a>
                         </li>
                         <li @click="emit('detail', data)">
                             <a class="no-underline">
-                                <BellElectric class="h-5 w-5" />详情
+                                <BellElectric class="h-5 w-5" />{{ t('common.detail') }}
                             </a>
                         </li>
                     </ul>

@@ -5,6 +5,7 @@ import { BookshelftMode } from '@renderer/enum';
 import { useBgOpacity, useRightClick } from '@renderer/hooks';
 import { chuankArray, convertUint8ArrayToURL, remToPx, toastSuccess } from '@renderer/shared';
 import { settingStore, useContentCantianerStore } from '@renderer/store';
+import { t } from '@renderer/view/setting';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
 import { BellElectric, Heart, HeartOff, PencilLine, Plus, SquareLibrary, Star, Trash2, UndoDot } from 'lucide-vue-next';
@@ -74,7 +75,7 @@ const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems())
 
 const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
 
-const measureElement = (el) => {
+const measureElement = (el: HTMLElement) => {
   if (!el) {
     return
   }
@@ -129,7 +130,7 @@ function onLove() {
   if (data) {
     const isLove = !data.isLove
     BookAction.update(data.id, { isLove })
-    isLove ? toastSuccess('添加成功') : toastSuccess('移除成功')
+    isLove ? toastSuccess(t('common.addSuccess')) : toastSuccess(t('common.removeSuccess'))
     closeRight()
   }
 }
@@ -161,7 +162,7 @@ const onBookshelf = () => dialogAction(bookshelfDialog)
                   @contextmenu="rightEvent($event, item)">
                   <div :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight}px` }" class="rounded">
                     <img :src="convertUint8ArrayToURL(item.cover)" class="w-full rounded h-full object-cover"
-                      alt="书籍封面">
+                      :alt="t('book.cover')">
                   </div>
                   <div class="line-clamp-2 mx-1 mb-1 text-sm">{{ item.name }}</div>
                 </div>
@@ -178,11 +179,11 @@ const onBookshelf = () => dialogAction(bookshelfDialog)
                 @click="emit('click', item)" @contextmenu="rightEvent($event, item)"
                 :style="{ width: `${bookCardWidth}px` }">
                 <figure :style="{ width: `${84}px`, height: `${121}px` }"><img :src="convertUint8ArrayToURL(item.cover)"
-                    class="w-full rounded h-full object-cover" alt="书籍封面">
+                    class="w-full rounded h-full object-cover" :alt="t('book.cover')">
                 </figure>
                 <div class="flex flex-1 flex-col gap-2">
                   <p class="line-clamp-2">{{ item.name }}</p>
-                  <p class="line-clamp-2 label-text" :style="textOpacity"> {{ item.author }}.</p>
+                  <p class="line-clamp-2 label-text" :style="textOpacity"> {{ item.author }}</p>
                 </div>
               </div>
             </template>
@@ -197,7 +198,7 @@ const onBookshelf = () => dialogAction(bookshelfDialog)
               @contextmenu="rightEvent($event, list[virtualRow.index] as Book)">
               <figure :style="{ width: `${84}px`, height: `${121}px` }"><img
                   :src="convertUint8ArrayToURL((list[virtualRow.index] as Book).cover)"
-                  class="w-full rounded h-full object-cover" alt="书籍封面">
+                  class="w-full rounded h-full object-cover" :alt="t('book.cover')">
               </figure>
               <div class="flexflex-col flex-1 py-2">
                 <p class="line-clamp-1">{{ (list[virtualRow.index] as Book).name }}</p>
@@ -216,47 +217,47 @@ const onBookshelf = () => dialogAction(bookshelfDialog)
       <template v-if="isRecycleBin">
         <li @click="restoreOneBook()">
           <a>
-            <UndoDot class="h-5 w-5" />恢复
+            <UndoDot class="h-5 w-5" />{{ $t('common.restore') }}
           </a>
         </li>
         <li @click="onRemove(true)">
           <a class="text-error">
-            <Trash2 class="h-5 w-5" />永久删除
+            <Trash2 class="h-5 w-5" />{{ $t('common.forceRemove') }}
           </a>
         </li>
       </template>
       <template v-else>
         <li @click="onLove()">
           <a v-if="selectData?.isLove">
-            <HeartOff class="h-5 w-5" />移除最爱
+            <HeartOff class="h-5 w-5" />{{ $t('common.removeLove') }}
           </a>
           <a v-else>
-            <Heart class="h-5 w-5" />添加最爱
+            <Heart class="h-5 w-5" />{{ $t('common.addLove') }}
           </a>
         </li>
         <li @click="onBookshelf()">
           <a>
-            <SquareLibrary class="h-5 w-5" />添加书架
+            <SquareLibrary class="h-5 w-5" />{{ $t('common.addBookshelf') }}
           </a>
         </li>
         <li @click="onRemove(false)">
           <a class="text-error">
-            <Trash2 class="h-5 w-5" />删除
+            <Trash2 class="h-5 w-5" />{{ $t('common.remove') }}
           </a>
         </li>
         <li @click="onEdite()">
           <a>
-            <PencilLine class="h-5 w-5" />编辑
+            <PencilLine class="h-5 w-5" />{{ $t('common.edite') }}
           </a>
         </li>
         <li @click="onScore()">
           <a>
-            <Star class="h-5 w-5" />评分
+            <Star class="h-5 w-5" />{{ $t('common.score') }}
           </a>
         </li>
         <li @click="onDetail()">
           <a>
-            <BellElectric class="h-5 w-5" />详情
+            <BellElectric class="h-5 w-5" />{{ $t('common.detail') }}
           </a>
         </li>
       </template>
@@ -265,14 +266,14 @@ const onBookshelf = () => dialogAction(bookshelfDialog)
   <div class="hero min-h-screen bg-base-200" v-else>
     <div class="hero-content text-center">
       <div class="max-w-md" v-if="isRecycleBin">
-        <h1 class="text-5xl font-bold">空空如也</h1>
-        <p class="py-6">回收站里没有删除数据的记录！</p>
+        <h1 class="text-5xl font-bold">{{ t('common.empty') }}</h1>
+        <p class="py-6">{{ $t('book.recycleNoRecord') }}</p>
       </div>
       <div class="max-w-md" v-else>
-        <h1 class="text-5xl font-bold">图书列表为空</h1>
-        <p class="py-6">点击上传按钮，从本地上传一份书籍，然后开始沉浸书海吧！</p>
+        <h1 class="text-5xl font-bold">{{ $t('book.empty') }}</h1>
+        <p class="py-6">{{ $t('book.uploadBookTip') }}</p>
         <button class="btn btn-accent" @click="uploadAction()">
-          <Plus />上传
+          <Plus />{{ t('file.upload') }}
         </button>
         <FileUploadView ref="uploadRef" />
       </div>

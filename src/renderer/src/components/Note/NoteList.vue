@@ -5,6 +5,7 @@ import { useDialog } from '@renderer/hooks';
 import { RouterName } from '@renderer/route';
 import { chuankArray, remToPx, toastSuccess } from '@renderer/shared';
 import { useContentCantianerStore } from '@renderer/store';
+import { t } from '@renderer/view/setting';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
 import { set } from '@vueuse/core';
@@ -68,7 +69,7 @@ const removeBefore = (value: Note) => {
 const removeAction = async () => {
   await NoteAction.removeOne(selectData!.id)
   closeRemoveDialog()
-  toastSuccess('删除笔记成功')
+  toastSuccess(t('note.removeSuccess'))
 }
 
 // 详情
@@ -82,7 +83,7 @@ const onDetail = (value: Note) => {
 const removeNote = async (index: number) => {
   noteList.value.splice(index, 1)
   await NoteAction.update(selectData!.id, { notes: JSON.stringify(noteList.value) })
-  toastSuccess('删除笔记成功')
+  toastSuccess(t('note.removeSuccess'))
 }
 
 // 跳转
@@ -110,7 +111,7 @@ const jump = (value: Note) => {
     <dialog class="modal" ref="removeDialogRef">
       <div class="modal-box " v-on-click-outside="closeRemoveDialog">
         <div class="flex flex-row justify-between items-center">
-          <h3 class="font-bold text-lg">确认删除笔记</h3>
+          <h3 class="font-bold text-lg">{{ t('note.sureRemove') }}</h3>
           <div @click="closeRemoveDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
         </div>
         <div v-if="selectData?.createTime">
@@ -124,10 +125,10 @@ const jump = (value: Note) => {
         <template v-if="noteList.length">
           <NoteView :data="noteList" @remove="removeNote" />
         </template>
-        <p class="text-warning mt-4">将该笔记永久删除</p>
+        <p class="text-warning mt-4">{{ t('note.forceRemove') }}</p>
         <div class="modal-action">
-          <button class="btn btn-outline " @click="closeRemoveDialog">取消</button>
-          <button class="btn btn-outline   btn-error ml-4" @click="removeAction">确认</button>
+          <button class="btn btn-outline " @click="closeRemoveDialog">{{ t('common.remove') }}</button>
+          <button class="btn btn-outline   btn-error ml-4" @click="removeAction">{{ t('common.sure') }}</button>
         </div>
       </div>
     </dialog>
@@ -136,7 +137,7 @@ const jump = (value: Note) => {
     <dialog class="modal" ref="detailDialogRef">
       <div class="modal-box " v-on-click-outside="closeDetailDialog">
         <div class="flex flex-row justify-between items-center">
-          <h3 class="font-bold text-lg">笔记详情</h3>
+          <h3 class="font-bold text-lg">{{ t('note.noteDetail') }}</h3>
           <div @click="closeDetailDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
         </div>
         <div v-if="selectData?.createTime">
@@ -159,11 +160,11 @@ const jump = (value: Note) => {
   <div class="hero min-h-screen bg-base-200" v-else>
     <div class="hero-content text-center">
       <div class="max-w-md">
-        <h1 class="text-5xl font-bold">笔记列表为空</h1>
-        <p class="py-6">在您的书籍列表界面，选择一本阅读，然后选中吸引您注意力的文字，在弹出的对话框中输入您的思考</p>
+        <h1 class="text-5xl font-bold">{{ t('note.empty') }}</h1>
+        <p class="py-6">{{ t('note.emptyNoteListTip') }}</p>
         <RouterLink :to="RouterName.Book">
           <button class="btn btn-secondary">
-            <Flag />跳转到图书列表
+            <Flag />{{ t('book.jumpToBookList') }}
           </button>
         </RouterLink>
       </div>

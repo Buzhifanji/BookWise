@@ -2,6 +2,7 @@
 import { Book, Note } from '@renderer/batabase';
 import { BookReadTimeAction, BookshelfAction, ScoreInputView, editDialog, scroreDialog } from '@renderer/components';
 import { convertUint8ArrayToURL, formatDecimal, formatFileSize, getInterval, isUndefined, toastSuccess } from '@renderer/shared';
+import { t } from '@renderer/view/setting';
 import { useClipboard } from '@vueuse/core';
 import dayjs from 'dayjs';
 import { Copy } from 'lucide-vue-next';
@@ -15,7 +16,7 @@ const { copy } = useClipboard()
 const copyAction = (val: string) => {
   if (val) {
     copy(val)
-    toastSuccess('复制成功')
+    toastSuccess(t('common.copySuccess'))
   }
 }
 
@@ -58,31 +59,31 @@ const totalReadTime = computed(() => {
       </div>
     </div>
     <div class="flex gap-4 ml-3 mt-5 mb-2">
-      <div>出版商</div>
+      <div>{{ t('book.publisher') }}</div>
       <div class="stat-title whitespace-normal flex-1">{{ book.publisher }}</div>
     </div>
     <div class="flex flex-nowrap gap-4 ml-3 mb-2  overflow-hidden">
-      <div class="flex-none">出版时间</div>
+      <div class="flex-none">{{ t('book.publishTime') }}</div>
       <div class="stat-title shrink ">{{ book.publishTime ? dayjs(book.publishTime).format('L LT') : '未知' }}</div>
     </div>
     <div class="flex gap-4 ml-3 mb-2">
-      <div>创建时间</div>
+      <div>{{ t('book.createTime') }}</div>
       <div class="stat-title ">{{ dayjs(book.createTime).format('L LT') }}</div>
     </div>
     <div class="flex gap-4 ml-3 mb-2">
-      <div>更新时间</div>
+      <div>{{ t('book.updateTime') }}</div>
       <div class="stat-title ">{{ dayjs(book.updateTime).format('L LT') }}</div>
     </div>
     <div class="flex gap-4 ml-3 mb-2">
-      <div>大小</div>
+      <div>{{ t('book.size') }}</div>
       <div class="stat-title">{{ formatFileSize(book.size) }}</div>
     </div>
     <div class="flex gap-4 ml-3 mb-2">
-      <div>页数</div>
+      <div>{{ t('book.page') }}</div>
       <div class="stat-title">{{ book.pages }}</div>
     </div>
     <div class="flex gap-4 ml-3 mb-2 cursor-pointer" @click="openBookScore()">
-      <div>评分</div>
+      <div>{{ t('book.score') }}</div>
       <div class="rating rating-md rating-half" @click="openBookScore()">
         <ScoreInputView :value="book.score" :readonly="true" />
       </div>
@@ -90,31 +91,31 @@ const totalReadTime = computed(() => {
       </div>
     </div>
     <div class="flex gap-4 ml-3 mb-2">
-      <div>阅读次数</div>
+      <div>{{ t('book.openCount') }}</div>
       <div class="stat-title">{{ book.count }}</div>
     </div>
     <div class="flex gap-4 ml-3 mb-2">
-      <div>阅读进度</div>
+      <div>{{ t('book.readProgress') }}</div>
       <div class="stat-title">{{ formatDecimal(book.progress * 100) }}%</div>
     </div>
     <div class="flex gap-4 ml-3 mb-2">
-      <div>本次阅读时长</div>
+      <div>t('book.thisReadTime')</div>
       <div class="stat-title">{{ time }}分</div>
     </div>
     <div class="flex gap-4 ml-3 mb-2">
-      <div>阅读总时长</div>
+      <div>{{ t('book.totalReadTime') }}</div>
       <div class="stat-title">{{ totalReadTime }}分</div>
     </div>
     <div class="flex gap-4 ml-3 mb-2">
-      <div>高亮数量</div>
+      <div>{{ t('book.highlightLen') }}</div>
       <div class="stat-title">{{ highlightLen }}</div>
     </div>
     <div class="flex gap-4 ml-3 mb-2">
-      <div>笔记数量</div>
+      <div>{{ t('book.notesLen') }}</div>
       <div class="stat-title">{{ notesLen }}</div>
     </div>
     <div class="flex gap-4 ml-3 mb-2" v-if="book.group">
-      <div>书架</div>
+      <div>{{ t('book.bookshelf') }}</div>
       <div class="badge badge-accent">{{ BookshelfAction.toBookshelf(book.group).name }}</div>
     </div>
   </div>

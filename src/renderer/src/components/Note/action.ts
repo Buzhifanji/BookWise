@@ -1,6 +1,7 @@
 import { DomSource } from '@book-wise/web-highlight'
 import { Note, db } from '@renderer/batabase'
 import { now, toastError } from '@renderer/shared'
+import { t } from '@renderer/view/setting'
 import { useObservable } from '@vueuse/rxjs'
 import { liveQuery } from 'dexie'
 import { v4 as uuidv4 } from 'uuid'
@@ -47,7 +48,7 @@ export class NoteAction {
       await db.notes.put(res)
       return res
     } catch (error) {
-      toastError('添加笔记失败')
+      toastError(t('note.addNoteFail'))
       return Promise.reject(error)
     }
   }
@@ -56,7 +57,7 @@ export class NoteAction {
     try {
       return db.notes.delete(id)
     } catch (error) {
-      toastError('删除失败')
+      toastError(t('common.removeFail'))
       return Promise.reject(error)
     }
   }
@@ -67,9 +68,9 @@ export class NoteAction {
 
   static update(id: string, value: Partial<Note>) {
     try {
-      return db.notes.update(id, { ...value })
+      return db.notes.update(id, { ...value, updateTime: now() })
     } catch (error) {
-      toastError('更新失败')
+      toastError(t('common.updateFail'))
       return Promise.reject(error)
     }
   }
@@ -83,7 +84,7 @@ export class NoteAction {
       }
       return false
     } catch (error) {
-      toastError('更新失败')
+      toastError(t('common.updateFail'))
       return Promise.reject(error)
     }
   }
@@ -94,7 +95,7 @@ export class NoteAction {
         liveQuery(async () => (await db.notes.toArray()).filter((item) => !item.isDelete)) as any
       )
     } catch (error) {
-      toastError('读取笔记列表失败')
+      toastError(t('note.getNoteFail'))
       return ref([] as Note[])
     }
   }
@@ -109,7 +110,7 @@ export class NoteAction {
         ) as any
       )
     } catch (error) {
-      toastError('读取笔记列表失败')
+      toastError(t('note.getNoteListFail'))
       return ref([] as Note[])
     }
   }

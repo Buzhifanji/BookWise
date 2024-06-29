@@ -6,7 +6,7 @@ interface SettingState {
   isFoldCatalog: boolean // 目录是显示折叠效果，还是全面展开
   readMode: ReadMode // 阅读模式
   bookself: BookshelftMode // 书架模式
-  isOpenRecyleBin: boolean // 是否打开回收站
+  isOpenRecycleBin: boolean // 是否打开回收站
   isNoteShowClass: boolean // 笔记是否显示class
   isAutoHighlight: boolean // 选中文字的时候是否自定高亮
   isRemeberPosition: boolean // 是否记住阅读位置
@@ -20,7 +20,7 @@ const defaultState: SettingState = {
   isFoldCatalog: false,
   readMode: ReadMode.sroll,
   bookself: BookshelftMode.bookshelf,
-  isOpenRecyleBin: true,
+  isOpenRecycleBin: true,
   isNoteShowClass: false,
   isAutoHighlight: true,
   isRemeberPosition: true,

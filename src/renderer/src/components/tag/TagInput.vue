@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Tag } from '@renderer/batabase';
 import { isInClientRectTop } from '@renderer/shared';
+import { t } from '@renderer/view/setting';
 import { get, set, useThrottleFn } from '@vueuse/core';
 import scrollIntoView from 'scroll-into-view-if-needed';
 import { computed, defineProps, ref, watchEffect, withDefaults } from 'vue';
@@ -134,7 +135,7 @@ const onTab = () => {
   </ul>
   <label class="input input-bordered flex items-center gap-2 flex-wrap min-h-12 h-auto py-2" ref="container">
     <TagListView :tag="list" @remove="onRemove" />
-    <input type="text" class="grow" v-model="tagValue" placeholder="请输入标签" @keydown.enter="onAdd()"
+    <input type="text" class="grow" v-model="tagValue" :placeholder="t('tag.needTag')" @keydown.enter="onAdd()"
       @keydown.prevent.down="onDown()" @keydown.prevent.up="onUp()" @keydown.prevent.tab="onTab()" />
   </label>
   <ul v-if="!isTop && placeholderOption.length" ref="listContianer"

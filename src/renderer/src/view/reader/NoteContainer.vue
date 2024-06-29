@@ -3,6 +3,7 @@ import { Book, Note, Tag } from '@renderer/batabase';
 import { NoteAction, NoteText, TagAction, TagInputView, TagListView } from '@renderer/components';
 import { useBgOpacity } from '@renderer/hooks';
 import { $, toastError } from '@renderer/shared';
+import { t } from '@renderer/view/setting';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { get, onClickOutside, onKeyStroke, set, useElementSize, useThrottleFn, useToggle, useWindowSize } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
@@ -126,14 +127,16 @@ const removeOneNote = () => {
   closeEditrBar()
 }
 
-const barList = [
-  { name: '复制', icon: Copy, click: () => noteToolBar.copySource(), active: 'copy' },
-  { name: '删除', icon: Trash, click: () => removeOneNote(), active: 'remove' },
-]
+const barList = computed(() => {
+  return [
+    { name: t('common.copy'), icon: Copy, click: () => noteToolBar.copySource(), active: 'copy' },
+    { name: t('common.remove'), icon: Trash, click: () => removeOneNote(), active: 'remove' },
+  ]
+})
 const lineList = [
-  { name: '马克笔', icon: Highlighter, click: () => noteToolBar.marker(), active: HighlightType.marker },
-  { name: '直线', icon: Baseline, click: () => noteToolBar.beeline(), active: HighlightType.beeline },
-  { name: '波浪线', icon: SpellCheck2, click: () => noteToolBar.wavy(), active: HighlightType.wavy },
+  { name: t('line.marker'), icon: Highlighter, click: () => noteToolBar.marker(), active: HighlightType.marker },
+  { name: t('line.beeline'), icon: Baseline, click: () => noteToolBar.beeline(), active: HighlightType.beeline },
+  { name: t('line.wavy'), icon: SpellCheck2, click: () => noteToolBar.wavy(), active: HighlightType.wavy },
 ]
 
 
@@ -148,7 +151,7 @@ const addNote = async () => {
     // 新增，之前有高亮,但无笔记内容
     await noteRichAction.addInNoNotes(get(tags))
   } catch (err) {
-    toastError(`新增笔记失败：${err}`)
+    toastError(`${t('note.addNoteFail')}：${err}`)
   } finally {
     setLoading(false)
     set(selectNote, undefined)
@@ -172,7 +175,7 @@ const throttleClick = useThrottleFn((val: Note) => {
   <div class="left-note-wrapper bg-base-100 flex flex-col">
     <div role="tablist" class="tabs tabs-boxed rounded-none  py-2">
       <a role="tab" class="tab transition ease-in-out" :class="{ 'tab-active': activeTab === 'book' }"
-        @click="changeTab('book')">书籍</a>
+        @click="changeTab('book')">{{ t('common.detail') }}</a>
 
       <a role="tab" class="tab transition ease-in-out" :class="{ 'tab-active': activeTab === 'note' }"
         @click="changeTab('note')" v-if="notes?.length">
@@ -180,11 +183,11 @@ const throttleClick = useThrottleFn((val: Note) => {
           <span class="indicator-item indicator-bottom badge badge-secondary right-[5px]">
             {{ notes.length >= 100 ? '99+' : notes.length }}
           </span>
-          <div>笔记</div>
+          <div>{{ t('menu.note') }}</div>
         </div>
       </a>
       <a role="tab" class="tab transition ease-in-out" :class="{ 'tab-active': activeTab === 'note' }"
-        @click="changeTab('note')" v-else>笔记</a>
+        @click="changeTab('note')" v-else>{{ t('menu.note') }}</a>
     </div>
     <div class="flex-1 transition ease-in-out p-3 relative">
       <!-- 书籍信息 -->
@@ -218,8 +221,8 @@ const throttleClick = useThrottleFn((val: Note) => {
                       </div>
                     </div>
                     <div class="flex flex-row-reverse">
-                      <button class="btn btn-sm btn-outline btn-primary"
-                        @click="openEidteBar(virtualRow.index)">编辑</button>
+                      <button class="btn btn-sm btn-outline btn-primary" @click="openEidteBar(virtualRow.index)">{{
+                        t('common.edit') }}</button>
                     </div>
                   </div>
                 </div>
@@ -266,12 +269,13 @@ const throttleClick = useThrottleFn((val: Note) => {
               </div>
               <NoteListView class-name="rounded-lg" :data="noteList" @remove="removeNote" />
               <textarea v-model="textareaValue" rows="4"
-                class="textarea textarea-accent w-full bg-base-200 rounded-lg my-3" placeholder="写下此时的想法..."></textarea>
+                class="textarea textarea-accent w-full bg-base-200 rounded-lg my-3"
+                :placeholder="t('note.placeholder')"></textarea>
               <TagInputView v-model="tags" />
               <div class="card-actions justify-end">
                 <button class="btn btn-sm btn-success" @click="addNote()">
                   <span class="loading loading-spinner" v-if="loading"></span>
-                  添加</button>
+                  {{ t('common.add') }}</button>
               </div>
             </div>
           </div>

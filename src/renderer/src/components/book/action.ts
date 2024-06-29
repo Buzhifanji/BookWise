@@ -3,6 +3,7 @@ import { ReadTime } from '@renderer/batabase/read-time'
 import { RouterName, router } from '@renderer/route'
 import { isElectron, now, toastError } from '@renderer/shared'
 import { settingStore } from '@renderer/store'
+import { t } from '@renderer/view/setting'
 import { useObservable } from '@vueuse/rxjs'
 import { liveQuery } from 'dexie'
 import { v4 as uuidv4 } from 'uuid'
@@ -15,7 +16,7 @@ export class BookAction {
     try {
       return db.books.bulkAdd(book)
     } catch (error) {
-      toastError('导入图书失败' + error)
+      toastError(t('book.importBookFail') + error)
       return Promise.reject(error)
     }
   }
@@ -28,16 +29,16 @@ export class BookAction {
         return db.books.update(id, { isDelete: now() })
       }
     } catch (error) {
-      toastError('删除失败' + error)
+      toastError('common.removeFail' + error)
       return Promise.reject(error)
     }
   }
 
   static update(id: string, value: Partial<Book>) {
     try {
-      return db.books.update(id, { ...value })
+      return db.books.update(id, { ...value, updateTime: now() })
     } catch (error) {
-      toastError('编辑失败' + error)
+      toastError(t('common.editFail') + error)
       return Promise.reject(error)
     }
   }
@@ -46,7 +47,7 @@ export class BookAction {
     try {
       return db.books.update(id, { isDelete: null })
     } catch (error) {
-      toastError('还原失败' + error)
+      toastError(t('common.restoreFail') + error)
       return Promise.reject(error)
     }
   }
@@ -55,7 +56,7 @@ export class BookAction {
     try {
       return db.books.get(id)
     } catch (error) {
-      toastError('获取图书失败' + error)
+      toastError(t('book.getBookFail') + error)
       return Promise.reject(error)
     }
   }
@@ -63,7 +64,7 @@ export class BookAction {
     try {
       return db.books.toArray()
     } catch (error) {
-      toastError('读取图书列表失败' + error)
+      toastError(t('book.getBookListFail') + error)
       return Promise.reject(error)
     }
   }
@@ -74,7 +75,7 @@ export class BookAction {
         liveQuery(async () => (await db.books.toArray()).find((item) => item.id === id)) as any
       )
     } catch (error) {
-      toastError('读取图书列表失败' + error)
+      toastError(t('book.getBookFail') + error)
       return undefined
     }
   }
@@ -87,7 +88,7 @@ export class BookAction {
         ) as any
       )
     } catch (error) {
-      toastError('读取图书列表失败' + error)
+      toastError(t('book.getBookListFail') + error)
       return [] as Book[]
     }
   }
@@ -126,7 +127,7 @@ export class BookContentAction {
     try {
       return db.bookContents.bulkPut(bookContentList)
     } catch (error) {
-      toastError('导入图书内容失败' + error)
+      toastError(t('book.importBookFail') + error)
       return Promise.reject(error)
     }
   }
@@ -146,7 +147,7 @@ export class BookReadTimeAction {
       }
       return db.readTime.put(time)
     } catch (error) {
-      toastError('记录阅读时长失败' + error)
+      toastError(t('book.recordBookTimeFail') + error)
       return Promise.reject(error)
     }
   }
@@ -163,7 +164,7 @@ export class BookReadTimeAction {
         ) as any
       )
     } catch (error) {
-      toastError('读取图书阅读时长列表失败' + error)
+      toastError(t('book.getBookReadTimeFail') + error)
       return []
     }
   }
@@ -172,7 +173,7 @@ export class BookReadTimeAction {
     try {
       return db.readTime.where('eBookId').equals(eBookId).toArray()
     } catch (error) {
-      toastError('读取图书阅读时长列表失败' + error)
+      toastError(t('book.getBookReadTimeListFail') + error)
       return []
     }
   }

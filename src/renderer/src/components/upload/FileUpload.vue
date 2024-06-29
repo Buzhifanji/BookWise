@@ -146,7 +146,7 @@ const handleFiles = async (files: FileList) => {
                 await BookContentAction.bulkAdd(bookContents)
             }
 
-            newBook.map(item => toastSuccess(`${t('file.uploadSucess')}: ${item.name}`))
+            newBook.map(item => toastSuccess(`${t('file.uploadSuccess')}: ${item.name}`))
         }
 
     } catch (error: any) {
@@ -201,7 +201,7 @@ const handleDrop = (e: DragEvent) => {
                         </p>
 
                         <p class="text-sm text-base-content/60 mt-2">
-                            <span>{{ $t('file.supportFormate') }}</span>
+                            <span>{{ $t('file.supportFormat') }}</span>
                             <template v-for="item, index in supportBookType">
                                 <span class="mx-1">{{ item }}</span>
                                 <span v-if="index < supportBookType.length - 1">/</span>

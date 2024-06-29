@@ -3,6 +3,7 @@ import { Book, Bookshelf } from '@renderer/batabase';
 import { BookshelfAction } from '@renderer/components';
 import { useDialog } from '@renderer/hooks';
 import { toastError, toastSuccess } from '@renderer/shared';
+import { t } from '@renderer/view/setting';
 import { vOnClickOutside } from '@vueuse/components';
 import { get, set, useThrottleFn, useToggle } from '@vueuse/core';
 import scrollIntoView from 'scroll-into-view-if-needed';
@@ -109,7 +110,7 @@ const init = async () => {
     set(allGrops, res)
 
   } catch (err) {
-    toastError(`获取书架失败: ${err}`)
+    toastError(`t('book.getBookshelfFail'): ${err}`)
   } finally {
     setLoading(false)
     await nextTick()
@@ -126,14 +127,14 @@ const submit = async () => {
     setSubmitLoading(true)
     const group = get(groupValue)
     if (!group) {
-      set(groupError, '请选择书架')
+      set(groupError, t('book.neeSelectBookshelf'))
       return
     }
     await BookAction.update(props.book.id, { group })
-    toastSuccess('添加到书架成功')
+    toastSuccess(t('book.addToBookshelfSuccess'))
     closeDialog()
   } catch (err) {
-    toastError(`添加到书架失败: ${err}`)
+    toastError(`${t('book.addToBookshelfFail')}: ${err}`)
   } finally {
     setSubmitLoading(false)
   }
@@ -146,7 +147,7 @@ init()
   <dialog class="modal" ref="dialogRef">
     <div class="modal-box max-w-5xl" v-on-click-outside="closeDialog" @contextmenu.prevent>
       <div class="flex flex-row justify-between items-center mb-5">
-        <h3 class="font-bold text-lg">添加到书架</h3>
+        <h3 class="font-bold text-lg">{{ t('book.addToBookshelf') }}</h3>
         <div @click="closeDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
       </div>
       <div class="flex flex-col gap-2 py-4" v-if="loading">
@@ -156,17 +157,17 @@ init()
       <form v-else>
         <div class="flex flex-col gap-2">
           <div class="min-h-12 px-4 rounded-lg bg-base-200 flex flex-row gap-2 items-center">
-            <span>书名</span>
+            <span>{{ t('book.name') }}</span>
             <div class="flex-1">{{ book.name }}</div>
           </div>
           <div class="mt-6">
             <label class="input input-bordered flex items-center gap-2" :class="{ 'input-error': groupError }">
-              书架
+              {{ t('book.bookshelf') }}
               <span class="badge badge-accent" v-if="groupValue">
                 {{ BookshelfAction.toBookshelf(groupValue).name }}
               </span>
-              <input type="text" class="grow" v-model="chooseGroup" placeholder="请输入书架名" ref="inputRef"
-                @keydown.enter="onAdd()" @keydown.prevent.down="onDown()" @keydown.prevent.up="onUp()"
+              <input type="text" class="grow" v-model="chooseGroup" :placeholder="t('book.needBookshelfName')"
+                ref="inputRef" @keydown.enter="onAdd()" @keydown.prevent.down="onDown()" @keydown.prevent.up="onUp()"
                 @keydown.prevent.tab="onTab()" />
             </label>
 
@@ -185,10 +186,10 @@ init()
           </div>
         </div>
         <div class="modal-action">
-          <button class="btn btn-outline" type="button" @click="closeDialog">取消</button>
+          <button class="btn btn-outline" type="button" @click="closeDialog">{{ t('common.cancel') }}</button>
           <button class="btn btn-success ml-4" type="button" @click="submit">
             <span class="loading loading-spinner" v-if="submitLoading"></span>
-            确认</button>
+            {{ t('common.sure') }}</button>
         </div>
       </form>
     </div>

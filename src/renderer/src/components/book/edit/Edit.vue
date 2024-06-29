@@ -2,6 +2,7 @@
 import { Book } from '@renderer/batabase';
 import { useDialog } from '@renderer/hooks';
 import { convertUint8ArrayToURL, fileToUint8Array, toastError } from '@renderer/shared';
+import { t } from '@renderer/view/setting';
 import { vOnClickOutside } from '@vueuse/components';
 import { get, set } from '@vueuse/core';
 import { useForm } from 'vee-validate';
@@ -15,8 +16,8 @@ type editeData = { name: string, author: string }
 
 const { defineField, handleSubmit, errors: editeError } = useForm<editeData>({
   validationSchema: {
-    name: (value: unknown) => value ? true : '请输入书名',
-    author: (value: unknown) => value ? true : '请输入作者名',
+    name: (value: unknown) => value ? true : t('book.needBookName'),
+    author: (value: unknown) => value ? true : t('book.needAuhor'),
   },
 });
 const [name, nameProps] = defineField('name')
@@ -38,7 +39,7 @@ async function uploadCover(event: Event) {
     const res = await fileToUint8Array(files[0])
     set(cover, res)
   } catch (err) {
-    toastError(`上传封面失败：${err}`)
+    toastError(`book.uploadCoverFial：${err}`)
   } finally {
     if (inputRef.value) {
       inputRef.value.value = ''
@@ -59,18 +60,19 @@ initEdite()
   <dialog class="modal" ref="dialogRef">
     <div class="modal-box max-w-5xl" v-on-click-outside="closeDialog" @contextmenu.prevent>
       <div class="flex flex-row justify-between items-center mb-5">
-        <h3 class="font-bold text-lg">编辑</h3>
+        <h3 class="font-bold text-lg">{{ t('common.edit') }}</h3>
         <div @click="closeDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
       </div>
       <form @submit="submitEdite">
         <div class="flex flex-row gap-6">
           <div>
             <div class="h-[120px] w-[100px] mb-2">
-              <img :src="convertUint8ArrayToURL(cover)" class="w-full h-full rounded object-cover" alt="书籍封面">
+              <img :src="convertUint8ArrayToURL(cover)" class="w-full h-full rounded object-cover"
+                :alt="t('book.cover')">
             </div>
             <label>
               <a type="button" value="Input" class="btn btn-sm btn-neutral">
-                上传封面
+                {{ t('book.uploadCover') }}
               </a>
               <input type="file" ref="inputRef" accept="image/*" class="hidden" @change="uploadCover">
             </label>
@@ -79,8 +81,9 @@ initEdite()
             <div>
               <label class="input input-bordered flex items-center gap-2" for="name"
                 :class="{ 'input-error': editeError.name }">
-                书名
-                <input type="text" class="grow" name="name" v-model="name" v-bind="nameProps" placeholder="请输入书名" />
+                {{ t('book.name') }}
+                <input type="text" class="grow" name="name" v-model="name" v-bind="nameProps"
+                  :placeholder="t('book.needBookName')" />
               </label>
               <div class="label" v-if="editeError.name">
                 <span class="label-text text-error">{{ editeError.name }}</span>
@@ -88,9 +91,9 @@ initEdite()
             </div>
             <div class="mt-6">
               <label class="input input-bordered flex items-center gap-2" :class="{ 'input-error': editeError.author }">
-                作者
+                {{ t('book.author') }}
                 <input type="text" class="grow" name="author" v-model="author" v-bind="authorProps"
-                  placeholder="请输入作者名" />
+                  :placeholder="t('book.needAuhor')" />
               </label>
               <div class="label" v-if="editeError.author">
                 <span class="label-text text-error">{{ editeError.author }}</span>
@@ -99,8 +102,8 @@ initEdite()
           </div>
         </div>
         <div class="modal-action">
-          <button class="btn btn-outline " @click="closeDialog">取消</button>
-          <button class="btn btn-success ml-4" type="submit">确认</button>
+          <button class="btn btn-outline " @click="closeDialog">{{ t('common.cancel') }}</button>
+          <button class="btn btn-success ml-4" type="submit">{{ t('common.sure') }}</button>
         </div>
       </form>
     </div>
