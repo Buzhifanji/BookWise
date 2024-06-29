@@ -159,5 +159,11 @@
     "beeline": "garis lurus",
     "marker": "penanda",
     "wavy": "garis bergelombang"
+  },
+  "pdf": {
+    "auto": "Penskalaan otomatis",
+    "pageActual": "ukuran sebenarnya",
+    "pageFit": "sesuai dengan halaman",
+    "pageWidth": "Sesuaikan dengan lebar halaman"
   }
 }

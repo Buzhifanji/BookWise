@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { t } from '@renderer/view/setting';
 import { onClickOutside, set, useStorage } from '@vueuse/core';
 import { Minus, Plus } from 'lucide-vue-next';
 import 'pdfjs-dist/web/pdf_viewer.css';
@@ -12,22 +13,24 @@ const containerRef = ref<HTMLElement | null>(null)
 const state = useStorage('__book__wise_pdf_zoom', 'auto', localStorage,
   { mergeDefaults: true })
 
-const list = [
-  { id: 'auto', value: '自动缩放' },
-  { id: 'page-actual', value: '实际大小' },
-  { id: 'page-fit', value: '适合页面' },
-  { id: 'page-width', value: '适合页宽' },
-  { id: '50%', value: '50%' },
-  { id: '75%', value: '75%' },
-  { id: '100%', value: '100%' },
-  { id: '125%', value: '125%' },
-  { id: '150%', value: '150%' },
-  { id: '200%', value: '200%' },
-  { id: '300%', value: '300%' },
-  { id: '400%', value: '400%' },
-]
+const list = computed(() => {
+  return [
+    { id: 'auto', value: t('pdf.auto') },
+    { id: 'page-actual', value: t('pdf.pageActual') },
+    { id: 'page-fit', value: t('pdf.pageFit') },
+    { id: 'page-width', value: t('pdf.pageWidth') },
+    { id: '50%', value: '50%' },
+    { id: '75%', value: '75%' },
+    { id: '100%', value: '100%' },
+    { id: '125%', value: '125%' },
+    { id: '150%', value: '150%' },
+    { id: '200%', value: '200%' },
+    { id: '300%', value: '300%' },
+    { id: '400%', value: '400%' },
+  ]
+})
 
-const value = computed(() => list.find(item => item.id === state.value)?.value ?? state.value)
+const value = computed(() => list.value.find(item => item.id === state.value)?.value ?? state.value)
 
 const onCloce = () => {
   if (detailsRef.value && detailsRef.value.open) {
@@ -70,7 +73,7 @@ onClickOutside(containerRef, onCloce)
       <Minus />
     </button>
     <details class="dropdown dropdown-bottom " ref="detailsRef">
-      <summary ref="summaryRef" class="cursor-pointer select select-bordered select-sm w-32 items-center  ">
+      <summary ref="summaryRef" class="cursor-pointer select select-bordered select-sm w-44 items-center  ">
         {{ value }}
       </summary>
       <ul

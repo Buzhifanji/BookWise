@@ -159,5 +159,11 @@
     "beeline": "linia prosta",
     "marker": "znacznik",
     "wavy": "faliste linie"
+  },
+  "pdf": {
+    "auto": "Automatyczne skalowanie",
+    "pageActual": "rzeczywisty rozmiar",
+    "pageFit": "Dopasuj do strony",
+    "pageWidth": "Dopasuj do szerokości strony"
   }
 }

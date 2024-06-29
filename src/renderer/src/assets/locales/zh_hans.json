@@ -157,5 +157,11 @@
     "marker": "马克笔",
     "beeline": "直线",
     "wavy": "波浪线"
+  },
+  "pdf": {
+    "auto": "自动缩放",
+    "pageActual": "实际大小",
+    "pageFit": "适合页面",
+    "pageWidth": "适合页宽"
   }
 }

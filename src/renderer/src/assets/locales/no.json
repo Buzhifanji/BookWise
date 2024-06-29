@@ -159,5 +159,11 @@
     "beeline": "rett linje",
     "marker": "markør",
     "wavy": "bølgete linjer"
+  },
+  "pdf": {
+    "auto": "Automatisk skalering",
+    "pageActual": "Faktisk størrelse",
+    "pageFit": "passer til side",
+    "pageWidth": "Tilpass til sidebredde"
   }
 }

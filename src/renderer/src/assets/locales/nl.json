@@ -159,5 +159,11 @@
     "beeline": "rechte lijn",
     "marker": "markeerstift",
     "wavy": "golvende lijnen"
+  },
+  "pdf": {
+    "auto": "Automatisch schalen",
+    "pageActual": "daadwerkelijke grootte",
+    "pageFit": "aanpassen aan pagina",
+    "pageWidth": "Aanpassen aan paginabreedte"
   }
 }

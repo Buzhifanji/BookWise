@@ -159,5 +159,11 @@
     "beeline": "rak linje",
     "marker": "markör",
     "wavy": "vågiga linjer"
+  },
+  "pdf": {
+    "auto": "Automatisk skalning",
+    "pageActual": "faktiska storleken",
+    "pageFit": "anpassa till sida",
+    "pageWidth": "Anpassa till sidans bredd"
   }
 }

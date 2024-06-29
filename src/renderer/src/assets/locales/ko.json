@@ -159,5 +159,11 @@
     "beeline": "일직선",
     "marker": "채점자",
     "wavy": "물결 모양의 선"
+  },
+  "pdf": {
+    "auto": "자동 크기 조정",
+    "pageActual": "실제 크기",
+    "pageFit": "페이지에 맞추기",
+    "pageWidth": "페이지 너비에 맞추기"
   }
 }

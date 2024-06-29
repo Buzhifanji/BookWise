@@ -159,5 +159,11 @@
     "beeline": "gerade Linie",
     "marker": "Marker",
     "wavy": "Wellenlinien"
+  },
+  "pdf": {
+    "auto": "Automatische Skalierung",
+    "pageActual": "tatsächliche Größe",
+    "pageFit": "An die Seite anpassen",
+    "pageWidth": "An Seitenbreite anpassen"
   }
 }

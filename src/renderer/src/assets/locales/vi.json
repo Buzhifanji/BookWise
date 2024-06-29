@@ -159,5 +159,11 @@
     "beeline": "đường thẳng",
     "marker": "đánh dấu",
     "wavy": "đường lượn sóng"
+  },
+  "pdf": {
+    "auto": "Tự động chia tỷ lệ",
+    "pageActual": "Kích thước thực sự",
+    "pageFit": "phù hợp với trang",
+    "pageWidth": "Vừa với chiều rộng trang"
   }
 }

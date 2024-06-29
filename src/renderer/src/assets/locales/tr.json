@@ -159,5 +159,11 @@
     "beeline": "düz",
     "marker": "işaretleyici",
     "wavy": "dalgalı çizgiler"
+  },
+  "pdf": {
+    "auto": "Otomatik ölçeklendirme",
+    "pageActual": "gerçek boyutu",
+    "pageFit": "sayfaya sığdır",
+    "pageWidth": "Sayfa genişliğine sığdır"
   }
 }

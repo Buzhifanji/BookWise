@@ -159,5 +159,11 @@
     "beeline": "línea recta",
     "marker": "marcador",
     "wavy": "lineas onduladas"
+  },
+  "pdf": {
+    "auto": "Escalado automático",
+    "pageActual": "tamaño real",
+    "pageFit": "ajustar a la página",
+    "pageWidth": "Ajustar al ancho de página"
   }
 }

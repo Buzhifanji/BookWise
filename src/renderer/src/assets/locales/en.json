@@ -159,5 +159,11 @@
     "beeline": "straight line",
     "marker": "marker",
     "wavy": "wavy lines"
+  },
+  "pdf": {
+    "auto": "Auto scaling",
+    "pageActual": "actual size",
+    "pageFit": "Fit to page",
+    "pageWidth": "Fit to page width"
   }
 }

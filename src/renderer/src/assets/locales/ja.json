@@ -159,5 +159,11 @@
     "beeline": "直線",
     "marker": "マーカー",
     "wavy": "波線"
+  },
+  "pdf": {
+    "auto": "オートスケーリング",
+    "pageActual": "実際のサイズ",
+    "pageFit": "ページに合わせる",
+    "pageWidth": "ページ幅に合わせる"
   }
 }
