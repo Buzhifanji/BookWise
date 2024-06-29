@@ -16,5 +16,17 @@
     "desc": "Beklager, vi finner ikke siden. \nDu finner mye å utforske på hjemmesiden.",
     "tip": "tilbake til hjemmesiden",
     "title": "Siden mangler"
+  },
+  "file": {
+    "upload": "Last opp filer",
+    "choose": "Velg et dokument",
+    "dragFile": "Dra og slipp filer her",
+    "exist": "Filen finnes allerede",
+    "releaseMouse": "Slipp musen",
+    "supportFormate": "Støttede formater:",
+    "uploadSucess": "Opplastingen var vellykket"
+  },
+  "common": {
+    "or": "eller"
   }
 }

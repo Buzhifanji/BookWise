@@ -16,5 +16,17 @@
     "desc": "Siamo spiacenti, non riusciamo a trovare la pagina. \nTroverai molto da esplorare sulla home page.",
     "tip": "torna alla home page",
     "title": "Manca la pagina"
+  },
+  "file": {
+    "upload": "caricare files",
+    "choose": "Seleziona un documento",
+    "dragFile": "Trascina e rilascia i file qui",
+    "exist": "Il file esiste già",
+    "releaseMouse": "Rilascia il mouse",
+    "supportFormate": "Formati supportati:",
+    "uploadSucess": "Caricamento riuscito"
+  },
+  "common": {
+    "or": "O"
   }
 }

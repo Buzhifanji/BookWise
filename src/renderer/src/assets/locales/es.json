@@ -16,5 +16,17 @@
     "desc": "Lo sentimos, no podemos encontrar la página. \nEncontrarás mucho para explorar en la página de inicio.",
     "tip": "volver a la página de inicio",
     "title": "falta la pagina"
+  },
+  "file": {
+    "upload": "subir archivos",
+    "choose": "Seleccione un documento",
+    "dragFile": "Arrastra y suelta archivos aquí",
+    "exist": "El archivo ya existe",
+    "releaseMouse": "Soltar el mouse",
+    "supportFormate": "Formatos soportados:",
+    "uploadSucess": "Subida exitosa"
+  },
+  "common": {
+    "or": "o"
   }
 }

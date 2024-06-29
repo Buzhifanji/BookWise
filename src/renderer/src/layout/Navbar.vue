@@ -40,7 +40,7 @@ function uploadAction() {
     </div>
     <div class="navbar-center"></div>
     <div class="navbar-end gap-4">
-      <button class="btn btn-sm btn-primary " @click="uploadAction()">上传</button>
+      <button class="btn btn-sm btn-primary " @click="uploadAction()">{{ $t('file.upload') }}</button>
       <FileUploadView ref="dialogRef" />
     </div>
   </div>

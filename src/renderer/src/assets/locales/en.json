@@ -16,5 +16,17 @@
     "desc": "Sorry, we can't find the page. \nYou'll find a lot to explore on the home page.",
     "tip": "back to the homepage",
     "title": "The page is missing"
+  },
+  "file": {
+    "upload": "upload files",
+    "choose": "Select a document",
+    "dragFile": "Drag and drop files here",
+    "exist": "File already exists",
+    "releaseMouse": "Release mouse",
+    "supportFormate": "Supported formats:",
+    "uploadSucess": "Upload successful"
+  },
+  "common": {
+    "or": "or"
   }
 }

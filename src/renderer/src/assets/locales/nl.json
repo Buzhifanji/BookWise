@@ -16,5 +16,17 @@
     "desc": "Sorry, we kunnen de pagina niet vinden. \nOp de startpagina valt veel te ontdekken.",
     "tip": "terug naar de startpagina",
     "title": "De pagina ontbreekt"
+  },
+  "file": {
+    "upload": "upload bestanden",
+    "choose": "Selecteer een document",
+    "dragFile": "Sleep bestanden hierheen",
+    "exist": "Bestand bestaat al",
+    "releaseMouse": "Laat de muis los",
+    "supportFormate": "Ondersteunde formaten:",
+    "uploadSucess": "succesvol geupload"
+  },
+  "common": {
+    "or": "of"
   }
 }

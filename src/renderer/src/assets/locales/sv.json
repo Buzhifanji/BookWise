@@ -16,5 +16,17 @@
     "desc": "Tyvärr, vi kan inte hitta sidan. \nDu hittar mycket att utforska på hemsidan.",
     "tip": "tillbaka till startsidan",
     "title": "Sidan saknas"
+  },
+  "file": {
+    "upload": "ladda upp filer",
+    "choose": "Välj ett dokument",
+    "dragFile": "Dra och släpp filer här",
+    "exist": "filen finns redan",
+    "releaseMouse": "Släpp musen",
+    "supportFormate": "Format som stöds:",
+    "uploadSucess": "Uppladdningen lyckades"
+  },
+  "common": {
+    "or": "eller"
   }
 }

@@ -16,5 +16,17 @@
     "desc": "Désolé, nous ne trouvons pas la page. \nVous trouverez beaucoup de choses à explorer sur la page d'accueil.",
     "tip": "Retour à la page d'accueil",
     "title": "La page manque"
+  },
+  "file": {
+    "upload": "télécharger des fichiers",
+    "choose": "Sélectionnez un document",
+    "dragFile": "Glissez et déposez les fichiers ici",
+    "exist": "Le fichier existe déjà",
+    "releaseMouse": "Relâcher la souris",
+    "supportFormate": "Formats pris en charge :",
+    "uploadSucess": "Téléchargement réussi"
+  },
+  "common": {
+    "or": "ou"
   }
 }

@@ -16,5 +16,17 @@
     "desc": "Üzgünüz, sayfayı bulamıyoruz. \nAna sayfada keşfedecek çok şey bulacaksınız.",
     "tip": "ana sayfaya dön",
     "title": "Sayfa eksik"
+  },
+  "file": {
+    "upload": "dosyaları yükle",
+    "choose": "Bir belge seçin",
+    "dragFile": "Dosyaları buraya sürükleyip bırakın",
+    "exist": "dosya zaten mevcut",
+    "releaseMouse": "Fareyi bırakın",
+    "supportFormate": "Desteklenen formatlar:",
+    "uploadSucess": "yükleme başarılı"
+  },
+  "common": {
+    "or": "veya"
   }
 }

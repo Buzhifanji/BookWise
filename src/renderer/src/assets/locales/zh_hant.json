@@ -2,6 +2,31 @@
   "menu": {
     "book": "圖書",
     "note": "筆記",
-    "setting": "設定"
+    "setting": "設置",
+    "recycleBin": "回收站"
+  },
+  "setting": {
+    "userSetting": "用戶設置",
+    "language": "語言",
+    "theme": "主題",
+    "chooseLanguage": "選擇語言",
+    "chooseTheme": "選擇主題"
+  },
+  "unfound": {
+    "title": "頁面不見了",
+    "desc": "抱歉，我們找不到該頁面。您會在主頁上發現很多值得探索的內容。",
+    "tip": "回到首頁"
+  },
+  "file": {
+    "upload": "上傳文件",
+    "choose": "選擇文件",
+    "dragFile": "拖拽文件到此處",
+    "exist": "文件已存在",
+    "releaseMouse": "釋放鼠標",
+    "supportFormate": "支持格式：",
+    "uploadSucess": "上傳成功"
+  },
+  "common": {
+    "or": "或"
   }
 }

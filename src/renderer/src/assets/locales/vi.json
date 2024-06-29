@@ -16,5 +16,17 @@
     "desc": "Xin lỗi, chúng tôi không thể tìm thấy trang này. \nBạn sẽ tìm thấy rất nhiều điều để khám phá trên trang chủ.",
     "tip": "Quay lại trang chủ",
     "title": "Trang này bị thiếu"
+  },
+  "file": {
+    "upload": "tải tập tin lên",
+    "choose": "Chọn một tài liệu",
+    "dragFile": "Kéo và thả tập tin vào đây",
+    "exist": "Tập tin đã tồn tại",
+    "releaseMouse": "Thả chuột",
+    "supportFormate": "Các định dạng được hỗ trợ:",
+    "uploadSucess": "Tải lên thành công"
+  },
+  "common": {
+    "or": "hoặc"
   }
 }

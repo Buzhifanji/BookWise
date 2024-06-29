@@ -16,5 +16,17 @@
     "desc": "Przepraszamy, nie możemy znaleźć strony. \nNa stronie głównej znajdziesz wiele do odkrycia.",
     "tip": "powrót do strony głównej",
     "title": "Brakuje strony"
+  },
+  "file": {
+    "upload": "przesłać pliki",
+    "choose": "Wybierz dokument",
+    "dragFile": "Przeciągnij i upuść pliki tutaj",
+    "exist": "plik już istnieje",
+    "releaseMouse": "Zwolnij mysz",
+    "supportFormate": "Obsługiwane formaty:",
+    "uploadSucess": "Wysyłanie zakończone"
+  },
+  "common": {
+    "or": "Lub"
   }
 }

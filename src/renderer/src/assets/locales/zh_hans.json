@@ -16,5 +16,17 @@
     "title": "页面不见了",
     "desc": "抱歉，我们找不到该页面。您会在主页上发现很多值得探索的内容。",
     "tip": "回到首页"
+  },
+  "file": {
+    "upload": "上传文件",
+    "choose": "选择文件",
+    "dragFile": "拖拽文件到此处",
+    "exist": "文件已存在",
+    "releaseMouse": "释放鼠标",
+    "supportFormate": "支持格式：",
+    "uploadSucess": "上传成功"
+  },
+  "common": {
+    "or": "或"
   }
 }

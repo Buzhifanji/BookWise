@@ -65,3 +65,7 @@ export const langs: SelectItem[] = Object.keys(languageMap).map((key) => ({
   id: key,
   value: languageMap[key]
 }))
+
+export function t(key: string) {
+  return i18n.global.t(key)
+}

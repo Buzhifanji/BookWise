@@ -3,6 +3,7 @@ import { Reader } from '@book-wise/reader';
 import { Book } from '@renderer/batabase';
 import { useDialog } from '@renderer/hooks';
 import { cloneBuffer, convertBlobToUint8Array, isElectron, now, toastSuccess, toastWarning } from '@renderer/shared';
+import { t } from '@renderer/view/setting';
 import { useToggle } from '@vueuse/core';
 import { Upload } from 'lucide-vue-next';
 import { PDFPageProxy, getDocument } from 'pdfjs-dist';
@@ -48,7 +49,7 @@ const handleFiles = async (files: FileList) => {
         // 过滤重复添加的文件
         const newBookData = result.filter(({ hash }) => {
             if (md5Set.has(hash)) {
-                toastWarning('文件已存在')
+                toastWarning(t('file.exist'))
                 return false
             } else {
                 md5Set.add(hash)
@@ -145,7 +146,7 @@ const handleFiles = async (files: FileList) => {
                 await BookContentAction.bulkAdd(bookContents)
             }
 
-            newBook.map(item => toastSuccess(`上传成功：${item.name}`))
+            newBook.map(item => toastSuccess(`${t('file.uploadSucess')}: ${item.name}`))
         }
 
     } catch (error: any) {
@@ -179,7 +180,7 @@ const handleDrop = (e: DragEvent) => {
     <dialog class="modal" ref="dialogRef">
         <div class="modal-box max-w-2xl">
             <h3 class="font-bold text-lg flex justify-between mb-4">
-                <span>上传文件</span>
+                <span>{{ $t('file.upload') }}</span>
                 <kbd class="kbd kbd-sm cursor-pointer" @click="closeDialog()">ESC</kbd>
             </h3>
             <div class="flex items-center justify-center w-full " :class="{ 'bg-base-200/60': isDragging }"
@@ -192,16 +193,15 @@ const handleDrop = (e: DragEvent) => {
                             <Upload />
                         </div>
                         <p class="pointer-none text-base-content text-lg" v-if="isDragging">
-                            释放鼠标
-                        </p>
+                            {{ $t('file.releaseMouse') }} </p>
                         <p class="pointer-none text-base-content text-lg" v-else>
-                            <span>拖拽文件到此处</span>
-                            <span class="mx-1">或</span>
-                            <a class="text-info hover:underline">选择文件</a>
+                            <span>{{ $t('file.dragFile') }}</span>
+                            <span class="mx-1">{{ $t('common.or') }}</span>
+                            <a class="text-info hover:underline">{{ $t('file.choose') }}</a>
                         </p>
 
                         <p class="text-sm text-base-content/60 mt-2">
-                            <span>支持格式：</span>
+                            <span>{{ $t('file.supportFormate') }}</span>
                             <template v-for="item, index in supportBookType">
                                 <span class="mx-1">{{ item }}</span>
                                 <span v-if="index < supportBookType.length - 1">/</span>

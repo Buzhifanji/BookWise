@@ -16,5 +16,17 @@
     "desc": "Maaf, kami tidak dapat menemukan halamannya. \nAnda akan menemukan banyak hal untuk dijelajahi di beranda.",
     "tip": "kembali ke beranda",
     "title": "Halamannya hilang"
+  },
+  "file": {
+    "upload": "unggah berkas",
+    "choose": "Pilih dokumen",
+    "dragFile": "Seret dan letakkan file di sini",
+    "exist": "Berkas sudah ada",
+    "releaseMouse": "Lepaskan tikus",
+    "supportFormate": "Format yang didukung:",
+    "uploadSucess": "Unggahan berhasil"
+  },
+  "common": {
+    "or": "atau"
   }
 }

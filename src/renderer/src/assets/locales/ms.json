@@ -16,5 +16,17 @@
     "desc": "Maaf, kami tidak dapat mencari halaman. \nAnda akan temui banyak perkara untuk diterokai di halaman utama.",
     "tip": "kembali ke laman utama",
     "title": "Halaman itu tiada"
+  },
+  "file": {
+    "upload": "memuat naik fail",
+    "choose": "Pilih dokumen",
+    "dragFile": "Seret dan lepaskan fail di sini",
+    "exist": "Fail sudah wujud",
+    "releaseMouse": "Lepaskan tetikus",
+    "supportFormate": "Format yang disokong:",
+    "uploadSucess": "Muat naik berjaya"
+  },
+  "common": {
+    "or": "atau"
   }
 }

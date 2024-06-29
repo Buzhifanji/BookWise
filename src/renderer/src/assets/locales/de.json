@@ -16,5 +16,17 @@
     "desc": "Leider können wir die Seite nicht finden. \nAuf der Homepage gibt es viel zu entdecken.",
     "tip": "zurück zur Homepage",
     "title": "Die Seite fehlt"
+  },
+  "file": {
+    "upload": "Daten hochladen",
+    "choose": "Wählen Sie ein Dokument aus",
+    "dragFile": "Ziehen Sie Dateien hierher und legen Sie sie dort ab",
+    "exist": "Die Datei existiert bereits",
+    "releaseMouse": "Lassen Sie die Maus los",
+    "supportFormate": "Unterstützte Formate:",
+    "uploadSucess": "Hochladen erfolgreich"
+  },
+  "common": {
+    "or": "oder"
   }
 }
