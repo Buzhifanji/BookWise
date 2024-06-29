@@ -3,13 +3,17 @@ import { Reader } from '@book-wise/reader';
 import { Book } from '@renderer/batabase';
 import { useDialog } from '@renderer/hooks';
 import { cloneBuffer, convertBlobToUint8Array, isElectron, now, toastSuccess, toastWarning } from '@renderer/shared';
+import { useToggle } from '@vueuse/core';
+import { Upload } from 'lucide-vue-next';
 import { PDFPageProxy, getDocument } from 'pdfjs-dist';
 import { v4 as uuidv4 } from 'uuid';
 import { defineExpose, ref } from 'vue';
 import { BookAction, BookContentAction } from '../book/action';
+import { BookType } from '../book/enum';
 import { readFiles } from './read-file';
 
 const { dialogRef, openDialog, closeDialog } = useDialog();
+const [isDragging, setDragging] = useToggle(false)
 
 defineExpose({ open: openDialog })
 
@@ -32,9 +36,7 @@ const getPDFCover = async (page: PDFPageProxy) => {
     return await new Promise(resolve => canvas.toBlob(resolve))
 }
 
-async function uploadFile(event: Event) {
-    const files = (event.target as HTMLInputElement).files;
-    if (files === null) return
+const handleFiles = async (files: FileList) => {
     try {
         const result = await readFiles(Array.from(files))
         if (result.length === 0) return
@@ -154,29 +156,56 @@ async function uploadFile(event: Event) {
             inputRef.value.value = ''
         }
     }
-
 }
 
+async function uploadFile(event: Event) {
+
+    const files = (event.target as HTMLInputElement).files;
+    if (files === null) return
+    handleFiles(files)
+}
+
+const supportBookType = Object.values(BookType)
+const handleDrop = (e: DragEvent) => {
+    const files = e.dataTransfer?.files;
+    if (files) {
+        handleFiles(files);
+    }
+    setDragging(false)
+}
 </script>
 
 <template>
     <dialog class="modal" ref="dialogRef">
-        <div class="modal-box">
+        <div class="modal-box max-w-2xl">
             <h3 class="font-bold text-lg flex justify-between mb-4">
                 <span>上传文件</span>
                 <kbd class="kbd kbd-sm cursor-pointer" @click="closeDialog()">ESC</kbd>
             </h3>
-            <div class="flex items-center justify-center w-full">
+            <div class="flex items-center justify-center w-full " :class="{ 'bg-base-200/60': isDragging }"
+                @drop.prevent="handleDrop" @dragover.prevent="setDragging(true)" @dragleave="setDragging(false)">
                 <label
-                    class="flex flex-col rounded-lg border-4 border-dashed border-accent  cursor-pointer  w-full h-60 p-10 group text-center">
-                    <div class="h-full w-full text-center flex flex-col  justify-center items-center  ">
-                        <div class="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
-                            <!-- <img class="has-mask h-36 object-center" src="https://img.freepik.com/free-vector/image-upload-concept-landing-page_52683-27130.jpg?size=338&ext=jpg" alt="freepik image"> -->
+                    class="flex flex-col rounded-lg border-4 border-dashed   cursor-pointer  w-full h-60 p-10 group text-center "
+                    :class="[isDragging ? 'border-accent' : 'border-info']">
+                    <div class="h-full w-full text-center flex flex-col justify-center items-center ">
+                        <div class="p-5 bg-base-200 rounded-full mb-4">
+                            <Upload />
                         </div>
-                        <p class="pointer-none text-base-content "><span class="text-sm">Drag and drop</span> files
-                            here
-                            <br /> or <a class="text-info hover:underline">select a file</a> from your
-                            computer
+                        <p class="pointer-none text-base-content text-lg" v-if="isDragging">
+                            释放鼠标
+                        </p>
+                        <p class="pointer-none text-base-content text-lg" v-else>
+                            <span>拖拽文件到此处</span>
+                            <span class="mx-1">或</span>
+                            <a class="text-info hover:underline">选择文件</a>
+                        </p>
+
+                        <p class="text-sm text-base-content/60 mt-2">
+                            <span>支持格式：</span>
+                            <template v-for="item, index in supportBookType">
+                                <span class="mx-1">{{ item }}</span>
+                                <span v-if="index < supportBookType.length - 1">/</span>
+                            </template>
                         </p>
                     </div>
                     <input type="file" ref="inputRef" multiple class="hidden" @change="uploadFile">
