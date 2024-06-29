@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { RouterName } from '@renderer/route';
+
 </script>
 
 <template>
@@ -31,7 +33,7 @@
         <h1 class="text-5xl font-bold pt-8">404 {{ $t('unfound.title') }}</h1>
         <p class="py-6">{{ $t('unfound.desc') }}</p>
         <button class="btn btn-primary">
-          <a href="/"> {{ $t('unfound.tip') }}</a>
+          <RouterLink :to="RouterName.Home">{{ $t('unfound.tip') }}</RouterLink>
         </button>
       </div>
     </div>

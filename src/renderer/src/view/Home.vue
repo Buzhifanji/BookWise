@@ -10,12 +10,17 @@ import { computed, ref } from 'vue';
 
 const bookshelfWidht = 120
 const bookshelfHeight = 100
-const statistical = ref([
-  { title: '在读', desc: '总数量', total: 175, percentage: '21.2%', detailTitle: '本月年在读', detailNum: 19, detailUit: '本', icon: Annoyed, isUp: true },
-  { title: '已读', desc: '总数量', total: 175, percentage: '21.2%', detailTitle: '本月已读完', detailNum: 9, detailUit: '本', icon: CircleCheckBig, isUp: true },
-  { title: '笔记', desc: '总数量', total: 175, percentage: '21.2%', detailTitle: '本月新增笔记', detailNum: 123, detailUit: '个', icon: NotebookPen, isUp: false },
-  { title: '时长', desc: '总时长', total: 175, percentage: '21.2%', detailTitle: '本月阅读时长', detailNum: 5.5, detailUit: '小时', icon: Clock, isUp: false },
-])
+const statistical = ref<{
+  title: string
+  desc: string
+  total: number
+  percentage: string
+  detailTitle: string
+  detailNum: number
+  detailUit: string
+  icon: any
+  isUp: boolean
+}[]>([])
 const store = useContentCantianerStore()
 const totalRecentBook = ref<Book[]>([])
 const totalLoveBook = ref<Book[]>([])
@@ -116,10 +121,10 @@ async function init() {
       {
         title: '时长',
         desc: '总时长',
-        total: toStr(allReadTime),
+        total: allReadTime,
         percentage: toStr(readTimePercentage),
         detailTitle: '本月时长',
-        detailNum: toStr(thisMouthReadTime),
+        detailNum: thisMouthReadTime,
         detailUit: '小时',
         icon: Clock,
         isUp: readTimePercentage > 0 ? true : false,

@@ -4,10 +4,10 @@ const resolve = (relativePath: string) => path.resolve(__dirname, relativePath)
 
 export const getIcon = () => {
   if (process.platform === 'darwin') {
-    return resolve('../../resources/icons/mac/icon.icns')
+    return resolve('../../resources/icon.icns')
   } else if (process.platform === 'win32') {
-    return resolve('../../resources/icons/win/icon.ico')
+    return resolve('../../resources/icon.ico')
   } else {
-    return resolve('../../resources/icons/png/256x256.png')
+    return resolve('../../resources/256x256.png')
   }
 }

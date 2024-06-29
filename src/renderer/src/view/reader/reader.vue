@@ -341,6 +341,8 @@ function recordReadTime() {
       endTime: get(endTime),
       eBookId: info.id,
     }
+    console.trace('recordReadTime')
+    console.log('redord time', data)
     bookReadTimeStore.value[info.id] = JSON.stringify(data)
   }
 }
@@ -371,7 +373,7 @@ onMounted(() => {
   document.addEventListener('visibilitychange', viewVisibityChange)
 })
 
-onBeforeUnmount(async () => {
+onBeforeUnmount(() => {
   recordAction()
   window.removeEventListener("beforeunload", recordAction);
   document.removeEventListener('visibilitychange', viewVisibityChange)

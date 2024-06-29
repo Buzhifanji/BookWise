@@ -1,10 +1,17 @@
 {
   "name": "book-wise",
   "version": "1.0.0",
-  "description": "An Electron application with Vue and TypeScript",
+  "description": "A modern cross-platform e-book reader",
   "main": "./out/main/index.js",
-  "author": "example.com",
+  "author": {
+    "name": "app by Buzhifanji",
+    "email": "buzhifanji@gmail.com"
+  },
   "homepage": "https://electron-vite.org",
+  "engines": {
+    "node": ">=20.11.1",
+    "npm": ">=10.8.0"
+  },
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,.vue --fix",
@@ -15,6 +22,7 @@
     "dev": "electron-vite dev",
     "build": "npm run typecheck && electron-vite build",
     "postinstall": "electron-builder install-app-deps",
+    "release": "electron-builder",
     "build:unpack": "npm run build && electron-builder --dir",
     "build:win": "npm run build && electron-builder --win",
     "build:mac": "npm run build && electron-builder --mac",
@@ -71,5 +79,142 @@
     "vite": "^5.2.11",
     "vue": "^3.4.27",
     "vue-tsc": "^2.0.19"
+  },
+  "build": {
+    "appId": "xyz.886886.Bookwise",
+    "productName": "Bookwise",
+    "copyright": "Copyright (c) 2024-2022 ${author}",
+    "files": [
+      "!**/.vscode/*",
+      "!src/*",
+      "!electron.vite.config.{js,ts,mjs,cjs}",
+      "!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}",
+      "!{.env,.env.*,.npmrc,pnpm-lock.yaml}",
+      "!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}",
+      "resources/**/*",
+      "out/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "resources"
+    },
+    "publish": {
+      "provider": "github",
+      "repo": "Bookwise",
+      "owner": "Bookwise"
+    },
+    "buildDependenciesFromSource": false,
+    "nodeGypRebuild": false,
+    "extends": null,
+    "dmg": {
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "resources/icon.icns",
+      "category": "public.app-category.productivity",
+      "entitlementsInherit": "resources/entitlements.mac.plist",
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "ia32",
+            "arm64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "resources/icon.ico",
+      "executableName": "${productName}",
+      "artifactName": "${productName}-${version}-${arch}-Win.${ext}",
+      "publisherName": "App by ${author}"
+    },
+    "linux": {
+      "icon": "resources/icons",
+      "category": "Office",
+      "target": [
+        {
+          "target": "snap",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "arm64",
+            "ia32",
+            "x64"
+          ]
+        },
+        {
+          "target": "rpm",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "AppImage",
+          "arch": [
+            "arm64",
+            "ia32",
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-Portable.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": false,
+      "allowToChangeInstallationDirectory": true,
+      "include": "resources/installer.nsh"
+    },
+    "snap": {
+      "publish": [
+        {
+          "provider": "github"
+        }
+      ]
+    }
   }
 }

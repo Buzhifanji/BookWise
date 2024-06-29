@@ -1,0 +1,104 @@
+appId: xyz.886886.Bookwise
+productName: Bookwise
+copyright: Copyright (c) 2024-2024 ${author}
+directories:
+  buildResources: resources
+files:
+  - '!**/.vscode/*'
+  - '!src/*'
+  - '!electron.vite.config.{js,ts,mjs,cjs}'
+  - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
+  - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
+  - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
+asarUnpack:
+  - resources/**
+win:
+  executableName: Bookwise
+  artifactName: ${productName}-${version}-${arch}-Win.${ext}
+  publisherName: App by ${author}
+  target:
+    - target: nsis
+      arch:
+        - x64
+    - target: zip
+      arch:
+        - x64
+        - ia32
+        - arm64
+    - target: portable
+      arch:
+        - x64
+nsis:
+  artifactName: ${name}-${version}-setup.${ext}
+  shortcutName: ${productName}
+  uninstallDisplayName: ${productName}
+  createDesktopShortcut: always
+  oneClick: false
+  allowElevation: true
+  allowToChangeInstallationDirectory: true
+  include: resources/installer.nsh
+  deleteAppDataOnUninstall: true
+  createStartMenuShortcut: true
+mac:
+  entitlementsInherit: resources/entitlements.mac.plist
+  category: public.app-category.productivity
+  artifactName: ${productName}-${version}-${arch}.${ext}
+  extendInfo:
+    - NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
+    - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
+  notarize: false
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+dmg:
+  artifactName: ${name}-${version}.${ext}
+  contents:
+    - x: 420
+      y: 150
+      type: link
+      path: /Applications
+    - x: 130
+      y: 150
+      type: file
+      path: /Applications
+  sign:
+    identity: 'Developer ID Application: App by ${author}'
+    hardenedRuntime: true
+linux:
+  target:
+    - target: AppImage
+      arch:
+        - arm64
+        - ia32
+        - x64
+    - target: snap
+      arch:
+        - x64
+    - target: deb
+      arch:
+        - arm64
+        - ia32
+        - x64
+    - target: rpm
+      arch:
+        - x64
+  artifactName: ${productName}-${version}-${arch}.${ext}
+  category: Office
+portable:
+  artifactName: ${productName}-${version}-Portable.${ext}
+snap:
+  publish:
+    provider: github
+appImage:
+  artifactName: ${name}-${version}.${ext}
+npmRebuild: false
+publish:
+  provider: github
+  repo: { productName }
+  owner: { author }
+buildDependenciesFromSource: false
+nodeGypRebuild: false
+electronDownload:
+  mirror: https://npmmirror.com/mirrors/electron/
