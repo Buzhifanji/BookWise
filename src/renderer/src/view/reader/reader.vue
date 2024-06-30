@@ -341,23 +341,23 @@ function recordReadTime() {
       endTime: get(endTime),
       eBookId: info.id,
     }
-    console.trace('recordReadTime')
-    console.log('redord time', data)
     bookReadTimeStore.value[info.id] = JSON.stringify(data)
   }
 }
 
 // 页面是否可见
 const viewVisibityChange = () => {
-  if (document.hidden) {
-    if (timer) {
-      // 页面不可见，暂停阅读时长记录
-      clearInterval(timer)
-    }
-  } else {
-    recordReadTime()
-    resetReadTime()
-  }
+  recordReadTime()
+  resetReadTime()
+  // if (document.hidden) {
+  //   if (timer) {
+  //     // 页面不可见，暂停阅读时长记录
+  //     clearInterval(timer)
+  //   }
+  // } else {
+  //   recordReadTime()
+  //   resetReadTime()
+  // }
 }
 
 function recordAction() {

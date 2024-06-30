@@ -41,6 +41,10 @@ const initEdite = async () => {
     setLoading(false)
   }
 }
+
+const getScore = (val: unknown) => isUndefined(val) || val === -1 ? t('common.unknown')
+  : val
+
 initEdite()
 </script>
 
@@ -76,12 +80,13 @@ initEdite()
             </div>
             <div class="flex gap-4 mb-3">
               <div>{{ t('book.publisher') }}</div>
-              <div class="stat-title whitespace-normal flex-1">{{ book.publisher }}</div>
+              <div class="stat-title whitespace-normal flex-1" v-if="book.publisher">{{ book.publisher }}</div>
+              <div class="stat-title whitespace-normal flex-1" v-else>{{ t('common.unknown') }}</div>
             </div>
             <div class="flex gap-4 mb-3">
               <div>{{ t('book.publishTime') }}</div>
-              <div class="stat-title">{{ book.publishTime ? dayjs(book.publishTime).format('L LT') :
-                t('common.unkown') }}</div>
+              <div class="stat-title" v-if="book.publishTime">{{ dayjs(book.publishTime).format('L LT') }}</div>
+              <div class="stat-title" v-else>{{ t('common.unknown') }}</div>
             </div>
             <div class="flex gap-4 mb-3" v-if="book.createTime">
               <div>{{ t('book.createTime') }}</div>
@@ -96,8 +101,7 @@ initEdite()
               <div class="rating rating-md rating-half">
                 <ScoreInputView :value="book.score" :readonly="true" />
               </div>
-              <div class="  text-orange-400">{{ isUndefined(book.score) || book.score === -1 ? t('common.unkown')
-                : book.score }}
+              <div class="  text-orange-400">{{ getScore(book.score) }}
               </div>
             </div>
             <div class="flex gap-4 mb-3">

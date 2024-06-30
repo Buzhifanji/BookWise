@@ -32,7 +32,8 @@ const totalReadTime = computed(() => {
   const history = list.reduce((pre: any, cur: any) => pre + getInterval(cur.startTime, cur.endTime), 0)
   return (history + props.time).toFixed(0)
 })
-
+const getScore = (val: unknown) => isUndefined(val) || val === -1 ? t('common.unknown')
+  : val
 </script>
 
 <template>
@@ -60,7 +61,8 @@ const totalReadTime = computed(() => {
     </div>
     <div class="flex gap-4 ml-3 mt-5 mb-2">
       <div>{{ t('book.publisher') }}</div>
-      <div class="stat-title whitespace-normal flex-1">{{ book.publisher }}</div>
+      <div class="stat-title whitespace-normal flex-1" v-if="book.publisher">{{ book.publisher }}</div>
+      <div class="stat-title whitespace-normal flex-1" v-else>{{ t('common.unknown') }}</div>
     </div>
     <div class="flex flex-nowrap gap-4 ml-3 mb-2  overflow-hidden">
       <div class="flex-none">{{ t('book.publishTime') }}</div>
@@ -87,7 +89,7 @@ const totalReadTime = computed(() => {
       <div class="rating rating-md rating-half" @click="openBookScore()">
         <ScoreInputView :value="book.score" :readonly="true" />
       </div>
-      <div class="link  text-orange-400">{{ isUndefined(book.score) || book.score === -1 ? '未知' : book.score }}
+      <div class="link  text-orange-400">{{ getScore(book.score) }}
       </div>
     </div>
     <div class="flex gap-4 ml-3 mb-2">
@@ -99,7 +101,7 @@ const totalReadTime = computed(() => {
       <div class="stat-title">{{ formatDecimal(book.progress * 100) }}%</div>
     </div>
     <div class="flex gap-4 ml-3 mb-2">
-      <div>t('book.thisReadTime')</div>
+      <div>{{ t('book.thisReadTime') }}</div>
       <div class="stat-title">{{ time }}分</div>
     </div>
     <div class="flex gap-4 ml-3 mb-2">
