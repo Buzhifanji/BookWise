@@ -145,7 +145,7 @@ init()
 
 <template>
   <dialog class="modal" ref="dialogRef">
-    <div class="modal-box max-w-5xl" v-on-click-outside="closeDialog" @contextmenu.prevent>
+    <div class="modal-box max-w-fit" v-on-click-outside="closeDialog" @contextmenu.prevent>
       <div class="flex flex-row justify-between items-center mb-5">
         <h3 class="font-bold text-lg">{{ t('book.addToBookshelf') }}</h3>
         <div @click="closeDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>

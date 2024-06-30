@@ -46,18 +46,18 @@ initEdite()
 
 <template>
   <dialog class="modal" ref="dialogRef">
-    <div class="modal-box max-w-6xl " v-on-click-outside="closeDialog">
+    <div class="modal-box max-w-fit" v-on-click-outside="closeDialog">
       <div class="flex flex-row justify-between items-center mb-5">
         <h3 class="font-bold text-lg ">{{ t('book.detail') }}</h3>
         <div @click="closeDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
       </div>
       <SkeletonView v-if="loading" />
-      <div class="hero" v-else>
+      <div class="hero " v-else>
         <div class="hero-content flex-col lg:flex-row">
           <div class="w-32 min-h-44 rounded mr-4">
             <img :src="convertUint8ArrayToURL(book.cover)" />
           </div>
-          <div class="columns-1 lg:columns-2 gap-x-8 gap-y-6 ">
+          <div class="columns-1 lg:columns-2 gap-x-8 gap-y-6 flex-1">
             <div class="flex gap-4 mb-3">
               <div>{{ t('book.name') }}</div>
               <div class="stat-title whitespace-normal flex-1">{{ book.name }}</div>

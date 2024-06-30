@@ -65,7 +65,7 @@ initEdite()
       </div>
       <form @submit="submitEdite">
         <div class="flex flex-row gap-6">
-          <div>
+          <div class="flex flex-col items-center">
             <div class="h-[120px] w-[100px] mb-2">
               <img :src="convertUint8ArrayToURL(cover)" class="w-full h-full rounded object-cover"
                 :alt="t('book.cover')">

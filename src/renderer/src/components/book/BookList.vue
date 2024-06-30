@@ -247,7 +247,7 @@ const onBookshelf = () => dialogAction(bookshelfDialog)
         </li>
         <li @click="onEdite()">
           <a>
-            <PencilLine class="h-5 w-5" />{{ $t('common.edite') }}
+            <PencilLine class="h-5 w-5" />{{ $t('common.edit') }}
           </a>
         </li>
         <li @click="onScore()">
