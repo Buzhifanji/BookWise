@@ -23,7 +23,8 @@
     "openRecycleBinTitle": "Bật chức năng thùng rác",
     "readMode": "chế độ đọc",
     "rememberPositionDesc": "Sau khi mở ra, vào lại giao diện đọc sẽ tự động nhảy về vị trí đọc cuối cùng.",
-    "rememberPositionTitle": "Có nhớ vị trí đọc cuối cùng hay không"
+    "rememberPositionTitle": "Có nhớ vị trí đọc cuối cùng hay không",
+    "autoHighlight": "Tự động đánh dấu"
   },
   "unfound": {
     "desc": "Xin lỗi, chúng tôi không thể tìm thấy trang này. \nBạn sẽ tìm thấy rất nhiều điều để khám phá trên trang chủ.",
@@ -134,10 +135,12 @@
     "noteDetail": "Ghi chú chi tiết",
     "removeSuccess": "Đã xóa ghi chú thành công",
     "sureRemove": "Xác nhận xóa ghi chú",
-    "placeholder": "Hãy viết ra suy nghĩ của bạn lúc này..."
+    "placeholder": "Hãy viết ra suy nghĩ của bạn lúc này...",
+    "write": "viết ý tưởng"
   },
   "tag": {
-    "needTag": "Vui lòng nhập thẻ"
+    "needTag": "Vui lòng nhập thẻ",
+    "removeTagSuccess": "Đã xóa thẻ thành công"
   },
   "statistics": {
     "bookUnit": "Sách",

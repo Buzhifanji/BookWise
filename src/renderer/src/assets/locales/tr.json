@@ -23,7 +23,8 @@
     "openRecycleBinTitle": "Geri dönüşüm kutusu işlevini açın",
     "readMode": "okuma modu",
     "rememberPositionDesc": "Açtıktan sonra okuma arayüzüne tekrar girildiğinde otomatik olarak son okuma pozisyonuna atlanacaktır.",
-    "rememberPositionTitle": "Son okuma konumunun hatırlanıp hatırlanmayacağı"
+    "rememberPositionTitle": "Son okuma konumunun hatırlanıp hatırlanmayacağı",
+    "autoHighlight": "Otomatik vurgulama"
   },
   "unfound": {
     "desc": "Üzgünüz, sayfayı bulamıyoruz. \nAna sayfada keşfedecek çok şey bulacaksınız.",
@@ -134,10 +135,12 @@
     "noteDetail": "Not ayrıntıları",
     "removeSuccess": "Not başarıyla silindi",
     "sureRemove": "Not silme işlemini onaylayın",
-    "placeholder": "Bu sefer düşüncelerinizi yazın..."
+    "placeholder": "Bu sefer düşüncelerinizi yazın...",
+    "write": "fikir yaz"
   },
   "tag": {
-    "needTag": "Lütfen etiketi girin"
+    "needTag": "Lütfen etiketi girin",
+    "removeTagSuccess": "Etiket başarıyla silindi"
   },
   "statistics": {
     "bookUnit": "Kitap",

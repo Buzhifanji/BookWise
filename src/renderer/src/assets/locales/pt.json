@@ -23,7 +23,8 @@
     "openRecycleBinTitle": "Ative a função de lixeira",
     "readMode": "modo de leitura",
     "rememberPositionDesc": "Após abri-lo, entrar novamente na interface de leitura saltará automaticamente para a última posição de leitura.",
-    "rememberPositionTitle": "Se deve lembrar a última posição de leitura"
+    "rememberPositionTitle": "Se deve lembrar a última posição de leitura",
+    "autoHighlight": "Destaque automático"
   },
   "unfound": {
     "desc": "Desculpe, não conseguimos encontrar a página. \nVocê encontrará muito para explorar na página inicial.",
@@ -134,10 +135,12 @@
     "noteDetail": "Detalhes da nota",
     "removeSuccess": "Nota excluída com sucesso",
     "sureRemove": "Confirmar exclusão da nota",
-    "placeholder": "Escreva seus pensamentos neste momento..."
+    "placeholder": "Escreva seus pensamentos neste momento...",
+    "write": "escreva ideias"
   },
   "tag": {
-    "needTag": "Por favor insira a etiqueta"
+    "needTag": "Por favor insira a etiqueta",
+    "removeTagSuccess": "Tag excluída com sucesso"
   },
   "statistics": {
     "bookUnit": "Livro",

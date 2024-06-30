@@ -23,7 +23,8 @@
     "openRecycleBinTitle": "Schalten Sie die Papierkorbfunktion ein",
     "readMode": "Lesemodus",
     "rememberPositionDesc": "Nach dem Öffnen wird beim erneuten Aufrufen der Leseoberfläche automatisch zur letzten Leseposition gesprungen.",
-    "rememberPositionTitle": "Ob die letzte Leseposition gespeichert werden soll"
+    "rememberPositionTitle": "Ob die letzte Leseposition gespeichert werden soll",
+    "autoHighlight": "Automatische Hervorhebung"
   },
   "unfound": {
     "desc": "Leider können wir die Seite nicht finden. \nAuf der Homepage gibt es viel zu entdecken.",
@@ -134,10 +135,12 @@
     "noteDetail": "Details beachten",
     "removeSuccess": "Notiz erfolgreich gelöscht",
     "sureRemove": "Bestätigen Sie das Löschen der Notiz",
-    "placeholder": "Schreiben Sie Ihre Gedanken zu diesem Zeitpunkt auf ..."
+    "placeholder": "Schreiben Sie Ihre Gedanken zu diesem Zeitpunkt auf ...",
+    "write": "Ideen schreiben"
   },
   "tag": {
-    "needTag": "Bitte Tag eingeben"
+    "needTag": "Bitte Tag eingeben",
+    "removeTagSuccess": "Tag erfolgreich gelöscht"
   },
   "statistics": {
     "bookUnit": "Buch",

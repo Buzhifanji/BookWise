@@ -23,7 +23,8 @@
     "autoHighlightTitle": "是否自动高亮",
     "autoHighlightDesc": "打开后，在选中文字的时候，会自动高亮",
     "rememberPositionTitle": "是否记住上次阅读位置",
-    "rememberPositionDesc": "打开后，再次进入阅读界面，将会自动跳转到上次阅读的位置"
+    "rememberPositionDesc": "打开后，再次进入阅读界面，将会自动跳转到上次阅读的位置",
+    "autoHighlight": "自动高亮"
   },
   "unfound": {
     "title": "页面不见了",
@@ -132,10 +133,12 @@
     "noteDetail": "笔记详情",
     "empty": "笔记列表为空",
     "emptyNoteListTip": "在您的书籍列表界面，选择一本阅读，然后选中吸引您注意力的文字，在弹出的对话框中输入您的思考",
-    "placeholder": "写下此时的想法..."
+    "placeholder": "写下此时的想法...",
+    "write": "写想法"
   },
   "tag": {
-    "needTag": "请输入标签"
+    "needTag": "请输入标签",
+    "removeTagSuccess": "删除标签成功"
   },
   "statistics": {
     "reading": "在读",

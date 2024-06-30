@@ -23,7 +23,8 @@
     "openRecycleBinTitle": "Activez la fonction corbeille",
     "readMode": "mode lecture",
     "rememberPositionDesc": "Après l'avoir ouvert, entrer à nouveau dans l'interface de lecture passera automatiquement à la dernière position de lecture.",
-    "rememberPositionTitle": "S'il faut mémoriser la dernière position de lecture"
+    "rememberPositionTitle": "S'il faut mémoriser la dernière position de lecture",
+    "autoHighlight": "Mise en surbrillance automatique"
   },
   "unfound": {
     "desc": "Désolé, nous ne trouvons pas la page. \nVous trouverez beaucoup de choses à explorer sur la page d'accueil.",
@@ -134,10 +135,12 @@
     "noteDetail": "Détails des notes",
     "removeSuccess": "Note supprimée avec succès",
     "sureRemove": "Confirmer la suppression de la note",
-    "placeholder": "Écrivez vos pensées à ce moment-là..."
+    "placeholder": "Écrivez vos pensées à ce moment-là...",
+    "write": "écrire des idées"
   },
   "tag": {
-    "needTag": "Veuillez saisir le tag"
+    "needTag": "Veuillez saisir le tag",
+    "removeTagSuccess": "Balise supprimée avec succès"
   },
   "statistics": {
     "bookUnit": "Livre",

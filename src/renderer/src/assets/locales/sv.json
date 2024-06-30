@@ -23,7 +23,8 @@
     "openRecycleBinTitle": "Slå på papperskorgen",
     "readMode": "läsläge",
     "rememberPositionDesc": "Efter att ha öppnat den, kommer att gå in i läsgränssnittet igen och automatiskt hoppa till den sista läspositionen.",
-    "rememberPositionTitle": "Om man ska komma ihåg den senaste läspositionen"
+    "rememberPositionTitle": "Om man ska komma ihåg den senaste läspositionen",
+    "autoHighlight": "Automatisk markering"
   },
   "unfound": {
     "desc": "Tyvärr, vi kan inte hitta sidan. \nDu hittar mycket att utforska på hemsidan.",
@@ -134,10 +135,12 @@
     "noteDetail": "Notera detaljer",
     "removeSuccess": "Anteckningen har raderats",
     "sureRemove": "Bekräfta radering av anteckning",
-    "placeholder": "Skriv ner dina tankar just nu..."
+    "placeholder": "Skriv ner dina tankar just nu...",
+    "write": "skriva idéer"
   },
   "tag": {
-    "needTag": "Vänligen ange tagg"
+    "needTag": "Vänligen ange tagg",
+    "removeTagSuccess": "Taggen har tagits bort"
   },
   "statistics": {
     "bookUnit": "bok",

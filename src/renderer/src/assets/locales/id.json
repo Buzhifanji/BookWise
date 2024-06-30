@@ -23,7 +23,8 @@
     "openRecycleBinTitle": "Aktifkan fungsi recycle bin",
     "readMode": "modus membaca",
     "rememberPositionDesc": "Setelah dibuka, masuk kembali ke antarmuka membaca akan otomatis melompat ke posisi membaca terakhir.",
-    "rememberPositionTitle": "Apakah akan mengingat posisi membaca terakhir"
+    "rememberPositionTitle": "Apakah akan mengingat posisi membaca terakhir",
+    "autoHighlight": "Sorotan otomatis"
   },
   "unfound": {
     "desc": "Maaf, kami tidak dapat menemukan halamannya. \nAnda akan menemukan banyak hal untuk dijelajahi di beranda.",
@@ -134,10 +135,12 @@
     "noteDetail": "Detail catatan",
     "removeSuccess": "Catatan berhasil dihapus",
     "sureRemove": "Konfirmasikan penghapusan catatan",
-    "placeholder": "Tuliskan pemikiran Anda saat ini..."
+    "placeholder": "Tuliskan pemikiran Anda saat ini...",
+    "write": "menulis ide"
   },
   "tag": {
-    "needTag": "Silakan masukkan tag"
+    "needTag": "Silakan masukkan tag",
+    "removeTagSuccess": "Tag berhasil dihapus"
   },
   "statistics": {
     "bookUnit": "Buku",

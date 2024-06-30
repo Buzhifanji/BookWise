@@ -23,7 +23,8 @@
     "openRecycleBinTitle": "Turn on the recycle bin function",
     "readMode": "reading mode",
     "rememberPositionDesc": "After opening it, entering the reading interface again will automatically jump to the last reading position.",
-    "rememberPositionTitle": "Whether to remember the last reading position"
+    "rememberPositionTitle": "Whether to remember the last reading position",
+    "autoHighlight": "Auto highlight"
   },
   "unfound": {
     "desc": "Sorry, we can't find the page. \nYou'll find a lot to explore on the home page.",
@@ -134,10 +135,12 @@
     "noteDetail": "Note details",
     "removeSuccess": "Note deleted successfully",
     "sureRemove": "Confirm note deletion",
-    "placeholder": "Write down your thoughts at this time..."
+    "placeholder": "Write down your thoughts at this time...",
+    "write": "write ideas"
   },
   "tag": {
-    "needTag": "Please enter tag"
+    "needTag": "Please enter tag",
+    "removeTagSuccess": "Tag deleted successfully"
   },
   "statistics": {
     "bookUnit": "Book",

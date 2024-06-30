@@ -23,7 +23,8 @@
     "openRecycleBinTitle": "Schakel de prullenbakfunctie in",
     "readMode": "leesmodus",
     "rememberPositionDesc": "Na het openen springt het opnieuw openen van de leesinterface automatisch naar de laatste leespositie.",
-    "rememberPositionTitle": "Of u de laatste leespositie wilt onthouden"
+    "rememberPositionTitle": "Of u de laatste leespositie wilt onthouden",
+    "autoHighlight": "Automatisch markeren"
   },
   "unfound": {
     "desc": "Sorry, we kunnen de pagina niet vinden. \nOp de startpagina valt veel te ontdekken.",
@@ -134,10 +135,12 @@
     "noteDetail": "Let op details",
     "removeSuccess": "Opmerking succesvol verwijderd",
     "sureRemove": "Bevestig het verwijderen van de notitie",
-    "placeholder": "Schrijf uw gedachten op dit moment op..."
+    "placeholder": "Schrijf uw gedachten op dit moment op...",
+    "write": "schrijf ideeën"
   },
   "tag": {
-    "needTag": "Voer een tag in"
+    "needTag": "Voer een tag in",
+    "removeTagSuccess": "Tag succesvol verwijderd"
   },
   "statistics": {
     "bookUnit": "Boek",

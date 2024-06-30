@@ -3,6 +3,7 @@ import { Note, Tag } from '@renderer/batabase';
 import { NoteAction, NoteText, TagAction, TagListView } from '@renderer/components';
 import { toastSuccess } from '@renderer/shared';
 import { settingStore } from '@renderer/store';
+import { t } from '@renderer/view/setting';
 import { get, onClickOutside, set, useElementSize } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
 import { Baseline, Copy, Highlighter, MessageSquareMore, SpellCheck2, Trash } from 'lucide-vue-next';
@@ -50,7 +51,7 @@ const removeTag = async (index: number) => {
   tags.value.splice(index, 1)
   const tag = TagAction.toJSON(get(tags))
   await NoteAction.update(get(note)!.id, { tag })
-  toastSuccess('删除标签成功')
+  toastSuccess(t('tag.removeTagSuccess'))
 }
 
 // 笔记
@@ -90,7 +91,7 @@ const findNote = async () => {
 const removeNote = async (_: NoteText, index: number) => {
   noteList.value.splice(index, 1)
   await NoteAction.update(get(note)!.id, { notes: JSON.stringify(get(noteList)) })
-  toastSuccess('删除笔记成功')
+  toastSuccess(t('note.removeSuccess'))
 }
 
 onClickOutside(noteRef, (e) => {
@@ -112,13 +113,20 @@ const openNoteRich = () => {
   ToolbarStyle.close()
 }
 
-const list = [
-  { name: '复制', icon: Copy, click: () => noteToolBar.copySource(), active: 'copy' },
-  { name: '马克笔', icon: Highlighter, click: () => noteToolBar.marker(), active: HighlightType.marker },
-  { name: '直线', icon: Baseline, click: () => noteToolBar.beeline(), active: HighlightType.beeline },
-  { name: '波浪线', icon: SpellCheck2, click: () => noteToolBar.wavy(), active: HighlightType.wavy },
-  { name: '写想法', icon: MessageSquareMore, click: openNoteRich, active: 'note' },
-]
+const list = computed(() => {
+  return [
+    { name: t('common.copy'), icon: Copy, click: () => noteToolBar.copySource(), active: 'copy' },
+    { name: t('line.marker'), icon: Highlighter, click: () => noteToolBar.marker(), active: HighlightType.marker },
+    { name: t('line.beeline'), icon: Baseline, click: () => noteToolBar.beeline(), active: HighlightType.beeline },
+    { name: t('line.wavy'), icon: SpellCheck2, click: () => noteToolBar.wavy(), active: HighlightType.wavy },
+    { name: t('note.write'), icon: MessageSquareMore, click: openNoteRich, active: 'note' },
+  ]
+})
+
+const onRemove = () => {
+  noteToolBar.remove()
+  ToolbarStyle.close()
+}
 </script>
 
 <template>
@@ -134,7 +142,7 @@ const list = [
           </div>
         </div>
         <div class="flex pr-2.5">
-          <div class="tooltip flex" data-tip="自动高亮">
+          <div class="tooltip flex" :data-tip="t('setting.autoHighlight')">
             <input type="checkbox" class="toggle toggle-sm toggle-success" v-model="settingStore.isAutoHighlight"
               :checked="settingStore.isAutoHighlight" />
           </div>
@@ -146,7 +154,7 @@ const list = [
             <component :is="item.icon" />
           </a>
         </li>
-        <li @click.stop="noteToolBar.remove()" class="tooltip" data-tip="删除" v-if="isEdite">
+        <li @click.stop="onRemove()" class="tooltip" :data-tip="t('common.remove')" v-if="isEdite">
           <a>
             <Trash />
           </a>

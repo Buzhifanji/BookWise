@@ -196,7 +196,7 @@ const throttleClick = useThrottleFn((val: Note) => {
       <!-- 笔记 -->
       <div v-else class="absolute inset-0 ">
         <div class="h-full p-3 bg-base-100 overflow-y-auto scrollbar-none hover:scrollbar-thin" ref="containerRef">
-          <div class="relative w-full" :style="{ height: `${totalSize}px` }">
+          <div class="relative w-full" :style="{ height: `${totalSize}px` }" v-if="notes.length">
             <div class="absolute top-0 left-0 w-full "
               :style="{ transform: `translateY(${virtualRows[0]?.start ?? 0}px)` }">
               <div v-for="virtualRow in virtualRows" :key="virtualRow.key" class="note-item"
@@ -229,7 +229,11 @@ const throttleClick = useThrottleFn((val: Note) => {
               </div>
             </div>
           </div>
-
+          <div v-else class="flex justify-center mt-20 w-full">
+            <div class="btn">
+              <div class="badge">{{ t('common.empty') }}</div>
+            </div>
+          </div>
         </div>
 
         <!-- 笔记工具栏 -->

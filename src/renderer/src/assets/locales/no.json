@@ -23,7 +23,8 @@
     "openRecycleBinTitle": "Slå på papirkurvfunksjonen",
     "readMode": "lesemodus",
     "rememberPositionDesc": "Etter å ha åpnet den, vil en gang til lesegrensesnittet igjen hoppe til siste leseposisjon.",
-    "rememberPositionTitle": "Om du skal huske siste lesestilling"
+    "rememberPositionTitle": "Om du skal huske siste lesestilling",
+    "autoHighlight": "Automatisk utheving"
   },
   "unfound": {
     "desc": "Beklager, vi finner ikke siden. \nDu finner mye å utforske på hjemmesiden.",
@@ -134,10 +135,12 @@
     "noteDetail": "Legg merke til detaljer",
     "removeSuccess": "Notatet ble slettet",
     "sureRemove": "Bekreft sletting av notat",
-    "placeholder": "Skriv ned tankene dine nå..."
+    "placeholder": "Skriv ned tankene dine nå...",
+    "write": "skrive ideer"
   },
   "tag": {
-    "needTag": "Vennligst skriv inn tag"
+    "needTag": "Vennligst skriv inn tag",
+    "removeTagSuccess": "Taggen er slettet"
   },
   "statistics": {
     "bookUnit": "Bok",

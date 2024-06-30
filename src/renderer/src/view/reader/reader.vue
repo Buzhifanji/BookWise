@@ -110,10 +110,11 @@ async function loadData() {
     if (note) {
       noteJump(JSON.parse(note))
       localStorage.removeItem('__note__')
-    }
-    // 恢复上次阅读位置
-    if (settingStore.value.isRemeberPosition) {
-      restorePostion()
+    } else {
+      // 恢复上次阅读位置
+      if (settingStore.value.isRemeberPosition) {
+        restorePostion()
+      }
     }
 
     // 更新打开次数

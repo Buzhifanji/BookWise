@@ -23,7 +23,8 @@
     "openRecycleBinTitle": "Włącz funkcję kosza",
     "readMode": "tryb czytania",
     "rememberPositionDesc": "Po jego otwarciu ponowne wejście do interfejsu czytania spowoduje automatyczne przejście do ostatniej pozycji czytania.",
-    "rememberPositionTitle": "Czy zapamiętać ostatnią pozycję do czytania"
+    "rememberPositionTitle": "Czy zapamiętać ostatnią pozycję do czytania",
+    "autoHighlight": "Automatyczne podświetlenie"
   },
   "unfound": {
     "desc": "Przepraszamy, nie możemy znaleźć strony. \nNa stronie głównej znajdziesz wiele do odkrycia.",
@@ -134,10 +135,12 @@
     "noteDetail": "Zanotuj szczegóły",
     "removeSuccess": "Uwaga została pomyślnie usunięta",
     "sureRemove": "Potwierdź usunięcie notatki",
-    "placeholder": "Zapisz swoje myśli w tej chwili..."
+    "placeholder": "Zapisz swoje myśli w tej chwili...",
+    "write": "pisać pomysły"
   },
   "tag": {
-    "needTag": "Proszę wpisać tag"
+    "needTag": "Proszę wpisać tag",
+    "removeTagSuccess": "Tag został pomyślnie usunięty"
   },
   "statistics": {
     "bookUnit": "Książka",

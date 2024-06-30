@@ -23,7 +23,8 @@
     "openRecycleBinTitle": "Hidupkan fungsi tong kitar semula",
     "readMode": "mod membaca",
     "rememberPositionDesc": "Selepas membukanya, memasuki antara muka bacaan sekali lagi secara automatik akan melompat ke kedudukan bacaan terakhir.",
-    "rememberPositionTitle": "Sama ada untuk mengingati kedudukan bacaan terakhir"
+    "rememberPositionTitle": "Sama ada untuk mengingati kedudukan bacaan terakhir",
+    "autoHighlight": "Sorotan automatik"
   },
   "unfound": {
     "desc": "Maaf, kami tidak dapat mencari halaman. \nAnda akan temui banyak perkara untuk diterokai di halaman utama.",
@@ -134,10 +135,12 @@
     "noteDetail": "Nota butiran",
     "removeSuccess": "Nota berjaya dipadamkan",
     "sureRemove": "Sahkan pemadaman nota",
-    "placeholder": "Tuliskan pendapat anda pada masa ini..."
+    "placeholder": "Tuliskan pendapat anda pada masa ini...",
+    "write": "menulis idea"
   },
   "tag": {
-    "needTag": "Sila masukkan tag"
+    "needTag": "Sila masukkan tag",
+    "removeTagSuccess": "Tag berjaya dipadamkan"
   },
   "statistics": {
     "bookUnit": "Buku",

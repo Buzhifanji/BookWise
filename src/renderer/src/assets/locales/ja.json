@@ -23,7 +23,8 @@
     "openRecycleBinTitle": "ごみ箱機能をオンにする",
     "readMode": "読書モード",
     "rememberPositionDesc": "開いた後、再度読み取りインターフェイスに入ると、最後の読み取り位置に自動的にジャンプします。",
-    "rememberPositionTitle": "最後に読んだ位置を記憶するかどうか"
+    "rememberPositionTitle": "最後に読んだ位置を記憶するかどうか",
+    "autoHighlight": "自動ハイライト"
   },
   "unfound": {
     "desc": "申し訳ありませんが、ページが見つかりません。\nホームページでは調べられることがたくさん見つかります。",
@@ -134,10 +135,12 @@
     "noteDetail": "注意事項の詳細",
     "removeSuccess": "メモは正常に削除されました",
     "sureRemove": "メモの削除を確認する",
-    "placeholder": "この時の感想を書いてみる…"
+    "placeholder": "この時の感想を書いてみる…",
+    "write": "アイデアを書く"
   },
   "tag": {
-    "needTag": "タグを入力してください"
+    "needTag": "タグを入力してください",
+    "removeTagSuccess": "タグが正常に削除されました"
   },
   "statistics": {
     "bookUnit": "本",
