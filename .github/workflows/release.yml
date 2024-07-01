@@ -53,7 +53,7 @@ jobs:
       # 这个定义会启用3个系统进行打包
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-latest,  windows-latest]
 
     steps:
       - name: Check out Git repository
@@ -67,13 +67,13 @@ jobs:
       - name: Install pnpm
         run: npm i -g pnpm
 
-      - name: Install Snapcraft
-        uses: samuelmeuli/action-snapcraft@v2
-        if: startsWith(matrix.os, 'ubuntu')
-        env:
-          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SECRET_TOKEN }}
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      # - name: Install Snapcraft
+      #   uses: samuelmeuli/action-snapcraft@v2
+      #   if: startsWith(matrix.os, 'ubuntu')
+      #   env:
+      #     SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SECRET_TOKEN }}
+      # - name: Install dependencies
+      #   run: pnpm install --frozen-lockfile
 
       - name: Build Action
         run: pnpm release
