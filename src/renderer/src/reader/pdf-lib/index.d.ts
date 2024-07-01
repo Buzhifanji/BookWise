@@ -1,1 +1,1 @@
-export * from './types/web/pdf_viewer'
+export * from './types/src/pdf';

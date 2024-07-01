@@ -16,7 +16,7 @@ describe('测试 event-emitter 类', () => {
     const bus = new EventEmitter()
     const fn = vi.fn((a: number) => a + 1)
 
-    bus.on('param', (a: number) => fn(a))
+    bus.on('param', (a: any) => fn(a))
     bus.emit('param', 2)
 
     expect(fn).toBeCalled()
