@@ -14,34 +14,34 @@ jobs:
     permissions:
       contents: write
 
-      runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
 
-      steps:
-        - name: Check out Git repository
-          uses: actions/checkout@v4
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-        - name: Install Node.js
-          uses: actions/setup-node@v4
-          with:
-            node-version: 20
+      - name: Install pnpm
+        run: npm i -g pnpm
 
-        - name: Install pnpm
-          run: npm i -g pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-        - name: Install dependencies
-          run: pnpm install --frozen-lockfile
+      - name: Build web
+        run: pnpm build
+        env:
+          GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
-        - name: Build web
-          run: pnpm build
-          env:
-            GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
-
-        - name: Deploy website
-          # 部署github page
-          uses: JamesIves/github-pages-deploy-action@v4
-          with:
-            branch: docs
-            folder: out/renderer
+      - name: Deploy website
+        # 部署github page
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: docs
+          folder: out/renderer
   release:
     permissions:
       contents: write
