@@ -43,6 +43,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
+      - name: Install rsync 📚
+        run: |
+          apt-get update && apt-get install -y rsync
+
       - name: Deploy website
         # 部署github page
         uses: JamesIves/github-pages-deploy-action@v4
