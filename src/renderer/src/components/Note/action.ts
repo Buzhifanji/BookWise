@@ -7,7 +7,7 @@ import { liveQuery } from 'dexie'
 import { v4 as uuidv4 } from 'uuid'
 import { ref } from 'vue'
 
-export interface NoteText {
+export type NoteText = {
   value: string
   time: number
 }
