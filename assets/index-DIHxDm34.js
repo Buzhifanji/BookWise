@@ -6121,7 +6121,7 @@ function useModel(props, name, options = EMPTY_OBJ) {
   };
   return res;
 }
-function h$1(type, propsOrChildren, children) {
+function h$2(type, propsOrChildren, children) {
   const l2 = arguments.length;
   if (l2 === 2) {
     if (isObject$4(propsOrChildren) && !isArray$3(propsOrChildren)) {
@@ -6422,8 +6422,8 @@ function parseName(name) {
   return [event, options];
 }
 let cachedNow = 0;
-const p$1 = /* @__PURE__ */ Promise.resolve();
-const getNow = () => cachedNow || (p$1.then(() => cachedNow = 0), cachedNow = Date.now());
+const p$2 = /* @__PURE__ */ Promise.resolve();
+const getNow = () => cachedNow || (p$2.then(() => cachedNow = 0), cachedNow = Date.now());
 function createInvoker(initialValue, instance) {
   const invoker = (e2) => {
     if (!e2._vts) {
@@ -7908,7 +7908,7 @@ const RouterLinkImpl = /* @__PURE__ */ defineComponent({
     }));
     return () => {
       const children = slots.default && slots.default(link);
-      return props.custom ? children : h$1("a", {
+      return props.custom ? children : h$2("a", {
         "aria-current": link.isExactActive ? props.ariaCurrentValue : null,
         href: link.href,
         // this would override user added attrs but Vue will still add
@@ -8019,7 +8019,7 @@ const RouterViewImpl = /* @__PURE__ */ defineComponent({
           matchedRoute.instances[currentName] = null;
         }
       };
-      const component = h$1(ViewComponent, assign$3({}, routeProps, attrs, {
+      const component = h$2(ViewComponent, assign$3({}, routeProps, attrs, {
         onVnodeUnmounted,
         ref: viewRef
       }));
@@ -8606,8 +8606,8 @@ function toValue$1(r2) {
 const isClient$1 = typeof window !== "undefined" && typeof document !== "undefined";
 typeof WorkerGlobalScope !== "undefined" && globalThis instanceof WorkerGlobalScope;
 const notNullish = (val) => val != null;
-const toString$1 = Object.prototype.toString;
-const isObject$3 = (val) => toString$1.call(val) === "[object Object]";
+const toString$2 = Object.prototype.toString;
+const isObject$3 = (val) => toString$2.call(val) === "[object Object]";
 const noop$1 = () => {
 };
 const isIOS = /* @__PURE__ */ getIsIOS();
@@ -10765,7 +10765,7 @@ const inBrowser = typeof window !== "undefined";
 const makeSymbol = (name, shareable = false) => !shareable ? Symbol(name) : Symbol.for(name);
 const generateFormatCacheKey = (locale, key, source) => friendlyJSONstringify({ l: locale, k: key, s: source });
 const friendlyJSONstringify = (json) => JSON.stringify(json).replace(/\u2028/g, "\\u2028").replace(/\u2029/g, "\\u2029").replace(/\u0027/g, "\\u0027");
-const isNumber$1 = (val) => typeof val === "number" && isFinite(val);
+const isNumber$2 = (val) => typeof val === "number" && isFinite(val);
 const isDate = (val) => toTypeString(val) === "[object Date]";
 const isRegExp = (val) => toTypeString(val) === "[object RegExp]";
 const isEmptyObject = (val) => isPlainObject$1(val) && Object.keys(val).length === 0;
@@ -12689,7 +12689,7 @@ function formatSubPath(path) {
   }
   return isLiteral(trimmed) ? stripQuotes(trimmed) : "*" + trimmed;
 }
-function parse$1(path) {
+function parse$2(path) {
   const keys = [];
   let index = -1;
   let mode = 0;
@@ -12810,7 +12810,7 @@ function resolveValue(obj, path) {
   }
   let hit = cache$2.get(path);
   if (!hit) {
-    hit = parse$1(path);
+    hit = parse$2(path);
     if (hit) {
       cache$2.set(path, hit);
     }
@@ -12847,8 +12847,8 @@ function pluralDefault(choice, choicesLength) {
   return choice ? Math.min(choice, 2) : 0;
 }
 function getPluralIndex(options) {
-  const index = isNumber$1(options.pluralIndex) ? options.pluralIndex : -1;
-  return options.named && (isNumber$1(options.named.count) || isNumber$1(options.named.n)) ? isNumber$1(options.named.count) ? options.named.count : isNumber$1(options.named.n) ? options.named.n : index : index;
+  const index = isNumber$2(options.pluralIndex) ? options.pluralIndex : -1;
+  return options.named && (isNumber$2(options.named.count) || isNumber$2(options.named.n)) ? isNumber$2(options.named.count) ? options.named.count : isNumber$2(options.named.n) ? options.named.n : index : index;
 }
 function normalizeNamed(pluralIndex, props) {
   if (!props.count) {
@@ -12869,7 +12869,7 @@ function createMessageContext(options = {}) {
   const _list = options.list || [];
   const list = (index) => _list[index];
   const _named = options.named || {};
-  isNumber$1(options.pluralIndex) && normalizeNamed(pluralIndex, _named);
+  isNumber$2(options.pluralIndex) && normalizeNamed(pluralIndex, _named);
   const named = (key) => _named[key];
   function message(key) {
     const msg = isFunction(options.messages) ? options.messages(key) : isObject$2(options.messages) ? options.messages[key] : false;
@@ -13475,11 +13475,11 @@ function evaluateMessage(context, msg, msgCtx) {
 function parseTranslateArgs(...args) {
   const [arg1, arg2, arg3] = args;
   const options = {};
-  if (!isString$2(arg1) && !isNumber$1(arg1) && !isMessageFunction(arg1) && !isMessageAST(arg1)) {
+  if (!isString$2(arg1) && !isNumber$2(arg1) && !isMessageFunction(arg1) && !isMessageAST(arg1)) {
     throw createCoreError(CoreErrorCodes.INVALID_ARGUMENT);
   }
-  const key = isNumber$1(arg1) ? String(arg1) : isMessageFunction(arg1) ? arg1 : arg1;
-  if (isNumber$1(arg2)) {
+  const key = isNumber$2(arg1) ? String(arg1) : isMessageFunction(arg1) ? arg1 : arg1;
+  if (isNumber$2(arg2)) {
     options.plural = arg2;
   } else if (isString$2(arg2)) {
     options.default = arg2;
@@ -13488,7 +13488,7 @@ function parseTranslateArgs(...args) {
   } else if (isArray$1(arg2)) {
     options.list = arg2;
   }
-  if (isNumber$1(arg3)) {
+  if (isNumber$2(arg3)) {
     options.plural = arg3;
   } else if (isString$2(arg3)) {
     options.default = arg3;
@@ -13547,7 +13547,7 @@ function getMessageContextOptions(context, locale, message, options) {
   if (options.named) {
     ctxOptions.named = options.named;
   }
-  if (isNumber$1(options.plural)) {
+  if (isNumber$2(options.plural)) {
     ctxOptions.pluralIndex = options.plural;
   }
   return ctxOptions;
@@ -13639,7 +13639,7 @@ function parseDateTimeArgs(...args) {
       throw createCoreError(CoreErrorCodes.INVALID_DATE_ARGUMENT);
     }
     value = arg1;
-  } else if (isNumber$1(arg1)) {
+  } else if (isNumber$2(arg1)) {
     value = arg1;
   } else {
     throw createCoreError(CoreErrorCodes.INVALID_ARGUMENT);
@@ -13744,7 +13744,7 @@ function parseNumberArgs(...args) {
   const [arg1, arg2, arg3, arg4] = args;
   const options = {};
   let overrides = {};
-  if (!isNumber$1(arg1)) {
+  if (!isNumber$2(arg1)) {
     throw createCoreError(CoreErrorCodes.INVALID_ARGUMENT);
   }
   const value = arg1;
@@ -14127,7 +14127,7 @@ function createComposer(options = {}, VueI18nLegacy) {
       }
     }
     if (warnType !== "translate exists" && // for not `te` (e.g `t`)
-    isNumber$1(ret) && ret === NOT_REOSLVED || warnType === "translate exists" && !ret) {
+    isNumber$2(ret) && ret === NOT_REOSLVED || warnType === "translate exists" && !ret) {
       const [key, arg2] = argumentParser();
       return __root && _fallbackRoot ? fallbackSuccess(__root) : fallbackFail(key);
     } else if (successCondition(ret)) {
@@ -14153,7 +14153,7 @@ function createComposer(options = {}, VueI18nLegacy) {
     return wrapWithDeps((context) => Reflect.apply(number, null, [context, ...args]), () => parseNumberArgs(...args), "number format", (root) => Reflect.apply(root.n, root, [...args]), () => MISSING_RESOLVE_VALUE, (val) => isString$2(val));
   }
   function normalize2(values2) {
-    return values2.map((val) => isString$2(val) || isNumber$1(val) || isBoolean(val) ? createTextNode(String(val)) : val);
+    return values2.map((val) => isString$2(val) || isNumber$2(val) || isBoolean(val) ? createTextNode(String(val)) : val);
   }
   const interpolate = (val) => val;
   const processor = {
@@ -14627,7 +14627,7 @@ function createVueI18n(options = {}, VueI18nLegacy) {
         const key = arg1;
         if (isString$2(arg2)) {
           options2.locale = arg2;
-        } else if (isNumber$1(arg2)) {
+        } else if (isNumber$2(arg2)) {
           options2.plural = arg2;
         } else if (isArray$1(arg2)) {
           list = arg2;
@@ -14761,7 +14761,7 @@ const TranslationImpl = /* @__PURE__ */ defineComponent({
     plural: {
       type: [Number, String],
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      validator: (val) => isNumber$1(val) || !isNaN(val)
+      validator: (val) => isNumber$2(val) || !isNaN(val)
     }
   }, baseFormatProps),
   /* eslint-enable */
@@ -14785,7 +14785,7 @@ const TranslationImpl = /* @__PURE__ */ defineComponent({
       const children = i18n2[TranslateVNodeSymbol](props.keypath, arg, options);
       const assignedAttrs = assign$1({}, attrs);
       const tag2 = isString$2(props.tag) || isObject$2(props.tag) ? props.tag : getFragmentableTag();
-      return h$1(tag2, assignedAttrs, children);
+      return h$2(tag2, assignedAttrs, children);
     };
   }
 });
@@ -14827,7 +14827,7 @@ function renderFormatter(props, context, slotKeys, partFormatter) {
     }
     const assignedAttrs = assign$1({}, attrs);
     const tag2 = isString$2(props.tag) || isObject$2(props.tag) ? props.tag : getFragmentableTag();
-    return h$1(tag2, assignedAttrs, children);
+    return h$2(tag2, assignedAttrs, children);
   };
 }
 const NumberFormatImpl = /* @__PURE__ */ defineComponent({
@@ -14964,10 +14964,10 @@ function makeParams(value) {
   if (isString$2(locale)) {
     options.locale = locale;
   }
-  if (isNumber$1(choice)) {
+  if (isNumber$2(choice)) {
     options.plural = choice;
   }
-  if (isNumber$1(plural)) {
+  if (isNumber$2(plural)) {
     options.plural = plural;
   }
   return [path, named, options];
@@ -15683,14 +15683,14 @@ const langs = Object.keys(languageMap).map((key) => ({
   id: key,
   value: languageMap[key]
 }));
-function t$2(key) {
+function t$3(key) {
   return i18n.global.t(key);
 }
 const readModeList = computed(() => {
   return [
-    { id: ReadMode.sroll, value: t$2("readMode.scroll") },
-    { id: ReadMode.section, value: t$2("readMode.section") },
-    { id: ReadMode.double, value: t$2("readMode.double") }
+    { id: ReadMode.sroll, value: t$3("readMode.scroll") },
+    { id: ReadMode.section, value: t$3("readMode.section") },
+    { id: ReadMode.double, value: t$3("readMode.double") }
   ];
 });
 const getSelectReadMode = (readMode2) => {
@@ -15698,9 +15698,9 @@ const getSelectReadMode = (readMode2) => {
 };
 const bookshelfModeList = computed(() => {
   return [
-    { id: BookshelftMode.bookshelf, value: t$2("bookMode.bookshelf") },
-    { id: BookshelftMode.card, value: t$2("bookMode.card") },
-    { id: BookshelftMode.list, value: t$2("bookMode.list") }
+    { id: BookshelftMode.bookshelf, value: t$3("bookMode.bookshelf") },
+    { id: BookshelftMode.card, value: t$3("bookMode.card") },
+    { id: BookshelftMode.list, value: t$3("bookMode.list") }
   ];
 });
 const data = [
@@ -16780,7 +16780,7 @@ var defaultAttributes = {
  * See the LICENSE file in the root directory of this source tree.
  */
 const Icon = ({ size: size2, strokeWidth = 2, absoluteStrokeWidth, color, iconNode, name, class: classes, ...props }, { slots }) => {
-  return h$1(
+  return h$2(
     "svg",
     {
       ...defaultAttributes,
@@ -16791,7 +16791,7 @@ const Icon = ({ size: size2, strokeWidth = 2, absoluteStrokeWidth, color, iconNo
       class: ["lucide", `lucide-${toKebabCase(name ?? "icon")}`],
       ...props
     },
-    [...iconNode.map((child) => h$1(...child)), ...slots.default ? [slots.default()] : []]
+    [...iconNode.map((child) => h$2(...child)), ...slots.default ? [slots.default()] : []]
   );
 };
 /**
@@ -16800,7 +16800,7 @@ const Icon = ({ size: size2, strokeWidth = 2, absoluteStrokeWidth, color, iconNo
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const createLucideIcon = (iconName, iconNode) => (props, { slots }) => h$1(
+const createLucideIcon = (iconName, iconNode) => (props, { slots }) => h$2(
   Icon,
   {
     ...props,
@@ -20616,7 +20616,7 @@ class BookAction {
     try {
       return db.books.bulkAdd(book2);
     } catch (error) {
-      toastError(t$2("book.importBookFail") + error);
+      toastError(t$3("book.importBookFail") + error);
       return Promise.reject(error);
     }
   }
@@ -20636,7 +20636,7 @@ class BookAction {
     try {
       return db.books.update(id2, { ...value, updateTime: now() });
     } catch (error) {
-      toastError(t$2("common.editFail") + error);
+      toastError(t$3("common.editFail") + error);
       return Promise.reject(error);
     }
   }
@@ -20644,7 +20644,7 @@ class BookAction {
     try {
       return db.books.update(id2, { isDelete: null });
     } catch (error) {
-      toastError(t$2("common.restoreFail") + error);
+      toastError(t$3("common.restoreFail") + error);
       return Promise.reject(error);
     }
   }
@@ -20652,7 +20652,7 @@ class BookAction {
     try {
       return db.books.get(id2);
     } catch (error) {
-      toastError(t$2("book.getBookFail") + error);
+      toastError(t$3("book.getBookFail") + error);
       return Promise.reject(error);
     }
   }
@@ -20660,7 +20660,7 @@ class BookAction {
     try {
       return db.books.toArray();
     } catch (error) {
-      toastError(t$2("book.getBookListFail") + error);
+      toastError(t$3("book.getBookListFail") + error);
       return Promise.reject(error);
     }
   }
@@ -20670,7 +20670,7 @@ class BookAction {
         liveQuery(async () => (await db.books.toArray()).find((item) => item.id === id2))
       );
     } catch (error) {
-      toastError(t$2("book.getBookFail") + error);
+      toastError(t$3("book.getBookFail") + error);
       return void 0;
     }
   }
@@ -20682,7 +20682,7 @@ class BookAction {
         )
       );
     } catch (error) {
-      toastError(t$2("book.getBookListFail") + error);
+      toastError(t$3("book.getBookListFail") + error);
       return [];
     }
   }
@@ -20710,7 +20710,7 @@ class BookContentAction {
     try {
       return db.bookContents.bulkPut(bookContentList);
     } catch (error) {
-      toastError(t$2("book.importBookFail") + error);
+      toastError(t$3("book.importBookFail") + error);
       return Promise.reject(error);
     }
   }
@@ -20728,7 +20728,7 @@ class BookReadTimeAction {
       };
       return db.readTime.put(time);
     } catch (error) {
-      toastError(t$2("book.recordBookTimeFail") + error);
+      toastError(t$3("book.recordBookTimeFail") + error);
       return Promise.reject(error);
     }
   }
@@ -20743,7 +20743,7 @@ class BookReadTimeAction {
         )
       );
     } catch (error) {
-      toastError(t$2("book.getBookReadTimeFail") + error);
+      toastError(t$3("book.getBookReadTimeFail") + error);
       return [];
     }
   }
@@ -20751,15 +20751,15 @@ class BookReadTimeAction {
     try {
       return db.readTime.where("eBookId").equals(eBookId).toArray();
     } catch (error) {
-      toastError(t$2("book.getBookReadTimeListFail") + error);
+      toastError(t$3("book.getBookReadTimeListFail") + error);
       return [];
     }
   }
 }
-const t$1 = (t2) => "object" == typeof t2 && null != t2 && 1 === t2.nodeType, e$2 = (t2, e2) => (!e2 || "hidden" !== t2) && ("visible" !== t2 && "clip" !== t2), n$1 = (t2, n2) => {
+const t$2 = (t2) => "object" == typeof t2 && null != t2 && 1 === t2.nodeType, e$3 = (t2, e2) => (!e2 || "hidden" !== t2) && ("visible" !== t2 && "clip" !== t2), n$2 = (t2, n2) => {
   if (t2.clientHeight < t2.scrollHeight || t2.clientWidth < t2.scrollWidth) {
     const o2 = getComputedStyle(t2, null);
-    return e$2(o2.overflowY, n2) || e$2(o2.overflowX, n2) || ((t3) => {
+    return e$3(o2.overflowY, n2) || e$3(o2.overflowX, n2) || ((t3) => {
       const e2 = ((t4) => {
         if (!t4.ownerDocument || !t4.ownerDocument.defaultView)
           return null;
@@ -20773,24 +20773,24 @@ const t$1 = (t2) => "object" == typeof t2 && null != t2 && 1 === t2.nodeType, e$
     })(t2);
   }
   return false;
-}, o$2 = (t2, e2, n2, o2, l2, r2, i2, s) => r2 < t2 && i2 > e2 || r2 > t2 && i2 < e2 ? 0 : r2 <= t2 && s <= n2 || i2 >= e2 && s >= n2 ? r2 - t2 - o2 : i2 > e2 && s < n2 || r2 < t2 && s > n2 ? i2 - e2 + l2 : 0, l$1 = (t2) => {
+}, o$3 = (t2, e2, n2, o2, l2, r2, i2, s) => r2 < t2 && i2 > e2 || r2 > t2 && i2 < e2 ? 0 : r2 <= t2 && s <= n2 || i2 >= e2 && s >= n2 ? r2 - t2 - o2 : i2 > e2 && s < n2 || r2 < t2 && s > n2 ? i2 - e2 + l2 : 0, l$2 = (t2) => {
   const e2 = t2.parentElement;
   return null == e2 ? t2.getRootNode().host || null : e2;
-}, r$1 = (e2, r2) => {
+}, r$2 = (e2, r2) => {
   var i2, s, d, h2;
   if ("undefined" == typeof document)
     return [];
   const { scrollMode: c, block: f2, inline: u, boundary: a2, skipOverflowHiddenElements: g2 } = r2, p2 = "function" == typeof a2 ? a2 : (t2) => t2 !== a2;
-  if (!t$1(e2))
+  if (!t$2(e2))
     throw new TypeError("Invalid target");
   const m2 = document.scrollingElement || document.documentElement, w2 = [];
   let W = e2;
-  for (; t$1(W) && p2(W); ) {
-    if (W = l$1(W), W === m2) {
+  for (; t$2(W) && p2(W); ) {
+    if (W = l$2(W), W === m2) {
       w2.push(W);
       break;
     }
-    null != W && W === document.body && n$1(W) && !n$1(document.documentElement) || null != W && n$1(W, g2) && w2.push(W);
+    null != W && W === document.body && n$2(W) && !n$2(document.documentElement) || null != W && n$2(W, g2) && w2.push(W);
   }
   const b2 = null != (s = null == (i2 = window.visualViewport) ? void 0 : i2.width) ? s : innerWidth, H = null != (h2 = null == (d = window.visualViewport) ? void 0 : d.height) ? h2 : innerHeight, { scrollX: y2, scrollY: M } = window, { height: v2, width: E2, top: x2, right: C, bottom: I, left: R } = e2.getBoundingClientRect(), { top: T2, right: B, bottom: F, left: V } = ((t2) => {
     const e3 = window.getComputedStyle(t2);
@@ -20806,9 +20806,9 @@ const t$1 = (t2) => "object" == typeof t2 && null != t2 && 1 === t2.nodeType, e$
     let T3 = 0, B2 = 0;
     const F2 = "offsetWidth" in e3 ? e3.offsetWidth - e3.clientWidth - a3 - p3 : 0, V2 = "offsetHeight" in e3 ? e3.offsetHeight - e3.clientHeight - g3 - W2 : 0, S2 = "offsetWidth" in e3 ? 0 === e3.offsetWidth ? 0 : l2 / e3.offsetWidth : 0, X2 = "offsetHeight" in e3 ? 0 === e3.offsetHeight ? 0 : n2 / e3.offsetHeight : 0;
     if (m2 === e3)
-      T3 = "start" === f2 ? k2 : "end" === f2 ? k2 - H : "nearest" === f2 ? o$2(M, M + H, H, g3, W2, M + k2, M + k2 + v2, v2) : k2 - H / 2, B2 = "start" === u ? D : "center" === u ? D - b2 / 2 : "end" === u ? D - b2 : o$2(y2, y2 + b2, b2, a3, p3, y2 + D, y2 + D + E2, E2), T3 = Math.max(0, T3 + M), B2 = Math.max(0, B2 + y2);
+      T3 = "start" === f2 ? k2 : "end" === f2 ? k2 - H : "nearest" === f2 ? o$3(M, M + H, H, g3, W2, M + k2, M + k2 + v2, v2) : k2 - H / 2, B2 = "start" === u ? D : "center" === u ? D - b2 / 2 : "end" === u ? D - b2 : o$3(y2, y2 + b2, b2, a3, p3, y2 + D, y2 + D + E2, E2), T3 = Math.max(0, T3 + M), B2 = Math.max(0, B2 + y2);
     else {
-      T3 = "start" === f2 ? k2 - r3 - g3 : "end" === f2 ? k2 - s2 + W2 + V2 : "nearest" === f2 ? o$2(r3, s2, n2, g3, W2 + V2, k2, k2 + v2, v2) : k2 - (r3 + n2 / 2) + V2 / 2, B2 = "start" === u ? D - d2 - a3 : "center" === u ? D - (d2 + l2 / 2) + F2 / 2 : "end" === u ? D - i3 + p3 + F2 : o$2(d2, i3, l2, a3, p3 + F2, D, D + E2, E2);
+      T3 = "start" === f2 ? k2 - r3 - g3 : "end" === f2 ? k2 - s2 + W2 + V2 : "nearest" === f2 ? o$3(r3, s2, n2, g3, W2 + V2, k2, k2 + v2, v2) : k2 - (r3 + n2 / 2) + V2 / 2, B2 = "start" === u ? D - d2 - a3 : "center" === u ? D - (d2 + l2 / 2) + F2 / 2 : "end" === u ? D - i3 + p3 + F2 : o$3(d2, i3, l2, a3, p3 + F2, D, D + E2, E2);
       const { scrollLeft: t3, scrollTop: h4 } = e3;
       T3 = 0 === X2 ? 0 : Math.max(0, Math.min(h4 + T3 / X2, e3.scrollHeight - n2 / X2 + V2)), B2 = 0 === S2 ? 0 : Math.max(0, Math.min(t3 + B2 / S2, e3.scrollWidth - l2 / S2 + F2)), k2 += h4 - T3, D += t3 - B2;
     }
@@ -20816,8 +20816,8 @@ const t$1 = (t2) => "object" == typeof t2 && null != t2 && 1 === t2.nodeType, e$
   }
   return L;
 };
-const o$1 = (t2) => false === t2 ? { block: "end", inline: "nearest" } : ((t3) => t3 === Object(t3) && 0 !== Object.keys(t3).length)(t2) ? t2 : { block: "start", inline: "nearest" };
-function e$1(e2, r2) {
+const o$2 = (t2) => false === t2 ? { block: "end", inline: "nearest" } : ((t3) => t3 === Object(t3) && 0 !== Object.keys(t3).length)(t2) ? t2 : { block: "start", inline: "nearest" };
+function e$2(e2, r2) {
   if (!e2.isConnected || !((t2) => {
     let o2 = t2;
     for (; o2 && o2.parentNode; ) {
@@ -20833,9 +20833,9 @@ function e$1(e2, r2) {
     return { top: parseFloat(o2.scrollMarginTop) || 0, right: parseFloat(o2.scrollMarginRight) || 0, bottom: parseFloat(o2.scrollMarginBottom) || 0, left: parseFloat(o2.scrollMarginLeft) || 0 };
   })(e2);
   if (((t2) => "object" == typeof t2 && "function" == typeof t2.behavior)(r2))
-    return r2.behavior(r$1(e2, r2));
+    return r2.behavior(r$2(e2, r2));
   const l2 = "boolean" == typeof r2 || null == r2 ? void 0 : r2.behavior;
-  for (const { el: a2, top: i2, left: s } of r$1(e2, o$1(r2))) {
+  for (const { el: a2, top: i2, left: s } of r$2(e2, o$2(r2))) {
     const t2 = i2 - n2.top + n2.bottom, o2 = s - n2.left + n2.right;
     a2.scroll({ top: t2, left: o2, behavior: l2 });
   }
@@ -20916,7 +20916,7 @@ const _sfc_main$J = /* @__PURE__ */ defineComponent({
       const target = node.children[get(activePlaceholder)]?.firstElementChild;
       if (!target)
         return;
-      e$1(target, { behavior: "smooth", scrollMode: "if-needed" });
+      e$2(target, { behavior: "smooth", scrollMode: "if-needed" });
     };
     const onAdd = useThrottleFn(async () => {
       const index = get(activePlaceholder);
@@ -20988,14 +20988,14 @@ const _sfc_main$J = /* @__PURE__ */ defineComponent({
         setSubmitLoading(true);
         const group = get(groupValue);
         if (!group) {
-          set$1(groupError, t$2("book.neeSelectBookshelf"));
+          set$1(groupError, t$3("book.neeSelectBookshelf"));
           return;
         }
         await BookAction.update(props.book.id, { group });
-        toastSuccess(t$2("book.addToBookshelfSuccess"));
+        toastSuccess(t$3("book.addToBookshelfSuccess"));
         closeDialog();
       } catch (err) {
-        toastError(`${t$2("book.addToBookshelfFail")}: ${err}`);
+        toastError(`${t$3("book.addToBookshelfFail")}: ${err}`);
       } finally {
         setSubmitLoading(false);
       }
@@ -21013,7 +21013,7 @@ const _sfc_main$J = /* @__PURE__ */ defineComponent({
           }, ["prevent"]))
         }, [
           createBaseVNode("div", _hoisted_1$D, [
-            createBaseVNode("h3", _hoisted_2$x, toDisplayString$1(unref(t$2)("book.addToBookshelf")), 1),
+            createBaseVNode("h3", _hoisted_2$x, toDisplayString$1(unref(t$3)("book.addToBookshelf")), 1),
             createBaseVNode("div", {
               onClick: _cache[0] || (_cache[0] = //@ts-ignore
               (...args) => unref(closeDialog) && unref(closeDialog)(...args))
@@ -21022,20 +21022,20 @@ const _sfc_main$J = /* @__PURE__ */ defineComponent({
           unref(loading) ? (openBlock(), createElementBlock("div", _hoisted_5$k, _hoisted_8$e)) : (openBlock(), createElementBlock("form", _hoisted_9$d, [
             createBaseVNode("div", _hoisted_10$c, [
               createBaseVNode("div", _hoisted_11$c, [
-                createBaseVNode("span", null, toDisplayString$1(unref(t$2)("book.name")), 1),
+                createBaseVNode("span", null, toDisplayString$1(unref(t$3)("book.name")), 1),
                 createBaseVNode("div", _hoisted_12$b, toDisplayString$1(_ctx.book.name), 1)
               ]),
               createBaseVNode("div", _hoisted_13$8, [
                 createBaseVNode("label", {
                   class: normalizeClass(["input input-bordered flex items-center gap-2", { "input-error": groupError.value }])
                 }, [
-                  createTextVNode(toDisplayString$1(unref(t$2)("book.bookshelf")) + " ", 1),
+                  createTextVNode(toDisplayString$1(unref(t$3)("book.bookshelf")) + " ", 1),
                   groupValue.value ? (openBlock(), createElementBlock("span", _hoisted_14$8, toDisplayString$1(unref(BookshelfAction).toBookshelf(groupValue.value).name), 1)) : createCommentVNode("", true),
                   withDirectives(createBaseVNode("input", {
                     type: "text",
                     class: "grow",
                     "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => chooseGroup.value = $event),
-                    placeholder: unref(t$2)("book.needBookshelfName"),
+                    placeholder: unref(t$3)("book.needBookshelfName"),
                     ref_key: "inputRef",
                     ref: inputRef,
                     onKeydown: [
@@ -21077,14 +21077,14 @@ const _sfc_main$J = /* @__PURE__ */ defineComponent({
                 type: "button",
                 onClick: _cache[6] || (_cache[6] = //@ts-ignore
                 (...args) => unref(closeDialog) && unref(closeDialog)(...args))
-              }, toDisplayString$1(unref(t$2)("common.cancel")), 1),
+              }, toDisplayString$1(unref(t$3)("common.cancel")), 1),
               createBaseVNode("button", {
                 class: "btn btn-success ml-4",
                 type: "button",
                 onClick: submit
               }, [
                 unref(submitLoading) ? (openBlock(), createElementBlock("span", _hoisted_20$7)) : createCommentVNode("", true),
-                createTextVNode(" " + toDisplayString$1(unref(t$2)("common.sure")), 1)
+                createTextVNode(" " + toDisplayString$1(unref(t$3)("common.sure")), 1)
               ])
             ])
           ]))
@@ -21452,7 +21452,7 @@ class NoteAction {
       await db.notes.put(res);
       return res;
     } catch (error) {
-      toastError(t$2("note.addNoteFail"));
+      toastError(t$3("note.addNoteFail"));
       return Promise.reject(error);
     }
   }
@@ -21460,7 +21460,7 @@ class NoteAction {
     try {
       return db.notes.delete(id2);
     } catch (error) {
-      toastError(t$2("common.removeFail"));
+      toastError(t$3("common.removeFail"));
       return Promise.reject(error);
     }
   }
@@ -21471,7 +21471,7 @@ class NoteAction {
     try {
       return db.notes.update(id2, { ...value, updateTime: now() });
     } catch (error) {
-      toastError(t$2("common.updateFail"));
+      toastError(t$3("common.updateFail"));
       return Promise.reject(error);
     }
   }
@@ -21484,7 +21484,7 @@ class NoteAction {
       }
       return false;
     } catch (error) {
-      toastError(t$2("common.updateFail"));
+      toastError(t$3("common.updateFail"));
       return Promise.reject(error);
     }
   }
@@ -21494,7 +21494,7 @@ class NoteAction {
         liveQuery(async () => (await db.notes.toArray()).filter((item) => !item.isDelete))
       );
     } catch (error) {
-      toastError(t$2("note.getNoteFail"));
+      toastError(t$3("note.getNoteFail"));
       return ref([]);
     }
   }
@@ -21508,7 +21508,7 @@ class NoteAction {
         )
       );
     } catch (error) {
-      toastError(t$2("note.getNoteListFail"));
+      toastError(t$3("note.getNoteListFail"));
       return ref([]);
     }
   }
@@ -21657,12 +21657,12 @@ const _sfc_main$I = /* @__PURE__ */ defineComponent({
         highlightLen.value = notes.filter((item) => item.notes === "").length;
         notesLen.value = notes.filter((item) => item.notes !== "").length;
       } catch (err) {
-        toastError(`${t$2("book.readDetailFail")}: ${err}`);
+        toastError(`${t$3("book.readDetailFail")}: ${err}`);
       } finally {
         setLoading(false);
       }
     };
-    const getScore = (val) => isUndefined(val) || val === -1 ? t$2("common.unknown") : val;
+    const getScore = (val) => isUndefined(val) || val === -1 ? t$3("common.unknown") : val;
     initEdite();
     return (_ctx, _cache) => {
       const _component_SkeletonView = resolveComponent("SkeletonView");
@@ -21674,7 +21674,7 @@ const _sfc_main$I = /* @__PURE__ */ defineComponent({
       }, [
         withDirectives((openBlock(), createElementBlock("div", _hoisted_1$C, [
           createBaseVNode("div", _hoisted_2$w, [
-            createBaseVNode("h3", _hoisted_3$q, toDisplayString$1(unref(t$2)("book.detail")), 1),
+            createBaseVNode("h3", _hoisted_3$q, toDisplayString$1(unref(t$3)("book.detail")), 1),
             createBaseVNode("div", {
               onClick: _cache[0] || (_cache[0] = //@ts-ignore
               (...args) => unref(closeDialog) && unref(closeDialog)(...args))
@@ -21689,39 +21689,39 @@ const _sfc_main$I = /* @__PURE__ */ defineComponent({
               ]),
               createBaseVNode("div", _hoisted_10$b, [
                 createBaseVNode("div", _hoisted_11$b, [
-                  createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.name")), 1),
+                  createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.name")), 1),
                   createBaseVNode("div", _hoisted_12$a, toDisplayString$1(_ctx.book.name), 1)
                 ]),
                 createBaseVNode("div", _hoisted_13$7, [
-                  createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.author")), 1),
+                  createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.author")), 1),
                   createBaseVNode("div", _hoisted_14$7, toDisplayString$1(_ctx.book.author), 1)
                 ]),
                 createBaseVNode("div", _hoisted_15$7, [
-                  createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.size")), 1),
+                  createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.size")), 1),
                   createBaseVNode("div", _hoisted_16$7, toDisplayString$1(unref(formatFileSize)(_ctx.book.size)), 1)
                 ]),
                 createBaseVNode("div", _hoisted_17$7, [
-                  createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.page")), 1),
+                  createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.page")), 1),
                   createBaseVNode("div", _hoisted_18$7, toDisplayString$1(_ctx.book.pages), 1)
                 ]),
                 createBaseVNode("div", _hoisted_19$7, [
-                  createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.publisher")), 1),
-                  _ctx.book.publisher ? (openBlock(), createElementBlock("div", _hoisted_20$6, toDisplayString$1(_ctx.book.publisher), 1)) : (openBlock(), createElementBlock("div", _hoisted_21$6, toDisplayString$1(unref(t$2)("common.unknown")), 1))
+                  createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.publisher")), 1),
+                  _ctx.book.publisher ? (openBlock(), createElementBlock("div", _hoisted_20$6, toDisplayString$1(_ctx.book.publisher), 1)) : (openBlock(), createElementBlock("div", _hoisted_21$6, toDisplayString$1(unref(t$3)("common.unknown")), 1))
                 ]),
                 createBaseVNode("div", _hoisted_22$6, [
-                  createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.publishTime")), 1),
-                  _ctx.book.publishTime ? (openBlock(), createElementBlock("div", _hoisted_23$6, toDisplayString$1(unref(dayjs)(_ctx.book.publishTime).format("L LT")), 1)) : (openBlock(), createElementBlock("div", _hoisted_24$6, toDisplayString$1(unref(t$2)("common.unknown")), 1))
+                  createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.publishTime")), 1),
+                  _ctx.book.publishTime ? (openBlock(), createElementBlock("div", _hoisted_23$6, toDisplayString$1(unref(dayjs)(_ctx.book.publishTime).format("L LT")), 1)) : (openBlock(), createElementBlock("div", _hoisted_24$6, toDisplayString$1(unref(t$3)("common.unknown")), 1))
                 ]),
                 _ctx.book.createTime ? (openBlock(), createElementBlock("div", _hoisted_25$5, [
-                  createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.createTime")), 1),
+                  createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.createTime")), 1),
                   createBaseVNode("div", _hoisted_26$5, toDisplayString$1(unref(dayjs)(_ctx.book.createTime).format("L LT")), 1)
                 ])) : createCommentVNode("", true),
                 _ctx.book.updateTime ? (openBlock(), createElementBlock("div", _hoisted_27$5, [
-                  createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.updateTime")), 1),
+                  createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.updateTime")), 1),
                   createBaseVNode("div", _hoisted_28$5, toDisplayString$1(unref(dayjs)(_ctx.book.updateTime).format("L LT")), 1)
                 ])) : createCommentVNode("", true),
                 createBaseVNode("div", _hoisted_29$4, [
-                  createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.score")), 1),
+                  createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.score")), 1),
                   createBaseVNode("div", _hoisted_30$4, [
                     createVNode(_component_ScoreInputView, {
                       value: _ctx.book.score,
@@ -21731,27 +21731,27 @@ const _sfc_main$I = /* @__PURE__ */ defineComponent({
                   createBaseVNode("div", _hoisted_31$3, toDisplayString$1(getScore(_ctx.book.score)), 1)
                 ]),
                 createBaseVNode("div", _hoisted_32$3, [
-                  createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.openCount")), 1),
+                  createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.openCount")), 1),
                   createBaseVNode("div", _hoisted_33$2, toDisplayString$1(_ctx.book.count), 1)
                 ]),
                 createBaseVNode("div", _hoisted_34$2, [
-                  createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.readProgress")), 1),
+                  createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.readProgress")), 1),
                   createBaseVNode("div", _hoisted_35$2, toDisplayString$1(unref(formatDecimal)(_ctx.book.progress * 100)) + "%", 1)
                 ]),
                 createBaseVNode("div", _hoisted_36$2, [
-                  createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.totalReadTime")), 1),
-                  createBaseVNode("div", _hoisted_37$1, toDisplayString$1(totalReadTime.value) + toDisplayString$1(unref(t$2)("common.minute")), 1)
+                  createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.totalReadTime")), 1),
+                  createBaseVNode("div", _hoisted_37$1, toDisplayString$1(totalReadTime.value) + toDisplayString$1(unref(t$3)("common.minute")), 1)
                 ]),
                 createBaseVNode("div", _hoisted_38, [
-                  createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.highlightLen")), 1),
+                  createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.highlightLen")), 1),
                   createBaseVNode("div", _hoisted_39, toDisplayString$1(highlightLen.value), 1)
                 ]),
                 createBaseVNode("div", _hoisted_40, [
-                  createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.notesLen")), 1),
+                  createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.notesLen")), 1),
                   createBaseVNode("div", _hoisted_41, toDisplayString$1(notesLen.value), 1)
                 ]),
                 _ctx.book.group ? (openBlock(), createElementBlock("div", _hoisted_42, [
-                  createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.bookshelf")), 1),
+                  createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.bookshelf")), 1),
                   createBaseVNode("div", _hoisted_43, toDisplayString$1(unref(BookshelfAction).toBookshelf(_ctx.book.group).name), 1)
                 ])) : createCommentVNode("", true)
               ])
@@ -21762,7 +21762,7 @@ const _sfc_main$I = /* @__PURE__ */ defineComponent({
               class: "btn btn-outline",
               onClick: _cache[1] || (_cache[1] = //@ts-ignore
               (...args) => unref(closeDialog) && unref(closeDialog)(...args))
-            }, toDisplayString$1(unref(t$2)("common.close")), 1)
+            }, toDisplayString$1(unref(t$3)("common.close")), 1)
           ])
         ])), [
           [unref(vOnClickOutside), unref(closeDialog)]
@@ -23365,8 +23365,8 @@ const _sfc_main$H = /* @__PURE__ */ defineComponent({
     const { dialogRef, openDialog, closeDialog } = useDialog();
     const { defineField, handleSubmit, errors: editeError } = useForm({
       validationSchema: {
-        name: (value) => value ? true : t$2("book.needBookName"),
-        author: (value) => value ? true : t$2("book.needAuhor")
+        name: (value) => value ? true : t$3("book.needBookName"),
+        author: (value) => value ? true : t$3("book.needAuhor")
       }
     });
     const [name, nameProps] = defineField("name");
@@ -23412,7 +23412,7 @@ const _sfc_main$H = /* @__PURE__ */ defineComponent({
           }, ["prevent"]))
         }, [
           createBaseVNode("div", _hoisted_1$B, [
-            createBaseVNode("h3", _hoisted_2$v, toDisplayString$1(unref(t$2)("common.edit")), 1),
+            createBaseVNode("h3", _hoisted_2$v, toDisplayString$1(unref(t$3)("common.edit")), 1),
             createBaseVNode("div", {
               onClick: _cache[0] || (_cache[0] = //@ts-ignore
               (...args) => unref(closeDialog) && unref(closeDialog)(...args))
@@ -23428,11 +23428,11 @@ const _sfc_main$H = /* @__PURE__ */ defineComponent({
                   createBaseVNode("img", {
                     src: unref(convertUint8ArrayToURL)(cover.value),
                     class: "w-full h-full rounded object-cover",
-                    alt: unref(t$2)("book.cover")
+                    alt: unref(t$3)("book.cover")
                   }, null, 8, _hoisted_8$c)
                 ]),
                 createBaseVNode("label", null, [
-                  createBaseVNode("a", _hoisted_9$b, toDisplayString$1(unref(t$2)("book.uploadCover")), 1),
+                  createBaseVNode("a", _hoisted_9$b, toDisplayString$1(unref(t$3)("book.uploadCover")), 1),
                   createBaseVNode("input", {
                     type: "file",
                     ref_key: "inputRef",
@@ -23449,14 +23449,14 @@ const _sfc_main$H = /* @__PURE__ */ defineComponent({
                     class: normalizeClass(["input input-bordered flex items-center gap-2", { "input-error": unref(editeError).name }]),
                     for: "name"
                   }, [
-                    createTextVNode(toDisplayString$1(unref(t$2)("book.name")) + " ", 1),
+                    createTextVNode(toDisplayString$1(unref(t$3)("book.name")) + " ", 1),
                     withDirectives(createBaseVNode("input", mergeProps({
                       type: "text",
                       class: "grow",
                       name: "name",
                       "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => isRef(name) ? name.value = $event : null)
                     }, unref(nameProps), {
-                      placeholder: unref(t$2)("book.needBookName")
+                      placeholder: unref(t$3)("book.needBookName")
                     }), null, 16, _hoisted_11$a), [
                       [vModelText, unref(name)]
                     ])
@@ -23469,14 +23469,14 @@ const _sfc_main$H = /* @__PURE__ */ defineComponent({
                   createBaseVNode("label", {
                     class: normalizeClass(["input input-bordered flex items-center gap-2", { "input-error": unref(editeError).author }])
                   }, [
-                    createTextVNode(toDisplayString$1(unref(t$2)("book.author")) + " ", 1),
+                    createTextVNode(toDisplayString$1(unref(t$3)("book.author")) + " ", 1),
                     withDirectives(createBaseVNode("input", mergeProps({
                       type: "text",
                       class: "grow",
                       name: "author",
                       "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => isRef(author) ? author.value = $event : null)
                     }, unref(authorProps), {
-                      placeholder: unref(t$2)("book.needAuhor")
+                      placeholder: unref(t$3)("book.needAuhor")
                     }), null, 16, _hoisted_15$6), [
                       [vModelText, unref(author)]
                     ])
@@ -23492,8 +23492,8 @@ const _sfc_main$H = /* @__PURE__ */ defineComponent({
                 class: "btn btn-outline",
                 onClick: _cache[3] || (_cache[3] = //@ts-ignore
                 (...args) => unref(closeDialog) && unref(closeDialog)(...args))
-              }, toDisplayString$1(unref(t$2)("common.cancel")), 1),
-              createBaseVNode("button", _hoisted_19$6, toDisplayString$1(unref(t$2)("common.sure")), 1)
+              }, toDisplayString$1(unref(t$3)("common.cancel")), 1),
+              createBaseVNode("button", _hoisted_19$6, toDisplayString$1(unref(t$3)("common.sure")), 1)
             ])
           ], 32)
         ], 32)), [
@@ -23556,14 +23556,14 @@ const _sfc_main$G = /* @__PURE__ */ defineComponent({
       }, [
         withDirectives((openBlock(), createElementBlock("div", _hoisted_1$A, [
           createBaseVNode("div", _hoisted_2$u, [
-            createBaseVNode("h3", _hoisted_3$o, toDisplayString$1(unref(t$2)("book.removeBook")), 1),
+            createBaseVNode("h3", _hoisted_3$o, toDisplayString$1(unref(t$3)("book.removeBook")), 1),
             createBaseVNode("div", {
               onClick: _cache[0] || (_cache[0] = //@ts-ignore
               (...args) => unref(closeDialog) && unref(closeDialog)(...args))
             }, _hoisted_5$h)
           ]),
           createBaseVNode("p", _hoisted_6$g, toDisplayString$1(_ctx.book.name), 1),
-          unref(settingStore).isOpenRecycleBin && !_ctx.isRecycleBin ? (openBlock(), createElementBlock("p", _hoisted_7$c, toDisplayString$1(unref(t$2)("book.moveToRecycleBin")), 1)) : (openBlock(), createElementBlock("p", _hoisted_8$b, toDisplayString$1(unref(t$2)("book.forceRemove")), 1)),
+          unref(settingStore).isOpenRecycleBin && !_ctx.isRecycleBin ? (openBlock(), createElementBlock("p", _hoisted_7$c, toDisplayString$1(unref(t$3)("book.moveToRecycleBin")), 1)) : (openBlock(), createElementBlock("p", _hoisted_8$b, toDisplayString$1(unref(t$3)("book.forceRemove")), 1)),
           createBaseVNode("div", _hoisted_9$a, [
             createBaseVNode("button", {
               class: "btn btn-outline",
@@ -23573,7 +23573,7 @@ const _sfc_main$G = /* @__PURE__ */ defineComponent({
             createBaseVNode("button", {
               class: "btn btn-outline btn-error ml-4",
               onClick: removeOneBook
-            }, toDisplayString$1(unref(t$2)("common.sure")), 1)
+            }, toDisplayString$1(unref(t$3)("common.sure")), 1)
           ])
         ])), [
           [unref(vOnClickOutside), unref(closeDialog)]
@@ -23685,7 +23685,7 @@ const _sfc_main$E = /* @__PURE__ */ defineComponent({
     const { dialogRef, openDialog, closeDialog } = useDialog();
     const { defineField, handleSubmit, errors } = useForm({
       validationSchema: {
-        score: (value) => value || value === 0 ? true : t$2("book.needScore")
+        score: (value) => value || value === 0 ? true : t$3("book.needScore")
       }
     });
     const [score, scoreProps] = defineField("score");
@@ -23720,7 +23720,7 @@ const _sfc_main$E = /* @__PURE__ */ defineComponent({
       }, [
         withDirectives((openBlock(), createElementBlock("div", _hoisted_1$y, [
           createBaseVNode("div", _hoisted_2$s, [
-            createBaseVNode("h3", _hoisted_3$m, toDisplayString$1(unref(t$2)("book.score")), 1),
+            createBaseVNode("h3", _hoisted_3$m, toDisplayString$1(unref(t$3)("book.score")), 1),
             createBaseVNode("div", {
               onClick: _cache[0] || (_cache[0] = //@ts-ignore
               (...args) => unref(closeDialog) && unref(closeDialog)(...args))
@@ -23732,7 +23732,7 @@ const _sfc_main$E = /* @__PURE__ */ defineComponent({
           }, [
             createBaseVNode("div", _hoisted_6$f, [
               createBaseVNode("div", _hoisted_7$b, [
-                createBaseVNode("span", null, toDisplayString$1(unref(t$2)("book.name")), 1),
+                createBaseVNode("span", null, toDisplayString$1(unref(t$3)("book.name")), 1),
                 createBaseVNode("div", null, toDisplayString$1(_ctx.book.name), 1)
               ]),
               createBaseVNode("div", null, [
@@ -23740,7 +23740,7 @@ const _sfc_main$E = /* @__PURE__ */ defineComponent({
                   class: normalizeClass(["input input-bordered flex items-center gap-2", { "input-error": unref(errors).score }]),
                   for: "name"
                 }, [
-                  createTextVNode(toDisplayString$1(unref(t$2)("book.score")) + " ", 1),
+                  createTextVNode(toDisplayString$1(unref(t$3)("book.score")) + " ", 1),
                   withDirectives(createBaseVNode("input", mergeProps({
                     type: "number",
                     max: "10",
@@ -23750,7 +23750,7 @@ const _sfc_main$E = /* @__PURE__ */ defineComponent({
                     name: "score",
                     "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => isRef(score) ? score.value = $event : null)
                   }, unref(scoreProps), {
-                    placeholder: unref(t$2)("book.needScore")
+                    placeholder: unref(t$3)("book.needScore")
                   }), null, 16, _hoisted_8$a), [
                     [vModelText, unref(score)]
                   ])
@@ -23774,8 +23774,8 @@ const _sfc_main$E = /* @__PURE__ */ defineComponent({
                 class: "btn btn-outline",
                 onClick: _cache[2] || (_cache[2] = //@ts-ignore
                 (...args) => unref(closeDialog) && unref(closeDialog)(...args))
-              }, toDisplayString$1(unref(t$2)("common.cancel")), 1),
-              createBaseVNode("button", _hoisted_12$8, toDisplayString$1(unref(t$2)("common.sure")), 1)
+              }, toDisplayString$1(unref(t$3)("common.cancel")), 1),
+              createBaseVNode("button", _hoisted_12$8, toDisplayString$1(unref(t$3)("common.sure")), 1)
             ])
           ], 32)
         ])), [
@@ -23917,7 +23917,7 @@ const _sfc_main$D = /* @__PURE__ */ defineComponent({
       if (data2) {
         const isLove = !data2.isLove;
         BookAction.update(data2.id, { isLove });
-        isLove ? toastSuccess(t$2("common.addSuccess")) : toastSuccess(t$2("common.removeSuccess"));
+        isLove ? toastSuccess(t$3("common.addSuccess")) : toastSuccess(t$3("common.removeSuccess"));
         closeRight();
       }
     }
@@ -23963,7 +23963,7 @@ const _sfc_main$D = /* @__PURE__ */ defineComponent({
                         createBaseVNode("img", {
                           src: unref(convertUint8ArrayToURL)(item.cover),
                           class: "w-full rounded h-full object-cover",
-                          alt: unref(t$2)("book.cover")
+                          alt: unref(t$3)("book.cover")
                         }, null, 8, _hoisted_5$f)
                       ], 4),
                       createBaseVNode("div", _hoisted_6$e, toDisplayString$1(item.name), 1)
@@ -23984,7 +23984,7 @@ const _sfc_main$D = /* @__PURE__ */ defineComponent({
                       createBaseVNode("img", {
                         src: unref(convertUint8ArrayToURL)(item.cover),
                         class: "w-full rounded h-full object-cover",
-                        alt: unref(t$2)("book.cover")
+                        alt: unref(t$3)("book.cover")
                       }, null, 8, _hoisted_12$7)
                     ]),
                     createBaseVNode("div", _hoisted_13$5, [
@@ -24009,7 +24009,7 @@ const _sfc_main$D = /* @__PURE__ */ defineComponent({
                     createBaseVNode("img", {
                       src: unref(convertUint8ArrayToURL)(list.value[virtualRow.index].cover),
                       class: "w-full rounded h-full object-cover",
-                      alt: unref(t$2)("book.cover")
+                      alt: unref(t$3)("book.cover")
                     }, null, 8, _hoisted_18$5)
                   ]),
                   createBaseVNode("div", _hoisted_19$5, [
@@ -24105,7 +24105,7 @@ const _sfc_main$D = /* @__PURE__ */ defineComponent({
       ], 512)) : (openBlock(), createElementBlock("div", _hoisted_25$4, [
         createBaseVNode("div", _hoisted_26$4, [
           _ctx.isRecycleBin ? (openBlock(), createElementBlock("div", _hoisted_27$4, [
-            createBaseVNode("h1", _hoisted_28$4, toDisplayString$1(unref(t$2)("common.empty")), 1),
+            createBaseVNode("h1", _hoisted_28$4, toDisplayString$1(unref(t$3)("common.empty")), 1),
             createBaseVNode("p", _hoisted_29$3, toDisplayString$1(_ctx.$t("book.recycleNoRecord")), 1)
           ])) : (openBlock(), createElementBlock("div", _hoisted_30$3, [
             createBaseVNode("h1", _hoisted_31$2, toDisplayString$1(_ctx.$t("book.empty")), 1),
@@ -24115,7 +24115,7 @@ const _sfc_main$D = /* @__PURE__ */ defineComponent({
               onClick: _cache[9] || (_cache[9] = ($event) => uploadAction())
             }, [
               createVNode(unref(Plus)),
-              createTextVNode(toDisplayString$1(unref(t$2)("file.upload")), 1)
+              createTextVNode(toDisplayString$1(unref(t$3)("file.upload")), 1)
             ]),
             createVNode(unref(_sfc_main$m), {
               ref_key: "uploadRef",
@@ -24382,7 +24382,7 @@ const _sfc_main$v = /* @__PURE__ */ defineComponent({
                 }, [
                   createBaseVNode("a", _hoisted_7$8, [
                     createVNode(unref(Trash2), { class: "h-5 w-5" }),
-                    createTextVNode(toDisplayString$1(unref(t$2)("common.remove")), 1)
+                    createTextVNode(toDisplayString$1(unref(t$3)("common.remove")), 1)
                   ])
                 ]),
                 createBaseVNode("li", {
@@ -24390,7 +24390,7 @@ const _sfc_main$v = /* @__PURE__ */ defineComponent({
                 }, [
                   createBaseVNode("a", _hoisted_8$8, [
                     createVNode(unref(BellElectric), { class: "h-5 w-5" }),
-                    createTextVNode(toDisplayString$1(unref(t$2)("common.detail")), 1)
+                    createTextVNode(toDisplayString$1(unref(t$3)("common.detail")), 1)
                   ])
                 ])
               ])
@@ -24544,7 +24544,7 @@ const _sfc_main$t = /* @__PURE__ */ defineComponent({
     const removeAction = async () => {
       await NoteAction.removeOne(selectData.id);
       closeRemoveDialog();
-      toastSuccess(t$2("note.removeSuccess"));
+      toastSuccess(t$3("note.removeSuccess"));
     };
     const { dialogRef: detailDialogRef, openDialog: openDetailDialog, closeDialog: closeDetailDialog } = useDialog();
     const onDetail = (value) => {
@@ -24555,7 +24555,7 @@ const _sfc_main$t = /* @__PURE__ */ defineComponent({
     const removeNote = async (index) => {
       noteList.value.splice(index, 1);
       await NoteAction.update(selectData.id, { notes: JSON.stringify(noteList.value) });
-      toastSuccess(t$2("note.removeSuccess"));
+      toastSuccess(t$3("note.removeSuccess"));
     };
     const jump = (value) => {
       localStorage.setItem("__note__", JSON.stringify(value));
@@ -24600,7 +24600,7 @@ const _sfc_main$t = /* @__PURE__ */ defineComponent({
         }, [
           withDirectives((openBlock(), createElementBlock("div", _hoisted_2$j, [
             createBaseVNode("div", _hoisted_3$e, [
-              createBaseVNode("h3", _hoisted_4$c, toDisplayString$1(unref(t$2)("note.sureRemove")), 1),
+              createBaseVNode("h3", _hoisted_4$c, toDisplayString$1(unref(t$3)("note.sureRemove")), 1),
               createBaseVNode("div", {
                 onClick: _cache[0] || (_cache[0] = //@ts-ignore
                 (...args) => unref(closeRemoveDialog) && unref(closeRemoveDialog)(...args))
@@ -24619,17 +24619,17 @@ const _sfc_main$t = /* @__PURE__ */ defineComponent({
               data: noteList.value,
               onRemove: removeNote
             }, null, 8, ["data"])) : createCommentVNode("", true),
-            createBaseVNode("p", _hoisted_11$6, toDisplayString$1(unref(t$2)("note.forceRemove")), 1),
+            createBaseVNode("p", _hoisted_11$6, toDisplayString$1(unref(t$3)("note.forceRemove")), 1),
             createBaseVNode("div", _hoisted_12$5, [
               createBaseVNode("button", {
                 class: "btn btn-outline",
                 onClick: _cache[1] || (_cache[1] = //@ts-ignore
                 (...args) => unref(closeRemoveDialog) && unref(closeRemoveDialog)(...args))
-              }, toDisplayString$1(unref(t$2)("common.remove")), 1),
+              }, toDisplayString$1(unref(t$3)("common.remove")), 1),
               createBaseVNode("button", {
                 class: "btn btn-outline btn-error ml-4",
                 onClick: removeAction
-              }, toDisplayString$1(unref(t$2)("common.sure")), 1)
+              }, toDisplayString$1(unref(t$3)("common.sure")), 1)
             ])
           ])), [
             [unref(vOnClickOutside), unref(closeRemoveDialog)]
@@ -24642,7 +24642,7 @@ const _sfc_main$t = /* @__PURE__ */ defineComponent({
         }, [
           withDirectives((openBlock(), createElementBlock("div", _hoisted_13$4, [
             createBaseVNode("div", _hoisted_14$4, [
-              createBaseVNode("h3", _hoisted_15$4, toDisplayString$1(unref(t$2)("note.noteDetail")), 1),
+              createBaseVNode("h3", _hoisted_15$4, toDisplayString$1(unref(t$3)("note.noteDetail")), 1),
               createBaseVNode("div", {
                 onClick: _cache[2] || (_cache[2] = //@ts-ignore
                 (...args) => unref(closeDetailDialog) && unref(closeDetailDialog)(...args))
@@ -24675,15 +24675,15 @@ const _sfc_main$t = /* @__PURE__ */ defineComponent({
       ], 512)) : (openBlock(), createElementBlock("div", _hoisted_23$4, [
         createBaseVNode("div", _hoisted_24$4, [
           createBaseVNode("div", _hoisted_25$3, [
-            createBaseVNode("h1", _hoisted_26$3, toDisplayString$1(unref(t$2)("note.empty")), 1),
-            createBaseVNode("p", _hoisted_27$3, toDisplayString$1(unref(t$2)("note.emptyNoteListTip")), 1),
+            createBaseVNode("h1", _hoisted_26$3, toDisplayString$1(unref(t$3)("note.empty")), 1),
+            createBaseVNode("p", _hoisted_27$3, toDisplayString$1(unref(t$3)("note.emptyNoteListTip")), 1),
             createVNode(_component_RouterLink, {
               to: unref(RouterName).Book
             }, {
               default: withCtx(() => [
                 createBaseVNode("button", _hoisted_28$3, [
                   createVNode(unref(Flag)),
-                  createTextVNode(toDisplayString$1(unref(t$2)("book.jumpToBookList")), 1)
+                  createTextVNode(toDisplayString$1(unref(t$3)("book.jumpToBookList")), 1)
                 ])
               ]),
               _: 1
@@ -24962,7 +24962,7 @@ const _sfc_main$p = /* @__PURE__ */ defineComponent({
       const target = node.children[get(activePlaceholder)]?.firstElementChild;
       if (!target)
         return;
-      e$1(target, { behavior: "smooth", scrollMode: "if-needed" });
+      e$2(target, { behavior: "smooth", scrollMode: "if-needed" });
     };
     const onDown = () => {
       const index = get(activePlaceholder);
@@ -25020,7 +25020,7 @@ const _sfc_main$p = /* @__PURE__ */ defineComponent({
             type: "text",
             class: "grow",
             "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => tagValue.value = $event),
-            placeholder: unref(t$2)("tag.needTag"),
+            placeholder: unref(t$3)("tag.needTag"),
             onKeydown: [
               _cache[1] || (_cache[1] = withKeys(($event) => unref(onAdd)(), ["enter"])),
               _cache[2] || (_cache[2] = withKeys(withModifiers(($event) => onDown(), ["prevent"]), ["down"])),
@@ -25129,7 +25129,7 @@ const _sfc_main$n = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const makeComicBook = ({ entries, loadBlob, getSize }, file2) => {
+const makeComicBook$1 = ({ entries, loadBlob, getSize }, file2) => {
   const cache2 = /* @__PURE__ */ new Map();
   const urls = /* @__PURE__ */ new Map();
   const load = async (name) => {
@@ -25171,18 +25171,18 @@ const makeComicBook = ({ entries, loadBlob, getSize }, file2) => {
   };
   return book2;
 };
-const findIndices = (arr, f2) => arr.map((x2, i2, a2) => f2(x2, i2, a2) ? i2 : null).filter((x2) => x2 != null);
-const splitAt = (arr, is) => [-1, ...is, arr.length].reduce(
+const findIndices$1 = (arr, f2) => arr.map((x2, i2, a2) => f2(x2, i2, a2) ? i2 : null).filter((x2) => x2 != null);
+const splitAt$1 = (arr, is) => [-1, ...is, arr.length].reduce(
   ({ xs, a: a2 }, b2) => ({ xs: xs?.concat([arr.slice(a2 + 1, b2)]) ?? [], a: b2 }),
   {}
 ).xs;
-const concatArrays = (a2, b2) => a2.slice(0, -1).concat([a2[a2.length - 1].concat(b2[0])]).concat(b2.slice(1));
-const isNumber = /\d/;
-const isCFI = /^epubcfi\((.*)\)$/;
-const escapeCFI = (str) => str.replace(/[\^[\](),;=]/g, "^$&");
-const wrap = (x2) => isCFI.test(x2) ? x2 : `epubcfi(${x2})`;
-const unwrap = (x2) => x2.match(isCFI)?.[1] ?? x2;
-const tokenizer = (str) => {
+const concatArrays$1 = (a2, b2) => a2.slice(0, -1).concat([a2[a2.length - 1].concat(b2[0])]).concat(b2.slice(1));
+const isNumber$1 = /\d/;
+const isCFI$1 = /^epubcfi\((.*)\)$/;
+const escapeCFI$1 = (str) => str.replace(/[\^[\](),;=]/g, "^$&");
+const wrap$1 = (x2) => isCFI$1.test(x2) ? x2 : `epubcfi(${x2})`;
+const unwrap$1 = (x2) => x2.match(isCFI$1)?.[1] ?? x2;
+const tokenizer$1 = (str) => {
   const tokens = [];
   let state, escape2, value = "";
   const push = (x2) => (tokens.push(x2), state = null, value = "");
@@ -25197,13 +25197,13 @@ const tokenizer = (str) => {
     else if (state === ",")
       push([","]);
     else if (state === "/" || state === ":") {
-      if (isNumber.test(char)) {
+      if (isNumber$1.test(char)) {
         cat(char);
         continue;
       } else
         push([state, parseInt(value)]);
     } else if (state === "~") {
-      if (isNumber.test(char) || char === ".") {
+      if (isNumber$1.test(char) || char === ".") {
         cat(char);
         continue;
       } else
@@ -25214,7 +25214,7 @@ const tokenizer = (str) => {
         state = "@";
         continue;
       }
-      if (isNumber.test(char) || char === ".") {
+      if (isNumber$1.test(char) || char === ".") {
         cat(char);
         continue;
       } else
@@ -25249,8 +25249,8 @@ const tokenizer = (str) => {
   }
   return tokens;
 };
-const findTokens = (tokens, x2) => findIndices(tokens, ([t2]) => t2 === x2);
-const parser = (tokens) => {
+const findTokens$1 = (tokens, x2) => findIndices$1(tokens, ([t2]) => t2 === x2);
+const parser$1 = (tokens) => {
   const parts = [];
   let state;
   for (const [type, val] of tokens) {
@@ -25279,66 +25279,66 @@ const parser = (tokens) => {
   }
   return parts;
 };
-const parserIndir = (tokens) => splitAt(tokens, findTokens(tokens, "!")).map(parser);
-const parse = (cfi) => {
-  const tokens = tokenizer(unwrap(cfi));
-  const commas = findTokens(tokens, ",");
+const parserIndir$1 = (tokens) => splitAt$1(tokens, findTokens$1(tokens, "!")).map(parser$1);
+const parse$1 = (cfi) => {
+  const tokens = tokenizer$1(unwrap$1(cfi));
+  const commas = findTokens$1(tokens, ",");
   if (!commas.length)
-    return parserIndir(tokens);
-  const [parent, start, end] = splitAt(tokens, commas).map(parserIndir);
+    return parserIndir$1(tokens);
+  const [parent, start, end] = splitAt$1(tokens, commas).map(parserIndir$1);
   return { parent, start, end };
 };
-const partToString = ({ index, id: id2, offset, temporal, spatial, text, side }) => {
+const partToString$1 = ({ index, id: id2, offset, temporal, spatial, text, side }) => {
   const param = side ? `;s=${side}` : "";
-  return `/${index}` + (id2 ? `[${escapeCFI(id2)}${param}]` : "") + // "CFI expressions [..] SHOULD include an explicit character offset"
-  (offset != null && index % 2 ? `:${offset}` : "") + (temporal ? `~${temporal}` : "") + (spatial ? `@${spatial.join(":")}` : "") + (text || !id2 && side ? "[" + (text?.map(escapeCFI)?.join(",") ?? "") + param + "]" : "");
+  return `/${index}` + (id2 ? `[${escapeCFI$1(id2)}${param}]` : "") + // "CFI expressions [..] SHOULD include an explicit character offset"
+  (offset != null && index % 2 ? `:${offset}` : "") + (temporal ? `~${temporal}` : "") + (spatial ? `@${spatial.join(":")}` : "") + (text || !id2 && side ? "[" + (text?.map(escapeCFI$1)?.join(",") ?? "") + param + "]" : "");
 };
-const toInnerString = (parsed) => parsed.parent ? [parsed.parent, parsed.start, parsed.end].map(toInnerString).join(",") : parsed.map((parts) => parts.map(partToString).join("")).join("!");
-const toString = (parsed) => wrap(toInnerString(parsed));
-const collapse = (x2, toEnd) => typeof x2 === "string" ? toString(collapse(parse(x2), toEnd)) : x2.parent ? concatArrays(x2.parent, x2[toEnd ? "end" : "start"]) : x2;
-const isTextNode$1 = ({ nodeType }) => nodeType === 3 || nodeType === 4;
-const isElementNode = ({ nodeType }) => nodeType === 1;
-const getChildNodes = (node, filter) => {
-  const nodes = Array.from(node.childNodes).filter((node2) => isTextNode$1(node2) || isElementNode(node2));
+const toInnerString$1 = (parsed) => parsed.parent ? [parsed.parent, parsed.start, parsed.end].map(toInnerString$1).join(",") : parsed.map((parts) => parts.map(partToString$1).join("")).join("!");
+const toString$1 = (parsed) => wrap$1(toInnerString$1(parsed));
+const collapse$1 = (x2, toEnd) => typeof x2 === "string" ? toString$1(collapse$1(parse$1(x2), toEnd)) : x2.parent ? concatArrays$1(x2.parent, x2[toEnd ? "end" : "start"]) : x2;
+const isTextNode$2 = ({ nodeType }) => nodeType === 3 || nodeType === 4;
+const isElementNode$1 = ({ nodeType }) => nodeType === 1;
+const getChildNodes$1 = (node, filter) => {
+  const nodes = Array.from(node.childNodes).filter((node2) => isTextNode$2(node2) || isElementNode$1(node2));
   return filter ? nodes.map((node2) => {
     const accept = filter(node2);
     if (accept === NodeFilter.FILTER_REJECT)
       return null;
     else if (accept === NodeFilter.FILTER_SKIP)
-      return getChildNodes(node2, filter);
+      return getChildNodes$1(node2, filter);
     else
       return node2;
   }).flat().filter((x2) => x2) : nodes;
 };
-const indexChildNodes = (node, filter) => {
-  const nodes = getChildNodes(node, filter).reduce((arr, node2) => {
+const indexChildNodes$1 = (node, filter) => {
+  const nodes = getChildNodes$1(node, filter).reduce((arr, node2) => {
     let last2 = arr[arr.length - 1];
     if (!last2)
       arr.push(node2);
-    else if (isTextNode$1(node2)) {
+    else if (isTextNode$2(node2)) {
       if (Array.isArray(last2))
         last2.push(node2);
-      else if (isTextNode$1(last2))
+      else if (isTextNode$2(last2))
         arr[arr.length - 1] = [last2, node2];
       else
         arr.push(node2);
     } else {
-      if (isElementNode(last2))
+      if (isElementNode$1(last2))
         arr.push(null, node2);
       else
         arr.push(node2);
     }
     return arr;
   }, []);
-  if (isElementNode(nodes[0]))
+  if (isElementNode$1(nodes[0]))
     nodes.unshift("first");
-  if (isElementNode(nodes[nodes.length - 1]))
+  if (isElementNode$1(nodes[nodes.length - 1]))
     nodes.push("last");
   nodes.unshift("before");
   nodes.push("after");
   return nodes;
 };
-const partsToNode = (node, parts, filter) => {
+const partsToNode$1 = (node, parts, filter) => {
   const { id: id2 } = parts[parts.length - 1];
   if (id2) {
     const el = node.ownerDocument.getElementById(id2);
@@ -25346,7 +25346,7 @@ const partsToNode = (node, parts, filter) => {
       return { node: el, offset: 0 };
   }
   for (const { index } of parts) {
-    const newNode = node ? indexChildNodes(node, filter)[index] : null;
+    const newNode = node ? indexChildNodes$1(node, filter)[index] : null;
     if (newNode === "first")
       return { node: node.firstChild ?? node };
     if (newNode === "last")
@@ -25368,9 +25368,9 @@ const partsToNode = (node, parts, filter) => {
     sum += length;
   }
 };
-const nodeToParts = (node, offset, filter) => {
+const nodeToParts$1 = (node, offset, filter) => {
   const { parentNode, id: id2 } = node;
-  const indexed = indexChildNodes(parentNode, filter);
+  const indexed = indexChildNodes$1(parentNode, filter);
   const index = indexed.findIndex(
     (x2) => Array.isArray(x2) ? x2.some((x3) => x3 === node) : x2 === node
   );
@@ -25387,14 +25387,14 @@ const nodeToParts = (node, offset, filter) => {
     offset = sum;
   }
   const part = { id: id2, index, offset };
-  return (parentNode !== node.ownerDocument.documentElement ? nodeToParts(parentNode, null, filter).concat(part) : [part]).filter((x2) => x2.index !== -1);
+  return (parentNode !== node.ownerDocument.documentElement ? nodeToParts$1(parentNode, null, filter).concat(part) : [part]).filter((x2) => x2.index !== -1);
 };
-const toRange = (doc2, parts, filter) => {
-  const startParts = collapse(parts);
-  const endParts = collapse(parts, true);
+const toRange$1 = (doc2, parts, filter) => {
+  const startParts = collapse$1(parts);
+  const endParts = collapse$1(parts, true);
   const root = doc2.documentElement;
-  const start = partsToNode(root, startParts[0], filter);
-  const end = partsToNode(root, endParts[0], filter);
+  const start = partsToNode$1(root, startParts[0], filter);
+  const end = partsToNode$1(root, endParts[0], filter);
   const range = doc2.createRange();
   if (start.before)
     range.setStartBefore(start.node);
@@ -25410,23 +25410,23 @@ const toRange = (doc2, parts, filter) => {
     range.setEnd(end.node, end.offset);
   return range;
 };
-const fromElements = (elements) => {
+const fromElements$1 = (elements) => {
   const results = [];
   const { parentNode } = elements[0];
-  const parts = nodeToParts(parentNode);
-  for (const [index, node] of indexChildNodes(parentNode).entries()) {
+  const parts = nodeToParts$1(parentNode);
+  for (const [index, node] of indexChildNodes$1(parentNode).entries()) {
     const el = elements[results.length];
     if (node === el)
-      results.push(toString([parts.concat({ id: el.id, index })]));
+      results.push(toString$1([parts.concat({ id: el.id, index })]));
   }
   return results;
 };
-const toElement = (doc2, parts) => partsToNode(doc2.documentElement, collapse(parts)).node;
-const fake = {
-  fromIndex: (index) => wrap(`/6/${(index + 1) * 2}`),
+const toElement$1 = (doc2, parts) => partsToNode$1(doc2.documentElement, collapse$1(parts)).node;
+const fake$1 = {
+  fromIndex: (index) => wrap$1(`/6/${(index + 1) * 2}`),
   toIndex: (parts) => parts?.at(-1).index / 2 - 1
 };
-const NS$1 = {
+const NS$3 = {
   CONTAINER: "urn:oasis:names:tc:opendocument:xmlns:container",
   XHTML: "http://www.w3.org/1999/xhtml",
   OPF: "http://www.idpf.org/2007/opf",
@@ -25438,7 +25438,7 @@ const NS$1 = {
   XLINK: "http://www.w3.org/1999/xlink",
   SMIL: "http://www.w3.org/ns/SMIL"
 };
-const MIME$2 = {
+const MIME$5 = {
   XML: "application/xml",
   NCX: "application/x-dtbncx+xml",
   XHTML: "application/xhtml+xml",
@@ -25447,12 +25447,12 @@ const MIME$2 = {
   SVG: "image/svg+xml",
   JS: /\/(x-)?(javascript|ecmascript)/
 };
-const camel = (x2) => x2.toLowerCase().replace(/[-:](.)/g, (_2, g2) => g2.toUpperCase());
-const normalizeWhitespace$1 = (str) => str ? str.replace(/[\t\n\f\r ]+/g, " ").replace(/^[\t\n\f\r ]+/, "").replace(/[\t\n\f\r ]+$/, "") : "";
-const filterAttribute = (attr, value, isList) => isList ? (el) => el.getAttribute(attr)?.split(/\s/)?.includes(value) : typeof value === "function" ? (el) => value(el.getAttribute(attr)) : (el) => el.getAttribute(attr) === value;
-const getAttributes = (...xs) => (el) => el ? Object.fromEntries(xs.map((x2) => [camel(x2), el.getAttribute(x2)])) : null;
-const getElementText$1 = (el) => normalizeWhitespace$1(el?.textContent);
-const childGetter = (doc2, ns) => {
+const camel$1 = (x2) => x2.toLowerCase().replace(/[-:](.)/g, (_2, g2) => g2.toUpperCase());
+const normalizeWhitespace$3 = (str) => str ? str.replace(/[\t\n\f\r ]+/g, " ").replace(/^[\t\n\f\r ]+/, "").replace(/[\t\n\f\r ]+$/, "") : "";
+const filterAttribute$1 = (attr, value, isList) => isList ? (el) => el.getAttribute(attr)?.split(/\s/)?.includes(value) : typeof value === "function" ? (el) => value(el.getAttribute(attr)) : (el) => el.getAttribute(attr) === value;
+const getAttributes$1 = (...xs) => (el) => el ? Object.fromEntries(xs.map((x2) => [camel$1(x2), el.getAttribute(x2)])) : null;
+const getElementText$3 = (el) => normalizeWhitespace$3(el?.textContent);
+const childGetter$1 = (doc2, ns) => {
   const useNS = doc2.lookupNamespaceURI(null) === ns || doc2.lookupPrefix(ns);
   const f2 = useNS ? (el, name) => (el2) => el2.namespaceURI === ns && el2.localName === name : (el, name) => (el2) => el2.localName === name;
   return {
@@ -25461,7 +25461,7 @@ const childGetter = (doc2, ns) => {
     $$$: useNS ? (el, name) => [...el.getElementsByTagNameNS(ns, name)] : (el, name) => [...el.getElementsByTagName(name)]
   };
 };
-const resolveURL = (url, relativeTo) => {
+const resolveURL$1 = (url, relativeTo) => {
   try {
     if (relativeTo.includes(":"))
       return new URL(url, relativeTo);
@@ -25474,8 +25474,8 @@ const resolveURL = (url, relativeTo) => {
     return url;
   }
 };
-const isExternal$1 = (uri) => /^(?!blob)\w+:/i.test(uri);
-const pathRelative = (from2, to) => {
+const isExternal$2 = (uri) => /^(?!blob)\w+:/i.test(uri);
+const pathRelative$1 = (from2, to) => {
   if (!from2)
     return to;
   const as = from2.replace(/\/$/, "").split("/");
@@ -25483,8 +25483,8 @@ const pathRelative = (from2, to) => {
   const i2 = (as.length > bs.length ? as : bs).findIndex((_2, i3) => as[i3] !== bs[i3]);
   return i2 < 0 ? "" : Array(as.length - i2).fill("..").concat(bs.slice(i2)).join("/");
 };
-const pathDirname = (str) => str.slice(0, str.lastIndexOf("/") + 1);
-const replaceSeries$1 = async (str, regex, f2) => {
+const pathDirname$1 = (str) => str.slice(0, str.lastIndexOf("/") + 1);
+const replaceSeries$3 = async (str, regex, f2) => {
   const matches = [];
   str.replace(regex, (...args) => (matches.push(args), null));
   const results = [];
@@ -25492,28 +25492,28 @@ const replaceSeries$1 = async (str, regex, f2) => {
     results.push(await f2(...args));
   return str.replace(regex, () => results.shift());
 };
-const regexEscape = (str) => str.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
-const LANGS = { attrs: ["dir", "xml:lang"] };
-const ALTS = { name: "alternate-script", many: true, ...LANGS, props: ["file-as"] };
-const CONTRIB = {
+const regexEscape$1 = (str) => str.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+const LANGS$1 = { attrs: ["dir", "xml:lang"] };
+const ALTS$1 = { name: "alternate-script", many: true, ...LANGS$1, props: ["file-as"] };
+const CONTRIB$1 = {
   many: true,
-  ...LANGS,
-  props: [{ name: "role", many: true, attrs: ["scheme"] }, "file-as", ALTS],
+  ...LANGS$1,
+  props: [{ name: "role", many: true, attrs: ["scheme"] }, "file-as", ALTS$1],
   setLegacyAttrs: (obj, el) => {
     if (!obj.role?.length) {
-      const value = el.getAttributeNS(NS$1.OPF, "role");
+      const value = el.getAttributeNS(NS$3.OPF, "role");
       if (value)
         obj.role = [{ value }];
     }
-    obj.fileAs ??= el.getAttributeNS(NS$1.OPF, "file-as");
+    obj.fileAs ??= el.getAttributeNS(NS$3.OPF, "file-as");
   }
 };
-const METADATA = [
+const METADATA$1 = [
   {
     name: "title",
     many: true,
-    ...LANGS,
-    props: ["title-type", "display-seq", "file-as", ALTS]
+    ...LANGS$1,
+    props: ["title-type", "display-seq", "file-as", ALTS$1]
   },
   {
     name: "identifier",
@@ -25521,28 +25521,28 @@ const METADATA = [
     props: [{ name: "identifier-type", attrs: ["scheme"] }],
     setLegacyAttrs: (obj, el) => {
       if (!obj.identifierType) {
-        const value = el.getAttributeNS(NS$1.OPF, "scheme");
+        const value = el.getAttributeNS(NS$3.OPF, "scheme");
         if (value)
           obj.identifierType = { value };
       }
     }
   },
   { name: "language", many: true },
-  { name: "creator", ...CONTRIB },
-  { name: "contributor", ...CONTRIB },
-  { name: "publisher", ...LANGS, props: ["file-as", ALTS] },
-  { name: "description", ...LANGS, props: [ALTS] },
-  { name: "rights", ...LANGS, props: [ALTS] },
+  { name: "creator", ...CONTRIB$1 },
+  { name: "contributor", ...CONTRIB$1 },
+  { name: "publisher", ...LANGS$1, props: ["file-as", ALTS$1] },
+  { name: "description", ...LANGS$1, props: [ALTS$1] },
+  { name: "rights", ...LANGS$1, props: [ALTS$1] },
   { name: "date" },
   { name: "dcterms:modified", type: "meta" },
   {
     name: "subject",
     many: true,
-    ...LANGS,
-    props: ["term", "authority", ALTS],
+    ...LANGS$1,
+    props: ["term", "authority", ALTS$1],
     setLegacyAttrs: (obj, el) => {
-      obj.term ??= el.getAttributeNS(NS$1.OPF, "term");
-      obj.authority ??= el.getAttributeNS(NS$1.OPF, "authority");
+      obj.term ??= el.getAttributeNS(NS$3.OPF, "term");
+      obj.authority ??= el.getAttributeNS(NS$3.OPF, "authority");
     }
   },
   { name: "source", many: true },
@@ -25550,68 +25550,68 @@ const METADATA = [
     name: "belongs-to-collection",
     type: "meta",
     many: true,
-    ...LANGS,
+    ...LANGS$1,
     props: [
       "collection-type",
       "group-position",
       "dcterms:identifier",
       "file-as",
-      ALTS,
+      ALTS$1,
       { name: "belongs-to-collection", recursive: true }
     ]
   }
 ];
-const getMetadata = (opf) => {
-  const { $: $2, $$: $$2 } = childGetter(opf, NS$1.OPF);
+const getMetadata$1 = (opf) => {
+  const { $: $2, $$: $$2 } = childGetter$1(opf, NS$3.OPF);
   const $metadata = $2(opf.documentElement, "metadata");
   const els = Array.from($metadata.children);
   const getValue2 = (obj, el) => {
     if (!el)
       return null;
     const { props = [], attrs = [] } = obj;
-    const value = getElementText$1(el);
+    const value = getElementText$3(el);
     if (!props.length && !attrs.length)
       return value;
     const id2 = el.getAttribute("id");
-    const refines = id2 ? els.filter(filterAttribute("refines", "#" + id2)) : [];
+    const refines = id2 ? els.filter(filterAttribute$1("refines", "#" + id2)) : [];
     const result = Object.fromEntries(
       [["value", value]].concat(
         props.map((prop) => {
           const { many, recursive } = prop;
           const name = typeof prop === "string" ? prop : prop.name;
-          const filter = filterAttribute("property", name);
+          const filter = filterAttribute$1("property", name);
           const subobj = recursive ? obj : prop;
           return [
-            camel(name),
+            camel$1(name),
             many ? refines.filter(filter).map((el2) => getValue2(subobj, el2)) : getValue2(subobj, refines.find(filter))
           ];
         })
-      ).concat(attrs.map((attr) => [camel(attr), el.getAttribute(attr)]))
+      ).concat(attrs.map((attr) => [camel$1(attr), el.getAttribute(attr)]))
     );
     obj.setLegacyAttrs?.(result, el);
     return result;
   };
-  const arr = els.filter(filterAttribute("refines", null));
+  const arr = els.filter(filterAttribute$1("refines", null));
   const metadata = Object.fromEntries(
-    METADATA.map((obj) => {
+    METADATA$1.map((obj) => {
       const { type, name, many } = obj;
-      const filter = type === "meta" ? (el) => el.namespaceURI === NS$1.OPF && el.getAttribute("property") === name : (el) => el.namespaceURI === NS$1.DC && el.localName === name;
+      const filter = type === "meta" ? (el) => el.namespaceURI === NS$3.OPF && el.getAttribute("property") === name : (el) => el.namespaceURI === NS$3.DC && el.localName === name;
       return [
-        camel(name),
+        camel$1(name),
         many ? arr.filter(filter).map((el) => getValue2(obj, el)) : getValue2(obj, arr.find(filter))
       ];
     })
   );
   const $$meta = $$2($metadata, "meta");
-  const getMetasByPrefix = (prefix) => $$meta.filter(filterAttribute("property", (x2) => x2?.startsWith(prefix))).map((el) => [el.getAttribute("property").replace(prefix, ""), el]);
+  const getMetasByPrefix = (prefix) => $$meta.filter(filterAttribute$1("property", (x2) => x2?.startsWith(prefix))).map((el) => [el.getAttribute("property").replace(prefix, ""), el]);
   const rendition = Object.fromEntries(
-    getMetasByPrefix("rendition:").map(([k2, el]) => [k2, getElementText$1(el)])
+    getMetasByPrefix("rendition:").map(([k2, el]) => [k2, getElementText$3(el)])
   );
   const media = { narrator: [], duration: {} };
   for (const [k2, el] of getMetasByPrefix("media:")) {
-    const v2 = getElementText$1(el);
+    const v2 = getElementText$3(el);
     if (k2 === "duration")
-      media.duration[el.getAttribute("refines")?.split("#")?.[1] ?? ""] = parseClock(v2);
+      media.duration[el.getAttribute("refines")?.split("#")?.[1] ?? ""] = parseClock$1(v2);
     else if (k2 === "active-class")
       media.activeClass = v2;
     else if (k2 === "narrator")
@@ -25621,17 +25621,17 @@ const getMetadata = (opf) => {
   }
   return { metadata, rendition, media };
 };
-const parseNav = (doc2, resolve2 = (f2) => f2) => {
-  const { $: $2, $$: $$2, $$$ } = childGetter(doc2, NS$1.XHTML);
+const parseNav$1 = (doc2, resolve2 = (f2) => f2) => {
+  const { $: $2, $$: $$2, $$$ } = childGetter$1(doc2, NS$3.XHTML);
   const resolveHref = (href) => href ? decodeURI(resolve2(href)) : null;
   const parseLI = (getType2) => ($li) => {
     const $a = $2($li, "a") ?? $2($li, "span");
     const $ol = $2($li, "ol");
     const href = resolveHref($a?.getAttribute("href"));
-    const label = getElementText$1($a) || $a?.getAttribute("title");
+    const label = getElementText$3($a) || $a?.getAttribute("title");
     const result = { label, href, subitems: parseOL($ol) };
     if (getType2)
-      result.type = $a?.getAttributeNS(NS$1.EPUB, "type")?.split(/\s/);
+      result.type = $a?.getAttributeNS(NS$3.EPUB, "type")?.split(/\s/);
     return result;
   };
   const parseOL = ($ol, getType2) => $ol ? $$2($ol, "li").map(parseLI(getType2)) : null;
@@ -25639,7 +25639,7 @@ const parseNav = (doc2, resolve2 = (f2) => f2) => {
   const $$nav = $$$(doc2, "nav");
   let toc = null, pageList = null, landmarks = null, others = [];
   for (const $nav of $$nav) {
-    const type = $nav.getAttributeNS(NS$1.EPUB, "type")?.split(/\s/) ?? [];
+    const type = $nav.getAttributeNS(NS$3.EPUB, "type")?.split(/\s/) ?? [];
     if (type.includes("toc"))
       toc ??= parseNav2($nav);
     else if (type.includes("page-list"))
@@ -25648,20 +25648,20 @@ const parseNav = (doc2, resolve2 = (f2) => f2) => {
       landmarks ??= parseNav2($nav, true);
     else
       others.push({
-        label: getElementText$1($nav.firstElementChild),
+        label: getElementText$3($nav.firstElementChild),
         type,
         list: parseNav2($nav)
       });
   }
   return { toc, pageList, landmarks, others };
 };
-const parseNCX = (doc2, resolve2 = (f2) => f2) => {
-  const { $: $2, $$: $$2 } = childGetter(doc2, NS$1.NCX);
+const parseNCX$1 = (doc2, resolve2 = (f2) => f2) => {
+  const { $: $2, $$: $$2 } = childGetter$1(doc2, NS$3.NCX);
   const resolveHref = (href) => href ? decodeURI(resolve2(href)) : null;
   const parseItem = (el) => {
     const $label = $2(el, "navLabel");
     const $content = $2(el, "content");
-    const label = getElementText$1($label);
+    const label = getElementText$3($label);
     const href = resolveHref($content.getAttribute("src"));
     if (el.localName === "navPoint") {
       const els = $$2(el, "navPoint");
@@ -25678,12 +25678,12 @@ const parseNCX = (doc2, resolve2 = (f2) => f2) => {
     toc: getSingle("navMap", "navPoint"),
     pageList: getSingle("pageList", "pageTarget"),
     others: $$2(doc2.documentElement, "navList").map((el) => ({
-      label: getElementText$1($2(el, "navLabel")),
+      label: getElementText$3($2(el, "navLabel")),
       list: parseList(el, "navTarget")
     }))
   };
 };
-const parseClock = (str) => {
+const parseClock$1 = (str) => {
   if (!str)
     return;
   const parts = str.split(":").map((x3) => parseFloat(x3));
@@ -25700,7 +25700,7 @@ const parseClock = (str) => {
   const f2 = unit === "h" ? 60 * 60 : unit === "min" ? 60 : unit === "ms" ? 1e-3 : 1;
   return n2 * f2;
 };
-class MediaOverlay extends EventTarget {
+let MediaOverlay$1 = class MediaOverlay extends EventTarget {
   #entries;
   #lastMediaOverlayItem;
   #sectionIndex;
@@ -25718,8 +25718,8 @@ class MediaOverlay extends EventTarget {
     if (this.#lastMediaOverlayItem === item)
       return;
     const doc2 = await this.loadXML(item.href);
-    const resolve2 = (href) => href ? resolveURL(href, item.href) : null;
-    const { $: $2, $$$ } = childGetter(doc2, NS$1.SMIL);
+    const resolve2 = (href) => href ? resolveURL$1(href, item.href) : null;
+    const { $: $2, $$$ } = childGetter$1(doc2, NS$3.SMIL);
     this.#audioIndex = -1;
     this.#itemIndex = -1;
     this.#entries = $$$(doc2, "par").reduce((arr, $par) => {
@@ -25728,8 +25728,8 @@ class MediaOverlay extends EventTarget {
       if (!text || !$audio)
         return arr;
       const src = resolve2($audio.getAttribute("src"));
-      const begin = parseClock($audio.getAttribute("clipBegin"));
-      const end = parseClock($audio.getAttribute("clipEnd"));
+      const begin = parseClock$1($audio.getAttribute("clipBegin"));
+      const end = parseClock$1($audio.getAttribute("clipEnd"));
       const last2 = arr.at(-1);
       if (last2?.src === src)
         last2.items.push({ text, begin, end });
@@ -25849,47 +25849,47 @@ class MediaOverlay extends EventTarget {
     if (this.#audio)
       this.#audio.playbackRate = rate;
   }
-}
-const isUUID = /([0-9a-f]{8})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{12})/;
-const getUUID = (opf) => {
-  for (const el of opf.getElementsByTagNameNS(NS$1.DC, "identifier")) {
-    const [id2] = getElementText$1(el).split(":").slice(-1);
-    if (isUUID.test(id2))
+};
+const isUUID$1 = /([0-9a-f]{8})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{12})/;
+const getUUID$1 = (opf) => {
+  for (const el of opf.getElementsByTagNameNS(NS$3.DC, "identifier")) {
+    const [id2] = getElementText$3(el).split(":").slice(-1);
+    if (isUUID$1.test(id2))
       return id2;
   }
   return "";
 };
-const getIdentifier = (opf) => getElementText$1(
-  opf.getElementById(opf.documentElement.getAttribute("unique-identifier")) ?? opf.getElementsByTagNameNS(NS$1.DC, "identifier")[0]
+const getIdentifier$1 = (opf) => getElementText$3(
+  opf.getElementById(opf.documentElement.getAttribute("unique-identifier")) ?? opf.getElementsByTagNameNS(NS$3.DC, "identifier")[0]
 );
-const deobfuscate = async (key, length, blob) => {
+const deobfuscate$1 = async (key, length, blob) => {
   const array = new Uint8Array(await blob.slice(0, length).arrayBuffer());
   length = Math.min(length, array.length);
   for (var i2 = 0; i2 < length; i2++)
     array[i2] = array[i2] ^ key[i2 % key.length];
   return new Blob([array, blob.slice(length)], { type: blob.type });
 };
-const WebCryptoSHA1 = async (str) => {
+const WebCryptoSHA1$1 = async (str) => {
   const data2 = new TextEncoder().encode(str);
   const buffer = await globalThis.crypto.subtle.digest("SHA-1", data2);
   return new Uint8Array(buffer);
 };
-const deobfuscators = (sha1 = WebCryptoSHA1) => ({
+const deobfuscators$1 = (sha1 = WebCryptoSHA1$1) => ({
   "http://www.idpf.org/2008/embedding": {
     key: (opf) => sha1(
-      getIdentifier(opf).replaceAll(/[\u0020\u0009\u000d\u000a]/g, "")
+      getIdentifier$1(opf).replaceAll(/[\u0020\u0009\u000d\u000a]/g, "")
     ),
-    decode: (key, blob) => deobfuscate(key, 1040, blob)
+    decode: (key, blob) => deobfuscate$1(key, 1040, blob)
   },
   "http://ns.adobe.com/pdf/enc#RC": {
     key: (opf) => {
-      const uuid = getUUID(opf).replaceAll("-", "");
+      const uuid = getUUID$1(opf).replaceAll("-", "");
       return Uint8Array.from({ length: 16 }, (_2, i2) => parseInt(uuid.slice(i2 * 2, i2 * 2 + 2), 16));
     },
-    decode: (key, blob) => deobfuscate(key, 1024, blob)
+    decode: (key, blob) => deobfuscate$1(key, 1024, blob)
   }
 });
-class Encryption {
+let Encryption$1 = class Encryption {
   #uris = /* @__PURE__ */ new Map();
   #decoders = /* @__PURE__ */ new Map();
   #algorithms;
@@ -25899,9 +25899,9 @@ class Encryption {
   async init(encryption, opf) {
     if (!encryption)
       return;
-    const data2 = Array.from(encryption.getElementsByTagNameNS(NS$1.ENC, "EncryptedData"), (el) => ({
-      algorithm: el.getElementsByTagNameNS(NS$1.ENC, "EncryptionMethod")[0]?.getAttribute("Algorithm"),
-      uri: el.getElementsByTagNameNS(NS$1.ENC, "CipherReference")[0]?.getAttribute("URI")
+    const data2 = Array.from(encryption.getElementsByTagNameNS(NS$3.ENC, "EncryptedData"), (el) => ({
+      algorithm: el.getElementsByTagNameNS(NS$3.ENC, "EncryptionMethod")[0]?.getAttribute("Algorithm"),
+      uri: el.getElementsByTagNameNS(NS$3.ENC, "CipherReference")[0]?.getAttribute("URI")
     }));
     for (const { algorithm, uri } of data2) {
       if (!this.#decoders.has(algorithm)) {
@@ -25919,35 +25919,35 @@ class Encryption {
   getDecoder(uri) {
     return this.#decoders.get(this.#uris.get(uri)) ?? ((x2) => x2);
   }
-}
-class Resources {
+};
+let Resources$1 = class Resources {
   constructor({ opf, resolveHref }) {
     this.opf = opf;
-    const { $: $2, $$: $$2, $$$ } = childGetter(opf, NS$1.OPF);
+    const { $: $2, $$: $$2, $$$ } = childGetter$1(opf, NS$3.OPF);
     const $manifest = $2(opf.documentElement, "manifest");
     const $spine = $2(opf.documentElement, "spine");
     const $$itemref = $$2($spine, "itemref");
-    this.manifest = $$2($manifest, "item").map(getAttributes("href", "id", "media-type", "properties", "media-overlay")).map((item) => {
+    this.manifest = $$2($manifest, "item").map(getAttributes$1("href", "id", "media-type", "properties", "media-overlay")).map((item) => {
       item.href = resolveHref(item.href);
       item.properties = item.properties?.split(/\s/);
       return item;
     });
-    this.spine = $$itemref.map(getAttributes("idref", "id", "linear", "properties")).map((item) => (item.properties = item.properties?.split(/\s/), item));
+    this.spine = $$itemref.map(getAttributes$1("idref", "id", "linear", "properties")).map((item) => (item.properties = item.properties?.split(/\s/), item));
     this.pageProgressionDirection = $spine.getAttribute("page-progression-direction");
     this.navPath = this.getItemByProperty("nav")?.href;
-    this.ncxPath = (this.getItemByID($spine.getAttribute("toc")) ?? this.manifest.find((item) => item.mediaType === MIME$2.NCX))?.href;
+    this.ncxPath = (this.getItemByID($spine.getAttribute("toc")) ?? this.manifest.find((item) => item.mediaType === MIME$5.NCX))?.href;
     const $guide = $2(opf.documentElement, "guide");
     if ($guide)
-      this.guide = $$2($guide, "reference").map(getAttributes("type", "title", "href")).map(({ type, title, href }) => ({
+      this.guide = $$2($guide, "reference").map(getAttributes$1("type", "title", "href")).map(({ type, title, href }) => ({
         label: title,
         type: type.split(/\s/),
         href: resolveHref(href)
       }));
     this.cover = this.getItemByProperty("cover-image") ?? // EPUB 2 compat
     this.getItemByID(
-      $$$(opf, "meta").find(filterAttribute("name", "cover"))?.getAttribute("content")
+      $$$(opf, "meta").find(filterAttribute$1("name", "cover"))?.getAttribute("content")
     ) ?? this.getItemByHref(this.guide?.find((ref2) => ref2.type.includes("cover"))?.href);
-    this.cfis = fromElements($$itemref);
+    this.cfis = fromElements$1($$itemref);
   }
   getItemByID(id2) {
     return this.manifest.find((item) => item.id === id2);
@@ -25959,20 +25959,20 @@ class Resources {
     return this.manifest.find((item) => item.properties?.includes(prop));
   }
   resolveCFI(cfi) {
-    const parts = parse(cfi);
+    const parts = parse$1(cfi);
     const top = (parts.parent ?? parts).shift();
-    let $itemref = toElement(this.opf, top);
+    let $itemref = toElement$1(this.opf, top);
     if ($itemref && $itemref.nodeName !== "idref") {
       top.at(-1).id = null;
-      $itemref = toElement(this.opf, top);
+      $itemref = toElement$1(this.opf, top);
     }
     const idref = $itemref?.getAttribute("idref");
     const index = this.spine.findIndex((item) => item.idref === idref);
-    const anchor = (doc2) => toRange(doc2, parts);
+    const anchor = (doc2) => toRange$1(doc2, parts);
     return { index, anchor };
   }
-}
-class Loader {
+};
+let Loader$1 = class Loader {
   #cache = /* @__PURE__ */ new Map();
   #children = /* @__PURE__ */ new Map();
   #refCount = /* @__PURE__ */ new Map();
@@ -26030,22 +26030,22 @@ class Loader {
     if (!item)
       return null;
     const { href, mediaType } = item;
-    const isScript = MIME$2.JS.test(item.mediaType);
+    const isScript = MIME$5.JS.test(item.mediaType);
     if (isScript && !this.allowScript)
       return null;
     const parent = parents.at(-1);
     if (this.#cache.has(href))
       return this.ref(href, parent);
-    const shouldReplace = (isScript || [MIME$2.XHTML, MIME$2.HTML, MIME$2.CSS, MIME$2.SVG].includes(mediaType)) && // prevent circular references
+    const shouldReplace = (isScript || [MIME$5.XHTML, MIME$5.HTML, MIME$5.CSS, MIME$5.SVG].includes(mediaType)) && // prevent circular references
     parents.every((p2) => p2 !== href);
     if (shouldReplace)
       return this.loadReplaced(item, parents);
     return this.createURL(href, await this.loadBlob(href), mediaType, parent);
   }
   async loadHref(href, base, parents = []) {
-    if (isExternal$1(href))
+    if (isExternal$2(href))
       return href;
-    const path = resolveURL(href, base);
+    const path = resolveURL$1(href, base);
     const item = this.manifest.find((item2) => item2.href === path);
     if (!item)
       return href;
@@ -26057,18 +26057,18 @@ class Loader {
     const str = await this.loadText(href);
     if (!str)
       return null;
-    if ([MIME$2.XHTML, MIME$2.HTML, MIME$2.SVG].includes(mediaType)) {
+    if ([MIME$5.XHTML, MIME$5.HTML, MIME$5.SVG].includes(mediaType)) {
       let doc2 = new DOMParser().parseFromString(str, mediaType);
-      if (mediaType === MIME$2.XHTML && doc2.querySelector("parsererror")) {
+      if (mediaType === MIME$5.XHTML && doc2.querySelector("parsererror")) {
         console.warn(doc2.querySelector("parsererror").innerText);
-        item.mediaType = MIME$2.HTML;
+        item.mediaType = MIME$5.HTML;
         doc2 = new DOMParser().parseFromString(str, item.mediaType);
       }
-      if ([MIME$2.XHTML, MIME$2.SVG].includes(item.mediaType)) {
+      if ([MIME$5.XHTML, MIME$5.SVG].includes(item.mediaType)) {
         let child = doc2.firstChild;
         while (child instanceof ProcessingInstruction) {
           if (child.data) {
-            const replacedData = await replaceSeries$1(
+            const replacedData = await replaceSeries$3(
               child.data,
               /(?:^|\s*)(href\s*=\s*['"])([^'"]*)(['"])/i,
               (_2, p1, p2, p3) => this.loadHref(p2, href, parents).then((p22) => `${p1}${p22}${p3}`)
@@ -26089,9 +26089,9 @@ class Loader {
         await replace(el, "data");
       for (const el of doc2.querySelectorAll("[*|href]:not([href]"))
         el.setAttributeNS(
-          NS$1.XLINK,
+          NS$3.XLINK,
           "href",
-          await this.loadHref(el.getAttributeNS(NS$1.XLINK, "href"), href, parents)
+          await this.loadHref(el.getAttributeNS(NS$3.XLINK, "href"), href, parents)
         );
       for (const el of doc2.querySelectorAll("style"))
         if (el.textContent)
@@ -26101,16 +26101,16 @@ class Loader {
       const result2 = new XMLSerializer().serializeToString(doc2);
       return this.createURL(href, result2, item.mediaType, parent);
     }
-    const result = mediaType === MIME$2.CSS ? await this.replaceCSS(str, href, parents) : await this.replaceString(str, href, parents);
+    const result = mediaType === MIME$5.CSS ? await this.replaceCSS(str, href, parents) : await this.replaceString(str, href, parents);
     return this.createURL(href, result, mediaType, parent);
   }
   async replaceCSS(str, href, parents = []) {
-    const replacedUrls = await replaceSeries$1(
+    const replacedUrls = await replaceSeries$3(
       str,
       /url\(\s*["']?([^'"\n]*?)\s*["']?\s*\)/gi,
       (_2, url) => this.loadHref(url, href, parents).then((url2) => `url("${url2}")`)
     );
-    const replacedImports = await replaceSeries$1(
+    const replacedImports = await replaceSeries$3(
       replacedUrls,
       /@import\s*["']([^"'\n]*?)["']/gi,
       (_2, url) => this.loadHref(url, href, parents).then((url2) => `@import "${url2}"`)
@@ -26128,7 +26128,7 @@ class Loader {
     const urls = this.assets.map((asset) => {
       if (asset.href === href)
         return;
-      const relative = pathRelative(pathDirname(href), asset.href);
+      const relative = pathRelative$1(pathDirname$1(href), asset.href);
       const relativeEnc = encodeURI(relative);
       const rootRelative = "/" + asset.href;
       const rootRelativeEnc = encodeURI(rootRelative);
@@ -26139,8 +26139,8 @@ class Loader {
     }).flat().filter((x2) => x2);
     if (!urls.length)
       return str;
-    const regex = new RegExp(urls.map(regexEscape).join("|"), "g");
-    return replaceSeries$1(
+    const regex = new RegExp(urls.map(regexEscape$1).join("|"), "g");
+    return replaceSeries$3(
       str,
       regex,
       async (match2) => this.loadItem(assetMap.get(match2.replace(/^\//, "")), parents.concat(href))
@@ -26153,9 +26153,9 @@ class Loader {
     for (const url of this.#cache.values())
       URL.revokeObjectURL(url);
   }
-}
-const getHTMLFragment = (doc2, id2) => doc2.getElementById(id2) ?? doc2.querySelector(`[name="${CSS.escape(id2)}"]`);
-const getPageSpread$1 = (properties) => {
+};
+const getHTMLFragment$1 = (doc2, id2) => doc2.getElementById(id2) ?? doc2.querySelector(`[name="${CSS.escape(id2)}"]`);
+const getPageSpread$3 = (properties) => {
   for (const p2 of properties) {
     if (p2 === "page-spread-left" || p2 === "rendition:page-spread-left")
       return "left";
@@ -26165,7 +26165,7 @@ const getPageSpread$1 = (properties) => {
       return "center";
   }
 };
-class EPUB {
+let EPUB$1 = class EPUB {
   parser = new DOMParser();
   #loader;
   #encryption;
@@ -26173,13 +26173,13 @@ class EPUB {
     this.loadText = loadText;
     this.loadBlob = loadBlob;
     this.getSize = getSize;
-    this.#encryption = new Encryption(deobfuscators(sha1));
+    this.#encryption = new Encryption$1(deobfuscators$1(sha1));
   }
   async #loadXML(uri) {
     const str = await this.loadText(uri);
     if (!str)
       return null;
-    const doc2 = this.parser.parseFromString(str, MIME$2.XML);
+    const doc2 = this.parser.parseFromString(str, MIME$5.XML);
     if (doc2.querySelector("parsererror"))
       throw new Error(`XML parsing error: ${uri}
 ${doc2.querySelector("parsererror").innerText}`);
@@ -26190,8 +26190,8 @@ ${doc2.querySelector("parsererror").innerText}`);
     if (!$container)
       throw new Error("Failed to load container file");
     const opfs = Array.from(
-      $container.getElementsByTagNameNS(NS$1.CONTAINER, "rootfile"),
-      getAttributes("full-path", "media-type")
+      $container.getElementsByTagNameNS(NS$3.CONTAINER, "rootfile"),
+      getAttributes$1("full-path", "media-type")
     ).filter((file2) => file2.mediaType === "application/oebps-package+xml");
     if (!opfs.length)
       throw new Error("No package document defined in container");
@@ -26201,11 +26201,11 @@ ${doc2.querySelector("parsererror").innerText}`);
       throw new Error("Failed to load package document");
     const $encryption = await this.#loadXML("META-INF/encryption.xml");
     await this.#encryption.init($encryption, opf);
-    this.resources = new Resources({
+    this.resources = new Resources$1({
       opf,
-      resolveHref: (url) => resolveURL(url, opfPath)
+      resolveHref: (url) => resolveURL$1(url, opfPath)
     });
-    this.#loader = new Loader({
+    this.#loader = new Loader$1({
       loadText: this.loadText,
       loadBlob: (uri) => Promise.resolve(this.loadBlob(uri)).then(this.#encryption.getDecoder(uri)),
       resources: this.resources
@@ -26225,16 +26225,16 @@ ${doc2.querySelector("parsererror").innerText}`);
         size: this.getSize(item.href),
         cfi: this.resources.cfis[index],
         linear,
-        pageSpread: getPageSpread$1(properties),
-        resolveHref: (href) => resolveURL(href, item.href),
+        pageSpread: getPageSpread$3(properties),
+        resolveHref: (href) => resolveURL$1(href, item.href),
         mediaOverlay: item.mediaOverlay ? this.resources.getItemByID(item.mediaOverlay) : null
       };
     }).filter((s) => s);
     const { navPath, ncxPath } = this.resources;
     if (navPath)
       try {
-        const resolve2 = (url) => resolveURL(url, navPath);
-        const nav = parseNav(await this.#loadXML(navPath), resolve2);
+        const resolve2 = (url) => resolveURL$1(url, navPath);
+        const nav = parseNav$1(await this.#loadXML(navPath), resolve2);
         this.toc = nav.toc;
         this.pageList = nav.pageList;
         this.landmarks = nav.landmarks;
@@ -26243,15 +26243,15 @@ ${doc2.querySelector("parsererror").innerText}`);
       }
     if (!this.toc && ncxPath)
       try {
-        const resolve2 = (url) => resolveURL(url, ncxPath);
-        const ncx = parseNCX(await this.#loadXML(ncxPath), resolve2);
+        const resolve2 = (url) => resolveURL$1(url, ncxPath);
+        const ncx = parseNCX$1(await this.#loadXML(ncxPath), resolve2);
         this.toc = ncx.toc;
         this.pageList = ncx.pageList;
       } catch (e2) {
         console.warn(e2);
       }
     this.landmarks ??= this.resources.guide;
-    const { metadata, rendition, media } = getMetadata(opf);
+    const { metadata, rendition, media } = getMetadata$1(opf);
     this.rendition = rendition;
     this.media = media;
     this.dir = this.resources.pageProgressionDirection;
@@ -26262,7 +26262,7 @@ ${doc2.querySelector("parsererror").innerText}`);
       subtitle: metadata?.title?.find((x2) => x2.titleType === "subtitle")?.value,
       sortAs: title?.fileAs,
       language: metadata?.language,
-      identifier: getIdentifier(opf),
+      identifier: getIdentifier$1(opf),
       description: metadata?.description?.value,
       publisher: metadata?.publisher?.value,
       published: metadata?.date,
@@ -26307,7 +26307,7 @@ ${doc2.querySelector("parsererror").innerText}`);
     return this.parser.parseFromString(str, item.mediaType);
   }
   getMediaOverlay() {
-    return new MediaOverlay(this, this.#loadXML.bind(this));
+    return new MediaOverlay$1(this, this.#loadXML.bind(this));
   }
   resolveCFI(cfi) {
     return this.resources.resolveCFI(cfi);
@@ -26318,7 +26318,7 @@ ${doc2.querySelector("parsererror").innerText}`);
     if (!item)
       return null;
     const index = this.resources.spine.findIndex(({ idref }) => idref === item.id);
-    const anchor = hash ? (doc2) => getHTMLFragment(doc2, hash) : () => 0;
+    const anchor = hash ? (doc2) => getHTMLFragment$1(doc2, hash) : () => 0;
     return { index, anchor };
   }
   splitTOCHref(href) {
@@ -26328,7 +26328,7 @@ ${doc2.querySelector("parsererror").innerText}`);
     return doc2.getElementById(id2) ?? doc2.querySelector(`[name="${CSS.escape(id2)}"]`);
   }
   isExternal(uri) {
-    return isExternal$1(uri);
+    return isExternal$2(uri);
   }
   async getCover() {
     const cover = this.resources?.cover;
@@ -26345,18 +26345,18 @@ ${doc2.querySelector("parsererror").innerText}`);
   destroy() {
     this.#loader?.destroy();
   }
-}
-const normalizeWhitespace = (str) => str ? str.replace(/[\t\n\f\r ]+/g, " ").replace(/^[\t\n\f\r ]+/, "").replace(/[\t\n\f\r ]+$/, "") : "";
-const getElementText = (el) => normalizeWhitespace(el?.textContent);
-const NS = {
+};
+const normalizeWhitespace$2 = (str) => str ? str.replace(/[\t\n\f\r ]+/g, " ").replace(/^[\t\n\f\r ]+/, "").replace(/[\t\n\f\r ]+$/, "") : "";
+const getElementText$2 = (el) => normalizeWhitespace$2(el?.textContent);
+const NS$2 = {
   XLINK: "http://www.w3.org/1999/xlink",
   EPUB: "http://www.idpf.org/2007/ops"
 };
-const MIME$1 = {
+const MIME$4 = {
   XML: "application/xml",
   XHTML: "application/xhtml+xml"
 };
-const STYLE = {
+const STYLE$1 = {
   strong: ["strong", "self"],
   emphasis: ["em", "self"],
   style: ["span", "self"],
@@ -26367,23 +26367,23 @@ const STYLE = {
   code: ["code", "self"],
   image: "image"
 };
-const TABLE = {
+const TABLE$1 = {
   tr: ["tr", ["align"]],
   th: ["th", ["colspan", "rowspan", "align", "valign"]],
   td: ["td", ["colspan", "rowspan", "align", "valign"]]
 };
-const POEM = {
+const POEM$1 = {
   epigraph: ["blockquote"],
-  subtitle: ["h2", STYLE],
-  "text-author": ["p", STYLE],
-  date: ["p", STYLE],
+  subtitle: ["h2", STYLE$1],
+  "text-author": ["p", STYLE$1],
+  date: ["p", STYLE$1],
   stanza: "stanza"
 };
-const SECTION = {
+const SECTION$1 = {
   title: [
     "header",
     {
-      p: ["h1", STYLE],
+      p: ["h1", STYLE$1],
       "empty-line": ["br"]
     }
   ],
@@ -26391,50 +26391,50 @@ const SECTION = {
   image: "image",
   annotation: ["aside"],
   section: ["section", "self"],
-  p: ["p", STYLE],
-  poem: ["blockquote", POEM],
-  subtitle: ["h2", STYLE],
+  p: ["p", STYLE$1],
+  poem: ["blockquote", POEM$1],
+  subtitle: ["h2", STYLE$1],
   cite: ["blockquote", "self"],
   "empty-line": ["br"],
-  table: ["table", TABLE],
-  "text-author": ["p", STYLE]
+  table: ["table", TABLE$1],
+  "text-author": ["p", STYLE$1]
 };
-POEM["epigraph"].push(SECTION);
-const BODY = {
+POEM$1["epigraph"].push(SECTION$1);
+const BODY$1 = {
   image: "image",
   title: [
     "section",
     {
-      p: ["h1", STYLE],
+      p: ["h1", STYLE$1],
       "empty-line": ["br"]
     }
   ],
-  epigraph: ["section", SECTION],
-  section: ["section", SECTION]
+  epigraph: ["section", SECTION$1],
+  section: ["section", SECTION$1]
 };
-const getImageSrc = (el) => {
-  const href = el.getAttributeNS(NS.XLINK, "href");
+const getImageSrc$1 = (el) => {
+  const href = el.getAttributeNS(NS$2.XLINK, "href");
   const [, id2] = href.split("#");
   const bin = el.getRootNode().getElementById(id2);
   return bin ? `data:${bin.getAttribute("content-type")};base64,${bin.textContent}` : href;
 };
-class FB2Converter {
+let FB2Converter$1 = class FB2Converter {
   constructor(fb2) {
     this.fb2 = fb2;
-    this.doc = document.implementation.createDocument(NS.XHTML, "html");
+    this.doc = document.implementation.createDocument(NS$2.XHTML, "html");
   }
   image(node) {
     const el = this.doc.createElement("img");
     el.alt = node.getAttribute("alt");
     el.title = node.getAttribute("title");
-    el.setAttribute("src", getImageSrc(node));
+    el.setAttribute("src", getImageSrc$1(node));
     return el;
   }
   anchor(node) {
-    const el = this.convert(node, { a: ["a", STYLE] });
-    el.setAttribute("href", node.getAttributeNS(NS.XLINK, "href"));
+    const el = this.convert(node, { a: ["a", STYLE$1] });
+    el.setAttribute("href", node.getAttributeNS(NS$2.XLINK, "href"));
     if (node.getAttribute("type") === "note")
-      el.setAttributeNS(NS.EPUB, "epub:type", "noteref");
+      el.setAttributeNS(NS$2.EPUB, "epub:type", "noteref");
     return el;
   }
   stanza(node) {
@@ -26445,11 +26445,11 @@ class FB2Converter {
           title: [
             "header",
             {
-              p: ["strong", STYLE],
+              p: ["strong", STYLE$1],
               "empty-line": ["br"]
             }
           ],
-          subtitle: ["p", STYLE]
+          subtitle: ["p", STYLE$1]
         }
       ]
     });
@@ -26490,22 +26490,22 @@ class FB2Converter {
     }
     return el;
   }
-}
-const parseXML = async (blob) => {
+};
+const parseXML$1 = async (blob) => {
   const buffer = await blob.arrayBuffer();
   const str = new TextDecoder("utf-8").decode(buffer);
   const parser2 = new DOMParser();
-  const doc2 = parser2.parseFromString(str, MIME$1.XML);
+  const doc2 = parser2.parseFromString(str, MIME$4.XML);
   const encoding = doc2.xmlEncoding || // `Document.xmlEncoding` is deprecated, and already removed in Firefox
   // so parse the XML declaration manually
   str.match(/^<\?xml\s+version\s*=\s*["']1.\d+"\s+encoding\s*=\s*["']([A-Za-z0-9._-]*)["']/)?.[1];
   if (encoding && encoding.toLowerCase() !== "utf-8") {
     const str2 = new TextDecoder(encoding).decode(buffer);
-    return parser2.parseFromString(str2, MIME$1.XML);
+    return parser2.parseFromString(str2, MIME$4.XML);
   }
   return doc2;
 };
-const style = URL.createObjectURL(
+const style$1 = URL.createObjectURL(
   new Blob(
     [
       `
@@ -26561,51 +26561,51 @@ body:not(.notesBodyType) > .title, body:not(.notesBodyType) > .epigraph {
     { type: "text/css" }
   )
 );
-const template = (html) => `<?xml version="1.0" encoding="utf-8"?>
+const template$1 = (html) => `<?xml version="1.0" encoding="utf-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml">
-    <head><link href="${style}" rel="stylesheet" type="text/css"/></head>
+    <head><link href="${style$1}" rel="stylesheet" type="text/css"/></head>
     <body>${html}</body>
 </html>`;
-const dataID = "data-foliate-id";
-const makeFB2 = async (blob) => {
+const dataID$1 = "data-foliate-id";
+const makeFB2$1 = async (blob) => {
   const book2 = {};
-  const doc2 = await parseXML(blob);
-  const converter = new FB2Converter(doc2);
+  const doc2 = await parseXML$1(blob);
+  const converter = new FB2Converter$1(doc2);
   const $2 = (x2) => doc2.querySelector(x2);
   const $$2 = (x2) => [...doc2.querySelectorAll(x2)];
   const getPerson = (el) => {
-    const nick = getElementText(el.querySelector("nickname"));
+    const nick = getElementText$2(el.querySelector("nickname"));
     if (nick)
       return nick;
-    const first = getElementText(el.querySelector("first-name"));
-    const middle = getElementText(el.querySelector("middle-name"));
-    const last2 = getElementText(el.querySelector("last-name"));
+    const first = getElementText$2(el.querySelector("first-name"));
+    const middle = getElementText$2(el.querySelector("middle-name"));
+    const last2 = getElementText$2(el.querySelector("last-name"));
     const name = [first, middle, last2].filter((x2) => x2).join(" ");
     const sortAs = last2 ? [last2, [first, middle].filter((x2) => x2).join(" ")].join(", ") : null;
     return { name, sortAs };
   };
-  const getDate = (el) => el?.getAttribute("value") ?? getElementText(el);
+  const getDate = (el) => el?.getAttribute("value") ?? getElementText$2(el);
   const annotation = $2("title-info annotation");
   book2.metadata = {
-    title: getElementText($2("title-info book-title")),
-    identifier: getElementText($2("document-info id")),
-    language: getElementText($2("title-info lang")),
+    title: getElementText$2($2("title-info book-title")),
+    identifier: getElementText$2($2("document-info id")),
+    language: getElementText$2($2("title-info lang")),
     author: $$2("title-info author").map(getPerson),
     translator: $$2("title-info translator").map(getPerson),
-    producer: $$2("document-info author").map(getPerson).concat($$2("document-info program-used").map(getElementText)),
-    publisher: getElementText($2("publish-info publisher")),
+    producer: $$2("document-info author").map(getPerson).concat($$2("document-info program-used").map(getElementText$2)),
+    publisher: getElementText$2($2("publish-info publisher")),
     published: getDate($2("title-info date")),
     modified: getDate($2("document-info date")),
-    description: annotation ? converter.convert(annotation, { annotation: ["div", SECTION] }).innerHTML : null,
-    subject: $$2("title-info genre").map(getElementText)
+    description: annotation ? converter.convert(annotation, { annotation: ["div", SECTION$1] }).innerHTML : null,
+    subject: $$2("title-info genre").map(getElementText$2)
   };
   if ($2("coverpage image")) {
-    const src = getImageSrc($2("coverpage image"));
+    const src = getImageSrc$1($2("coverpage image"));
     book2.getCover = () => fetch(src).then((res) => res.blob());
   } else
     book2.getCover = () => null;
   const bodyData = Array.from(doc2.querySelectorAll("body"), (body) => {
-    const converted = converter.convert(body, { body: ["body", BODY] });
+    const converted = converter.convert(body, { body: ["body", BODY$1] });
     return [
       Array.from(converted.children, (el) => {
         const ids = [el, ...el.querySelectorAll("[id]")].map((el2) => el2.id);
@@ -26617,8 +26617,8 @@ const makeFB2 = async (blob) => {
   const urls = [];
   const sectionData = bodyData[0][0].map(({ el, ids }) => {
     const titles = Array.from(el.querySelectorAll(":scope > section > .title"), (el2, index) => {
-      el2.setAttribute(dataID, index);
-      return { title: getElementText(el2), index };
+      el2.setAttribute(dataID$1, index);
+      return { title: getElementText$2(el2), index };
     });
     return { ids, titles, el };
   }).concat(
@@ -26628,11 +26628,11 @@ const makeFB2 = async (blob) => {
       return { ids, el: body, linear: "no" };
     })
   ).map(({ ids, titles, el, linear }) => {
-    const str = template(el.outerHTML);
-    const blob2 = new Blob([str], { type: MIME$1.XHTML });
+    const str = template$1(el.outerHTML);
+    const blob2 = new Blob([str], { type: MIME$4.XHTML });
     const url = URL.createObjectURL(blob2);
     urls.push(url);
-    const title = normalizeWhitespace(
+    const title = normalizeWhitespace$2(
       el.querySelector(".title, .subtitle, p")?.textContent ?? (el.classList.contains("title") ? el.textContent : "")
     );
     return {
@@ -26640,7 +26640,7 @@ const makeFB2 = async (blob) => {
       title,
       titles,
       load: () => url,
-      createDocument: () => new DOMParser().parseFromString(str, MIME$1.XHTML),
+      createDocument: () => new DOMParser().parseFromString(str, MIME$4.XHTML),
       // doo't count image data as it'd skew the size too much
       size: blob2.size - Array.from(
         el.querySelectorAll("[src]"),
@@ -26672,47 +26672,47 @@ const makeFB2 = async (blob) => {
     const [a2, b2] = href.split("#");
     return a2 ? (
       // the link is from the TOC
-      { index: Number(a2), anchor: (doc3) => doc3.querySelector(`[${dataID}="${b2}"]`) }
+      { index: Number(a2), anchor: (doc3) => doc3.querySelector(`[${dataID$1}="${b2}"]`) }
     ) : (
       // link from within the page
       { index: idMap.get(b2), anchor: (doc3) => doc3.getElementById(b2) }
     );
   };
   book2.splitTOCHref = (href) => href?.split("#")?.map((x2) => Number(x2)) ?? [];
-  book2.getTOCFragment = (doc3, id2) => doc3.querySelector(`[${dataID}="${id2}"]`);
+  book2.getTOCFragment = (doc3, id2) => doc3.querySelector(`[${dataID$1}="${id2}"]`);
   book2.destroy = () => {
     for (const url of urls)
       URL.revokeObjectURL(url);
   };
   return book2;
 };
-const unescapeHTML = (str) => {
+const unescapeHTML$1 = (str) => {
   if (!str)
     return "";
   const textarea = document.createElement("textarea");
   textarea.innerHTML = str;
   return textarea.value;
 };
-const MIME = {
+const MIME$3 = {
   XML: "application/xml",
   XHTML: "application/xhtml+xml",
   HTML: "text/html",
   CSS: "text/css",
   SVG: "image/svg+xml"
 };
-const PDB_HEADER = {
+const PDB_HEADER$1 = {
   name: [0, 32, "string"],
   type: [60, 4, "string"],
   creator: [64, 4, "string"],
   numRecords: [76, 2, "uint"]
 };
-const PALMDOC_HEADER = {
+const PALMDOC_HEADER$1 = {
   compression: [0, 2, "uint"],
   numTextRecords: [8, 2, "uint"],
   recordSize: [10, 2, "uint"],
   encryption: [12, 2, "uint"]
 };
-const MOBI_HEADER = {
+const MOBI_HEADER$1 = {
   magic: [16, 4, "string"],
   length: [20, 4, "uint"],
   type: [24, 4, "uint"],
@@ -26730,7 +26730,7 @@ const MOBI_HEADER = {
   trailingFlags: [240, 4, "uint"],
   indx: [244, 4, "uint"]
 };
-const KF8_HEADER = {
+const KF8_HEADER$1 = {
   resourceStart: [108, 4, "uint"],
   fdst: [192, 4, "uint"],
   numFdst: [196, 4, "uint"],
@@ -26738,12 +26738,12 @@ const KF8_HEADER = {
   skel: [252, 4, "uint"],
   guide: [260, 4, "uint"]
 };
-const EXTH_HEADER = {
+const EXTH_HEADER$1 = {
   magic: [0, 4, "string"],
   length: [4, 4, "uint"],
   count: [8, 4, "uint"]
 };
-const INDX_HEADER = {
+const INDX_HEADER$1 = {
   magic: [0, 4, "string"],
   length: [4, 4, "uint"],
   type: [8, 4, "uint"],
@@ -26757,37 +26757,37 @@ const INDX_HEADER = {
   numLigt: [48, 4, "uint"],
   numCncx: [52, 4, "uint"]
 };
-const TAGX_HEADER = {
+const TAGX_HEADER$1 = {
   magic: [0, 4, "string"],
   length: [4, 4, "uint"],
   numControlBytes: [8, 4, "uint"]
 };
-const HUFF_HEADER = {
+const HUFF_HEADER$1 = {
   magic: [0, 4, "string"],
   offset1: [8, 4, "uint"],
   offset2: [12, 4, "uint"]
 };
-const CDIC_HEADER = {
+const CDIC_HEADER$1 = {
   magic: [0, 4, "string"],
   length: [4, 4, "uint"],
   numEntries: [8, 4, "uint"],
   codeLength: [12, 4, "uint"]
 };
-const FDST_HEADER = {
+const FDST_HEADER$1 = {
   magic: [0, 4, "string"],
   numEntries: [8, 4, "uint"]
 };
-const FONT_HEADER = {
+const FONT_HEADER$1 = {
   flags: [8, 4, "uint"],
   dataStart: [12, 4, "uint"],
   keyLength: [16, 4, "uint"],
   keyStart: [20, 4, "uint"]
 };
-const MOBI_ENCODING = {
+const MOBI_ENCODING$1 = {
   1252: "windows-1252",
   65001: "utf-8"
 };
-const EXTH_RECORD_TYPE = {
+const EXTH_RECORD_TYPE$1 = {
   100: ["creator", "string", true],
   101: ["publisher"],
   103: ["description"],
@@ -26813,7 +26813,7 @@ const EXTH_RECORD_TYPE = {
   524: ["language", "string", true],
   527: ["pageProgressionDirection"]
 };
-const MOBI_LANG = {
+const MOBI_LANG$1 = {
   1: [
     "ar",
     "ar-SA",
@@ -26948,36 +26948,36 @@ const MOBI_LANG = {
   97: ["ne"],
   98: ["fy"]
 };
-const concatTypedArray = (a2, b2) => {
+const concatTypedArray$1 = (a2, b2) => {
   const result = new a2.constructor(a2.length + b2.length);
   result.set(a2);
   result.set(b2, a2.length);
   return result;
 };
-const concatTypedArray3 = (a2, b2, c) => {
+const concatTypedArray3$1 = (a2, b2, c) => {
   const result = new a2.constructor(a2.length + b2.length + c.length);
   result.set(a2);
   result.set(b2, a2.length);
   result.set(c, a2.length + b2.length);
   return result;
 };
-const decoder = new TextDecoder();
-const getString = (buffer) => decoder.decode(buffer);
-const getUint = (buffer) => {
+const decoder$1 = new TextDecoder();
+const getString$1 = (buffer) => decoder$1.decode(buffer);
+const getUint$1 = (buffer) => {
   if (!buffer)
     return;
   const l2 = buffer.byteLength;
   const func = l2 === 4 ? "getUint32" : l2 === 2 ? "getUint16" : "getUint8";
   return new DataView(buffer)[func](0);
 };
-const getStruct = (def2, buffer) => Object.fromEntries(
+const getStruct$1 = (def2, buffer) => Object.fromEntries(
   Array.from(Object.entries(def2)).map(([key, [start, len, type]]) => [
     key,
-    (type === "string" ? getString : getUint)(buffer.slice(start, start + len))
+    (type === "string" ? getString$1 : getUint$1)(buffer.slice(start, start + len))
   ])
 );
-const getDecoder = (x2) => new TextDecoder(MOBI_ENCODING[x2]);
-const getVarLen = (byteArray, i2 = 0) => {
+const getDecoder$1 = (x2) => new TextDecoder(MOBI_ENCODING$1[x2]);
+const getVarLen$1 = (byteArray, i2 = 0) => {
   let value = 0, length = 0;
   for (const byte of byteArray.subarray(i2, i2 + 4)) {
     value = value << 7 | (byte & 127) >>> 0;
@@ -26987,7 +26987,7 @@ const getVarLen = (byteArray, i2 = 0) => {
   }
   return { value, length };
 };
-const getVarLenFromEnd = (byteArray) => {
+const getVarLenFromEnd$1 = (byteArray) => {
   let value = 0;
   for (const byte of byteArray.subarray(-4)) {
     if (byte & 128)
@@ -26996,20 +26996,20 @@ const getVarLenFromEnd = (byteArray) => {
   }
   return value;
 };
-const countBitsSet = (x2) => {
+const countBitsSet$1 = (x2) => {
   let count = 0;
   for (; x2 > 0; x2 = x2 >> 1)
     if ((x2 & 1) === 1)
       count++;
   return count;
 };
-const countUnsetEnd = (x2) => {
+const countUnsetEnd$1 = (x2) => {
   let count = 0;
   while ((x2 & 1) === 0)
     x2 = x2 >> 1, count++;
   return count;
 };
-const decompressPalmDOC = (array) => {
+const decompressPalmDOC$1 = (array) => {
   let output = [];
   for (let i2 = 0; i2 < array.length; i2++) {
     const byte = array[i2];
@@ -27031,7 +27031,7 @@ const decompressPalmDOC = (array) => {
   }
   return Uint8Array.from(output);
 };
-const read32Bits = (byteArray, from2) => {
+const read32Bits$1 = (byteArray, from2) => {
   const startByte = from2 >> 3;
   const end = from2 + 32;
   const endByte = end >> 3;
@@ -27040,29 +27040,29 @@ const read32Bits = (byteArray, from2) => {
     bits = bits << 8n | BigInt(byteArray[i2] ?? 0);
   return bits >> 8n - BigInt(end & 7) & 0xffffffffn;
 };
-const huffcdic = async (mobi, loadRecord) => {
+const huffcdic$1 = async (mobi, loadRecord) => {
   const huffRecord = await loadRecord(mobi.huffcdic);
-  const { magic, offset1, offset2 } = getStruct(HUFF_HEADER, huffRecord);
+  const { magic, offset1, offset2 } = getStruct$1(HUFF_HEADER$1, huffRecord);
   if (magic !== "HUFF")
     throw new Error("Invalid HUFF record");
-  const table1 = Array.from({ length: 256 }, (_2, i2) => offset1 + i2 * 4).map((offset) => getUint(huffRecord.slice(offset, offset + 4))).map((x2) => [x2 & 128, x2 & 31, x2 >>> 8]);
+  const table1 = Array.from({ length: 256 }, (_2, i2) => offset1 + i2 * 4).map((offset) => getUint$1(huffRecord.slice(offset, offset + 4))).map((x2) => [x2 & 128, x2 & 31, x2 >>> 8]);
   const table2 = [null].concat(
     Array.from({ length: 32 }, (_2, i2) => offset2 + i2 * 8).map((offset) => [
-      getUint(huffRecord.slice(offset, offset + 4)),
-      getUint(huffRecord.slice(offset + 4, offset + 8))
+      getUint$1(huffRecord.slice(offset, offset + 4)),
+      getUint$1(huffRecord.slice(offset + 4, offset + 8))
     ])
   );
   const dictionary = [];
   for (let i2 = 1; i2 < mobi.numHuffcdic; i2++) {
     const record = await loadRecord(mobi.huffcdic + i2);
-    const cdic = getStruct(CDIC_HEADER, record);
+    const cdic = getStruct$1(CDIC_HEADER$1, record);
     if (cdic.magic !== "CDIC")
       throw new Error("Invalid CDIC record");
     const n2 = Math.min(1 << cdic.codeLength, cdic.numEntries - dictionary.length);
     const buffer = record.slice(cdic.length);
     for (let i3 = 0; i3 < n2; i3++) {
-      const offset = getUint(buffer.slice(i3 * 2, i3 * 2 + 2));
-      const x2 = getUint(buffer.slice(offset, offset + 2));
+      const offset = getUint$1(buffer.slice(i3 * 2, i3 * 2 + 2));
+      const x2 = getUint$1(buffer.slice(offset, offset + 2));
       const length = x2 & 32767;
       const decompressed = x2 & 32768;
       const value = new Uint8Array(buffer.slice(offset + 2, offset + 2 + length));
@@ -27073,7 +27073,7 @@ const huffcdic = async (mobi, loadRecord) => {
     let output = new Uint8Array();
     const bitLength = byteArray.byteLength * 8;
     for (let i2 = 0; i2 < bitLength; ) {
-      const bits = Number(read32Bits(byteArray, i2));
+      const bits = Number(read32Bits$1(byteArray, i2));
       let [found, codeLength, value] = table1[bits >>> 24];
       if (!found) {
         while (bits >>> 32 - codeLength < table2[codeLength][0])
@@ -27088,20 +27088,20 @@ const huffcdic = async (mobi, loadRecord) => {
         result = decompress(result);
         dictionary[code2] = [result, true];
       }
-      output = concatTypedArray(output, result);
+      output = concatTypedArray$1(output, result);
     }
     return output;
   };
   return decompress;
 };
-const getIndexData = async (indxIndex, loadRecord) => {
+const getIndexData$1 = async (indxIndex, loadRecord) => {
   const indxRecord = await loadRecord(indxIndex);
-  const indx = getStruct(INDX_HEADER, indxRecord);
+  const indx = getStruct$1(INDX_HEADER$1, indxRecord);
   if (indx.magic !== "INDX")
     throw new Error("Invalid INDX record");
-  const decoder2 = getDecoder(indx.encoding);
+  const decoder2 = getDecoder$1(indx.encoding);
   const tagxBuffer = indxRecord.slice(indx.length);
-  const tagx = getStruct(TAGX_HEADER, tagxBuffer);
+  const tagx = getStruct$1(TAGX_HEADER$1, tagxBuffer);
   if (tagx.magic !== "TAGX")
     throw new Error("Invalid TAGX section");
   const numTags = (tagx.length - 12) / 4;
@@ -27116,7 +27116,7 @@ const getIndexData = async (indxIndex, loadRecord) => {
     const array = new Uint8Array(record);
     for (let pos = 0; pos < array.byteLength; ) {
       const index = pos;
-      const { value, length } = getVarLen(array, pos);
+      const { value, length } = getVarLen$1(array, pos);
       pos += length;
       const result = record.slice(pos, pos + value);
       pos += value;
@@ -27128,14 +27128,14 @@ const getIndexData = async (indxIndex, loadRecord) => {
   for (let i2 = 0; i2 < indx.numRecords; i2++) {
     const record = await loadRecord(indxIndex + 1 + i2);
     const array = new Uint8Array(record);
-    const indx2 = getStruct(INDX_HEADER, record);
+    const indx2 = getStruct$1(INDX_HEADER$1, record);
     if (indx2.magic !== "INDX")
       throw new Error("Invalid INDX record");
     for (let j = 0; j < indx2.numRecords; j++) {
       const offsetOffset = indx2.idxt + 4 + 2 * j;
-      const offset = getUint(record.slice(offsetOffset, offsetOffset + 2));
-      const length = getUint(record.slice(offset, offset + 1));
-      const name = getString(record.slice(offset + 1, offset + 1 + length));
+      const offset = getUint$1(record.slice(offsetOffset, offsetOffset + 2));
+      const length = getUint$1(record.slice(offset, offset + 1));
+      const name = getString$1(record.slice(offset + 1, offset + 1 + length));
       const tags = [];
       const startPos = offset + 1 + length;
       let controlByteIndex = 0;
@@ -27146,30 +27146,30 @@ const getIndexData = async (indxIndex, loadRecord) => {
           continue;
         }
         const offset2 = startPos + controlByteIndex;
-        const value = getUint(record.slice(offset2, offset2 + 1)) & mask;
+        const value = getUint$1(record.slice(offset2, offset2 + 1)) & mask;
         if (value === mask) {
-          if (countBitsSet(mask) > 1) {
-            const { value: value2, length: length2 } = getVarLen(array, pos);
+          if (countBitsSet$1(mask) > 1) {
+            const { value: value2, length: length2 } = getVarLen$1(array, pos);
             tags.push([tag2, null, value2, numValues]);
             pos += length2;
           } else
             tags.push([tag2, 1, null, numValues]);
         } else
-          tags.push([tag2, value >> countUnsetEnd(mask), null, numValues]);
+          tags.push([tag2, value >> countUnsetEnd$1(mask), null, numValues]);
       }
       const tagMap = {};
       for (const [tag2, valueCount, valueBytes, numValues] of tags) {
         const values2 = [];
         if (valueCount != null) {
           for (let i3 = 0; i3 < valueCount * numValues; i3++) {
-            const { value, length: length2 } = getVarLen(array, pos);
+            const { value, length: length2 } = getVarLen$1(array, pos);
             values2.push(value);
             pos += length2;
           }
         } else {
           let count = 0;
           while (count < valueBytes) {
-            const { value, length: length2 } = getVarLen(array, pos);
+            const { value, length: length2 } = getVarLen$1(array, pos);
             values2.push(value);
             pos += length2;
             count += length2;
@@ -27182,8 +27182,8 @@ const getIndexData = async (indxIndex, loadRecord) => {
   }
   return { table, cncx };
 };
-const getNCX = async (indxIndex, loadRecord) => {
-  const { table, cncx } = await getIndexData(indxIndex, loadRecord);
+const getNCX$1 = async (indxIndex, loadRecord) => {
+  const { table, cncx } = await getIndexData$1(indxIndex, loadRecord);
   const items = table.map(({ tagMap }, index) => ({
     index,
     offset: tagMap[1]?.[0],
@@ -27203,20 +27203,20 @@ const getNCX = async (indxIndex, loadRecord) => {
   };
   return items.filter((item) => item.headingLevel === 0).map(getChildren);
 };
-const getEXTH = (buf, encoding) => {
-  const { magic, count } = getStruct(EXTH_HEADER, buf);
+const getEXTH$1 = (buf, encoding) => {
+  const { magic, count } = getStruct$1(EXTH_HEADER$1, buf);
   if (magic !== "EXTH")
     throw new Error("Invalid EXTH header");
-  const decoder2 = getDecoder(encoding);
+  const decoder2 = getDecoder$1(encoding);
   const results = {};
   let offset = 12;
   for (let i2 = 0; i2 < count; i2++) {
-    const type = getUint(buf.slice(offset, offset + 4));
-    const length = getUint(buf.slice(offset + 4, offset + 8));
-    if (type in EXTH_RECORD_TYPE) {
-      const [name, typ, many] = EXTH_RECORD_TYPE[type];
+    const type = getUint$1(buf.slice(offset, offset + 4));
+    const length = getUint$1(buf.slice(offset + 4, offset + 8));
+    if (type in EXTH_RECORD_TYPE$1) {
+      const [name, typ, many] = EXTH_RECORD_TYPE$1[type];
       const data2 = buf.slice(offset + 8, offset + length);
-      const value = typ === "uint" ? getUint(data2) : decoder2.decode(data2);
+      const value = typ === "uint" ? getUint$1(data2) : decoder2.decode(data2);
       if (many) {
         results[name] ??= [];
         results[name].push(value);
@@ -27227,8 +27227,8 @@ const getEXTH = (buf, encoding) => {
   }
   return results;
 };
-const getFont = async (buf, unzlib) => {
-  const { flags, dataStart, keyLength, keyStart } = getStruct(FONT_HEADER, buf);
+const getFont$1 = async (buf, unzlib) => {
+  const { flags, dataStart, keyLength, keyStart } = getStruct$1(FONT_HEADER$1, buf);
   const array = new Uint8Array(buf.slice(dataStart));
   if (flags & 2) {
     const bytes = keyLength === 16 ? 1024 : 1040;
@@ -27246,22 +27246,22 @@ const getFont = async (buf, unzlib) => {
     }
   return array;
 };
-const isMOBI = async (file2) => {
-  const magic = getString(await file2.slice(60, 68).arrayBuffer());
+const isMOBI$1 = async (file2) => {
+  const magic = getString$1(await file2.slice(60, 68).arrayBuffer());
   return magic === "BOOKMOBI";
 };
-class PDB {
+let PDB$1 = class PDB {
   #file;
   #offsets;
   pdb;
   async open(file2) {
     this.#file = file2;
-    const pdb = getStruct(PDB_HEADER, await file2.slice(0, 78).arrayBuffer());
+    const pdb = getStruct$1(PDB_HEADER$1, await file2.slice(0, 78).arrayBuffer());
     this.pdb = pdb;
     const buffer = await file2.slice(78, 78 + pdb.numRecords * 8).arrayBuffer();
     this.#offsets = Array.from(
       { length: pdb.numRecords },
-      (_2, i2) => getUint(buffer.slice(i2 * 8, i2 * 8 + 4))
+      (_2, i2) => getUint$1(buffer.slice(i2 * 8, i2 * 8 + 4))
     ).map((x2, i2, a2) => [x2, a2[i2 + 1]]);
   }
   loadRecord(index) {
@@ -27272,10 +27272,10 @@ class PDB {
   }
   async loadMagic(index) {
     const start = this.#offsets[index][0];
-    return getString(await this.#file.slice(start, start + 4).arrayBuffer());
+    return getString$1(await this.#file.slice(start, start + 4).arrayBuffer());
   }
-}
-class MOBI extends PDB {
+};
+let MOBI$1 = class MOBI extends PDB$1 {
   #start = 0;
   #resourceStart;
   #decoder;
@@ -27304,35 +27304,35 @@ class MOBI extends PDB {
         }
     }
     await this.#setup();
-    return isKF8 ? new KF8(this).init() : new MOBI6(this).init();
+    return isKF8 ? new KF8$1(this).init() : new MOBI6$1(this).init();
   }
   #getHeaders(buf) {
-    const palmdoc = getStruct(PALMDOC_HEADER, buf);
-    const mobi = getStruct(MOBI_HEADER, buf);
+    const palmdoc = getStruct$1(PALMDOC_HEADER$1, buf);
+    const mobi = getStruct$1(MOBI_HEADER$1, buf);
     if (mobi.magic !== "MOBI")
       throw new Error("Missing MOBI header");
     const { titleOffset, titleLength, localeLanguage, localeRegion } = mobi;
     mobi.title = buf.slice(titleOffset, titleOffset + titleLength);
-    const lang = MOBI_LANG[localeLanguage];
+    const lang = MOBI_LANG$1[localeLanguage];
     mobi.language = lang?.[localeRegion >> 2] ?? lang?.[0];
-    const exth = mobi.exthFlag & 64 ? getEXTH(buf.slice(mobi.length + 16), mobi.encoding) : null;
-    const kf8 = mobi.version >= 8 ? getStruct(KF8_HEADER, buf) : null;
+    const exth = mobi.exthFlag & 64 ? getEXTH$1(buf.slice(mobi.length + 16), mobi.encoding) : null;
+    const kf8 = mobi.version >= 8 ? getStruct$1(KF8_HEADER$1, buf) : null;
     return { palmdoc, mobi, exth, kf8 };
   }
   async #setup() {
     const { palmdoc, mobi } = this.headers;
-    this.#decoder = getDecoder(mobi.encoding);
+    this.#decoder = getDecoder$1(mobi.encoding);
     this.#encoder = new TextEncoder();
     const { compression } = palmdoc;
-    this.#decompress = compression === 1 ? (f2) => f2 : compression === 2 ? decompressPalmDOC : compression === 17480 ? await huffcdic(mobi, this.loadRecord.bind(this)) : null;
+    this.#decompress = compression === 1 ? (f2) => f2 : compression === 2 ? decompressPalmDOC$1 : compression === 17480 ? await huffcdic$1(mobi, this.loadRecord.bind(this)) : null;
     if (!this.#decompress)
       throw new Error("Unknown compression type");
     const { trailingFlags } = mobi;
     const multibyte = trailingFlags & 1;
-    const numTrailingEntries = countBitsSet(trailingFlags >>> 1);
+    const numTrailingEntries = countBitsSet$1(trailingFlags >>> 1);
     this.#removeTrailingEntries = (array) => {
       for (let i2 = 0; i2 < numTrailingEntries; i2++) {
-        const length = getVarLenFromEnd(array);
+        const length = getVarLenFromEnd$1(array);
         array = array.subarray(0, -length);
       }
       if (multibyte) {
@@ -27359,9 +27359,9 @@ class MOBI extends PDB {
   }
   async loadResource(index) {
     const buf = await super.loadRecord(this.#resourceStart + index);
-    const magic = getString(buf.slice(0, 4));
+    const magic = getString$1(buf.slice(0, 4));
     if (magic === "FONT")
-      return getFont(buf, this.unzlib);
+      return getFont$1(buf, this.unzlib);
     if (magic === "VIDE" || magic === "AUDI")
       return buf.slice(12);
     return buf;
@@ -27369,20 +27369,20 @@ class MOBI extends PDB {
   getNCX() {
     const index = this.headers.mobi.indx;
     if (index < 4294967295)
-      return getNCX(index, this.loadRecord.bind(this));
+      return getNCX$1(index, this.loadRecord.bind(this));
   }
   getMetadata() {
     const { mobi, exth } = this.headers;
     return {
       identifier: mobi.uid.toString(),
-      title: unescapeHTML(exth?.title || this.decode(mobi.title)),
-      author: exth?.creator?.map(unescapeHTML),
-      publisher: unescapeHTML(exth?.publisher),
+      title: unescapeHTML$1(exth?.title || this.decode(mobi.title)),
+      author: exth?.creator?.map(unescapeHTML$1),
+      publisher: unescapeHTML$1(exth?.publisher),
       language: exth?.language ?? mobi.language,
       published: exth?.date,
-      description: unescapeHTML(exth?.description),
-      subject: exth?.subject?.map(unescapeHTML),
-      rights: unescapeHTML(exth?.rights)
+      description: unescapeHTML$1(exth?.description),
+      subject: exth?.subject?.map(unescapeHTML$1),
+      rights: unescapeHTML$1(exth?.rights)
     };
   }
   async getCover() {
@@ -27393,10 +27393,10 @@ class MOBI extends PDB {
       return new Blob([buf]);
     }
   }
-}
-const mbpPagebreakRegex = /<\s*(?:mbp:)?pagebreak[^>]*>/gi;
-const fileposRegex = /<[^<>]+filepos=['"]{0,1}(\d+)[^<>]*>/gi;
-const getIndent = (el) => {
+};
+const mbpPagebreakRegex$1 = /<\s*(?:mbp:)?pagebreak[^>]*>/gi;
+const fileposRegex$1 = /<[^<>]+filepos=['"]{0,1}(\d+)[^<>]*>/gi;
+const getIndent$1 = (el) => {
   let x2 = 0;
   while (el) {
     const parent = el.parentElement;
@@ -27411,7 +27411,7 @@ const getIndent = (el) => {
   }
   return x2;
 };
-class MOBI6 {
+let MOBI6$1 = class MOBI6 {
   parser = new DOMParser();
   serializer = new XMLSerializer();
   #resourceCache = /* @__PURE__ */ new Map();
@@ -27419,16 +27419,16 @@ class MOBI6 {
   #cache = /* @__PURE__ */ new Map();
   #sections;
   #fileposList = [];
-  #type = MIME.HTML;
+  #type = MIME$3.HTML;
   constructor(mobi) {
     this.mobi = mobi;
   }
   async init() {
     let array = new Uint8Array();
     for (let i2 = 0; i2 < this.mobi.headers.palmdoc.numTextRecords; i2++)
-      array = concatTypedArray(array, await this.mobi.loadText(i2));
+      array = concatTypedArray$1(array, await this.mobi.loadText(i2));
     const str = Array.from(new Uint8Array(array), (c) => String.fromCharCode(c)).join("");
-    this.#sections = [0].concat(Array.from(str.matchAll(mbpPagebreakRegex), (m2) => m2.index)).map((x2, i2, a2) => str.slice(x2, a2[i2 + 1])).map((str2) => Uint8Array.from(str2, (x2) => x2.charCodeAt(0))).map((raw) => ({ book: this, raw })).reduce((arr, x2) => {
+    this.#sections = [0].concat(Array.from(str.matchAll(mbpPagebreakRegex$1), (m2) => m2.index)).map((x2, i2, a2) => str.slice(x2, a2[i2 + 1])).map((str2) => Uint8Array.from(str2, (x2) => x2.charCodeAt(0))).map((raw) => ({ book: this, raw })).reduce((arr, x2) => {
       const last2 = arr[arr.length - 1];
       x2.start = last2?.end ?? 0;
       x2.end = x2.start + x2.raw.byteLength;
@@ -27452,7 +27452,7 @@ class MOBI6 {
         const lastLevelOfIndent = /* @__PURE__ */ new Map();
         const lastParentOfLevel = /* @__PURE__ */ new Map();
         this.toc = Array.from(doc2.querySelectorAll("a[filepos]")).reduce((arr, a2) => {
-          const indent = getIndent(a2);
+          const indent = getIndent$1(a2);
           const item = {
             label: a2.innerText?.trim(),
             href: `filepos:${a2.getAttribute("filepos")}`
@@ -27482,7 +27482,7 @@ class MOBI6 {
     } catch (e2) {
       console.warn(e2);
     }
-    this.#fileposList = [...new Set(Array.from(str.matchAll(fileposRegex), (m2) => m2[1]))].map((filepos) => ({ filepos, number: Number(filepos) })).sort((a2, b2) => a2.number - b2.number);
+    this.#fileposList = [...new Set(Array.from(str.matchAll(fileposRegex$1), (m2) => m2[1]))].map((filepos) => ({ filepos, number: Number(filepos) })).sort((a2, b2) => a2.number - b2.number);
     this.metadata = this.mobi.getMetadata();
     this.getCover = this.mobi.getCover.bind(this.mobi);
     return this;
@@ -27546,10 +27546,10 @@ class MOBI6 {
       fileposList.forEach(({ filepos, offset }, i2) => {
         const next = fileposList[i2 + 1];
         const a2 = this.mobi.encode(`<a id="filepos${filepos}"></a>`);
-        arr = concatTypedArray3(arr, a2, raw.subarray(offset, next?.offset));
+        arr = concatTypedArray3$1(arr, a2, raw.subarray(offset, next?.offset));
       });
     }
-    const str = this.mobi.decode(arr).replaceAll(mbpPagebreakRegex, "");
+    const str = this.mobi.decode(arr).replaceAll(mbpPagebreakRegex$1, "");
     this.#textCache.set(section, str);
     return str;
   }
@@ -27602,26 +27602,26 @@ class MOBI6 {
     for (const url of this.#cache.values())
       URL.revokeObjectURL(url);
   }
-}
-const kindleResourceRegex = /kindle:(flow|embed):(\w+)(?:\?mime=(\w+\/[-+.\w]+))?/;
-const kindlePosRegex = /kindle:pos:fid:(\w+):off:(\w+)/;
-const parseResourceURI = (str) => {
-  const [resourceType, id2, type] = str.match(kindleResourceRegex).slice(1);
+};
+const kindleResourceRegex$1 = /kindle:(flow|embed):(\w+)(?:\?mime=(\w+\/[-+.\w]+))?/;
+const kindlePosRegex$1 = /kindle:pos:fid:(\w+):off:(\w+)/;
+const parseResourceURI$1 = (str) => {
+  const [resourceType, id2, type] = str.match(kindleResourceRegex$1).slice(1);
   return { resourceType, id: parseInt(id2, 32), type };
 };
-const parsePosURI = (str) => {
-  const [fid, off] = str.match(kindlePosRegex).slice(1);
+const parsePosURI$1 = (str) => {
+  const [fid, off] = str.match(kindlePosRegex$1).slice(1);
   return { fid: parseInt(fid, 32), off: parseInt(off, 32) };
 };
-const makePosURI = (fid = 0, off = 0) => `kindle:pos:fid:${fid.toString(32).toUpperCase().padStart(4, "0")}:off:${off.toString(32).toUpperCase().padStart(10, "0")}`;
-const getFragmentSelector = (str) => {
+const makePosURI$1 = (fid = 0, off = 0) => `kindle:pos:fid:${fid.toString(32).toUpperCase().padStart(4, "0")}:off:${off.toString(32).toUpperCase().padStart(10, "0")}`;
+const getFragmentSelector$1 = (str) => {
   const match2 = str.match(/\s(id|name|aid)\s*=\s*['"]([^'"]*)['"]/i);
   if (!match2)
     return;
   const [, attr, value] = match2;
   return `[${attr}="${CSS.escape(value)}"]`;
 };
-const replaceSeries = async (str, regex, f2) => {
+const replaceSeries$2 = async (str, regex, f2) => {
   const matches = [];
   str.replace(regex, (...args) => (matches.push(args), null));
   const results = [];
@@ -27629,7 +27629,7 @@ const replaceSeries = async (str, regex, f2) => {
     results.push(await f2(...args));
   return str.replace(regex, () => results.shift());
 };
-const getPageSpread = (properties) => {
+const getPageSpread$2 = (properties) => {
   for (const p2 of properties) {
     if (p2 === "page-spread-left" || p2 === "rendition:page-spread-left")
       return "left";
@@ -27639,7 +27639,7 @@ const getPageSpread = (properties) => {
       return "center";
   }
 };
-class KF8 {
+let KF8$1 = class KF8 {
   parser = new DOMParser();
   serializer = new XMLSerializer();
   #cache = /* @__PURE__ */ new Map();
@@ -27652,7 +27652,7 @@ class KF8 {
   #rawTail = new Uint8Array();
   #lastLoadedHead = -1;
   #lastLoadedTail = -1;
-  #type = MIME.XHTML;
+  #type = MIME$3.XHTML;
   #inlineMap = /* @__PURE__ */ new Map();
   constructor(mobi) {
     this.mobi = mobi;
@@ -27662,20 +27662,20 @@ class KF8 {
     const { kf8 } = this.mobi.headers;
     try {
       const fdstBuffer = await loadRecord(kf8.fdst);
-      const fdst = getStruct(FDST_HEADER, fdstBuffer);
+      const fdst = getStruct$1(FDST_HEADER$1, fdstBuffer);
       if (fdst.magic !== "FDST")
         throw new Error("Missing FDST record");
       const fdstTable = Array.from({ length: fdst.numEntries }, (_2, i2) => 12 + i2 * 8).map(
         (offset) => [
-          getUint(fdstBuffer.slice(offset, offset + 4)),
-          getUint(fdstBuffer.slice(offset + 4, offset + 8))
+          getUint$1(fdstBuffer.slice(offset, offset + 4)),
+          getUint$1(fdstBuffer.slice(offset + 4, offset + 8))
         ]
       );
       this.#tables.fdstTable = fdstTable;
       this.#fullRawLength = fdstTable[fdstTable.length - 1][1];
     } catch {
     }
-    const skelTable = (await getIndexData(kf8.skel, loadRecord)).table.map(
+    const skelTable = (await getIndexData$1(kf8.skel, loadRecord)).table.map(
       ({ name, tagMap }, index) => ({
         index,
         name,
@@ -27684,7 +27684,7 @@ class KF8 {
         length: tagMap[6][1]
       })
     );
-    const fragData = await getIndexData(kf8.frag, loadRecord);
+    const fragData = await getIndexData$1(kf8.frag, loadRecord);
     const fragTable = fragData.table.map(({ name, tagMap }) => ({
       insertOffset: parseInt(name),
       selector: fragData.cncx[tagMap[2][0]],
@@ -27709,10 +27709,10 @@ class KF8 {
       const str = this.mobi.decode(buf.slice(16)).replace(/\0/g, "");
       const index = str.search(/\?>/);
       const xmlStr = `<package>${str.slice(index)}</package>`;
-      const opf = this.parser.parseFromString(xmlStr, MIME.XML);
+      const opf = this.parser.parseFromString(xmlStr, MIME$3.XML);
       for (const $itemref of opf.querySelectorAll("spine > itemref")) {
         const i2 = parseInt($itemref.getAttribute("skelid"));
-        pageSpreads.set(i2, getPageSpread($itemref.getAttribute("properties")?.split(" ") ?? []));
+        pageSpreads.set(i2, getPageSpread$2($itemref.getAttribute("properties")?.split(" ") ?? []));
       }
     }
     this.sections = this.#sections.map(
@@ -27728,13 +27728,13 @@ class KF8 {
       const ncx = await this.mobi.getNCX();
       const map = ({ label, pos, children }) => {
         const [fid, off] = pos;
-        const href = makePosURI(fid, off);
+        const href = makePosURI$1(fid, off);
         const arr = this.#fragmentOffsets.get(fid);
         if (arr)
           arr.push(off);
         else
           this.#fragmentOffsets.set(fid, [off]);
-        return { label: unescapeHTML(label), href, subitems: children?.map(map) };
+        return { label: unescapeHTML$1(label), href, subitems: children?.map(map) };
       };
       this.toc = ncx?.map(map);
       this.landmarks = await this.getGuide();
@@ -27773,19 +27773,19 @@ class KF8 {
     const index = this.mobi.headers.kf8.guide;
     if (index < 4294967295) {
       const loadRecord = this.mobi.loadRecord.bind(this.mobi);
-      const { table, cncx } = await getIndexData(index, loadRecord);
+      const { table, cncx } = await getIndexData$1(index, loadRecord);
       return table.map(({ name, tagMap }) => ({
         label: cncx[tagMap[1][0]] ?? "",
         type: name?.split(/\s/),
-        href: makePosURI(tagMap[6]?.[0] ?? tagMap[3]?.[0])
+        href: makePosURI$1(tagMap[6]?.[0] ?? tagMap[3]?.[0])
       }));
     }
   }
   async loadResourceBlob(str) {
-    const { resourceType, id: id2, type } = parseResourceURI(str);
+    const { resourceType, id: id2, type } = parseResourceURI$1(str);
     const raw = resourceType === "flow" ? await this.loadFlow(id2) : await this.mobi.loadResource(id2 - 1);
-    const result = [MIME.XHTML, MIME.HTML, MIME.CSS, MIME.SVG].includes(type) ? await this.replaceResources(this.mobi.decode(raw)) : raw;
-    const doc2 = type === MIME.SVG ? this.parser.parseFromString(result, type) : null;
+    const result = [MIME$3.XHTML, MIME$3.HTML, MIME$3.CSS, MIME$3.SVG].includes(type) ? await this.replaceResources(this.mobi.decode(raw)) : raw;
+    const doc2 = type === MIME$3.SVG ? this.parser.parseFromString(result, type) : null;
     return [
       new Blob([result], { type }),
       // SVG wrappers need to be inlined
@@ -27804,8 +27804,8 @@ class KF8 {
     return url;
   }
   replaceResources(str) {
-    const regex = new RegExp(kindleResourceRegex, "g");
-    return replaceSeries(str, regex, this.loadResource.bind(this));
+    const regex = new RegExp(kindleResourceRegex$1, "g");
+    return replaceSeries$2(str, regex, this.loadResource.bind(this));
   }
   // NOTE: there doesn't seem to be a way to access text randomly?
   // how to know the decompressed size of the records without decompressing?
@@ -27817,14 +27817,14 @@ class KF8 {
       while (this.#rawHead.length < end) {
         const index = ++this.#lastLoadedHead;
         const data2 = await this.mobi.loadText(index);
-        this.#rawHead = concatTypedArray(this.#rawHead, data2);
+        this.#rawHead = concatTypedArray$1(this.#rawHead, data2);
       }
       return this.#rawHead.slice(start, end);
     }
     while (this.#fullRawLength - this.#rawTail.length > start) {
       const index = this.mobi.headers.palmdoc.numTextRecords - 1 - ++this.#lastLoadedTail;
       const data2 = await this.mobi.loadText(index);
-      this.#rawTail = concatTypedArray(data2, this.#rawTail);
+      this.#rawTail = concatTypedArray$1(data2, this.#rawTail);
     }
     const rawTailStart = this.#fullRawLength - this.#rawTail.length;
     return this.#rawTail.slice(start - rawTailStart, end - rawTailStart);
@@ -27841,7 +27841,7 @@ class KF8 {
       const insertOffset = frag.insertOffset - skel.offset;
       const offset = skel.length + frag.offset;
       const fragRaw = raw.slice(offset, offset + frag.length);
-      skeleton = concatTypedArray3(
+      skeleton = concatTypedArray3$1(
         skeleton.slice(0, insertOffset),
         fragRaw,
         skeleton.slice(insertOffset)
@@ -27850,7 +27850,7 @@ class KF8 {
       if (offsets)
         for (const offset2 of offsets) {
           const str = this.mobi.decode(fragRaw).slice(offset2);
-          const selector2 = getFragmentSelector(str);
+          const selector2 = getFragmentSelector$1(str);
           this.#setFragmentSelector(frag.index, offset2, selector2);
         }
     }
@@ -27867,7 +27867,7 @@ class KF8 {
     const replaced = await this.replaceResources(str);
     let doc2 = this.parser.parseFromString(replaced, this.#type);
     if (doc2.querySelector("parsererror")) {
-      this.#type = MIME.HTML;
+      this.#type = MIME$3.HTML;
       doc2 = this.parser.parseFromString(replaced, this.#type);
     }
     for (const [url2, node] of this.#inlineMap) {
@@ -27894,7 +27894,7 @@ class KF8 {
     }
   }
   async resolveHref(href) {
-    const { fid, off } = parsePosURI(href);
+    const { fid, off } = parsePosURI$1(href);
     const index = this.getIndexByFID(fid);
     if (index < 0)
       return;
@@ -27906,13 +27906,13 @@ class KF8 {
     const offset = skel.offset + skel.length + frag.offset;
     const fragRaw = await this.loadRaw(offset, offset + frag.length);
     const str = this.mobi.decode(fragRaw).slice(off);
-    const selector2 = getFragmentSelector(str);
+    const selector2 = getFragmentSelector$1(str);
     this.#setFragmentSelector(fid, off, selector2);
     const anchor = (doc2) => doc2.querySelector(selector2);
     return { index, anchor };
   }
   splitTOCHref(href) {
-    const pos = parsePosURI(href);
+    const pos = parsePosURI$1(href);
     const index = this.getIndexByFID(pos.fid);
     return [index, pos];
   }
@@ -27927,8 +27927,8 @@ class KF8 {
     for (const url of this.#cache.values())
       URL.revokeObjectURL(url);
   }
-}
-var r = Uint8Array, e = Uint16Array, n = Uint32Array, a = new r([
+};
+var r$1 = Uint8Array, e$1 = Uint16Array, n$1 = Uint32Array, a$1 = new r$1([
   0,
   0,
   0,
@@ -27961,7 +27961,7 @@ var r = Uint8Array, e = Uint16Array, n = Uint32Array, a = new r([
   0,
   0,
   0
-]), t = new r([
+]), t$1 = new r$1([
   0,
   0,
   0,
@@ -27994,58 +27994,58 @@ var r = Uint8Array, e = Uint16Array, n = Uint32Array, a = new r([
   13,
   0,
   0
-]), i = new r([16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15]), f = function(r2, a2) {
-  for (var t2 = new e(31), i2 = 0; i2 < 31; ++i2)
+]), i$1 = new r$1([16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15]), f$1 = function(r2, a2) {
+  for (var t2 = new e$1(31), i2 = 0; i2 < 31; ++i2)
     t2[i2] = a2 += 1 << r2[i2 - 1];
-  var f2 = new n(t2[30]);
+  var f2 = new n$1(t2[30]);
   for (i2 = 1; i2 < 30; ++i2)
     for (var o2 = t2[i2]; o2 < t2[i2 + 1]; ++o2)
       f2[o2] = o2 - t2[i2] << 5 | i2;
   return [t2, f2];
-}, o = f(a, 2), v = o[0], l = o[1];
-v[28] = 258, l[258] = 28;
-for (var u = f(t, 0)[0], c = new e(32768), d = 0; d < 32768; ++d) {
-  var s = (43690 & d) >>> 1 | (21845 & d) << 1;
-  s = (61680 & (s = (52428 & s) >>> 2 | (13107 & s) << 2)) >>> 4 | (3855 & s) << 4, c[d] = ((65280 & s) >>> 8 | (255 & s) << 8) >>> 1;
+}, o$1 = f$1(a$1, 2), v$1 = o$1[0], l$1 = o$1[1];
+v$1[28] = 258, l$1[258] = 28;
+for (var u$1 = f$1(t$1, 0)[0], c$1 = new e$1(32768), d$1 = 0; d$1 < 32768; ++d$1) {
+  var s$1 = (43690 & d$1) >>> 1 | (21845 & d$1) << 1;
+  s$1 = (61680 & (s$1 = (52428 & s$1) >>> 2 | (13107 & s$1) << 2)) >>> 4 | (3855 & s$1) << 4, c$1[d$1] = ((65280 & s$1) >>> 8 | (255 & s$1) << 8) >>> 1;
 }
-var w = function(r2, n2, a2) {
-  for (var t2 = r2.length, i2 = 0, f2 = new e(n2); i2 < t2; ++i2)
+var w$1 = function(r2, n2, a2) {
+  for (var t2 = r2.length, i2 = 0, f2 = new e$1(n2); i2 < t2; ++i2)
     r2[i2] && ++f2[r2[i2] - 1];
-  var o2, v2 = new e(n2);
+  var o2, v2 = new e$1(n2);
   for (i2 = 0; i2 < n2; ++i2)
     v2[i2] = v2[i2 - 1] + f2[i2 - 1] << 1;
   {
-    o2 = new e(1 << n2);
+    o2 = new e$1(1 << n2);
     var l2 = 15 - n2;
     for (i2 = 0; i2 < t2; ++i2)
       if (r2[i2])
         for (var u = i2 << 4 | r2[i2], d = n2 - r2[i2], s = v2[r2[i2] - 1]++ << d, w2 = s | (1 << d) - 1; s <= w2; ++s)
-          o2[c[s] >>> l2] = u;
+          o2[c$1[s] >>> l2] = u;
   }
   return o2;
-}, b = new r(288);
-for (d = 0; d < 144; ++d)
-  b[d] = 8;
-for (d = 144; d < 256; ++d)
-  b[d] = 9;
-for (d = 256; d < 280; ++d)
-  b[d] = 7;
-for (d = 280; d < 288; ++d)
-  b[d] = 8;
-var h = new r(32);
-for (d = 0; d < 32; ++d)
-  h[d] = 5;
-var E = w(b, 9), p = w(h, 5), g = function(r2) {
+}, b$1 = new r$1(288);
+for (d$1 = 0; d$1 < 144; ++d$1)
+  b$1[d$1] = 8;
+for (d$1 = 144; d$1 < 256; ++d$1)
+  b$1[d$1] = 9;
+for (d$1 = 256; d$1 < 280; ++d$1)
+  b$1[d$1] = 7;
+for (d$1 = 280; d$1 < 288; ++d$1)
+  b$1[d$1] = 8;
+var h$1 = new r$1(32);
+for (d$1 = 0; d$1 < 32; ++d$1)
+  h$1[d$1] = 5;
+var E$1 = w$1(b$1, 9), p$1 = w$1(h$1, 5), g$1 = function(r2) {
   for (var e2 = r2[0], n2 = 1; n2 < r2.length; ++n2)
     r2[n2] > e2 && (e2 = r2[n2]);
   return e2;
-}, y = function(r2, e2, n2) {
+}, y$1 = function(r2, e2, n2) {
   var a2 = e2 / 8 | 0;
   return (r2[a2] | r2[a2 + 1] << 8) >> (7 & e2) & n2;
-}, k = function(r2, e2) {
+}, k$1 = function(r2, e2) {
   var n2 = e2 / 8 | 0;
   return (r2[n2] | r2[n2 + 1] << 8 | r2[n2 + 2] << 16) >> (7 & e2);
-}, T = [
+}, T$1 = [
   "unexpected EOF",
   "invalid block type",
   "invalid length/literal",
@@ -28060,73 +28060,73 @@ var E = w(b, 9), p = w(h, 5), g = function(r2) {
   "filename too long",
   "stream finishing",
   "invalid zip data"
-], m = function(r2, e2, n2) {
-  var a2 = new Error(e2 || T[r2]);
-  if (a2.code = r2, Error.captureStackTrace && Error.captureStackTrace(a2, m), !n2)
+], m$1 = function(r2, e2, n2) {
+  var a2 = new Error(e2 || T$1[r2]);
+  if (a2.code = r2, Error.captureStackTrace && Error.captureStackTrace(a2, m$1), !n2)
     throw a2;
   return a2;
-}, x = function(f2, o2, l2) {
+}, x$1 = function(f2, o2, l2) {
   var c = f2.length;
   if (!c || l2 && l2.f && !l2.l)
-    return o2 || new r(0);
+    return o2 || new r$1(0);
   var d = !o2 || l2, s = !l2 || l2.i;
-  l2 || (l2 = {}), o2 || (o2 = new r(3 * c));
+  l2 || (l2 = {}), o2 || (o2 = new r$1(3 * c));
   var b2 = function(e2) {
     var n2 = o2.length;
     if (e2 > n2) {
-      var a2 = new r(Math.max(2 * n2, e2));
+      var a2 = new r$1(Math.max(2 * n2, e2));
       a2.set(o2), o2 = a2;
     }
   }, h2 = l2.f || 0, T2 = l2.p || 0, x2 = l2.b || 0, S2 = l2.l, U2 = l2.d, _2 = l2.m, z2 = l2.n, A = 8 * c;
   do {
     if (!S2) {
-      h2 = y(f2, T2, 1);
-      var M = y(f2, T2 + 1, 3);
+      h2 = y$1(f2, T2, 1);
+      var M = y$1(f2, T2 + 1, 3);
       if (T2 += 3, !M) {
         var B = f2[(C = 4 + ((T2 + 7) / 8 | 0)) - 4] | f2[C - 3] << 8, D = C + B;
         if (D > c) {
-          s && m(0);
+          s && m$1(0);
           break;
         }
         d && b2(x2 + B), o2.set(f2.subarray(C, D), x2), l2.b = x2 += B, l2.p = T2 = 8 * D, l2.f = h2;
         continue;
       }
       if (1 == M)
-        S2 = E, U2 = p, _2 = 9, z2 = 5;
+        S2 = E$1, U2 = p$1, _2 = 9, z2 = 5;
       else if (2 == M) {
-        var F = y(f2, T2, 31) + 257, L = y(f2, T2 + 10, 15) + 4, N = F + y(f2, T2 + 5, 31) + 1;
+        var F = y$1(f2, T2, 31) + 257, L = y$1(f2, T2 + 10, 15) + 4, N = F + y$1(f2, T2 + 5, 31) + 1;
         T2 += 14;
-        for (var P = new r(N), R = new r(19), Y = 0; Y < L; ++Y)
-          R[i[Y]] = y(f2, T2 + 3 * Y, 7);
+        for (var P = new r$1(N), R = new r$1(19), Y = 0; Y < L; ++Y)
+          R[i$1[Y]] = y$1(f2, T2 + 3 * Y, 7);
         T2 += 3 * L;
-        var O = g(R), j = (1 << O) - 1, q = w(R, O);
+        var O = g$1(R), j = (1 << O) - 1, q = w$1(R, O);
         for (Y = 0; Y < N; ) {
-          var C, G = q[y(f2, T2, j)];
+          var C, G = q[y$1(f2, T2, j)];
           if (T2 += 15 & G, (C = G >>> 4) < 16)
             P[Y++] = C;
           else {
             var H = 0, I = 0;
-            for (16 == C ? (I = 3 + y(f2, T2, 3), T2 += 2, H = P[Y - 1]) : 17 == C ? (I = 3 + y(f2, T2, 7), T2 += 3) : 18 == C && (I = 11 + y(f2, T2, 127), T2 += 7); I--; )
+            for (16 == C ? (I = 3 + y$1(f2, T2, 3), T2 += 2, H = P[Y - 1]) : 17 == C ? (I = 3 + y$1(f2, T2, 7), T2 += 3) : 18 == C && (I = 11 + y$1(f2, T2, 127), T2 += 7); I--; )
               P[Y++] = H;
           }
         }
         var J = P.subarray(0, F), K = P.subarray(F);
-        _2 = g(J), z2 = g(K), S2 = w(J, _2), U2 = w(K, z2);
+        _2 = g$1(J), z2 = g$1(K), S2 = w$1(J, _2), U2 = w$1(K, z2);
       } else
-        m(1);
+        m$1(1);
       if (T2 > A) {
-        s && m(0);
+        s && m$1(0);
         break;
       }
     }
     d && b2(x2 + 131072);
     for (var Q = (1 << _2) - 1, V = (1 << z2) - 1, W = T2; ; W = T2) {
-      var X2 = (H = S2[k(f2, T2) & Q]) >>> 4;
+      var X2 = (H = S2[k$1(f2, T2) & Q]) >>> 4;
       if ((T2 += 15 & H) > A) {
-        s && m(0);
+        s && m$1(0);
         break;
       }
-      if (H || m(2), X2 < 256)
+      if (H || m$1(2), X2 < 256)
         o2[x2++] = X2;
       else {
         if (256 == X2) {
@@ -28135,18 +28135,18 @@ var E = w(b, 9), p = w(h, 5), g = function(r2) {
         }
         var Z = X2 - 254;
         if (X2 > 264) {
-          var $2 = a[Y = X2 - 257];
-          Z = y(f2, T2, (1 << $2) - 1) + v[Y], T2 += $2;
+          var $2 = a$1[Y = X2 - 257];
+          Z = y$1(f2, T2, (1 << $2) - 1) + v$1[Y], T2 += $2;
         }
-        var rr = U2[k(f2, T2) & V], er = rr >>> 4;
-        rr || m(3), T2 += 15 & rr;
-        K = u[er];
+        var rr = U2[k$1(f2, T2) & V], er = rr >>> 4;
+        rr || m$1(3), T2 += 15 & rr;
+        K = u$1[er];
         if (er > 3) {
-          $2 = t[er];
-          K += k(f2, T2) & (1 << $2) - 1, T2 += $2;
+          $2 = t$1[er];
+          K += k$1(f2, T2) & (1 << $2) - 1, T2 += $2;
         }
         if (T2 > A) {
-          s && m(0);
+          s && m$1(0);
           break;
         }
         d && b2(x2 + 131072);
@@ -28159,29 +28159,29 @@ var E = w(b, 9), p = w(h, 5), g = function(r2) {
   } while (!h2);
   return x2 == o2.length ? o2 : function(a2, t2, i2) {
     (null == i2 || i2 > a2.length) && (i2 = a2.length);
-    var f3 = new (2 == a2.BYTES_PER_ELEMENT ? e : 4 == a2.BYTES_PER_ELEMENT ? n : r)(i2 - t2);
+    var f3 = new (2 == a2.BYTES_PER_ELEMENT ? e$1 : 4 == a2.BYTES_PER_ELEMENT ? n$1 : r$1)(i2 - t2);
     return f3.set(a2.subarray(t2, i2)), f3;
   }(o2, 0, x2);
-}, S = new r(0), U = function(r2) {
-  (8 != (15 & r2[0]) || r2[0] >>> 4 > 7 || (r2[0] << 8 | r2[1]) % 31) && m(6, "invalid zlib data"), 32 & r2[1] && m(6, "invalid zlib data: preset dictionaries not supported");
+}, S$1 = new r$1(0), U$1 = function(r2) {
+  (8 != (15 & r2[0]) || r2[0] >>> 4 > 7 || (r2[0] << 8 | r2[1]) % 31) && m$1(6, "invalid zlib data"), 32 & r2[1] && m$1(6, "invalid zlib data: preset dictionaries not supported");
 };
-function _(r2, e2) {
-  return x((U(r2), r2.subarray(2, -4)), e2);
+function _$1(r2, e2) {
+  return x$1((U$1(r2), r2.subarray(2, -4)), e2);
 }
-var z = "undefined" != typeof TextDecoder && new TextDecoder();
+var z$1 = "undefined" != typeof TextDecoder && new TextDecoder();
 try {
-  z.decode(S, { stream: true }), 1;
+  z$1.decode(S$1, { stream: true }), 1;
 } catch (r2) {
 }
-const isZip = async (file2) => {
+const isZip$1 = async (file2) => {
   const arr = new Uint8Array(await file2.slice(0, 4).arrayBuffer());
   return arr[0] === 80 && arr[1] === 75 && arr[2] === 3 && arr[3] === 4;
 };
-const isPDF = async (file2) => {
+const isPDF$1 = async (file2) => {
   const arr = new Uint8Array(await file2.slice(0, 5).arrayBuffer());
   return arr[0] === 37 && arr[1] === 80 && arr[2] === 68 && arr[3] === 70 && arr[4] === 45;
 };
-const makeZipLoader = async (file2) => {
+const makeZipLoader$1 = async (file2) => {
   const { configure, ZipReader, BlobReader, TextWriter, BlobWriter } = await __vitePreload(() => import("./zip-CpYcQdIF.js"), true ? [] : void 0, import.meta.url);
   configure({ useWebWorkers: false });
   const reader = new ZipReader(new BlobReader(file2));
@@ -28193,7 +28193,7 @@ const makeZipLoader = async (file2) => {
   const getSize = (name) => map.get(name)?.uncompressedSize ?? 0;
   return { entries, loadText, loadBlob, getSize };
 };
-const getFileEntries = async (entry) => entry.isFile ? entry : (await Promise.all(
+const getFileEntries$1 = async (entry) => entry.isFile ? entry : (await Promise.all(
   Array.from(
     await new Promise(
       (resolve2, reject) => entry.createReader().readEntries(
@@ -28201,11 +28201,11 @@ const getFileEntries = async (entry) => entry.isFile ? entry : (await Promise.al
         (error) => reject(error)
       )
     ),
-    getFileEntries
+    getFileEntries$1
   )
 )).flat();
-const makeDirectoryLoader = async (entry) => {
-  const entries = await getFileEntries(entry);
+const makeDirectoryLoader$1 = async (entry) => {
+  const entries = await getFileEntries$1(entry);
   const files = await Promise.all(
     entries.map(
       (entry2) => new Promise(
@@ -28225,50 +28225,50 @@ const makeDirectoryLoader = async (entry) => {
   const getSize = (name) => map.get(name)?.size ?? 0;
   return { loadText, loadBlob, getSize };
 };
-const isCBZ = ({ name, type }) => type === "application/vnd.comicbook+zip" || name.endsWith(".cbz");
-const isFB2 = ({ name, type }) => type === "application/x-fictionbook+xml" || name.endsWith(".fb2");
-const isFBZ = ({ name, type }) => type === "application/x-zip-compressed-fb2" || name.endsWith(".fb2.zip") || name.endsWith(".fbz");
-const getBook = async (file2) => {
+const isCBZ$1 = ({ name, type }) => type === "application/vnd.comicbook+zip" || name.endsWith(".cbz");
+const isFB2$1 = ({ name, type }) => type === "application/x-fictionbook+xml" || name.endsWith(".fb2");
+const isFBZ$1 = ({ name, type }) => type === "application/x-zip-compressed-fb2" || name.endsWith(".fb2.zip") || name.endsWith(".fbz");
+const getBook$1 = async (file2) => {
   let book2;
   if (file2.isDirectory) {
-    const loader = await makeDirectoryLoader(file2);
-    book2 = await new EPUB(loader).init();
+    const loader = await makeDirectoryLoader$1(file2);
+    book2 = await new EPUB$1(loader).init();
   } else if (!file2.size)
     throw new Error("File not found");
-  else if (await isZip(file2)) {
-    const loader = await makeZipLoader(file2);
-    if (isCBZ(file2)) {
-      book2 = makeComicBook(loader, file2);
-    } else if (isFBZ(file2)) {
+  else if (await isZip$1(file2)) {
+    const loader = await makeZipLoader$1(file2);
+    if (isCBZ$1(file2)) {
+      book2 = makeComicBook$1(loader, file2);
+    } else if (isFBZ$1(file2)) {
       const { entries } = loader;
       const entry = entries.find((entry2) => entry2.filename.endsWith(".fb2"));
       const blob = await loader.loadBlob((entry ?? entries[0]).filename);
-      book2 = await makeFB2(blob);
+      book2 = await makeFB2$1(blob);
     } else {
-      book2 = await new EPUB(loader).init();
+      book2 = await new EPUB$1(loader).init();
     }
-  } else if (await isPDF(file2)) {
+  } else if (await isPDF$1(file2)) {
     const { makePDF } = await __vitePreload(() => import("./pdf-kWcBJVdw.js"), true ? [] : void 0, import.meta.url);
     book2 = await makePDF(file2);
   } else {
-    if (await isMOBI(file2)) {
-      book2 = await new MOBI({ unzlib: _ }).open(file2);
-    } else if (isFB2(file2)) {
-      book2 = await makeFB2(file2);
+    if (await isMOBI$1(file2)) {
+      book2 = await new MOBI$1({ unzlib: _$1 }).open(file2);
+    } else if (isFB2$1(file2)) {
+      book2 = await makeFB2$1(file2);
     }
   }
   if (!book2)
     throw new Error("File type not supported");
   return book2;
 };
-const estimatedHeight = (node) => {
+const estimatedHeight$1 = (node) => {
   node.classList.add("prose", "prose-width", "prose-hidden");
   document.body.appendChild(node);
   const height = window.getComputedStyle(node).height;
   document.body.removeChild(node);
   return +height.replace("px", "");
 };
-class Reader {
+let Reader$1 = class Reader {
   blobs = /* @__PURE__ */ new Map();
   // 保存图片 blob内容
   book;
@@ -28285,7 +28285,7 @@ class Reader {
    * @returns
    */
   open = async (file2) => {
-    this.book = await getBook(file2);
+    this.book = await getBook$1(file2);
   };
   /**
    * 根据href 获取blob格式的图片内容
@@ -28319,7 +28319,7 @@ class Reader {
         const id2 = section.id;
         const doc2 = await section.createDocument();
         const body = doc2.querySelector("body");
-        const height = estimatedHeight(body.cloneNode(true));
+        const height = estimatedHeight$1(body.cloneNode(true));
         this.#handleLinks(body, section);
         await this.#handleImg(body, section);
         const html = body.innerHTML.replace(/xmlns=".*?"/g, "").replace(/<([a-zA-Z0-9]+)(\s[^>]*)?>\s*<\/\1>/g, "");
@@ -28342,7 +28342,7 @@ class Reader {
     try {
       if (typeof target === "number")
         return { index: target };
-      if (isCFI.test(target))
+      if (isCFI$1.test(target))
         return this.resolveCFI(target);
       return this.book.resolveHref(target);
     } catch (e2) {
@@ -28358,9 +28358,9 @@ class Reader {
     if (this.book.resolveCFI)
       return this.book.resolveCFI(cfi);
     else {
-      const parts = parse(cfi);
-      const index = fake.toIndex((parts.parent ?? parts).shift());
-      const anchor = (doc2) => toRange(doc2, parts);
+      const parts = parse$1(cfi);
+      const index = fake$1.toIndex((parts.parent ?? parts).shift());
+      const anchor = (doc2) => toRange$1(doc2, parts);
       return { index, anchor };
     }
   }
@@ -28438,7 +28438,7 @@ class Reader {
   static handleLanguage = (language) => {
     return typeof language === "string" ? language : language?.join(", ") ?? "";
   };
-}
+};
 var __webpack_require__$1 = {};
 (() => {
   __webpack_require__$1.d = (exports, definition) => {
@@ -48063,7 +48063,7 @@ const _sfc_main$m = /* @__PURE__ */ defineComponent({
         const md5Set = new Set(books.map((book2) => book2.md5));
         const newBookData = result.filter(({ hash }) => {
           if (md5Set.has(hash)) {
-            toastWarning(t$2("file.exist"));
+            toastWarning(t$3("file.exist"));
             return false;
           } else {
             md5Set.add(hash);
@@ -48071,7 +48071,7 @@ const _sfc_main$m = /* @__PURE__ */ defineComponent({
           }
         });
         const bookMetadata = await Promise.all(newBookData.map(async ({ data: data2, hash, file: file2 }) => {
-          const reader = new Reader();
+          const reader = new Reader$1();
           await reader.open(file2);
           const size2 = file2.size;
           let path = "";
@@ -48121,9 +48121,9 @@ const _sfc_main$m = /* @__PURE__ */ defineComponent({
             id: v4(),
             md5,
             name: title,
-            author: Reader.handleAuthor(author),
+            author: Reader$1.handleAuthor(author),
             description: description || "",
-            language: Reader.handleAuthor(language),
+            language: Reader$1.handleAuthor(language),
             publishTime: published || "",
             publisher: publisher || "",
             cover,
@@ -48157,7 +48157,7 @@ const _sfc_main$m = /* @__PURE__ */ defineComponent({
             });
             await BookContentAction.bulkAdd(bookContents);
           }
-          newBook.map((item) => toastSuccess(`${t$2("file.uploadSuccess")}: ${item.name}`));
+          newBook.map((item) => toastSuccess(`${t$3("file.uploadSuccess")}: ${item.name}`));
         }
       } catch (error) {
         toastWarning(error);
@@ -48685,12 +48685,12 @@ const _sfc_main$h = /* @__PURE__ */ defineComponent({
               createBaseVNode("div", _hoisted_5$5, [
                 createBaseVNode("div", _hoisted_6$5, [
                   createBaseVNode("div", null, [
-                    createBaseVNode("p", _hoisted_7$5, toDisplayString$1(unref(t$2)(item.title)), 1),
+                    createBaseVNode("p", _hoisted_7$5, toDisplayString$1(unref(t$3)(item.title)), 1),
                     createBaseVNode("div", _hoisted_8$5, [
                       createBaseVNode("h5", _hoisted_9$4, [
-                        createTextVNode(toDisplayString$1(unref(t$2)(item.desc)) + " ", 1),
+                        createTextVNode(toDisplayString$1(unref(t$3)(item.desc)) + " ", 1),
                         createBaseVNode("span", _hoisted_10$4, toDisplayString$1(item.total), 1),
-                        createBaseVNode("span", _hoisted_11$4, toDisplayString$1(unref(t$2)(item.detailUit)), 1)
+                        createBaseVNode("span", _hoisted_11$4, toDisplayString$1(unref(t$3)(item.detailUit)), 1)
                       ])
                     ])
                   ]),
@@ -48700,9 +48700,9 @@ const _sfc_main$h = /* @__PURE__ */ defineComponent({
                 ]),
                 createBaseVNode("p", _hoisted_13$3, [
                   createBaseVNode("span", _hoisted_14$3, [
-                    createTextVNode(toDisplayString$1(unref(t$2)(item.detailTitle)) + " ", 1),
+                    createTextVNode(toDisplayString$1(unref(t$3)(item.detailTitle)) + " ", 1),
                     createBaseVNode("span", _hoisted_15$3, toDisplayString$1(item.detailNum), 1),
-                    createTextVNode(" " + toDisplayString$1(unref(t$2)(item.detailUit)), 1)
+                    createTextVNode(" " + toDisplayString$1(unref(t$3)(item.detailUit)), 1)
                   ]),
                   item.isUp ? (openBlock(), createElementBlock("div", _hoisted_16$3, [
                     createVNode(unref(MoveUp), { class: "w-2.5 h-2.5" }),
@@ -48718,7 +48718,7 @@ const _sfc_main$h = /* @__PURE__ */ defineComponent({
         ]),
         createBaseVNode("div", _hoisted_18$3, [
           createBaseVNode("div", _hoisted_19$3, [
-            createBaseVNode("h2", _hoisted_20$3, toDisplayString$1(unref(t$2)("statistics.currentReading")), 1),
+            createBaseVNode("h2", _hoisted_20$3, toDisplayString$1(unref(t$3)("statistics.currentReading")), 1),
             createBaseVNode("div", _hoisted_21$3, [
               unref(loading) ? (openBlock(), createElementBlock("div", _hoisted_22$3)) : (openBlock(), createElementBlock(Fragment, { key: 1 }, [
                 recentBook.value.length > 0 ? (openBlock(true), createElementBlock(Fragment, { key: 0 }, renderList(recentBook.value, (item) => {
@@ -48743,7 +48743,7 @@ const _sfc_main$h = /* @__PURE__ */ defineComponent({
                   ], 8, _hoisted_23$3);
                 }), 256)) : (openBlock(), createElementBlock("div", _hoisted_25$2, [
                   createBaseVNode("div", _hoisted_26$2, [
-                    createBaseVNode("div", _hoisted_27$2, toDisplayString$1(unref(t$2)("common.empty")), 1)
+                    createBaseVNode("div", _hoisted_27$2, toDisplayString$1(unref(t$3)("common.empty")), 1)
                   ])
                 ]))
               ], 64))
@@ -48752,7 +48752,7 @@ const _sfc_main$h = /* @__PURE__ */ defineComponent({
         ]),
         createBaseVNode("div", _hoisted_28$2, [
           createBaseVNode("div", _hoisted_29$2, [
-            createBaseVNode("h2", _hoisted_30$2, toDisplayString$1(unref(t$2)("statistics.myLove")), 1),
+            createBaseVNode("h2", _hoisted_30$2, toDisplayString$1(unref(t$3)("statistics.myLove")), 1),
             createBaseVNode("div", _hoisted_31$1, [
               unref(loading) ? (openBlock(), createElementBlock("div", _hoisted_32$1)) : (openBlock(), createElementBlock(Fragment, { key: 1 }, [
                 loveBook.value.length > 0 ? (openBlock(true), createElementBlock(Fragment, { key: 0 }, renderList(loveBook.value, (item) => {
@@ -48777,7 +48777,7 @@ const _sfc_main$h = /* @__PURE__ */ defineComponent({
                   ], 8, _hoisted_33$1);
                 }), 256)) : (openBlock(), createElementBlock("div", _hoisted_35$1, [
                   createBaseVNode("div", _hoisted_36$1, [
-                    createBaseVNode("div", _hoisted_37, toDisplayString$1(unref(t$2)("common.empty")), 1)
+                    createBaseVNode("div", _hoisted_37, toDisplayString$1(unref(t$3)("common.empty")), 1)
                   ])
                 ]))
               ], 64))
@@ -48846,7 +48846,7 @@ const _sfc_main$e = /* @__PURE__ */ defineComponent({
       if (dom) {
         const acitveDom = dom.querySelector("a.active");
         if (acitveDom) {
-          e$1(acitveDom, { behavior: "smooth", scrollMode: "if-needed" });
+          e$2(acitveDom, { behavior: "smooth", scrollMode: "if-needed" });
         }
       }
     }, 100);
@@ -48996,7 +48996,7 @@ const _sfc_main$d = /* @__PURE__ */ defineComponent({
     const copyAction = (val) => {
       if (val) {
         copy(val);
-        toastSuccess(t$2("common.copySuccess"));
+        toastSuccess(t$3("common.copySuccess"));
       }
     };
     const openBookScore = () => scroreDialog(props.book);
@@ -49009,7 +49009,7 @@ const _sfc_main$d = /* @__PURE__ */ defineComponent({
       const history2 = list.reduce((pre, cur) => pre + getInterval(cur.startTime, cur.endTime), 0);
       return (history2 + props.time).toFixed(0);
     });
-    const getScore = (val) => isUndefined(val) || val === -1 ? t$2("common.unknown") : val;
+    const getScore = (val) => isUndefined(val) || val === -1 ? t$3("common.unknown") : val;
     return (_ctx, _cache) => {
       return openBlock(), createElementBlock("div", _hoisted_1$c, [
         createBaseVNode("div", _hoisted_2$9, [
@@ -49049,34 +49049,34 @@ const _sfc_main$d = /* @__PURE__ */ defineComponent({
           ])
         ]),
         createBaseVNode("div", _hoisted_8$4, [
-          createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.publisher")), 1),
-          _ctx.book.publisher ? (openBlock(), createElementBlock("div", _hoisted_9$3, toDisplayString$1(_ctx.book.publisher), 1)) : (openBlock(), createElementBlock("div", _hoisted_10$3, toDisplayString$1(unref(t$2)("common.unknown")), 1))
+          createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.publisher")), 1),
+          _ctx.book.publisher ? (openBlock(), createElementBlock("div", _hoisted_9$3, toDisplayString$1(_ctx.book.publisher), 1)) : (openBlock(), createElementBlock("div", _hoisted_10$3, toDisplayString$1(unref(t$3)("common.unknown")), 1))
         ]),
         createBaseVNode("div", _hoisted_11$3, [
-          createBaseVNode("div", _hoisted_12$2, toDisplayString$1(unref(t$2)("book.publishTime")), 1),
+          createBaseVNode("div", _hoisted_12$2, toDisplayString$1(unref(t$3)("book.publishTime")), 1),
           createBaseVNode("div", _hoisted_13$2, toDisplayString$1(_ctx.book.publishTime ? unref(dayjs)(_ctx.book.publishTime).format("L LT") : "未知"), 1)
         ]),
         createBaseVNode("div", _hoisted_14$2, [
-          createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.createTime")), 1),
+          createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.createTime")), 1),
           createBaseVNode("div", _hoisted_15$2, toDisplayString$1(unref(dayjs)(_ctx.book.createTime).format("L LT")), 1)
         ]),
         createBaseVNode("div", _hoisted_16$2, [
-          createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.updateTime")), 1),
+          createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.updateTime")), 1),
           createBaseVNode("div", _hoisted_17$2, toDisplayString$1(unref(dayjs)(_ctx.book.updateTime).format("L LT")), 1)
         ]),
         createBaseVNode("div", _hoisted_18$2, [
-          createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.size")), 1),
+          createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.size")), 1),
           createBaseVNode("div", _hoisted_19$2, toDisplayString$1(unref(formatFileSize)(_ctx.book.size)), 1)
         ]),
         createBaseVNode("div", _hoisted_20$2, [
-          createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.page")), 1),
+          createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.page")), 1),
           createBaseVNode("div", _hoisted_21$2, toDisplayString$1(_ctx.book.pages), 1)
         ]),
         createBaseVNode("div", {
           class: "flex gap-4 ml-3 mb-2 cursor-pointer",
           onClick: _cache[6] || (_cache[6] = ($event) => openBookScore())
         }, [
-          createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.score")), 1),
+          createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.score")), 1),
           createBaseVNode("div", {
             class: "rating rating-md rating-half",
             onClick: _cache[5] || (_cache[5] = ($event) => openBookScore())
@@ -49089,31 +49089,31 @@ const _sfc_main$d = /* @__PURE__ */ defineComponent({
           createBaseVNode("div", _hoisted_22$2, toDisplayString$1(getScore(_ctx.book.score)), 1)
         ]),
         createBaseVNode("div", _hoisted_23$2, [
-          createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.openCount")), 1),
+          createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.openCount")), 1),
           createBaseVNode("div", _hoisted_24$2, toDisplayString$1(_ctx.book.count), 1)
         ]),
         createBaseVNode("div", _hoisted_25$1, [
-          createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.readProgress")), 1),
+          createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.readProgress")), 1),
           createBaseVNode("div", _hoisted_26$1, toDisplayString$1(unref(formatDecimal)(_ctx.book.progress * 100)) + "%", 1)
         ]),
         createBaseVNode("div", _hoisted_27$1, [
-          createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.thisReadTime")), 1),
+          createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.thisReadTime")), 1),
           createBaseVNode("div", _hoisted_28$1, toDisplayString$1(_ctx.time) + "分", 1)
         ]),
         createBaseVNode("div", _hoisted_29$1, [
-          createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.totalReadTime")), 1),
+          createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.totalReadTime")), 1),
           createBaseVNode("div", _hoisted_30$1, toDisplayString$1(totalReadTime.value) + "分", 1)
         ]),
         createBaseVNode("div", _hoisted_31, [
-          createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.highlightLen")), 1),
+          createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.highlightLen")), 1),
           createBaseVNode("div", _hoisted_32, toDisplayString$1(highlightLen.value), 1)
         ]),
         createBaseVNode("div", _hoisted_33, [
-          createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.notesLen")), 1),
+          createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.notesLen")), 1),
           createBaseVNode("div", _hoisted_34, toDisplayString$1(notesLen.value), 1)
         ]),
         _ctx.book.group ? (openBlock(), createElementBlock("div", _hoisted_35, [
-          createBaseVNode("div", null, toDisplayString$1(unref(t$2)("book.bookshelf")), 1),
+          createBaseVNode("div", null, toDisplayString$1(unref(t$3)("book.bookshelf")), 1),
           createBaseVNode("div", _hoisted_36, toDisplayString$1(unref(BookshelfAction).toBookshelf(_ctx.book.group).name), 1)
         ])) : createCommentVNode("", true)
       ]);
@@ -49319,7 +49319,7 @@ const regMobile = /Android|iPhone|BlackBerry|BB10|Opera Mini|Phone|Mobile|Silk|W
 const isMobile = (userAgent) => regMobile.test(userAgent);
 const isNull = (val) => val === null;
 const isString = (val) => typeof val === "string";
-const isTextNode = (node) => node.nodeType === Node.TEXT_NODE;
+const isTextNode$1 = (node) => node.nodeType === Node.TEXT_NODE;
 const isHighlightWrapNode = (node) => node && hasAttr(node, DATA_WEB_HIGHLIGHT);
 var UserInputEvent = /* @__PURE__ */ ((UserInputEvent2) => {
   UserInputEvent2["touchend"] = "touchend";
@@ -49346,9 +49346,7 @@ var CreateFrom = /* @__PURE__ */ ((CreateFrom2) => {
   return CreateFrom2;
 })(CreateFrom || {});
 class EventEmitter {
-  constructor() {
-    this._events = /* @__PURE__ */ Object.create(null);
-  }
+  _events = /* @__PURE__ */ Object.create(null);
   on(type, handler) {
     if (!this._events[type]) {
       this._events[type] = [];
@@ -49405,9 +49403,9 @@ var ERROR = /* @__PURE__ */ ((ERROR2) => {
   return ERROR2;
 })(ERROR || {});
 class Hook {
+  name = "";
+  cbs = [];
   constructor(name) {
-    this.name = "";
-    this.cbs = [];
     if (name) {
       this.name = name;
     }
@@ -49517,7 +49515,7 @@ const getTextPreOffset = (orinalParent, textNode) => {
     for (let i2 = children.length - 1; i2 >= 0; i2--) {
       nodeStack.push(children[i2]);
     }
-    if (isTextNode(currentNode)) {
+    if (isTextNode$1(currentNode)) {
       if (currentNode === textNode) {
         break;
       } else {
@@ -49569,7 +49567,7 @@ const getTextNodeByOffset = (parent, offset, isStart = true) => {
     for (let i2 = children.length - 1; i2 >= 0; i2--) {
       nodeStack.push(children[i2]);
     }
-    if (isTextNode(currentNode)) {
+    if (isTextNode$1(currentNode)) {
       startOffset = offset - curOffset;
       curOffset += getTextLen(currentNode);
       const handler = isStart ? curOffset > offset : curOffset >= offset;
@@ -49622,20 +49620,20 @@ const spaceTextNode = (node, start, end) => {
       stack2.push(children[i2]);
     }
     if (currentNode === start.node) {
-      if (isTextNode(currentNode)) {
+      if (isTextNode$1(currentNode)) {
         currentNode.splitText(start.offset);
         const node2 = currentNode.nextSibling;
         result.push({ node: node2 });
       }
       withinSelectedRange = true;
     } else if (currentNode === end.node) {
-      if (isTextNode(currentNode)) {
+      if (isTextNode$1(currentNode)) {
         const node2 = currentNode;
         node2.splitText(end.offset);
         result.push({ node: node2 });
       }
       break;
-    } else if (withinSelectedRange && isTextNode(currentNode)) {
+    } else if (withinSelectedRange && isTextNode$1(currentNode)) {
       result.push({ node: currentNode });
     }
   }
@@ -49660,7 +49658,7 @@ const getAllSelectDom = (start, end) => {
     });
     return [];
   }
-  if (startNode === endNode && isTextNode(startNode)) {
+  if (startNode === endNode && isTextNode$1(startNode)) {
     return sameTextNode(startNode, startOffset, endOffset);
   }
   const parentNode = findFirstSameParentNode(start.parent, end.parent);
@@ -49926,9 +49924,7 @@ class PaintUntil {
   }
 }
 class RangeUtil {
-  constructor() {
-    this.prev = null;
-  }
+  prev = null;
   getRange() {
     let result = null;
     const selection = getOption().context.getSelection();
@@ -50087,9 +50083,7 @@ function rangeToSource(range) {
   }
 }
 class Store {
-  constructor() {
-    this._data = /* @__PURE__ */ new Map();
-  }
+  _data = /* @__PURE__ */ new Map();
   save(id2, source) {
     const list = this.get(id2) || [];
     const newList = source.filter((item) => !list.find((sub) => sub.id === item.id));
@@ -50132,205 +50126,13 @@ class Store {
   }
 }
 class WebHighlight extends EventEmitter {
+  _store;
+  _hooks;
+  _hoverId = null;
+  _event = getInteraction();
+  _paint;
   constructor(option) {
     super();
-    this._hoverId = null;
-    this._event = getInteraction();
-    this.setOption = (option2) => {
-      if (option2.root) {
-        this.removeListener();
-      }
-      setOption(option2);
-      if (option2.root) {
-        this.addListener();
-      }
-    };
-    this.fromRange = (range) => {
-      const res = rangeToSource(range);
-      if (!res)
-        return;
-      const removeIds = /* @__PURE__ */ new Set();
-      const { id: id2, source } = res;
-      let isPainted = false;
-      if (getOption().auto) {
-        const sources = source.filter((item) => {
-          const [painted, ids] = this._handlePaintWrap(item);
-          if (painted) {
-            isPainted = true;
-            ids.forEach((id22) => removeIds.add(id22));
-          }
-          return painted;
-        });
-        if (removeIds.size) {
-          removeIds.forEach((id22) => {
-            this._paint.replaceExtraOldWrap(id22, source[0].id);
-            this._store.remove(id22);
-          });
-        }
-        if (isPainted) {
-          this._store.save(id2, sources);
-          this.emit(
-            EventTypeEnum.CREATE,
-            { id: id2, sources, type: CreateFrom.rang, removeIds: [...removeIds] },
-            this
-          );
-          rangeUtil.removeAll();
-        }
-      } else {
-        source.forEach((item) => {
-          const ids = this._paint.getRemoveIds(item);
-          ids.forEach((id22) => removeIds.add(id22));
-        });
-      }
-      return { source, isPainted, removeIds: [...removeIds] };
-    };
-    this.fromSource = (source) => {
-      const data2 = /* @__PURE__ */ new Map();
-      source.forEach((item) => {
-        const id2 = item.id;
-        const list = data2.get(id2) || [];
-        list.push(item);
-        data2.set(id2, list);
-      });
-      data2.forEach((sourceList, id2) => {
-        const removeIds = /* @__PURE__ */ new Set();
-        const sources = sourceList.filter((item) => {
-          const [painted, ids] = this._handlePaintWrap(item);
-          if (painted) {
-            ids.forEach((id22) => removeIds.add(id22));
-          }
-          return painted;
-        });
-        if (isLen(sources)) {
-          this._store.save(id2, sources);
-          this.emit(
-            EventTypeEnum.CREATE,
-            { id: id2, sources, type: CreateFrom.source, removeIds: [...removeIds] },
-            this
-          );
-          sources.map((item) => handleHookCall(item, this._hooks.record.saveSource, item.id, item));
-        }
-      });
-    };
-    this.getDomsById = (id2) => {
-      return selctorAll(`[${DATA_WEB_HIGHLIGHT}='${id2}']`, getOption().root);
-    };
-    this.getSourceById = (id2) => {
-      return this._store.get(id2);
-    };
-    this.remove = (id2) => {
-      const source = this.getSourceById(id2);
-      if (!source) {
-        return;
-      }
-      this._store.remove(id2);
-      if (isLen(source)) {
-        this._paint.remove(source[0]);
-        this.emit(EventTypeEnum.REMOVE, { ids: [id2] }, this);
-      }
-    };
-    this.removeAll = () => {
-      this._paint.removeAll();
-      const ids = this._store.removeAll();
-      this.emit(EventTypeEnum.REMOVE, { ids }, this);
-    };
-    this.dispose = () => {
-      this.removeListener();
-      this.offAll();
-      this._store.removeAll();
-    };
-    this.addClass = (id2, className) => {
-      this._handleClass(id2, (note2) => addClass(note2, className));
-    };
-    this.removeClass = (id2, className) => {
-      this._handleClass(id2, (note2) => removeClass(note2, className));
-    };
-    this.click = (event) => {
-      const target = event.target;
-      if (isHighlightWrapNode(target)) {
-        const id2 = getAttr(target, DATA_WEB_HIGHLIGHT);
-        const source = this.getSourceById(id2) || [];
-        const { page, container } = this._findSectionContainer(target);
-        const data2 = source.find((item) => item.page === page);
-        if (data2) {
-          let _target = target;
-          if (page) {
-            _target = selctorAll(`[${DATA_WEB_HIGHLIGHT}='${id2}']`, container)[0];
-          }
-          this.emit(EventTypeEnum.CLICK, { id: id2, target: _target, source }, this, event);
-          return;
-        }
-      }
-      this.emit(EventTypeEnum.CLICK, { target }, this, event);
-    };
-    this.dbclick = (event) => {
-      const target = event.target;
-      if (target && !isHighlightWrapNode(target)) {
-        if (target.firstChild && target.lastChild && target.lastChild.textContent) {
-          const range = document.createRange();
-          range.setStart(target.firstChild, 0);
-          range.setEnd(target.lastChild, target.lastChild.textContent.length);
-          this.fromRange(range);
-        }
-      }
-    };
-    this.hover = (event) => {
-      const target = event.target;
-      if (!isHighlightWrapNode(target)) {
-        this._hoverId && this.emit(EventTypeEnum.HOVER_OUT, { id: this._hoverId }, this, event);
-        this._hoverId = null;
-        return;
-      }
-      const id2 = getAttr(target, DATA_WEB_HIGHLIGHT);
-      if (id2 === this._hoverId) {
-        return;
-      }
-      if (this._hoverId) {
-        this.emit(EventTypeEnum.HOVER_OUT, { id: this._hoverId }, this, event);
-      }
-      this._hoverId = id2;
-      this.emit(EventTypeEnum.HOVER_OUT, { id: this._hoverId }, this, event);
-    };
-    this.addListener = () => {
-      const { root, dynamic } = getOption();
-      if (!dynamic) {
-        listener(root, this._event.PointerOver, this.hover);
-        listener(root, this._event.PointerTap, this.click);
-        listener(root, this._event.PointerEnd, this._handleSelection);
-        listener(root, this._event.PinterDb, this.dbclick);
-      }
-    };
-    this.removeListener = () => {
-      const root = getOption().root;
-      unListener(root, this._event.PointerOver, this.hover);
-      unListener(root, this._event.PointerTap, this.click);
-      unListener(root, this._event.PinterDb, this.dbclick);
-      unListener(root, this._event.PointerEnd, this._handleSelection);
-    };
-    this._handleSelection = () => {
-      const range = rangeUtil.getRange();
-      if (range) {
-        const res = this.fromRange(range);
-        if (res) {
-          const { source, isPainted, removeIds } = res;
-          this.emit(EventTypeEnum.SOURCE, { source, isPainted, range, removeIds }, this);
-        }
-      }
-    };
-    this.__handleError = (data2) => {
-      if (getOption().showError) {
-        console.warn(data2);
-      }
-    };
-    this._findSectionContainer = (target) => {
-      const { root, pageAttribateName } = getOption();
-      let node = target;
-      while (node !== root && !hasAttr(node, pageAttribateName)) {
-        node = node.parentNode;
-      }
-      const page = getAttr(node, pageAttribateName) || "";
-      return { page, container: node };
-    };
     if (option) {
       setOption(option);
     }
@@ -50340,9 +50142,186 @@ class WebHighlight extends EventEmitter {
     this.addListener();
     errorEventEimtter.on(INTERNAL_ERROR_EVENT, this.__handleError);
   }
+  setOption = (option) => {
+    if (option.root) {
+      this.removeListener();
+    }
+    setOption(option);
+    if (option.root) {
+      this.addListener();
+    }
+  };
+  fromRange = (range) => {
+    const res = rangeToSource(range);
+    if (!res)
+      return;
+    const removeIds = /* @__PURE__ */ new Set();
+    const { id: id2, source } = res;
+    let isPainted = false;
+    if (getOption().auto) {
+      const sources = source.filter((item) => {
+        const [painted, ids] = this._handlePaintWrap(item);
+        if (painted) {
+          isPainted = true;
+          ids.forEach((id22) => removeIds.add(id22));
+        }
+        return painted;
+      });
+      if (removeIds.size) {
+        removeIds.forEach((id22) => {
+          this._paint.replaceExtraOldWrap(id22, source[0].id);
+          this._store.remove(id22);
+        });
+      }
+      if (isPainted) {
+        this._store.save(id2, sources);
+        this.emit(
+          EventTypeEnum.CREATE,
+          { id: id2, sources, type: CreateFrom.rang, removeIds: [...removeIds] },
+          this
+        );
+        rangeUtil.removeAll();
+      }
+    } else {
+      source.forEach((item) => {
+        const ids = this._paint.getRemoveIds(item);
+        ids.forEach((id22) => removeIds.add(id22));
+      });
+    }
+    return { source, isPainted, removeIds: [...removeIds] };
+  };
+  fromSource = (source) => {
+    const data2 = /* @__PURE__ */ new Map();
+    source.forEach((item) => {
+      const id2 = item.id;
+      const list = data2.get(id2) || [];
+      list.push(item);
+      data2.set(id2, list);
+    });
+    data2.forEach((sourceList, id2) => {
+      const removeIds = /* @__PURE__ */ new Set();
+      const sources = sourceList.filter((item) => {
+        const [painted, ids] = this._handlePaintWrap(item);
+        if (painted) {
+          ids.forEach((id22) => removeIds.add(id22));
+        }
+        return painted;
+      });
+      if (isLen(sources)) {
+        this._store.save(id2, sources);
+        this.emit(
+          EventTypeEnum.CREATE,
+          { id: id2, sources, type: CreateFrom.source, removeIds: [...removeIds] },
+          this
+        );
+        sources.map((item) => handleHookCall(item, this._hooks.record.saveSource, item.id, item));
+      }
+    });
+  };
+  getDomsById = (id2) => {
+    return selctorAll(`[${DATA_WEB_HIGHLIGHT}='${id2}']`, getOption().root);
+  };
+  getSourceById = (id2) => {
+    return this._store.get(id2);
+  };
+  // getDomNode = (source: DomSource, isStart = true) => {
+  //   const { startDomMeta, endDomMeta } = source
+  //   const domMeta = isStart ? startDomMeta : endDomMeta
+  //   return getDomNode({ source, domMeta })
+  // }
+  remove = (id2) => {
+    const source = this.getSourceById(id2);
+    if (!source) {
+      return;
+    }
+    this._store.remove(id2);
+    if (isLen(source)) {
+      this._paint.remove(source[0]);
+      this.emit(EventTypeEnum.REMOVE, { ids: [id2] }, this);
+    }
+  };
+  removeAll = () => {
+    this._paint.removeAll();
+    const ids = this._store.removeAll();
+    this.emit(EventTypeEnum.REMOVE, { ids }, this);
+  };
+  dispose = () => {
+    this.removeListener();
+    this.offAll();
+    this._store.removeAll();
+  };
+  addClass = (id2, className) => {
+    this._handleClass(id2, (note2) => addClass(note2, className));
+  };
+  removeClass = (id2, className) => {
+    this._handleClass(id2, (note2) => removeClass(note2, className));
+  };
   replaceClass(id2, newClassName, oldClassName) {
     this._handleClass(id2, (note2) => replaceClass(note2, newClassName, oldClassName));
   }
+  click = (event) => {
+    const target = event.target;
+    if (isHighlightWrapNode(target)) {
+      const id2 = getAttr(target, DATA_WEB_HIGHLIGHT);
+      const source = this.getSourceById(id2) || [];
+      const { page, container } = this._findSectionContainer(target);
+      const data2 = source.find((item) => item.page === page);
+      if (data2) {
+        let _target = target;
+        if (page) {
+          _target = selctorAll(`[${DATA_WEB_HIGHLIGHT}='${id2}']`, container)[0];
+        }
+        this.emit(EventTypeEnum.CLICK, { id: id2, target: _target, source }, this, event);
+        return;
+      }
+    }
+    this.emit(EventTypeEnum.CLICK, { target }, this, event);
+  };
+  // 双击直接整个段落文本高亮
+  dbclick = (event) => {
+    const target = event.target;
+    if (target && !isHighlightWrapNode(target)) {
+      if (target.firstChild && target.lastChild && target.lastChild.textContent) {
+        const range = document.createRange();
+        range.setStart(target.firstChild, 0);
+        range.setEnd(target.lastChild, target.lastChild.textContent.length);
+        this.fromRange(range);
+      }
+    }
+  };
+  hover = (event) => {
+    const target = event.target;
+    if (!isHighlightWrapNode(target)) {
+      this._hoverId && this.emit(EventTypeEnum.HOVER_OUT, { id: this._hoverId }, this, event);
+      this._hoverId = null;
+      return;
+    }
+    const id2 = getAttr(target, DATA_WEB_HIGHLIGHT);
+    if (id2 === this._hoverId) {
+      return;
+    }
+    if (this._hoverId) {
+      this.emit(EventTypeEnum.HOVER_OUT, { id: this._hoverId }, this, event);
+    }
+    this._hoverId = id2;
+    this.emit(EventTypeEnum.HOVER_OUT, { id: this._hoverId }, this, event);
+  };
+  addListener = () => {
+    const { root, dynamic } = getOption();
+    if (!dynamic) {
+      listener(root, this._event.PointerOver, this.hover);
+      listener(root, this._event.PointerTap, this.click);
+      listener(root, this._event.PointerEnd, this._handleSelection);
+      listener(root, this._event.PinterDb, this.dbclick);
+    }
+  };
+  removeListener = () => {
+    const root = getOption().root;
+    unListener(root, this._event.PointerOver, this.hover);
+    unListener(root, this._event.PointerTap, this.click);
+    unListener(root, this._event.PinterDb, this.dbclick);
+    unListener(root, this._event.PointerEnd, this._handleSelection);
+  };
   _handleClass(id2, cb) {
     const source = this.getSourceById(id2);
     if (!source || !isLen(source)) {
@@ -50366,6 +50345,16 @@ class WebHighlight extends EventEmitter {
       });
     }
   }
+  _handleSelection = () => {
+    const range = rangeUtil.getRange();
+    if (range) {
+      const res = this.fromRange(range);
+      if (res) {
+        const { source, isPainted, removeIds } = res;
+        this.emit(EventTypeEnum.SOURCE, { source, isPainted, range, removeIds }, this);
+      }
+    }
+  };
   _handlePaintWrap(source) {
     let result = false;
     const removeIds = /* @__PURE__ */ new Set();
@@ -50386,6 +50375,20 @@ class WebHighlight extends EventEmitter {
     }
     return [result, [...removeIds]];
   }
+  __handleError = (data2) => {
+    if (getOption().showError) {
+      console.warn(data2);
+    }
+  };
+  _findSectionContainer = (target) => {
+    const { root, pageAttribateName } = getOption();
+    let node = target;
+    while (node !== root && !hasAttr(node, pageAttribateName)) {
+      node = node.parentNode;
+    }
+    const page = getAttr(node, pageAttribateName) || "";
+    return { page, container: node };
+  };
 }
 let highlighter;
 const CONTINAER_ID = "reader-container";
@@ -50815,14 +50818,14 @@ const _sfc_main$a = /* @__PURE__ */ defineComponent({
     };
     const barList = computed(() => {
       return [
-        { name: t$2("common.copy"), icon: Copy, click: () => noteToolBar.copySource(), active: "copy" },
-        { name: t$2("common.remove"), icon: Trash, click: () => removeOneNote(), active: "remove" }
+        { name: t$3("common.copy"), icon: Copy, click: () => noteToolBar.copySource(), active: "copy" },
+        { name: t$3("common.remove"), icon: Trash, click: () => removeOneNote(), active: "remove" }
       ];
     });
     const lineList = [
-      { name: t$2("line.marker"), icon: Highlighter, click: () => noteToolBar.marker(), active: HighlightType.marker },
-      { name: t$2("line.beeline"), icon: Baseline, click: () => noteToolBar.beeline(), active: HighlightType.beeline },
-      { name: t$2("line.wavy"), icon: SpellCheck2, click: () => noteToolBar.wavy(), active: HighlightType.wavy }
+      { name: t$3("line.marker"), icon: Highlighter, click: () => noteToolBar.marker(), active: HighlightType.marker },
+      { name: t$3("line.beeline"), icon: Baseline, click: () => noteToolBar.beeline(), active: HighlightType.beeline },
+      { name: t$3("line.wavy"), icon: SpellCheck2, click: () => noteToolBar.wavy(), active: HighlightType.wavy }
     ];
     const addNote = async () => {
       try {
@@ -50834,7 +50837,7 @@ const _sfc_main$a = /* @__PURE__ */ defineComponent({
           return;
         await noteRichAction.addInNoNotes(get(tags));
       } catch (err) {
-        toastError(`${t$2("note.addNoteFail")}：${err}`);
+        toastError(`${t$3("note.addNoteFail")}：${err}`);
       } finally {
         setLoading(false);
         set$1(selectNote, void 0);
@@ -50853,7 +50856,7 @@ const _sfc_main$a = /* @__PURE__ */ defineComponent({
             role: "tab",
             class: normalizeClass(["tab transition ease-in-out", { "tab-active": activeTab.value === "book" }]),
             onClick: _cache[0] || (_cache[0] = ($event) => changeTab("book"))
-          }, toDisplayString$1(unref(t$2)("common.detail")), 3),
+          }, toDisplayString$1(unref(t$3)("common.detail")), 3),
           unref(notes)?.length ? (openBlock(), createElementBlock("a", {
             key: 0,
             role: "tab",
@@ -50862,14 +50865,14 @@ const _sfc_main$a = /* @__PURE__ */ defineComponent({
           }, [
             createBaseVNode("div", _hoisted_3$4, [
               createBaseVNode("span", _hoisted_4$4, toDisplayString$1(unref(notes).length >= 100 ? "99+" : unref(notes).length), 1),
-              createBaseVNode("div", null, toDisplayString$1(unref(t$2)("menu.note")), 1)
+              createBaseVNode("div", null, toDisplayString$1(unref(t$3)("menu.note")), 1)
             ])
           ], 2)) : (openBlock(), createElementBlock("a", {
             key: 1,
             role: "tab",
             class: normalizeClass(["tab transition ease-in-out", { "tab-active": activeTab.value === "note" }]),
             onClick: _cache[2] || (_cache[2] = ($event) => changeTab("note"))
-          }, toDisplayString$1(unref(t$2)("menu.note")), 3))
+          }, toDisplayString$1(unref(t$3)("menu.note")), 3))
         ]),
         createBaseVNode("div", _hoisted_5$3, [
           activeTab.value === "book" ? (openBlock(), createBlock(_sfc_main$d, {
@@ -50930,7 +50933,7 @@ const _sfc_main$a = /* @__PURE__ */ defineComponent({
                             createBaseVNode("button", {
                               class: "btn btn-sm btn-outline btn-primary",
                               onClick: ($event) => openEidteBar(virtualRow.index)
-                            }, toDisplayString$1(unref(t$2)("common.edit")), 9, _hoisted_13$1)
+                            }, toDisplayString$1(unref(t$3)("common.edit")), 9, _hoisted_13$1)
                           ])
                         ])
                       ], 46, _hoisted_8$3)
@@ -50939,7 +50942,7 @@ const _sfc_main$a = /* @__PURE__ */ defineComponent({
                 ], 4)
               ], 4)) : (openBlock(), createElementBlock("div", _hoisted_14$1, [
                 createBaseVNode("div", _hoisted_15$1, [
-                  createBaseVNode("div", _hoisted_16$1, toDisplayString$1(unref(t$2)("common.empty")), 1)
+                  createBaseVNode("div", _hoisted_16$1, toDisplayString$1(unref(t$3)("common.empty")), 1)
                 ])
               ]))
             ], 512),
@@ -51005,7 +51008,7 @@ const _sfc_main$a = /* @__PURE__ */ defineComponent({
                     "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => textareaValue.value = $event),
                     rows: "4",
                     class: "textarea textarea-accent w-full bg-base-200 rounded-lg my-3",
-                    placeholder: unref(t$2)("note.placeholder")
+                    placeholder: unref(t$3)("note.placeholder")
                   }, null, 8, _hoisted_28), [
                     [vModelText, textareaValue.value]
                   ]),
@@ -51019,7 +51022,7 @@ const _sfc_main$a = /* @__PURE__ */ defineComponent({
                       onClick: _cache[6] || (_cache[6] = ($event) => addNote())
                     }, [
                       unref(loading) ? (openBlock(), createElementBlock("span", _hoisted_30)) : createCommentVNode("", true),
-                      createTextVNode(" " + toDisplayString$1(unref(t$2)("common.add")), 1)
+                      createTextVNode(" " + toDisplayString$1(unref(t$3)("common.add")), 1)
                     ])
                   ])
                 ])
@@ -51032,6 +51035,3316 @@ const _sfc_main$a = /* @__PURE__ */ defineComponent({
   }
 });
 const NoteView = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["__scopeId", "data-v-499d46b8"]]);
+const makeComicBook = ({ entries, loadBlob, getSize }, file2) => {
+  const cache2 = /* @__PURE__ */ new Map();
+  const urls = /* @__PURE__ */ new Map();
+  const load = async (name) => {
+    if (cache2.has(name))
+      return cache2.get(name);
+    const src = URL.createObjectURL(await loadBlob(name));
+    const page = URL.createObjectURL(new Blob([`<img src="${src}">`], { type: "text/html" }));
+    urls.set(name, [src, page]);
+    cache2.set(name, page);
+    return page;
+  };
+  const unload = (name) => {
+    urls.get(name)?.forEach?.((url) => URL.revokeObjectURL(url));
+    urls.delete(name);
+    cache2.delete(name);
+  };
+  const exts = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".svg", ".jxl", ".avif"];
+  const files = entries.map((entry) => entry.filename).filter((name) => exts.some((ext) => name.endsWith(ext))).sort();
+  if (!files.length)
+    throw new Error("No supported image files in archive");
+  const book2 = {};
+  book2.getCover = () => loadBlob(files[0]);
+  book2.metadata = { title: file2.name };
+  book2.sections = files.map((name) => ({
+    id: name,
+    load: () => load(name),
+    unload: () => unload(name),
+    size: getSize(name)
+  }));
+  book2.toc = files.map((name) => ({ label: name, href: name }));
+  book2.rendition = { layout: "pre-paginated" };
+  book2.resolveHref = (href) => ({ index: book2.sections.findIndex((s) => s.id === href) });
+  book2.splitTOCHref = (href) => [href, null];
+  book2.getTOCFragment = (doc2) => doc2.documentElement;
+  book2.destroy = () => {
+    for (const arr of urls.values())
+      for (const url of arr)
+        URL.revokeObjectURL(url);
+  };
+  return book2;
+};
+const findIndices = (arr, f2) => arr.map((x2, i2, a2) => f2(x2, i2, a2) ? i2 : null).filter((x2) => x2 != null);
+const splitAt = (arr, is) => [-1, ...is, arr.length].reduce(
+  ({ xs, a: a2 }, b2) => ({ xs: xs?.concat([arr.slice(a2 + 1, b2)]) ?? [], a: b2 }),
+  {}
+).xs;
+const concatArrays = (a2, b2) => a2.slice(0, -1).concat([a2[a2.length - 1].concat(b2[0])]).concat(b2.slice(1));
+const isNumber = /\d/;
+const isCFI = /^epubcfi\((.*)\)$/;
+const escapeCFI = (str) => str.replace(/[\^[\](),;=]/g, "^$&");
+const wrap = (x2) => isCFI.test(x2) ? x2 : `epubcfi(${x2})`;
+const unwrap = (x2) => x2.match(isCFI)?.[1] ?? x2;
+const tokenizer = (str) => {
+  const tokens = [];
+  let state, escape2, value = "";
+  const push = (x2) => (tokens.push(x2), state = null, value = "");
+  const cat = (x2) => (value += x2, escape2 = false);
+  for (const char of Array.from(str.trim()).concat("")) {
+    if (char === "^" && !escape2) {
+      escape2 = true;
+      continue;
+    }
+    if (state === "!")
+      push(["!"]);
+    else if (state === ",")
+      push([","]);
+    else if (state === "/" || state === ":") {
+      if (isNumber.test(char)) {
+        cat(char);
+        continue;
+      } else
+        push([state, parseInt(value)]);
+    } else if (state === "~") {
+      if (isNumber.test(char) || char === ".") {
+        cat(char);
+        continue;
+      } else
+        push(["~", parseFloat(value)]);
+    } else if (state === "@") {
+      if (char === ":") {
+        push(["@", parseFloat(value)]);
+        state = "@";
+        continue;
+      }
+      if (isNumber.test(char) || char === ".") {
+        cat(char);
+        continue;
+      } else
+        push(["@", parseFloat(value)]);
+    } else if (state === "[") {
+      if (char === ";" && !escape2) {
+        push(["[", value]);
+        state = ";";
+      } else if (char === "," && !escape2) {
+        push(["[", value]);
+        state = "[";
+      } else if (char === "]" && !escape2)
+        push(["[", value]);
+      else
+        cat(char);
+      continue;
+    } else if (state?.startsWith(";")) {
+      if (char === "=" && !escape2) {
+        state = `;${value}`;
+        value = "";
+      } else if (char === ";" && !escape2) {
+        push([state, value]);
+        state = ";";
+      } else if (char === "]" && !escape2)
+        push([state, value]);
+      else
+        cat(char);
+      continue;
+    }
+    if (char === "/" || char === ":" || char === "~" || char === "@" || char === "[" || char === "!" || char === ",")
+      state = char;
+  }
+  return tokens;
+};
+const findTokens = (tokens, x2) => findIndices(tokens, ([t2]) => t2 === x2);
+const parser = (tokens) => {
+  const parts = [];
+  let state;
+  for (const [type, val] of tokens) {
+    if (type === "/")
+      parts.push({ index: val });
+    else {
+      const last2 = parts[parts.length - 1];
+      if (type === ":")
+        last2.offset = val;
+      else if (type === "~")
+        last2.temporal = val;
+      else if (type === "@")
+        last2.spatial = (last2.spatial ?? []).concat(val);
+      else if (type === ";s")
+        last2.side = val;
+      else if (type === "[") {
+        if (state === "/" && val)
+          last2.id = val;
+        else {
+          last2.text = (last2.text ?? []).concat(val);
+          continue;
+        }
+      }
+    }
+    state = type;
+  }
+  return parts;
+};
+const parserIndir = (tokens) => splitAt(tokens, findTokens(tokens, "!")).map(parser);
+const parse = (cfi) => {
+  const tokens = tokenizer(unwrap(cfi));
+  const commas = findTokens(tokens, ",");
+  if (!commas.length)
+    return parserIndir(tokens);
+  const [parent, start, end] = splitAt(tokens, commas).map(parserIndir);
+  return { parent, start, end };
+};
+const partToString = ({ index, id: id2, offset, temporal, spatial, text, side }) => {
+  const param = side ? `;s=${side}` : "";
+  return `/${index}` + (id2 ? `[${escapeCFI(id2)}${param}]` : "") + // "CFI expressions [..] SHOULD include an explicit character offset"
+  (offset != null && index % 2 ? `:${offset}` : "") + (temporal ? `~${temporal}` : "") + (spatial ? `@${spatial.join(":")}` : "") + (text || !id2 && side ? "[" + (text?.map(escapeCFI)?.join(",") ?? "") + param + "]" : "");
+};
+const toInnerString = (parsed) => parsed.parent ? [parsed.parent, parsed.start, parsed.end].map(toInnerString).join(",") : parsed.map((parts) => parts.map(partToString).join("")).join("!");
+const toString = (parsed) => wrap(toInnerString(parsed));
+const collapse = (x2, toEnd) => typeof x2 === "string" ? toString(collapse(parse(x2), toEnd)) : x2.parent ? concatArrays(x2.parent, x2[toEnd ? "end" : "start"]) : x2;
+const isTextNode = ({ nodeType }) => nodeType === 3 || nodeType === 4;
+const isElementNode = ({ nodeType }) => nodeType === 1;
+const getChildNodes = (node, filter) => {
+  const nodes = Array.from(node.childNodes).filter((node2) => isTextNode(node2) || isElementNode(node2));
+  return filter ? nodes.map((node2) => {
+    const accept = filter(node2);
+    if (accept === NodeFilter.FILTER_REJECT)
+      return null;
+    else if (accept === NodeFilter.FILTER_SKIP)
+      return getChildNodes(node2, filter);
+    else
+      return node2;
+  }).flat().filter((x2) => x2) : nodes;
+};
+const indexChildNodes = (node, filter) => {
+  const nodes = getChildNodes(node, filter).reduce((arr, node2) => {
+    let last2 = arr[arr.length - 1];
+    if (!last2)
+      arr.push(node2);
+    else if (isTextNode(node2)) {
+      if (Array.isArray(last2))
+        last2.push(node2);
+      else if (isTextNode(last2))
+        arr[arr.length - 1] = [last2, node2];
+      else
+        arr.push(node2);
+    } else {
+      if (isElementNode(last2))
+        arr.push(null, node2);
+      else
+        arr.push(node2);
+    }
+    return arr;
+  }, []);
+  if (isElementNode(nodes[0]))
+    nodes.unshift("first");
+  if (isElementNode(nodes[nodes.length - 1]))
+    nodes.push("last");
+  nodes.unshift("before");
+  nodes.push("after");
+  return nodes;
+};
+const partsToNode = (node, parts, filter) => {
+  const { id: id2 } = parts[parts.length - 1];
+  if (id2) {
+    const el = node.ownerDocument.getElementById(id2);
+    if (el)
+      return { node: el, offset: 0 };
+  }
+  for (const { index } of parts) {
+    const newNode = node ? indexChildNodes(node, filter)[index] : null;
+    if (newNode === "first")
+      return { node: node.firstChild ?? node };
+    if (newNode === "last")
+      return { node: node.lastChild ?? node };
+    if (newNode === "before")
+      return { node, before: true };
+    if (newNode === "after")
+      return { node, after: true };
+    node = newNode;
+  }
+  const { offset } = parts[parts.length - 1];
+  if (!Array.isArray(node))
+    return { node, offset };
+  let sum = 0;
+  for (const n2 of node) {
+    const { length } = n2.nodeValue;
+    if (sum + length >= offset)
+      return { node: n2, offset: offset - sum };
+    sum += length;
+  }
+};
+const nodeToParts = (node, offset, filter) => {
+  const { parentNode, id: id2 } = node;
+  const indexed = indexChildNodes(parentNode, filter);
+  const index = indexed.findIndex(
+    (x2) => Array.isArray(x2) ? x2.some((x3) => x3 === node) : x2 === node
+  );
+  const chunk = indexed[index];
+  if (Array.isArray(chunk)) {
+    let sum = 0;
+    for (const x2 of chunk) {
+      if (x2 === node) {
+        sum += offset;
+        break;
+      } else
+        sum += x2.nodeValue.length;
+    }
+    offset = sum;
+  }
+  const part = { id: id2, index, offset };
+  return (parentNode !== node.ownerDocument.documentElement ? nodeToParts(parentNode, null, filter).concat(part) : [part]).filter((x2) => x2.index !== -1);
+};
+const toRange = (doc2, parts, filter) => {
+  const startParts = collapse(parts);
+  const endParts = collapse(parts, true);
+  const root = doc2.documentElement;
+  const start = partsToNode(root, startParts[0], filter);
+  const end = partsToNode(root, endParts[0], filter);
+  const range = doc2.createRange();
+  if (start.before)
+    range.setStartBefore(start.node);
+  else if (start.after)
+    range.setStartAfter(start.node);
+  else
+    range.setStart(start.node, start.offset);
+  if (end.before)
+    range.setEndBefore(end.node);
+  else if (end.after)
+    range.setEndAfter(end.node);
+  else
+    range.setEnd(end.node, end.offset);
+  return range;
+};
+const fromElements = (elements) => {
+  const results = [];
+  const { parentNode } = elements[0];
+  const parts = nodeToParts(parentNode);
+  for (const [index, node] of indexChildNodes(parentNode).entries()) {
+    const el = elements[results.length];
+    if (node === el)
+      results.push(toString([parts.concat({ id: el.id, index })]));
+  }
+  return results;
+};
+const toElement = (doc2, parts) => partsToNode(doc2.documentElement, collapse(parts)).node;
+const fake = {
+  fromIndex: (index) => wrap(`/6/${(index + 1) * 2}`),
+  toIndex: (parts) => parts?.at(-1).index / 2 - 1
+};
+const NS$1 = {
+  CONTAINER: "urn:oasis:names:tc:opendocument:xmlns:container",
+  XHTML: "http://www.w3.org/1999/xhtml",
+  OPF: "http://www.idpf.org/2007/opf",
+  EPUB: "http://www.idpf.org/2007/ops",
+  DC: "http://purl.org/dc/elements/1.1/",
+  DCTERMS: "http://purl.org/dc/terms/",
+  ENC: "http://www.w3.org/2001/04/xmlenc#",
+  NCX: "http://www.daisy.org/z3986/2005/ncx/",
+  XLINK: "http://www.w3.org/1999/xlink",
+  SMIL: "http://www.w3.org/ns/SMIL"
+};
+const MIME$2 = {
+  XML: "application/xml",
+  NCX: "application/x-dtbncx+xml",
+  XHTML: "application/xhtml+xml",
+  HTML: "text/html",
+  CSS: "text/css",
+  SVG: "image/svg+xml",
+  JS: /\/(x-)?(javascript|ecmascript)/
+};
+const camel = (x2) => x2.toLowerCase().replace(/[-:](.)/g, (_2, g2) => g2.toUpperCase());
+const normalizeWhitespace$1 = (str) => str ? str.replace(/[\t\n\f\r ]+/g, " ").replace(/^[\t\n\f\r ]+/, "").replace(/[\t\n\f\r ]+$/, "") : "";
+const filterAttribute = (attr, value, isList) => isList ? (el) => el.getAttribute(attr)?.split(/\s/)?.includes(value) : typeof value === "function" ? (el) => value(el.getAttribute(attr)) : (el) => el.getAttribute(attr) === value;
+const getAttributes = (...xs) => (el) => el ? Object.fromEntries(xs.map((x2) => [camel(x2), el.getAttribute(x2)])) : null;
+const getElementText$1 = (el) => normalizeWhitespace$1(el?.textContent);
+const childGetter = (doc2, ns) => {
+  const useNS = doc2.lookupNamespaceURI(null) === ns || doc2.lookupPrefix(ns);
+  const f2 = useNS ? (el, name) => (el2) => el2.namespaceURI === ns && el2.localName === name : (el, name) => (el2) => el2.localName === name;
+  return {
+    $: (el, name) => [...el.children].find(f2(el, name)),
+    $$: (el, name) => [...el.children].filter(f2(el, name)),
+    $$$: useNS ? (el, name) => [...el.getElementsByTagNameNS(ns, name)] : (el, name) => [...el.getElementsByTagName(name)]
+  };
+};
+const resolveURL = (url, relativeTo) => {
+  try {
+    if (relativeTo.includes(":"))
+      return new URL(url, relativeTo);
+    const root = "https://invalid.invalid/";
+    const obj = new URL(url, root + relativeTo);
+    obj.search = "";
+    return decodeURI(obj.href.replace(root, ""));
+  } catch (e2) {
+    console.warn(e2);
+    return url;
+  }
+};
+const isExternal$1 = (uri) => /^(?!blob)\w+:/i.test(uri);
+const pathRelative = (from2, to) => {
+  if (!from2)
+    return to;
+  const as = from2.replace(/\/$/, "").split("/");
+  const bs = to.replace(/\/$/, "").split("/");
+  const i2 = (as.length > bs.length ? as : bs).findIndex((_2, i3) => as[i3] !== bs[i3]);
+  return i2 < 0 ? "" : Array(as.length - i2).fill("..").concat(bs.slice(i2)).join("/");
+};
+const pathDirname = (str) => str.slice(0, str.lastIndexOf("/") + 1);
+const replaceSeries$1 = async (str, regex, f2) => {
+  const matches = [];
+  str.replace(regex, (...args) => (matches.push(args), null));
+  const results = [];
+  for (const args of matches)
+    results.push(await f2(...args));
+  return str.replace(regex, () => results.shift());
+};
+const regexEscape = (str) => str.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+const LANGS = { attrs: ["dir", "xml:lang"] };
+const ALTS = { name: "alternate-script", many: true, ...LANGS, props: ["file-as"] };
+const CONTRIB = {
+  many: true,
+  ...LANGS,
+  props: [{ name: "role", many: true, attrs: ["scheme"] }, "file-as", ALTS],
+  setLegacyAttrs: (obj, el) => {
+    if (!obj.role?.length) {
+      const value = el.getAttributeNS(NS$1.OPF, "role");
+      if (value)
+        obj.role = [{ value }];
+    }
+    obj.fileAs ??= el.getAttributeNS(NS$1.OPF, "file-as");
+  }
+};
+const METADATA = [
+  {
+    name: "title",
+    many: true,
+    ...LANGS,
+    props: ["title-type", "display-seq", "file-as", ALTS]
+  },
+  {
+    name: "identifier",
+    many: true,
+    props: [{ name: "identifier-type", attrs: ["scheme"] }],
+    setLegacyAttrs: (obj, el) => {
+      if (!obj.identifierType) {
+        const value = el.getAttributeNS(NS$1.OPF, "scheme");
+        if (value)
+          obj.identifierType = { value };
+      }
+    }
+  },
+  { name: "language", many: true },
+  { name: "creator", ...CONTRIB },
+  { name: "contributor", ...CONTRIB },
+  { name: "publisher", ...LANGS, props: ["file-as", ALTS] },
+  { name: "description", ...LANGS, props: [ALTS] },
+  { name: "rights", ...LANGS, props: [ALTS] },
+  { name: "date" },
+  { name: "dcterms:modified", type: "meta" },
+  {
+    name: "subject",
+    many: true,
+    ...LANGS,
+    props: ["term", "authority", ALTS],
+    setLegacyAttrs: (obj, el) => {
+      obj.term ??= el.getAttributeNS(NS$1.OPF, "term");
+      obj.authority ??= el.getAttributeNS(NS$1.OPF, "authority");
+    }
+  },
+  { name: "source", many: true },
+  {
+    name: "belongs-to-collection",
+    type: "meta",
+    many: true,
+    ...LANGS,
+    props: [
+      "collection-type",
+      "group-position",
+      "dcterms:identifier",
+      "file-as",
+      ALTS,
+      { name: "belongs-to-collection", recursive: true }
+    ]
+  }
+];
+const getMetadata = (opf) => {
+  const { $: $2, $$: $$2 } = childGetter(opf, NS$1.OPF);
+  const $metadata = $2(opf.documentElement, "metadata");
+  const els = Array.from($metadata.children);
+  const getValue2 = (obj, el) => {
+    if (!el)
+      return null;
+    const { props = [], attrs = [] } = obj;
+    const value = getElementText$1(el);
+    if (!props.length && !attrs.length)
+      return value;
+    const id2 = el.getAttribute("id");
+    const refines = id2 ? els.filter(filterAttribute("refines", "#" + id2)) : [];
+    const result = Object.fromEntries(
+      [["value", value]].concat(
+        props.map((prop) => {
+          const { many, recursive } = prop;
+          const name = typeof prop === "string" ? prop : prop.name;
+          const filter = filterAttribute("property", name);
+          const subobj = recursive ? obj : prop;
+          return [
+            camel(name),
+            many ? refines.filter(filter).map((el2) => getValue2(subobj, el2)) : getValue2(subobj, refines.find(filter))
+          ];
+        })
+      ).concat(attrs.map((attr) => [camel(attr), el.getAttribute(attr)]))
+    );
+    obj.setLegacyAttrs?.(result, el);
+    return result;
+  };
+  const arr = els.filter(filterAttribute("refines", null));
+  const metadata = Object.fromEntries(
+    METADATA.map((obj) => {
+      const { type, name, many } = obj;
+      const filter = type === "meta" ? (el) => el.namespaceURI === NS$1.OPF && el.getAttribute("property") === name : (el) => el.namespaceURI === NS$1.DC && el.localName === name;
+      return [
+        camel(name),
+        many ? arr.filter(filter).map((el) => getValue2(obj, el)) : getValue2(obj, arr.find(filter))
+      ];
+    })
+  );
+  const $$meta = $$2($metadata, "meta");
+  const getMetasByPrefix = (prefix) => $$meta.filter(filterAttribute("property", (x2) => x2?.startsWith(prefix))).map((el) => [el.getAttribute("property").replace(prefix, ""), el]);
+  const rendition = Object.fromEntries(
+    getMetasByPrefix("rendition:").map(([k2, el]) => [k2, getElementText$1(el)])
+  );
+  const media = { narrator: [], duration: {} };
+  for (const [k2, el] of getMetasByPrefix("media:")) {
+    const v2 = getElementText$1(el);
+    if (k2 === "duration")
+      media.duration[el.getAttribute("refines")?.split("#")?.[1] ?? ""] = parseClock(v2);
+    else if (k2 === "active-class")
+      media.activeClass = v2;
+    else if (k2 === "narrator")
+      media.narrator.push(v2);
+    else if (k2 === "playback-active-class")
+      media.playbackActiveClass = v2;
+  }
+  return { metadata, rendition, media };
+};
+const parseNav = (doc2, resolve2 = (f2) => f2) => {
+  const { $: $2, $$: $$2, $$$ } = childGetter(doc2, NS$1.XHTML);
+  const resolveHref = (href) => href ? decodeURI(resolve2(href)) : null;
+  const parseLI = (getType2) => ($li) => {
+    const $a = $2($li, "a") ?? $2($li, "span");
+    const $ol = $2($li, "ol");
+    const href = resolveHref($a?.getAttribute("href"));
+    const label = getElementText$1($a) || $a?.getAttribute("title");
+    const result = { label, href, subitems: parseOL($ol) };
+    if (getType2)
+      result.type = $a?.getAttributeNS(NS$1.EPUB, "type")?.split(/\s/);
+    return result;
+  };
+  const parseOL = ($ol, getType2) => $ol ? $$2($ol, "li").map(parseLI(getType2)) : null;
+  const parseNav2 = ($nav, getType2) => parseOL($2($nav, "ol"), getType2);
+  const $$nav = $$$(doc2, "nav");
+  let toc = null, pageList = null, landmarks = null, others = [];
+  for (const $nav of $$nav) {
+    const type = $nav.getAttributeNS(NS$1.EPUB, "type")?.split(/\s/) ?? [];
+    if (type.includes("toc"))
+      toc ??= parseNav2($nav);
+    else if (type.includes("page-list"))
+      pageList ??= parseNav2($nav);
+    else if (type.includes("landmarks"))
+      landmarks ??= parseNav2($nav, true);
+    else
+      others.push({
+        label: getElementText$1($nav.firstElementChild),
+        type,
+        list: parseNav2($nav)
+      });
+  }
+  return { toc, pageList, landmarks, others };
+};
+const parseNCX = (doc2, resolve2 = (f2) => f2) => {
+  const { $: $2, $$: $$2 } = childGetter(doc2, NS$1.NCX);
+  const resolveHref = (href) => href ? decodeURI(resolve2(href)) : null;
+  const parseItem = (el) => {
+    const $label = $2(el, "navLabel");
+    const $content = $2(el, "content");
+    const label = getElementText$1($label);
+    const href = resolveHref($content.getAttribute("src"));
+    if (el.localName === "navPoint") {
+      const els = $$2(el, "navPoint");
+      return { label, href, subitems: els.length ? els.map(parseItem) : null };
+    }
+    return { label, href };
+  };
+  const parseList = (el, itemName) => $$2(el, itemName).map(parseItem);
+  const getSingle = (container, itemName) => {
+    const $container = $2(doc2.documentElement, container);
+    return $container ? parseList($container, itemName) : null;
+  };
+  return {
+    toc: getSingle("navMap", "navPoint"),
+    pageList: getSingle("pageList", "pageTarget"),
+    others: $$2(doc2.documentElement, "navList").map((el) => ({
+      label: getElementText$1($2(el, "navLabel")),
+      list: parseList(el, "navTarget")
+    }))
+  };
+};
+const parseClock = (str) => {
+  if (!str)
+    return;
+  const parts = str.split(":").map((x3) => parseFloat(x3));
+  if (parts.length === 3) {
+    const [h2, m2, s] = parts;
+    return h2 * 60 * 60 + m2 * 60 + s;
+  }
+  if (parts.length === 2) {
+    const [m2, s] = parts;
+    return m2 * 60 + s;
+  }
+  const [x2, unit] = str.split(/(?=[^\d.])/);
+  const n2 = parseFloat(x2);
+  const f2 = unit === "h" ? 60 * 60 : unit === "min" ? 60 : unit === "ms" ? 1e-3 : 1;
+  return n2 * f2;
+};
+class MediaOverlay2 extends EventTarget {
+  #entries;
+  #lastMediaOverlayItem;
+  #sectionIndex;
+  #audioIndex;
+  #itemIndex;
+  #audio;
+  #volume = 1;
+  #rate = 1;
+  constructor(book2, loadXML) {
+    super();
+    this.book = book2;
+    this.loadXML = loadXML;
+  }
+  async #loadSMIL(item) {
+    if (this.#lastMediaOverlayItem === item)
+      return;
+    const doc2 = await this.loadXML(item.href);
+    const resolve2 = (href) => href ? resolveURL(href, item.href) : null;
+    const { $: $2, $$$ } = childGetter(doc2, NS$1.SMIL);
+    this.#audioIndex = -1;
+    this.#itemIndex = -1;
+    this.#entries = $$$(doc2, "par").reduce((arr, $par) => {
+      const text = resolve2($2($par, "text")?.getAttribute("src"));
+      const $audio = $2($par, "audio");
+      if (!text || !$audio)
+        return arr;
+      const src = resolve2($audio.getAttribute("src"));
+      const begin = parseClock($audio.getAttribute("clipBegin"));
+      const end = parseClock($audio.getAttribute("clipEnd"));
+      const last2 = arr.at(-1);
+      if (last2?.src === src)
+        last2.items.push({ text, begin, end });
+      else
+        arr.push({ src, items: [{ text, begin, end }] });
+      return arr;
+    }, []);
+    this.#lastMediaOverlayItem = item;
+  }
+  get #activeAudio() {
+    return this.#entries[this.#audioIndex];
+  }
+  get #activeItem() {
+    return this.#activeAudio?.items?.[this.#itemIndex];
+  }
+  #error(e2) {
+    console.error(e2);
+    this.dispatchEvent(new CustomEvent("error", { detail: e2 }));
+  }
+  #highlight() {
+    this.dispatchEvent(new CustomEvent("highlight", { detail: this.#activeItem }));
+  }
+  #unhighlight() {
+    this.dispatchEvent(new CustomEvent("unhighlight", { detail: this.#activeItem }));
+  }
+  async #play(audioIndex, itemIndex) {
+    if (this.#audio) {
+      this.#audio.pause();
+      URL.revokeObjectURL(this.#audio.src);
+      this.#audio = null;
+    }
+    this.#audioIndex = audioIndex;
+    this.#itemIndex = itemIndex;
+    const src = this.#activeAudio?.src;
+    if (!src || !this.#activeItem)
+      return this.start(this.#sectionIndex + 1);
+    const url = URL.createObjectURL(await this.book.loadBlob(src));
+    const audio = new Audio(url);
+    this.#audio = audio;
+    audio.addEventListener("timeupdate", () => {
+      if (audio.paused)
+        return;
+      const t2 = audio.currentTime;
+      const { items } = this.#activeAudio;
+      if (t2 > this.#activeItem?.end) {
+        this.#unhighlight();
+        if (this.#itemIndex === items.length - 1) {
+          this.#play(this.#audioIndex + 1, 0).catch((e2) => this.#error(e2));
+          return;
+        }
+      }
+      const oldIndex = this.#itemIndex;
+      while (items[this.#itemIndex + 1]?.begin <= t2)
+        this.#itemIndex++;
+      if (this.#itemIndex !== oldIndex)
+        this.#highlight();
+    });
+    audio.addEventListener("error", () => this.#error(new Error(`Failed to load ${src}`)));
+    audio.addEventListener("playing", () => this.#highlight());
+    audio.addEventListener("pause", () => this.#unhighlight());
+    audio.addEventListener("ended", () => {
+      this.#unhighlight();
+      URL.revokeObjectURL(url);
+      this.#audio = null;
+      this.#play(audioIndex + 1, 0).catch((e2) => this.#error(e2));
+    });
+    audio.addEventListener("canplaythrough", () => {
+      audio.currentTime = this.#activeItem.begin ?? 0;
+      audio.volume = this.#volume;
+      audio.playbackRate = this.#rate;
+      audio.play().catch((e2) => this.#error(e2));
+    });
+  }
+  async start(sectionIndex, filter = () => true) {
+    this.#audio?.pause();
+    const section = this.book.sections[sectionIndex];
+    const href = section?.id;
+    if (!href)
+      return;
+    const { mediaOverlay } = section;
+    if (!mediaOverlay)
+      return this.start(sectionIndex + 1);
+    this.#sectionIndex = sectionIndex;
+    await this.#loadSMIL(mediaOverlay);
+    for (let i2 = 0; i2 < this.#entries.length; i2++) {
+      const { items } = this.#entries[i2];
+      for (let j = 0; j < items.length; j++) {
+        if (items[j].text.split("#")[0] === href && filter(items[j], j, items))
+          return this.#play(i2, j).catch((e2) => this.#error(e2));
+      }
+    }
+  }
+  pause() {
+    this.#audio?.pause();
+  }
+  resume() {
+    this.#audio?.play().catch((e2) => this.#error(e2));
+  }
+  prev() {
+    if (this.#itemIndex > 0)
+      this.#play(this.#audioIndex, this.#itemIndex - 1);
+    else if (this.#audioIndex > 0)
+      this.#play(this.#audioIndex - 1, this.#entries[this.#audioIndex - 1].items.length - 1);
+    else if (this.#sectionIndex > 0)
+      this.start(this.#sectionIndex - 1, (_2, i2, items) => i2 === items.length - 1);
+  }
+  next() {
+    this.#play(this.#audioIndex, this.#itemIndex + 1);
+  }
+  setVolume(volume) {
+    this.#volume = volume;
+    if (this.#audio)
+      this.#audio.volume = volume;
+  }
+  setRate(rate) {
+    this.#rate = rate;
+    if (this.#audio)
+      this.#audio.playbackRate = rate;
+  }
+}
+const isUUID = /([0-9a-f]{8})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{12})/;
+const getUUID = (opf) => {
+  for (const el of opf.getElementsByTagNameNS(NS$1.DC, "identifier")) {
+    const [id2] = getElementText$1(el).split(":").slice(-1);
+    if (isUUID.test(id2))
+      return id2;
+  }
+  return "";
+};
+const getIdentifier = (opf) => getElementText$1(
+  opf.getElementById(opf.documentElement.getAttribute("unique-identifier")) ?? opf.getElementsByTagNameNS(NS$1.DC, "identifier")[0]
+);
+const deobfuscate = async (key, length, blob) => {
+  const array = new Uint8Array(await blob.slice(0, length).arrayBuffer());
+  length = Math.min(length, array.length);
+  for (var i2 = 0; i2 < length; i2++)
+    array[i2] = array[i2] ^ key[i2 % key.length];
+  return new Blob([array, blob.slice(length)], { type: blob.type });
+};
+const WebCryptoSHA1 = async (str) => {
+  const data2 = new TextEncoder().encode(str);
+  const buffer = await globalThis.crypto.subtle.digest("SHA-1", data2);
+  return new Uint8Array(buffer);
+};
+const deobfuscators = (sha1 = WebCryptoSHA1) => ({
+  "http://www.idpf.org/2008/embedding": {
+    key: (opf) => sha1(
+      getIdentifier(opf).replaceAll(/[\u0020\u0009\u000d\u000a]/g, "")
+    ),
+    decode: (key, blob) => deobfuscate(key, 1040, blob)
+  },
+  "http://ns.adobe.com/pdf/enc#RC": {
+    key: (opf) => {
+      const uuid = getUUID(opf).replaceAll("-", "");
+      return Uint8Array.from({ length: 16 }, (_2, i2) => parseInt(uuid.slice(i2 * 2, i2 * 2 + 2), 16));
+    },
+    decode: (key, blob) => deobfuscate(key, 1024, blob)
+  }
+});
+class Encryption2 {
+  #uris = /* @__PURE__ */ new Map();
+  #decoders = /* @__PURE__ */ new Map();
+  #algorithms;
+  constructor(algorithms) {
+    this.#algorithms = algorithms;
+  }
+  async init(encryption, opf) {
+    if (!encryption)
+      return;
+    const data2 = Array.from(encryption.getElementsByTagNameNS(NS$1.ENC, "EncryptedData"), (el) => ({
+      algorithm: el.getElementsByTagNameNS(NS$1.ENC, "EncryptionMethod")[0]?.getAttribute("Algorithm"),
+      uri: el.getElementsByTagNameNS(NS$1.ENC, "CipherReference")[0]?.getAttribute("URI")
+    }));
+    for (const { algorithm, uri } of data2) {
+      if (!this.#decoders.has(algorithm)) {
+        const algo = this.#algorithms[algorithm];
+        if (!algo) {
+          console.warn("Unknown encryption algorithm");
+          continue;
+        }
+        const key = await algo.key(opf);
+        this.#decoders.set(algorithm, (blob) => algo.decode(key, blob));
+      }
+      this.#uris.set(uri, algorithm);
+    }
+  }
+  getDecoder(uri) {
+    return this.#decoders.get(this.#uris.get(uri)) ?? ((x2) => x2);
+  }
+}
+class Resources2 {
+  constructor({ opf, resolveHref }) {
+    this.opf = opf;
+    const { $: $2, $$: $$2, $$$ } = childGetter(opf, NS$1.OPF);
+    const $manifest = $2(opf.documentElement, "manifest");
+    const $spine = $2(opf.documentElement, "spine");
+    const $$itemref = $$2($spine, "itemref");
+    this.manifest = $$2($manifest, "item").map(getAttributes("href", "id", "media-type", "properties", "media-overlay")).map((item) => {
+      item.href = resolveHref(item.href);
+      item.properties = item.properties?.split(/\s/);
+      return item;
+    });
+    this.spine = $$itemref.map(getAttributes("idref", "id", "linear", "properties")).map((item) => (item.properties = item.properties?.split(/\s/), item));
+    this.pageProgressionDirection = $spine.getAttribute("page-progression-direction");
+    this.navPath = this.getItemByProperty("nav")?.href;
+    this.ncxPath = (this.getItemByID($spine.getAttribute("toc")) ?? this.manifest.find((item) => item.mediaType === MIME$2.NCX))?.href;
+    const $guide = $2(opf.documentElement, "guide");
+    if ($guide)
+      this.guide = $$2($guide, "reference").map(getAttributes("type", "title", "href")).map(({ type, title, href }) => ({
+        label: title,
+        type: type.split(/\s/),
+        href: resolveHref(href)
+      }));
+    this.cover = this.getItemByProperty("cover-image") ?? // EPUB 2 compat
+    this.getItemByID(
+      $$$(opf, "meta").find(filterAttribute("name", "cover"))?.getAttribute("content")
+    ) ?? this.getItemByHref(this.guide?.find((ref2) => ref2.type.includes("cover"))?.href);
+    this.cfis = fromElements($$itemref);
+  }
+  getItemByID(id2) {
+    return this.manifest.find((item) => item.id === id2);
+  }
+  getItemByHref(href) {
+    return this.manifest.find((item) => item.href === href);
+  }
+  getItemByProperty(prop) {
+    return this.manifest.find((item) => item.properties?.includes(prop));
+  }
+  resolveCFI(cfi) {
+    const parts = parse(cfi);
+    const top = (parts.parent ?? parts).shift();
+    let $itemref = toElement(this.opf, top);
+    if ($itemref && $itemref.nodeName !== "idref") {
+      top.at(-1).id = null;
+      $itemref = toElement(this.opf, top);
+    }
+    const idref = $itemref?.getAttribute("idref");
+    const index = this.spine.findIndex((item) => item.idref === idref);
+    const anchor = (doc2) => toRange(doc2, parts);
+    return { index, anchor };
+  }
+}
+class Loader2 {
+  #cache = /* @__PURE__ */ new Map();
+  #children = /* @__PURE__ */ new Map();
+  #refCount = /* @__PURE__ */ new Map();
+  allowScript = false;
+  constructor({ loadText, loadBlob, resources }) {
+    this.loadText = loadText;
+    this.loadBlob = loadBlob;
+    this.manifest = resources.manifest;
+    this.assets = resources.manifest;
+  }
+  createURL(href, data2, type, parent) {
+    if (!data2)
+      return "";
+    const url = URL.createObjectURL(new Blob([data2], { type }));
+    this.#cache.set(href, url);
+    this.#refCount.set(href, 1);
+    if (parent) {
+      const childList = this.#children.get(parent);
+      if (childList)
+        childList.push(href);
+      else
+        this.#children.set(parent, [href]);
+    }
+    return url;
+  }
+  ref(href, parent) {
+    const childList = this.#children.get(parent);
+    if (!childList?.includes(href)) {
+      this.#refCount.set(href, this.#refCount.get(href) + 1);
+      if (childList)
+        childList.push(href);
+      else
+        this.#children.set(parent, [href]);
+    }
+    return this.#cache.get(href);
+  }
+  unref(href) {
+    if (!this.#refCount.has(href))
+      return;
+    const count = this.#refCount.get(href) - 1;
+    if (count < 1) {
+      URL.revokeObjectURL(this.#cache.get(href));
+      this.#cache.delete(href);
+      this.#refCount.delete(href);
+      const childList = this.#children.get(href);
+      if (childList)
+        while (childList.length)
+          this.unref(childList.pop());
+      this.#children.delete(href);
+    } else
+      this.#refCount.set(href, count);
+  }
+  // load manifest item, recursively loading all resources as needed
+  async loadItem(item, parents = []) {
+    if (!item)
+      return null;
+    const { href, mediaType } = item;
+    const isScript = MIME$2.JS.test(item.mediaType);
+    if (isScript && !this.allowScript)
+      return null;
+    const parent = parents.at(-1);
+    if (this.#cache.has(href))
+      return this.ref(href, parent);
+    const shouldReplace = (isScript || [MIME$2.XHTML, MIME$2.HTML, MIME$2.CSS, MIME$2.SVG].includes(mediaType)) && // prevent circular references
+    parents.every((p2) => p2 !== href);
+    if (shouldReplace)
+      return this.loadReplaced(item, parents);
+    return this.createURL(href, await this.loadBlob(href), mediaType, parent);
+  }
+  async loadHref(href, base, parents = []) {
+    if (isExternal$1(href))
+      return href;
+    const path = resolveURL(href, base);
+    const item = this.manifest.find((item2) => item2.href === path);
+    if (!item)
+      return href;
+    return this.loadItem(item, parents.concat(base));
+  }
+  async loadReplaced(item, parents = []) {
+    const { href, mediaType } = item;
+    const parent = parents.at(-1);
+    const str = await this.loadText(href);
+    if (!str)
+      return null;
+    if ([MIME$2.XHTML, MIME$2.HTML, MIME$2.SVG].includes(mediaType)) {
+      let doc2 = new DOMParser().parseFromString(str, mediaType);
+      if (mediaType === MIME$2.XHTML && doc2.querySelector("parsererror")) {
+        console.warn(doc2.querySelector("parsererror").innerText);
+        item.mediaType = MIME$2.HTML;
+        doc2 = new DOMParser().parseFromString(str, item.mediaType);
+      }
+      if ([MIME$2.XHTML, MIME$2.SVG].includes(item.mediaType)) {
+        let child = doc2.firstChild;
+        while (child instanceof ProcessingInstruction) {
+          if (child.data) {
+            const replacedData = await replaceSeries$1(
+              child.data,
+              /(?:^|\s*)(href\s*=\s*['"])([^'"]*)(['"])/i,
+              (_2, p1, p2, p3) => this.loadHref(p2, href, parents).then((p22) => `${p1}${p22}${p3}`)
+            );
+            child.replaceWith(doc2.createProcessingInstruction(child.target, replacedData));
+          }
+          child = child.nextSibling;
+        }
+      }
+      const replace = async (el, attr) => el.setAttribute(attr, await this.loadHref(el.getAttribute(attr), href, parents));
+      for (const el of doc2.querySelectorAll("link[href]"))
+        await replace(el, "href");
+      for (const el of doc2.querySelectorAll("[src]"))
+        await replace(el, "src");
+      for (const el of doc2.querySelectorAll("[poster]"))
+        await replace(el, "poster");
+      for (const el of doc2.querySelectorAll("object[data]"))
+        await replace(el, "data");
+      for (const el of doc2.querySelectorAll("[*|href]:not([href]"))
+        el.setAttributeNS(
+          NS$1.XLINK,
+          "href",
+          await this.loadHref(el.getAttributeNS(NS$1.XLINK, "href"), href, parents)
+        );
+      for (const el of doc2.querySelectorAll("style"))
+        if (el.textContent)
+          el.textContent = await this.replaceCSS(el.textContent, href, parents);
+      for (const el of doc2.querySelectorAll("[style]"))
+        el.setAttribute("style", await this.replaceCSS(el.getAttribute("style"), href, parents));
+      const result2 = new XMLSerializer().serializeToString(doc2);
+      return this.createURL(href, result2, item.mediaType, parent);
+    }
+    const result = mediaType === MIME$2.CSS ? await this.replaceCSS(str, href, parents) : await this.replaceString(str, href, parents);
+    return this.createURL(href, result, mediaType, parent);
+  }
+  async replaceCSS(str, href, parents = []) {
+    const replacedUrls = await replaceSeries$1(
+      str,
+      /url\(\s*["']?([^'"\n]*?)\s*["']?\s*\)/gi,
+      (_2, url) => this.loadHref(url, href, parents).then((url2) => `url("${url2}")`)
+    );
+    const replacedImports = await replaceSeries$1(
+      replacedUrls,
+      /@import\s*["']([^"'\n]*?)["']/gi,
+      (_2, url) => this.loadHref(url, href, parents).then((url2) => `@import "${url2}"`)
+    );
+    const w2 = window?.innerWidth ?? 800;
+    const h2 = window?.innerHeight ?? 600;
+    return replacedImports.replace(/(?<=[{\s;])-epub-/gi, "").replace(/(\d*\.?\d+)vw/gi, (_2, d) => parseFloat(d) * w2 / 100 + "px").replace(/(\d*\.?\d+)vh/gi, (_2, d) => parseFloat(d) * h2 / 100 + "px").replace(/page-break-(after|before|inside)\s*:/gi, (_2, x2) => `-webkit-column-break-${x2}:`).replace(
+      /break-(after|before|inside)\s*:\s*(avoid-)?page/gi,
+      (_2, x2, y2) => `break-${x2}: ${y2 ?? ""}column`
+    );
+  }
+  // find & replace all possible relative paths for all assets without parsing
+  replaceString(str, href, parents = []) {
+    const assetMap = /* @__PURE__ */ new Map();
+    const urls = this.assets.map((asset) => {
+      if (asset.href === href)
+        return;
+      const relative = pathRelative(pathDirname(href), asset.href);
+      const relativeEnc = encodeURI(relative);
+      const rootRelative = "/" + asset.href;
+      const rootRelativeEnc = encodeURI(rootRelative);
+      const set2 = /* @__PURE__ */ new Set([relative, relativeEnc, rootRelative, rootRelativeEnc]);
+      for (const url of set2)
+        assetMap.set(url, asset);
+      return Array.from(set2);
+    }).flat().filter((x2) => x2);
+    if (!urls.length)
+      return str;
+    const regex = new RegExp(urls.map(regexEscape).join("|"), "g");
+    return replaceSeries$1(
+      str,
+      regex,
+      async (match2) => this.loadItem(assetMap.get(match2.replace(/^\//, "")), parents.concat(href))
+    );
+  }
+  unloadItem(item) {
+    this.unref(item?.href);
+  }
+  destroy() {
+    for (const url of this.#cache.values())
+      URL.revokeObjectURL(url);
+  }
+}
+const getHTMLFragment = (doc2, id2) => doc2.getElementById(id2) ?? doc2.querySelector(`[name="${CSS.escape(id2)}"]`);
+const getPageSpread$1 = (properties) => {
+  for (const p2 of properties) {
+    if (p2 === "page-spread-left" || p2 === "rendition:page-spread-left")
+      return "left";
+    if (p2 === "page-spread-right" || p2 === "rendition:page-spread-right")
+      return "right";
+    if (p2 === "rendition:page-spread-center")
+      return "center";
+  }
+};
+class EPUB2 {
+  parser = new DOMParser();
+  #loader;
+  #encryption;
+  constructor({ loadText, loadBlob, getSize, sha1 }) {
+    this.loadText = loadText;
+    this.loadBlob = loadBlob;
+    this.getSize = getSize;
+    this.#encryption = new Encryption2(deobfuscators(sha1));
+  }
+  async #loadXML(uri) {
+    const str = await this.loadText(uri);
+    if (!str)
+      return null;
+    const doc2 = this.parser.parseFromString(str, MIME$2.XML);
+    if (doc2.querySelector("parsererror"))
+      throw new Error(`XML parsing error: ${uri}
+${doc2.querySelector("parsererror").innerText}`);
+    return doc2;
+  }
+  async init() {
+    const $container = await this.#loadXML("META-INF/container.xml");
+    if (!$container)
+      throw new Error("Failed to load container file");
+    const opfs = Array.from(
+      $container.getElementsByTagNameNS(NS$1.CONTAINER, "rootfile"),
+      getAttributes("full-path", "media-type")
+    ).filter((file2) => file2.mediaType === "application/oebps-package+xml");
+    if (!opfs.length)
+      throw new Error("No package document defined in container");
+    const opfPath = opfs[0].fullPath;
+    const opf = await this.#loadXML(opfPath);
+    if (!opf)
+      throw new Error("Failed to load package document");
+    const $encryption = await this.#loadXML("META-INF/encryption.xml");
+    await this.#encryption.init($encryption, opf);
+    this.resources = new Resources2({
+      opf,
+      resolveHref: (url) => resolveURL(url, opfPath)
+    });
+    this.#loader = new Loader2({
+      loadText: this.loadText,
+      loadBlob: (uri) => Promise.resolve(this.loadBlob(uri)).then(this.#encryption.getDecoder(uri)),
+      resources: this.resources
+    });
+    this.sections = this.resources.spine.map((spineItem, index) => {
+      const { idref, linear, properties = [] } = spineItem;
+      const item = this.resources.getItemByID(idref);
+      if (!item) {
+        console.warn(`Could not find item with ID "${idref}" in manifest`);
+        return null;
+      }
+      return {
+        id: item.href,
+        load: () => this.#loader.loadItem(item),
+        unload: () => this.#loader.unloadItem(item),
+        createDocument: () => this.loadDocument(item),
+        size: this.getSize(item.href),
+        cfi: this.resources.cfis[index],
+        linear,
+        pageSpread: getPageSpread$1(properties),
+        resolveHref: (href) => resolveURL(href, item.href),
+        mediaOverlay: item.mediaOverlay ? this.resources.getItemByID(item.mediaOverlay) : null
+      };
+    }).filter((s) => s);
+    const { navPath, ncxPath } = this.resources;
+    if (navPath)
+      try {
+        const resolve2 = (url) => resolveURL(url, navPath);
+        const nav = parseNav(await this.#loadXML(navPath), resolve2);
+        this.toc = nav.toc;
+        this.pageList = nav.pageList;
+        this.landmarks = nav.landmarks;
+      } catch (e2) {
+        console.warn(e2);
+      }
+    if (!this.toc && ncxPath)
+      try {
+        const resolve2 = (url) => resolveURL(url, ncxPath);
+        const ncx = parseNCX(await this.#loadXML(ncxPath), resolve2);
+        this.toc = ncx.toc;
+        this.pageList = ncx.pageList;
+      } catch (e2) {
+        console.warn(e2);
+      }
+    this.landmarks ??= this.resources.guide;
+    const { metadata, rendition, media } = getMetadata(opf);
+    this.rendition = rendition;
+    this.media = media;
+    this.dir = this.resources.pageProgressionDirection;
+    this.parsedMetadata = metadata;
+    const title = metadata?.title?.[0];
+    this.metadata = {
+      title: title?.value,
+      subtitle: metadata?.title?.find((x2) => x2.titleType === "subtitle")?.value,
+      sortAs: title?.fileAs,
+      language: metadata?.language,
+      identifier: getIdentifier(opf),
+      description: metadata?.description?.value,
+      publisher: metadata?.publisher?.value,
+      published: metadata?.date,
+      modified: metadata?.dctermsModified,
+      subject: metadata?.subject?.filter(({ value, term }) => value || term)?.map(({ value, term, authority }) => ({ name: value, code: term, scheme: authority })),
+      rights: metadata?.rights?.value
+    };
+    const relators = {
+      art: "artist",
+      aut: "author",
+      bkp: "producer",
+      clr: "colorist",
+      edt: "editor",
+      ill: "illustrator",
+      nrt: "narrator",
+      trl: "translator",
+      pbl: "publisher"
+    };
+    const mapContributor = (defaultKey) => (obj) => {
+      const keys = [
+        ...new Set(
+          obj.role?.map(
+            ({ value: value2, scheme }) => (!scheme || scheme === "marc:relators" ? relators[value2] : null) ?? defaultKey
+          )
+        )
+      ];
+      const value = { name: obj.value, sortAs: obj.fileAs };
+      return [keys?.length ? keys : [defaultKey], value];
+    };
+    metadata?.creator?.map(mapContributor("author"))?.concat(metadata?.contributor?.map?.(mapContributor("contributor")))?.forEach(
+      ([keys, value]) => keys.forEach((key) => {
+        if (this.metadata[key])
+          this.metadata[key].push(value);
+        else
+          this.metadata[key] = [value];
+      })
+    );
+    return this;
+  }
+  async loadDocument(item) {
+    const str = await this.loadText(item.href);
+    return this.parser.parseFromString(str, item.mediaType);
+  }
+  getMediaOverlay() {
+    return new MediaOverlay2(this, this.#loadXML.bind(this));
+  }
+  resolveCFI(cfi) {
+    return this.resources.resolveCFI(cfi);
+  }
+  resolveHref(href) {
+    const [path, hash] = href.split("#");
+    const item = this.resources.getItemByHref(decodeURI(path));
+    if (!item)
+      return null;
+    const index = this.resources.spine.findIndex(({ idref }) => idref === item.id);
+    const anchor = hash ? (doc2) => getHTMLFragment(doc2, hash) : () => 0;
+    return { index, anchor };
+  }
+  splitTOCHref(href) {
+    return href?.split("#") ?? [];
+  }
+  getTOCFragment(doc2, id2) {
+    return doc2.getElementById(id2) ?? doc2.querySelector(`[name="${CSS.escape(id2)}"]`);
+  }
+  isExternal(uri) {
+    return isExternal$1(uri);
+  }
+  async getCover() {
+    const cover = this.resources?.cover;
+    return cover?.href ? new Blob([await this.loadBlob(cover.href)], { type: cover.mediaType }) : null;
+  }
+  async getCalibreBookmarks() {
+    const txt = await this.loadText("META-INF/calibre_bookmarks.txt");
+    const magic = "encoding=json+base64:";
+    if (txt?.startsWith(magic)) {
+      const json = atob(txt.slice(magic.length));
+      return JSON.parse(json);
+    }
+  }
+  destroy() {
+    this.#loader?.destroy();
+  }
+}
+const normalizeWhitespace = (str) => str ? str.replace(/[\t\n\f\r ]+/g, " ").replace(/^[\t\n\f\r ]+/, "").replace(/[\t\n\f\r ]+$/, "") : "";
+const getElementText = (el) => normalizeWhitespace(el?.textContent);
+const NS = {
+  XLINK: "http://www.w3.org/1999/xlink",
+  EPUB: "http://www.idpf.org/2007/ops"
+};
+const MIME$1 = {
+  XML: "application/xml",
+  XHTML: "application/xhtml+xml"
+};
+const STYLE = {
+  strong: ["strong", "self"],
+  emphasis: ["em", "self"],
+  style: ["span", "self"],
+  a: "anchor",
+  strikethrough: ["s", "self"],
+  sub: ["sub", "self"],
+  sup: ["sup", "self"],
+  code: ["code", "self"],
+  image: "image"
+};
+const TABLE = {
+  tr: ["tr", ["align"]],
+  th: ["th", ["colspan", "rowspan", "align", "valign"]],
+  td: ["td", ["colspan", "rowspan", "align", "valign"]]
+};
+const POEM = {
+  epigraph: ["blockquote"],
+  subtitle: ["h2", STYLE],
+  "text-author": ["p", STYLE],
+  date: ["p", STYLE],
+  stanza: "stanza"
+};
+const SECTION = {
+  title: [
+    "header",
+    {
+      p: ["h1", STYLE],
+      "empty-line": ["br"]
+    }
+  ],
+  epigraph: ["blockquote", "self"],
+  image: "image",
+  annotation: ["aside"],
+  section: ["section", "self"],
+  p: ["p", STYLE],
+  poem: ["blockquote", POEM],
+  subtitle: ["h2", STYLE],
+  cite: ["blockquote", "self"],
+  "empty-line": ["br"],
+  table: ["table", TABLE],
+  "text-author": ["p", STYLE]
+};
+POEM["epigraph"].push(SECTION);
+const BODY = {
+  image: "image",
+  title: [
+    "section",
+    {
+      p: ["h1", STYLE],
+      "empty-line": ["br"]
+    }
+  ],
+  epigraph: ["section", SECTION],
+  section: ["section", SECTION]
+};
+const getImageSrc = (el) => {
+  const href = el.getAttributeNS(NS.XLINK, "href");
+  const [, id2] = href.split("#");
+  const bin = el.getRootNode().getElementById(id2);
+  return bin ? `data:${bin.getAttribute("content-type")};base64,${bin.textContent}` : href;
+};
+class FB2Converter2 {
+  constructor(fb2) {
+    this.fb2 = fb2;
+    this.doc = document.implementation.createDocument(NS.XHTML, "html");
+  }
+  image(node) {
+    const el = this.doc.createElement("img");
+    el.alt = node.getAttribute("alt");
+    el.title = node.getAttribute("title");
+    el.setAttribute("src", getImageSrc(node));
+    return el;
+  }
+  anchor(node) {
+    const el = this.convert(node, { a: ["a", STYLE] });
+    el.setAttribute("href", node.getAttributeNS(NS.XLINK, "href"));
+    if (node.getAttribute("type") === "note")
+      el.setAttributeNS(NS.EPUB, "epub:type", "noteref");
+    return el;
+  }
+  stanza(node) {
+    const el = this.convert(node, {
+      stanza: [
+        "p",
+        {
+          title: [
+            "header",
+            {
+              p: ["strong", STYLE],
+              "empty-line": ["br"]
+            }
+          ],
+          subtitle: ["p", STYLE]
+        }
+      ]
+    });
+    for (const child of node.children)
+      if (child.nodeName === "v") {
+        el.append(this.doc.createTextNode(child.textContent));
+        el.append(this.doc.createElement("br"));
+      }
+    return el;
+  }
+  convert(node, def2) {
+    if (node.nodeType === 3)
+      return this.doc.createTextNode(node.textContent);
+    if (node.nodeType === 4)
+      return this.doc.createCDATASection(node.textContent);
+    if (node.nodeType === 8)
+      return this.doc.createComment(node.textContent);
+    const d = def2?.[node.nodeName];
+    if (!d)
+      return null;
+    if (typeof d === "string")
+      return this[d](node);
+    const [name, opts] = d;
+    const el = this.doc.createElement(name);
+    if (node.id)
+      el.id = node.id;
+    el.classList.add(node.nodeName);
+    if (Array.isArray(opts))
+      for (const attr of opts)
+        el.setAttribute(attr, node.getAttribute(attr));
+    const childDef = opts === "self" ? def2 : Array.isArray(opts) ? null : opts;
+    let child = node.firstChild;
+    while (child) {
+      const childEl = this.convert(child, childDef);
+      if (childEl)
+        el.append(childEl);
+      child = child.nextSibling;
+    }
+    return el;
+  }
+}
+const parseXML = async (blob) => {
+  const buffer = await blob.arrayBuffer();
+  const str = new TextDecoder("utf-8").decode(buffer);
+  const parser2 = new DOMParser();
+  const doc2 = parser2.parseFromString(str, MIME$1.XML);
+  const encoding = doc2.xmlEncoding || // `Document.xmlEncoding` is deprecated, and already removed in Firefox
+  // so parse the XML declaration manually
+  str.match(/^<\?xml\s+version\s*=\s*["']1.\d+"\s+encoding\s*=\s*["']([A-Za-z0-9._-]*)["']/)?.[1];
+  if (encoding && encoding.toLowerCase() !== "utf-8") {
+    const str2 = new TextDecoder(encoding).decode(buffer);
+    return parser2.parseFromString(str2, MIME$1.XML);
+  }
+  return doc2;
+};
+const style = URL.createObjectURL(
+  new Blob(
+    [
+      `
+@namespace epub "http://www.idpf.org/2007/ops";
+body > img, section > img {
+    display: block;
+    margin: auto;
+}
+.title h1 {
+    text-align: center;
+}
+body > section > .title, body.notesBodyType > .title {
+    margin: 3em 0;
+}
+body.notesBodyType > section .title h1 {
+    text-align: start;
+}
+body.notesBodyType > section .title {
+    margin: 1em 0;
+}
+p {
+    text-indent: 1em;
+    margin: 0;
+}
+:not(p) + p, p:first-child {
+    text-indent: 0;
+}
+.poem p {
+    text-indent: 0;
+    margin: 1em 0;
+}
+.text-author, .date {
+    text-align: end;
+}
+.text-author:before {
+    content: "—";
+}
+table {
+    border-collapse: collapse;
+}
+td, th {
+    padding: .25em;
+}
+a[epub|type~="noteref"] {
+    font-size: .75em;
+    vertical-align: super;
+}
+body:not(.notesBodyType) > .title, body:not(.notesBodyType) > .epigraph {
+    margin: 3em 0;
+}
+`
+    ],
+    { type: "text/css" }
+  )
+);
+const template = (html) => `<?xml version="1.0" encoding="utf-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head><link href="${style}" rel="stylesheet" type="text/css"/></head>
+    <body>${html}</body>
+</html>`;
+const dataID = "data-foliate-id";
+const makeFB2 = async (blob) => {
+  const book2 = {};
+  const doc2 = await parseXML(blob);
+  const converter = new FB2Converter2(doc2);
+  const $2 = (x2) => doc2.querySelector(x2);
+  const $$2 = (x2) => [...doc2.querySelectorAll(x2)];
+  const getPerson = (el) => {
+    const nick = getElementText(el.querySelector("nickname"));
+    if (nick)
+      return nick;
+    const first = getElementText(el.querySelector("first-name"));
+    const middle = getElementText(el.querySelector("middle-name"));
+    const last2 = getElementText(el.querySelector("last-name"));
+    const name = [first, middle, last2].filter((x2) => x2).join(" ");
+    const sortAs = last2 ? [last2, [first, middle].filter((x2) => x2).join(" ")].join(", ") : null;
+    return { name, sortAs };
+  };
+  const getDate = (el) => el?.getAttribute("value") ?? getElementText(el);
+  const annotation = $2("title-info annotation");
+  book2.metadata = {
+    title: getElementText($2("title-info book-title")),
+    identifier: getElementText($2("document-info id")),
+    language: getElementText($2("title-info lang")),
+    author: $$2("title-info author").map(getPerson),
+    translator: $$2("title-info translator").map(getPerson),
+    producer: $$2("document-info author").map(getPerson).concat($$2("document-info program-used").map(getElementText)),
+    publisher: getElementText($2("publish-info publisher")),
+    published: getDate($2("title-info date")),
+    modified: getDate($2("document-info date")),
+    description: annotation ? converter.convert(annotation, { annotation: ["div", SECTION] }).innerHTML : null,
+    subject: $$2("title-info genre").map(getElementText)
+  };
+  if ($2("coverpage image")) {
+    const src = getImageSrc($2("coverpage image"));
+    book2.getCover = () => fetch(src).then((res) => res.blob());
+  } else
+    book2.getCover = () => null;
+  const bodyData = Array.from(doc2.querySelectorAll("body"), (body) => {
+    const converted = converter.convert(body, { body: ["body", BODY] });
+    return [
+      Array.from(converted.children, (el) => {
+        const ids = [el, ...el.querySelectorAll("[id]")].map((el2) => el2.id);
+        return { el, ids };
+      }),
+      converted
+    ];
+  });
+  const urls = [];
+  const sectionData = bodyData[0][0].map(({ el, ids }) => {
+    const titles = Array.from(el.querySelectorAll(":scope > section > .title"), (el2, index) => {
+      el2.setAttribute(dataID, index);
+      return { title: getElementText(el2), index };
+    });
+    return { ids, titles, el };
+  }).concat(
+    bodyData.slice(1).map(([sections, body]) => {
+      const ids = sections.map((s) => s.ids).flat();
+      body.classList.add("notesBodyType");
+      return { ids, el: body, linear: "no" };
+    })
+  ).map(({ ids, titles, el, linear }) => {
+    const str = template(el.outerHTML);
+    const blob2 = new Blob([str], { type: MIME$1.XHTML });
+    const url = URL.createObjectURL(blob2);
+    urls.push(url);
+    const title = normalizeWhitespace(
+      el.querySelector(".title, .subtitle, p")?.textContent ?? (el.classList.contains("title") ? el.textContent : "")
+    );
+    return {
+      ids,
+      title,
+      titles,
+      load: () => url,
+      createDocument: () => new DOMParser().parseFromString(str, MIME$1.XHTML),
+      // doo't count image data as it'd skew the size too much
+      size: blob2.size - Array.from(
+        el.querySelectorAll("[src]"),
+        (el2) => el2.getAttribute("src")?.length ?? 0
+      ).reduce((a2, b2) => a2 + b2, 0),
+      linear
+    };
+  });
+  const idMap = /* @__PURE__ */ new Map();
+  book2.sections = sectionData.map((section, index) => {
+    const { ids, load, createDocument, size: size2, linear } = section;
+    for (const id2 of ids)
+      if (id2)
+        idMap.set(id2, index);
+    return { id: index, load, createDocument, size: size2, linear };
+  });
+  book2.toc = sectionData.map(({ title, titles }, index) => {
+    const id2 = index.toString();
+    return {
+      label: title,
+      href: id2,
+      subitems: titles?.length ? titles.map(({ title: title2, index: index2 }) => ({
+        label: title2,
+        href: `${id2}#${index2}`
+      })) : null
+    };
+  }).filter((item) => item);
+  book2.resolveHref = (href) => {
+    const [a2, b2] = href.split("#");
+    return a2 ? (
+      // the link is from the TOC
+      { index: Number(a2), anchor: (doc3) => doc3.querySelector(`[${dataID}="${b2}"]`) }
+    ) : (
+      // link from within the page
+      { index: idMap.get(b2), anchor: (doc3) => doc3.getElementById(b2) }
+    );
+  };
+  book2.splitTOCHref = (href) => href?.split("#")?.map((x2) => Number(x2)) ?? [];
+  book2.getTOCFragment = (doc3, id2) => doc3.querySelector(`[${dataID}="${id2}"]`);
+  book2.destroy = () => {
+    for (const url of urls)
+      URL.revokeObjectURL(url);
+  };
+  return book2;
+};
+const unescapeHTML = (str) => {
+  if (!str)
+    return "";
+  const textarea = document.createElement("textarea");
+  textarea.innerHTML = str;
+  return textarea.value;
+};
+const MIME = {
+  XML: "application/xml",
+  XHTML: "application/xhtml+xml",
+  HTML: "text/html",
+  CSS: "text/css",
+  SVG: "image/svg+xml"
+};
+const PDB_HEADER = {
+  name: [0, 32, "string"],
+  type: [60, 4, "string"],
+  creator: [64, 4, "string"],
+  numRecords: [76, 2, "uint"]
+};
+const PALMDOC_HEADER = {
+  compression: [0, 2, "uint"],
+  numTextRecords: [8, 2, "uint"],
+  recordSize: [10, 2, "uint"],
+  encryption: [12, 2, "uint"]
+};
+const MOBI_HEADER = {
+  magic: [16, 4, "string"],
+  length: [20, 4, "uint"],
+  type: [24, 4, "uint"],
+  encoding: [28, 4, "uint"],
+  uid: [32, 4, "uint"],
+  version: [36, 4, "uint"],
+  titleOffset: [84, 4, "uint"],
+  titleLength: [88, 4, "uint"],
+  localeRegion: [94, 1, "uint"],
+  localeLanguage: [95, 1, "uint"],
+  resourceStart: [108, 4, "uint"],
+  huffcdic: [112, 4, "uint"],
+  numHuffcdic: [116, 4, "uint"],
+  exthFlag: [128, 4, "uint"],
+  trailingFlags: [240, 4, "uint"],
+  indx: [244, 4, "uint"]
+};
+const KF8_HEADER = {
+  resourceStart: [108, 4, "uint"],
+  fdst: [192, 4, "uint"],
+  numFdst: [196, 4, "uint"],
+  frag: [248, 4, "uint"],
+  skel: [252, 4, "uint"],
+  guide: [260, 4, "uint"]
+};
+const EXTH_HEADER = {
+  magic: [0, 4, "string"],
+  length: [4, 4, "uint"],
+  count: [8, 4, "uint"]
+};
+const INDX_HEADER = {
+  magic: [0, 4, "string"],
+  length: [4, 4, "uint"],
+  type: [8, 4, "uint"],
+  idxt: [20, 4, "uint"],
+  numRecords: [24, 4, "uint"],
+  encoding: [28, 4, "uint"],
+  language: [32, 4, "uint"],
+  total: [36, 4, "uint"],
+  ordt: [40, 4, "uint"],
+  ligt: [44, 4, "uint"],
+  numLigt: [48, 4, "uint"],
+  numCncx: [52, 4, "uint"]
+};
+const TAGX_HEADER = {
+  magic: [0, 4, "string"],
+  length: [4, 4, "uint"],
+  numControlBytes: [8, 4, "uint"]
+};
+const HUFF_HEADER = {
+  magic: [0, 4, "string"],
+  offset1: [8, 4, "uint"],
+  offset2: [12, 4, "uint"]
+};
+const CDIC_HEADER = {
+  magic: [0, 4, "string"],
+  length: [4, 4, "uint"],
+  numEntries: [8, 4, "uint"],
+  codeLength: [12, 4, "uint"]
+};
+const FDST_HEADER = {
+  magic: [0, 4, "string"],
+  numEntries: [8, 4, "uint"]
+};
+const FONT_HEADER = {
+  flags: [8, 4, "uint"],
+  dataStart: [12, 4, "uint"],
+  keyLength: [16, 4, "uint"],
+  keyStart: [20, 4, "uint"]
+};
+const MOBI_ENCODING = {
+  1252: "windows-1252",
+  65001: "utf-8"
+};
+const EXTH_RECORD_TYPE = {
+  100: ["creator", "string", true],
+  101: ["publisher"],
+  103: ["description"],
+  104: ["isbn"],
+  105: ["subject", "string", true],
+  106: ["date"],
+  108: ["contributor", "string", true],
+  109: ["rights"],
+  110: ["subjectCode", "string", true],
+  112: ["source", "string", true],
+  113: ["asin"],
+  121: ["boundary", "uint"],
+  122: ["fixedLayout"],
+  125: ["numResources", "uint"],
+  126: ["originalResolution"],
+  127: ["zeroGutter"],
+  128: ["zeroMargin"],
+  129: ["coverURI"],
+  132: ["regionMagnification"],
+  201: ["coverOffset", "uint"],
+  202: ["thumbnailOffset", "uint"],
+  503: ["title"],
+  524: ["language", "string", true],
+  527: ["pageProgressionDirection"]
+};
+const MOBI_LANG = {
+  1: [
+    "ar",
+    "ar-SA",
+    "ar-IQ",
+    "ar-EG",
+    "ar-LY",
+    "ar-DZ",
+    "ar-MA",
+    "ar-TN",
+    "ar-OM",
+    "ar-YE",
+    "ar-SY",
+    "ar-JO",
+    "ar-LB",
+    "ar-KW",
+    "ar-AE",
+    "ar-BH",
+    "ar-QA"
+  ],
+  2: ["bg"],
+  3: ["ca"],
+  4: ["zh", "zh-TW", "zh-CN", "zh-HK", "zh-SG"],
+  5: ["cs"],
+  6: ["da"],
+  7: ["de", "de-DE", "de-CH", "de-AT", "de-LU", "de-LI"],
+  8: ["el"],
+  9: [
+    "en",
+    "en-US",
+    "en-GB",
+    "en-AU",
+    "en-CA",
+    "en-NZ",
+    "en-IE",
+    "en-ZA",
+    "en-JM",
+    null,
+    "en-BZ",
+    "en-TT",
+    "en-ZW",
+    "en-PH"
+  ],
+  10: [
+    "es",
+    "es-ES",
+    "es-MX",
+    null,
+    "es-GT",
+    "es-CR",
+    "es-PA",
+    "es-DO",
+    "es-VE",
+    "es-CO",
+    "es-PE",
+    "es-AR",
+    "es-EC",
+    "es-CL",
+    "es-UY",
+    "es-PY",
+    "es-BO",
+    "es-SV",
+    "es-HN",
+    "es-NI",
+    "es-PR"
+  ],
+  11: ["fi"],
+  12: ["fr", "fr-FR", "fr-BE", "fr-CA", "fr-CH", "fr-LU", "fr-MC"],
+  13: ["he"],
+  14: ["hu"],
+  15: ["is"],
+  16: ["it", "it-IT", "it-CH"],
+  17: ["ja"],
+  18: ["ko"],
+  19: ["nl", "nl-NL", "nl-BE"],
+  20: ["no", "nb", "nn"],
+  21: ["pl"],
+  22: ["pt", "pt-BR", "pt-PT"],
+  23: ["rm"],
+  24: ["ro"],
+  25: ["ru"],
+  26: ["hr", null, "sr"],
+  27: ["sk"],
+  28: ["sq"],
+  29: ["sv", "sv-SE", "sv-FI"],
+  30: ["th"],
+  31: ["tr"],
+  32: ["ur"],
+  33: ["id"],
+  34: ["uk"],
+  35: ["be"],
+  36: ["sl"],
+  37: ["et"],
+  38: ["lv"],
+  39: ["lt"],
+  41: ["fa"],
+  42: ["vi"],
+  43: ["hy"],
+  44: ["az"],
+  45: ["eu"],
+  46: ["hsb"],
+  47: ["mk"],
+  48: ["st"],
+  49: ["ts"],
+  50: ["tn"],
+  52: ["xh"],
+  53: ["zu"],
+  54: ["af"],
+  55: ["ka"],
+  56: ["fo"],
+  57: ["hi"],
+  58: ["mt"],
+  59: ["se"],
+  62: ["ms"],
+  63: ["kk"],
+  65: ["sw"],
+  67: ["uz", null, "uz-UZ"],
+  68: ["tt"],
+  69: ["bn"],
+  70: ["pa"],
+  71: ["gu"],
+  72: ["or"],
+  73: ["ta"],
+  74: ["te"],
+  75: ["kn"],
+  76: ["ml"],
+  77: ["as"],
+  78: ["mr"],
+  79: ["sa"],
+  82: ["cy", "cy-GB"],
+  83: ["gl", "gl-ES"],
+  87: ["kok"],
+  97: ["ne"],
+  98: ["fy"]
+};
+const concatTypedArray = (a2, b2) => {
+  const result = new a2.constructor(a2.length + b2.length);
+  result.set(a2);
+  result.set(b2, a2.length);
+  return result;
+};
+const concatTypedArray3 = (a2, b2, c) => {
+  const result = new a2.constructor(a2.length + b2.length + c.length);
+  result.set(a2);
+  result.set(b2, a2.length);
+  result.set(c, a2.length + b2.length);
+  return result;
+};
+const decoder = new TextDecoder();
+const getString = (buffer) => decoder.decode(buffer);
+const getUint = (buffer) => {
+  if (!buffer)
+    return;
+  const l2 = buffer.byteLength;
+  const func = l2 === 4 ? "getUint32" : l2 === 2 ? "getUint16" : "getUint8";
+  return new DataView(buffer)[func](0);
+};
+const getStruct = (def2, buffer) => Object.fromEntries(
+  Array.from(Object.entries(def2)).map(([key, [start, len, type]]) => [
+    key,
+    (type === "string" ? getString : getUint)(buffer.slice(start, start + len))
+  ])
+);
+const getDecoder = (x2) => new TextDecoder(MOBI_ENCODING[x2]);
+const getVarLen = (byteArray, i2 = 0) => {
+  let value = 0, length = 0;
+  for (const byte of byteArray.subarray(i2, i2 + 4)) {
+    value = value << 7 | (byte & 127) >>> 0;
+    length++;
+    if (byte & 128)
+      break;
+  }
+  return { value, length };
+};
+const getVarLenFromEnd = (byteArray) => {
+  let value = 0;
+  for (const byte of byteArray.subarray(-4)) {
+    if (byte & 128)
+      value = 0;
+    value = value << 7 | byte & 127;
+  }
+  return value;
+};
+const countBitsSet = (x2) => {
+  let count = 0;
+  for (; x2 > 0; x2 = x2 >> 1)
+    if ((x2 & 1) === 1)
+      count++;
+  return count;
+};
+const countUnsetEnd = (x2) => {
+  let count = 0;
+  while ((x2 & 1) === 0)
+    x2 = x2 >> 1, count++;
+  return count;
+};
+const decompressPalmDOC = (array) => {
+  let output = [];
+  for (let i2 = 0; i2 < array.length; i2++) {
+    const byte = array[i2];
+    if (byte === 0)
+      output.push(0);
+    else if (byte <= 8)
+      for (const x2 of array.subarray(i2 + 1, (i2 += byte) + 1))
+        output.push(x2);
+    else if (byte <= 127)
+      output.push(byte);
+    else if (byte <= 191) {
+      const bytes = byte << 8 | array[i2++ + 1];
+      const distance = (bytes & 16383) >>> 3;
+      const length = (bytes & 7) + 3;
+      for (let j = 0; j < length; j++)
+        output.push(output[output.length - distance]);
+    } else
+      output.push(32, byte ^ 128);
+  }
+  return Uint8Array.from(output);
+};
+const read32Bits = (byteArray, from2) => {
+  const startByte = from2 >> 3;
+  const end = from2 + 32;
+  const endByte = end >> 3;
+  let bits = 0n;
+  for (let i2 = startByte; i2 <= endByte; i2++)
+    bits = bits << 8n | BigInt(byteArray[i2] ?? 0);
+  return bits >> 8n - BigInt(end & 7) & 0xffffffffn;
+};
+const huffcdic = async (mobi, loadRecord) => {
+  const huffRecord = await loadRecord(mobi.huffcdic);
+  const { magic, offset1, offset2 } = getStruct(HUFF_HEADER, huffRecord);
+  if (magic !== "HUFF")
+    throw new Error("Invalid HUFF record");
+  const table1 = Array.from({ length: 256 }, (_2, i2) => offset1 + i2 * 4).map((offset) => getUint(huffRecord.slice(offset, offset + 4))).map((x2) => [x2 & 128, x2 & 31, x2 >>> 8]);
+  const table2 = [null].concat(
+    Array.from({ length: 32 }, (_2, i2) => offset2 + i2 * 8).map((offset) => [
+      getUint(huffRecord.slice(offset, offset + 4)),
+      getUint(huffRecord.slice(offset + 4, offset + 8))
+    ])
+  );
+  const dictionary = [];
+  for (let i2 = 1; i2 < mobi.numHuffcdic; i2++) {
+    const record = await loadRecord(mobi.huffcdic + i2);
+    const cdic = getStruct(CDIC_HEADER, record);
+    if (cdic.magic !== "CDIC")
+      throw new Error("Invalid CDIC record");
+    const n2 = Math.min(1 << cdic.codeLength, cdic.numEntries - dictionary.length);
+    const buffer = record.slice(cdic.length);
+    for (let i3 = 0; i3 < n2; i3++) {
+      const offset = getUint(buffer.slice(i3 * 2, i3 * 2 + 2));
+      const x2 = getUint(buffer.slice(offset, offset + 2));
+      const length = x2 & 32767;
+      const decompressed = x2 & 32768;
+      const value = new Uint8Array(buffer.slice(offset + 2, offset + 2 + length));
+      dictionary.push([value, decompressed]);
+    }
+  }
+  const decompress = (byteArray) => {
+    let output = new Uint8Array();
+    const bitLength = byteArray.byteLength * 8;
+    for (let i2 = 0; i2 < bitLength; ) {
+      const bits = Number(read32Bits(byteArray, i2));
+      let [found, codeLength, value] = table1[bits >>> 24];
+      if (!found) {
+        while (bits >>> 32 - codeLength < table2[codeLength][0])
+          codeLength += 1;
+        value = table2[codeLength][1];
+      }
+      if ((i2 += codeLength) > bitLength)
+        break;
+      const code2 = value - (bits >>> 32 - codeLength);
+      let [result, decompressed] = dictionary[code2];
+      if (!decompressed) {
+        result = decompress(result);
+        dictionary[code2] = [result, true];
+      }
+      output = concatTypedArray(output, result);
+    }
+    return output;
+  };
+  return decompress;
+};
+const getIndexData = async (indxIndex, loadRecord) => {
+  const indxRecord = await loadRecord(indxIndex);
+  const indx = getStruct(INDX_HEADER, indxRecord);
+  if (indx.magic !== "INDX")
+    throw new Error("Invalid INDX record");
+  const decoder2 = getDecoder(indx.encoding);
+  const tagxBuffer = indxRecord.slice(indx.length);
+  const tagx = getStruct(TAGX_HEADER, tagxBuffer);
+  if (tagx.magic !== "TAGX")
+    throw new Error("Invalid TAGX section");
+  const numTags = (tagx.length - 12) / 4;
+  const tagTable = Array.from(
+    { length: numTags },
+    (_2, i2) => new Uint8Array(tagxBuffer.slice(12 + i2 * 4, 12 + i2 * 4 + 4))
+  );
+  const cncx = {};
+  let cncxRecordOffset = 0;
+  for (let i2 = 0; i2 < indx.numCncx; i2++) {
+    const record = await loadRecord(indxIndex + indx.numRecords + i2 + 1);
+    const array = new Uint8Array(record);
+    for (let pos = 0; pos < array.byteLength; ) {
+      const index = pos;
+      const { value, length } = getVarLen(array, pos);
+      pos += length;
+      const result = record.slice(pos, pos + value);
+      pos += value;
+      cncx[cncxRecordOffset + index] = decoder2.decode(result);
+    }
+    cncxRecordOffset += 65536;
+  }
+  const table = [];
+  for (let i2 = 0; i2 < indx.numRecords; i2++) {
+    const record = await loadRecord(indxIndex + 1 + i2);
+    const array = new Uint8Array(record);
+    const indx2 = getStruct(INDX_HEADER, record);
+    if (indx2.magic !== "INDX")
+      throw new Error("Invalid INDX record");
+    for (let j = 0; j < indx2.numRecords; j++) {
+      const offsetOffset = indx2.idxt + 4 + 2 * j;
+      const offset = getUint(record.slice(offsetOffset, offsetOffset + 2));
+      const length = getUint(record.slice(offset, offset + 1));
+      const name = getString(record.slice(offset + 1, offset + 1 + length));
+      const tags = [];
+      const startPos = offset + 1 + length;
+      let controlByteIndex = 0;
+      let pos = startPos + tagx.numControlBytes;
+      for (const [tag2, numValues, mask, end] of tagTable) {
+        if (end & 1) {
+          controlByteIndex++;
+          continue;
+        }
+        const offset2 = startPos + controlByteIndex;
+        const value = getUint(record.slice(offset2, offset2 + 1)) & mask;
+        if (value === mask) {
+          if (countBitsSet(mask) > 1) {
+            const { value: value2, length: length2 } = getVarLen(array, pos);
+            tags.push([tag2, null, value2, numValues]);
+            pos += length2;
+          } else
+            tags.push([tag2, 1, null, numValues]);
+        } else
+          tags.push([tag2, value >> countUnsetEnd(mask), null, numValues]);
+      }
+      const tagMap = {};
+      for (const [tag2, valueCount, valueBytes, numValues] of tags) {
+        const values2 = [];
+        if (valueCount != null) {
+          for (let i3 = 0; i3 < valueCount * numValues; i3++) {
+            const { value, length: length2 } = getVarLen(array, pos);
+            values2.push(value);
+            pos += length2;
+          }
+        } else {
+          let count = 0;
+          while (count < valueBytes) {
+            const { value, length: length2 } = getVarLen(array, pos);
+            values2.push(value);
+            pos += length2;
+            count += length2;
+          }
+        }
+        tagMap[tag2] = values2;
+      }
+      table.push({ name, tagMap });
+    }
+  }
+  return { table, cncx };
+};
+const getNCX = async (indxIndex, loadRecord) => {
+  const { table, cncx } = await getIndexData(indxIndex, loadRecord);
+  const items = table.map(({ tagMap }, index) => ({
+    index,
+    offset: tagMap[1]?.[0],
+    size: tagMap[2]?.[0],
+    label: cncx[tagMap[3]] ?? "",
+    headingLevel: tagMap[4]?.[0],
+    pos: tagMap[6],
+    parent: tagMap[21]?.[0],
+    firstChild: tagMap[22]?.[0],
+    lastChild: tagMap[23]?.[0]
+  }));
+  const getChildren = (item) => {
+    if (item.firstChild == null)
+      return item;
+    item.children = items.filter((x2) => x2.parent === item.index).map(getChildren);
+    return item;
+  };
+  return items.filter((item) => item.headingLevel === 0).map(getChildren);
+};
+const getEXTH = (buf, encoding) => {
+  const { magic, count } = getStruct(EXTH_HEADER, buf);
+  if (magic !== "EXTH")
+    throw new Error("Invalid EXTH header");
+  const decoder2 = getDecoder(encoding);
+  const results = {};
+  let offset = 12;
+  for (let i2 = 0; i2 < count; i2++) {
+    const type = getUint(buf.slice(offset, offset + 4));
+    const length = getUint(buf.slice(offset + 4, offset + 8));
+    if (type in EXTH_RECORD_TYPE) {
+      const [name, typ, many] = EXTH_RECORD_TYPE[type];
+      const data2 = buf.slice(offset + 8, offset + length);
+      const value = typ === "uint" ? getUint(data2) : decoder2.decode(data2);
+      if (many) {
+        results[name] ??= [];
+        results[name].push(value);
+      } else
+        results[name] = value;
+    }
+    offset += length;
+  }
+  return results;
+};
+const getFont = async (buf, unzlib) => {
+  const { flags, dataStart, keyLength, keyStart } = getStruct(FONT_HEADER, buf);
+  const array = new Uint8Array(buf.slice(dataStart));
+  if (flags & 2) {
+    const bytes = keyLength === 16 ? 1024 : 1040;
+    const key = new Uint8Array(buf.slice(keyStart, keyStart + keyLength));
+    const length = Math.min(bytes, array.length);
+    for (var i2 = 0; i2 < length; i2++)
+      array[i2] = array[i2] ^ key[i2 % key.length];
+  }
+  if (flags & 1)
+    try {
+      return await unzlib(array);
+    } catch (e2) {
+      console.warn(e2);
+      console.warn("Failed to decompress font");
+    }
+  return array;
+};
+const isMOBI = async (file2) => {
+  const magic = getString(await file2.slice(60, 68).arrayBuffer());
+  return magic === "BOOKMOBI";
+};
+class PDB2 {
+  #file;
+  #offsets;
+  pdb;
+  async open(file2) {
+    this.#file = file2;
+    const pdb = getStruct(PDB_HEADER, await file2.slice(0, 78).arrayBuffer());
+    this.pdb = pdb;
+    const buffer = await file2.slice(78, 78 + pdb.numRecords * 8).arrayBuffer();
+    this.#offsets = Array.from(
+      { length: pdb.numRecords },
+      (_2, i2) => getUint(buffer.slice(i2 * 8, i2 * 8 + 4))
+    ).map((x2, i2, a2) => [x2, a2[i2 + 1]]);
+  }
+  loadRecord(index) {
+    const offsets = this.#offsets[index];
+    if (!offsets)
+      throw new RangeError("Record index out of bounds");
+    return this.#file.slice(...offsets).arrayBuffer();
+  }
+  async loadMagic(index) {
+    const start = this.#offsets[index][0];
+    return getString(await this.#file.slice(start, start + 4).arrayBuffer());
+  }
+}
+class MOBI2 extends PDB2 {
+  #start = 0;
+  #resourceStart;
+  #decoder;
+  #encoder;
+  #decompress;
+  #removeTrailingEntries;
+  constructor({ unzlib }) {
+    super();
+    this.unzlib = unzlib;
+  }
+  async open(file2) {
+    await super.open(file2);
+    this.headers = this.#getHeaders(await super.loadRecord(0));
+    this.#resourceStart = this.headers.mobi.resourceStart;
+    let isKF8 = this.headers.mobi.version >= 8;
+    if (!isKF8) {
+      const boundary = this.headers.exth?.boundary;
+      if (boundary < 4294967295)
+        try {
+          this.headers = this.#getHeaders(await super.loadRecord(boundary));
+          this.#start = boundary;
+          isKF8 = true;
+        } catch (e2) {
+          console.warn(e2);
+          console.warn("Failed to open KF8; falling back to MOBI");
+        }
+    }
+    await this.#setup();
+    return isKF8 ? new KF82(this).init() : new MOBI62(this).init();
+  }
+  #getHeaders(buf) {
+    const palmdoc = getStruct(PALMDOC_HEADER, buf);
+    const mobi = getStruct(MOBI_HEADER, buf);
+    if (mobi.magic !== "MOBI")
+      throw new Error("Missing MOBI header");
+    const { titleOffset, titleLength, localeLanguage, localeRegion } = mobi;
+    mobi.title = buf.slice(titleOffset, titleOffset + titleLength);
+    const lang = MOBI_LANG[localeLanguage];
+    mobi.language = lang?.[localeRegion >> 2] ?? lang?.[0];
+    const exth = mobi.exthFlag & 64 ? getEXTH(buf.slice(mobi.length + 16), mobi.encoding) : null;
+    const kf8 = mobi.version >= 8 ? getStruct(KF8_HEADER, buf) : null;
+    return { palmdoc, mobi, exth, kf8 };
+  }
+  async #setup() {
+    const { palmdoc, mobi } = this.headers;
+    this.#decoder = getDecoder(mobi.encoding);
+    this.#encoder = new TextEncoder();
+    const { compression } = palmdoc;
+    this.#decompress = compression === 1 ? (f2) => f2 : compression === 2 ? decompressPalmDOC : compression === 17480 ? await huffcdic(mobi, this.loadRecord.bind(this)) : null;
+    if (!this.#decompress)
+      throw new Error("Unknown compression type");
+    const { trailingFlags } = mobi;
+    const multibyte = trailingFlags & 1;
+    const numTrailingEntries = countBitsSet(trailingFlags >>> 1);
+    this.#removeTrailingEntries = (array) => {
+      for (let i2 = 0; i2 < numTrailingEntries; i2++) {
+        const length = getVarLenFromEnd(array);
+        array = array.subarray(0, -length);
+      }
+      if (multibyte) {
+        const length = (array[array.length - 1] & 3) + 1;
+        array = array.subarray(0, -length);
+      }
+      return array;
+    };
+  }
+  decode(...args) {
+    return this.#decoder.decode(...args);
+  }
+  encode(...args) {
+    return this.#encoder.encode(...args);
+  }
+  loadRecord(index) {
+    return super.loadRecord(this.#start + index);
+  }
+  loadMagic(index) {
+    return super.loadMagic(this.#start + index);
+  }
+  loadText(index) {
+    return this.loadRecord(index + 1).then((buf) => new Uint8Array(buf)).then(this.#removeTrailingEntries).then(this.#decompress);
+  }
+  async loadResource(index) {
+    const buf = await super.loadRecord(this.#resourceStart + index);
+    const magic = getString(buf.slice(0, 4));
+    if (magic === "FONT")
+      return getFont(buf, this.unzlib);
+    if (magic === "VIDE" || magic === "AUDI")
+      return buf.slice(12);
+    return buf;
+  }
+  getNCX() {
+    const index = this.headers.mobi.indx;
+    if (index < 4294967295)
+      return getNCX(index, this.loadRecord.bind(this));
+  }
+  getMetadata() {
+    const { mobi, exth } = this.headers;
+    return {
+      identifier: mobi.uid.toString(),
+      title: unescapeHTML(exth?.title || this.decode(mobi.title)),
+      author: exth?.creator?.map(unescapeHTML),
+      publisher: unescapeHTML(exth?.publisher),
+      language: exth?.language ?? mobi.language,
+      published: exth?.date,
+      description: unescapeHTML(exth?.description),
+      subject: exth?.subject?.map(unescapeHTML),
+      rights: unescapeHTML(exth?.rights)
+    };
+  }
+  async getCover() {
+    const { exth } = this.headers;
+    const offset = exth?.coverOffset < 4294967295 ? exth?.coverOffset : exth?.thumbnailOffset < 4294967295 ? exth?.thumbnailOffset : null;
+    if (offset != null) {
+      const buf = await this.loadResource(offset);
+      return new Blob([buf]);
+    }
+  }
+}
+const mbpPagebreakRegex = /<\s*(?:mbp:)?pagebreak[^>]*>/gi;
+const fileposRegex = /<[^<>]+filepos=['"]{0,1}(\d+)[^<>]*>/gi;
+const getIndent = (el) => {
+  let x2 = 0;
+  while (el) {
+    const parent = el.parentElement;
+    if (parent) {
+      const tag2 = parent.tagName.toLowerCase();
+      if (tag2 === "p")
+        x2 += 1.5;
+      else if (tag2 === "blockquote")
+        x2 += 2;
+    }
+    el = parent;
+  }
+  return x2;
+};
+class MOBI62 {
+  parser = new DOMParser();
+  serializer = new XMLSerializer();
+  #resourceCache = /* @__PURE__ */ new Map();
+  #textCache = /* @__PURE__ */ new Map();
+  #cache = /* @__PURE__ */ new Map();
+  #sections;
+  #fileposList = [];
+  #type = MIME.HTML;
+  constructor(mobi) {
+    this.mobi = mobi;
+  }
+  async init() {
+    let array = new Uint8Array();
+    for (let i2 = 0; i2 < this.mobi.headers.palmdoc.numTextRecords; i2++)
+      array = concatTypedArray(array, await this.mobi.loadText(i2));
+    const str = Array.from(new Uint8Array(array), (c) => String.fromCharCode(c)).join("");
+    this.#sections = [0].concat(Array.from(str.matchAll(mbpPagebreakRegex), (m2) => m2.index)).map((x2, i2, a2) => str.slice(x2, a2[i2 + 1])).map((str2) => Uint8Array.from(str2, (x2) => x2.charCodeAt(0))).map((raw) => ({ book: this, raw })).reduce((arr, x2) => {
+      const last2 = arr[arr.length - 1];
+      x2.start = last2?.end ?? 0;
+      x2.end = x2.start + x2.raw.byteLength;
+      return arr.concat(x2);
+    }, []);
+    this.sections = this.#sections.map((section, index) => ({
+      id: index,
+      load: () => this.loadSection(section),
+      createDocument: () => this.createDocument(section),
+      size: section.end - section.start
+    }));
+    try {
+      this.landmarks = await this.getGuide();
+      const tocHref = this.landmarks.find(({ type }) => type?.includes("toc"))?.href;
+      if (tocHref) {
+        const { index } = this.resolveHref(tocHref);
+        const doc2 = await this.sections[index].createDocument();
+        let lastItem;
+        let lastLevel = 0;
+        let lastIndent = 0;
+        const lastLevelOfIndent = /* @__PURE__ */ new Map();
+        const lastParentOfLevel = /* @__PURE__ */ new Map();
+        this.toc = Array.from(doc2.querySelectorAll("a[filepos]")).reduce((arr, a2) => {
+          const indent = getIndent(a2);
+          const item = {
+            label: a2.innerText?.trim(),
+            href: `filepos:${a2.getAttribute("filepos")}`
+          };
+          const level = indent > lastIndent ? lastLevel + 1 : indent === lastIndent ? lastLevel : lastLevelOfIndent.get(indent) ?? Math.max(0, lastLevel - 1);
+          if (level > lastLevel) {
+            if (lastItem) {
+              lastItem.subitems ??= [];
+              lastItem.subitems.push(item);
+              lastParentOfLevel.set(level, lastItem);
+            } else
+              arr.push(item);
+          } else {
+            const parent = lastParentOfLevel.get(level);
+            if (parent)
+              parent.subitems.push(item);
+            else
+              arr.push(item);
+          }
+          lastItem = item;
+          lastLevel = level;
+          lastIndent = indent;
+          lastLevelOfIndent.set(indent, level);
+          return arr;
+        }, []);
+      }
+    } catch (e2) {
+      console.warn(e2);
+    }
+    this.#fileposList = [...new Set(Array.from(str.matchAll(fileposRegex), (m2) => m2[1]))].map((filepos) => ({ filepos, number: Number(filepos) })).sort((a2, b2) => a2.number - b2.number);
+    this.metadata = this.mobi.getMetadata();
+    this.getCover = this.mobi.getCover.bind(this.mobi);
+    return this;
+  }
+  async getGuide() {
+    const doc2 = await this.createDocument(this.#sections[0]);
+    return Array.from(doc2.getElementsByTagName("reference"), (ref2) => ({
+      label: ref2.getAttribute("title"),
+      type: ref2.getAttribute("type")?.split(/\s/),
+      href: `filepos:${ref2.getAttribute("filepos")}`
+    }));
+  }
+  async loadResource(index) {
+    if (this.#resourceCache.has(index))
+      return this.#resourceCache.get(index);
+    const raw = await this.mobi.loadResource(index);
+    const url = URL.createObjectURL(new Blob([raw]));
+    this.#resourceCache.set(index, url);
+    return url;
+  }
+  async loadRecindex(recindex) {
+    return this.loadResource(Number(recindex) - 1);
+  }
+  async loadBlob(recindex) {
+    const raw = await this.mobi.loadResource(Number(recindex) - 1);
+    return new Blob([raw]);
+  }
+  async replaceResources(doc2) {
+    for (const img of doc2.querySelectorAll("img[recindex]")) {
+      const recindex = img.getAttribute("recindex");
+      try {
+        img.src = await this.loadRecindex(recindex);
+      } catch {
+        console.warn(`Failed to load image ${recindex}`);
+      }
+    }
+    for (const media of doc2.querySelectorAll("[mediarecindex]")) {
+      const mediarecindex = media.getAttribute("mediarecindex");
+      const recindex = media.getAttribute("recindex");
+      try {
+        media.src = await this.loadRecindex(mediarecindex);
+        if (recindex)
+          media.poster = await this.loadRecindex(recindex);
+      } catch {
+        console.warn(`Failed to load media ${mediarecindex}`);
+      }
+    }
+    for (const a2 of doc2.querySelectorAll("[filepos]")) {
+      const filepos = a2.getAttribute("filepos");
+      a2.href = `filepos:${filepos}`;
+    }
+  }
+  async loadText(section) {
+    if (this.#textCache.has(section))
+      return this.#textCache.get(section);
+    const { raw } = section;
+    const fileposList = this.#fileposList.filter(({ number: number2 }) => number2 >= section.start && number2 < section.end).map((obj) => ({ ...obj, offset: obj.number - section.start }));
+    let arr = raw;
+    if (fileposList.length) {
+      arr = raw.subarray(0, fileposList[0].offset);
+      fileposList.forEach(({ filepos, offset }, i2) => {
+        const next = fileposList[i2 + 1];
+        const a2 = this.mobi.encode(`<a id="filepos${filepos}"></a>`);
+        arr = concatTypedArray3(arr, a2, raw.subarray(offset, next?.offset));
+      });
+    }
+    const str = this.mobi.decode(arr).replaceAll(mbpPagebreakRegex, "");
+    this.#textCache.set(section, str);
+    return str;
+  }
+  async createDocument(section) {
+    const str = await this.loadText(section);
+    return this.parser.parseFromString(str, this.#type);
+  }
+  async loadSection(section) {
+    if (this.#cache.has(section))
+      return this.#cache.get(section);
+    const doc2 = await this.createDocument(section);
+    const style2 = doc2.createElement("style");
+    doc2.head.append(style2);
+    style2.append(
+      doc2.createTextNode(`blockquote {
+          margin-block-start: 0;
+          margin-block-end: 0;
+          margin-inline-start: 1em;
+          margin-inline-end: 0;
+      }`)
+    );
+    await this.replaceResources(doc2);
+    const result = this.serializer.serializeToString(doc2);
+    const url = URL.createObjectURL(new Blob([result], { type: this.#type }));
+    this.#cache.set(section, url);
+    return url;
+  }
+  resolveHref(href) {
+    const filepos = href.match(/filepos:(.*)/)[1];
+    const number2 = Number(filepos);
+    const index = this.#sections.findIndex((section) => section.end > number2);
+    const anchor = (doc2) => doc2.getElementById(`filepos${filepos}`);
+    return { index, anchor };
+  }
+  splitTOCHref(href) {
+    const filepos = href.match(/filepos:(.*)/)[1];
+    const number2 = Number(filepos);
+    const index = this.#sections.findIndex((section) => section.end > number2);
+    return [index, `filepos${filepos}`];
+  }
+  getTOCFragment(doc2, id2) {
+    return doc2.getElementById(id2);
+  }
+  isExternal(uri) {
+    return /^(?!blob|filepos)\w+:/i.test(uri);
+  }
+  destroy() {
+    for (const url of this.#resourceCache.values())
+      URL.revokeObjectURL(url);
+    for (const url of this.#cache.values())
+      URL.revokeObjectURL(url);
+  }
+}
+const kindleResourceRegex = /kindle:(flow|embed):(\w+)(?:\?mime=(\w+\/[-+.\w]+))?/;
+const kindlePosRegex = /kindle:pos:fid:(\w+):off:(\w+)/;
+const parseResourceURI = (str) => {
+  const [resourceType, id2, type] = str.match(kindleResourceRegex).slice(1);
+  return { resourceType, id: parseInt(id2, 32), type };
+};
+const parsePosURI = (str) => {
+  const [fid, off] = str.match(kindlePosRegex).slice(1);
+  return { fid: parseInt(fid, 32), off: parseInt(off, 32) };
+};
+const makePosURI = (fid = 0, off = 0) => `kindle:pos:fid:${fid.toString(32).toUpperCase().padStart(4, "0")}:off:${off.toString(32).toUpperCase().padStart(10, "0")}`;
+const getFragmentSelector = (str) => {
+  const match2 = str.match(/\s(id|name|aid)\s*=\s*['"]([^'"]*)['"]/i);
+  if (!match2)
+    return;
+  const [, attr, value] = match2;
+  return `[${attr}="${CSS.escape(value)}"]`;
+};
+const replaceSeries = async (str, regex, f2) => {
+  const matches = [];
+  str.replace(regex, (...args) => (matches.push(args), null));
+  const results = [];
+  for (const args of matches)
+    results.push(await f2(...args));
+  return str.replace(regex, () => results.shift());
+};
+const getPageSpread = (properties) => {
+  for (const p2 of properties) {
+    if (p2 === "page-spread-left" || p2 === "rendition:page-spread-left")
+      return "left";
+    if (p2 === "page-spread-right" || p2 === "rendition:page-spread-right")
+      return "right";
+    if (p2 === "rendition:page-spread-center")
+      return "center";
+  }
+};
+class KF82 {
+  parser = new DOMParser();
+  serializer = new XMLSerializer();
+  #cache = /* @__PURE__ */ new Map();
+  #fragmentOffsets = /* @__PURE__ */ new Map();
+  #fragmentSelectors = /* @__PURE__ */ new Map();
+  #tables = {};
+  #sections;
+  #fullRawLength;
+  #rawHead = new Uint8Array();
+  #rawTail = new Uint8Array();
+  #lastLoadedHead = -1;
+  #lastLoadedTail = -1;
+  #type = MIME.XHTML;
+  #inlineMap = /* @__PURE__ */ new Map();
+  constructor(mobi) {
+    this.mobi = mobi;
+  }
+  async init() {
+    const loadRecord = this.mobi.loadRecord.bind(this.mobi);
+    const { kf8 } = this.mobi.headers;
+    try {
+      const fdstBuffer = await loadRecord(kf8.fdst);
+      const fdst = getStruct(FDST_HEADER, fdstBuffer);
+      if (fdst.magic !== "FDST")
+        throw new Error("Missing FDST record");
+      const fdstTable = Array.from({ length: fdst.numEntries }, (_2, i2) => 12 + i2 * 8).map(
+        (offset) => [
+          getUint(fdstBuffer.slice(offset, offset + 4)),
+          getUint(fdstBuffer.slice(offset + 4, offset + 8))
+        ]
+      );
+      this.#tables.fdstTable = fdstTable;
+      this.#fullRawLength = fdstTable[fdstTable.length - 1][1];
+    } catch {
+    }
+    const skelTable = (await getIndexData(kf8.skel, loadRecord)).table.map(
+      ({ name, tagMap }, index) => ({
+        index,
+        name,
+        numFrag: tagMap[1][0],
+        offset: tagMap[6][0],
+        length: tagMap[6][1]
+      })
+    );
+    const fragData = await getIndexData(kf8.frag, loadRecord);
+    const fragTable = fragData.table.map(({ name, tagMap }) => ({
+      insertOffset: parseInt(name),
+      selector: fragData.cncx[tagMap[2][0]],
+      index: tagMap[4][0],
+      offset: tagMap[6][0],
+      length: tagMap[6][1]
+    }));
+    this.#tables.skelTable = skelTable;
+    this.#tables.fragTable = fragTable;
+    this.#sections = skelTable.reduce((arr, skel) => {
+      const last2 = arr[arr.length - 1];
+      const fragStart = last2?.fragEnd ?? 0, fragEnd = fragStart + skel.numFrag;
+      const frags = fragTable.slice(fragStart, fragEnd);
+      const length = skel.length + frags.map((f2) => f2.length).reduce((a2, b2) => a2 + b2);
+      const totalLength = (last2?.totalLength ?? 0) + length;
+      return arr.concat({ skel, frags, fragEnd, length, totalLength });
+    }, []);
+    const resources = await this.getResourcesByMagic(["RESC", "PAGE"]);
+    const pageSpreads = /* @__PURE__ */ new Map();
+    if (resources.RESC) {
+      const buf = await this.mobi.loadRecord(resources.RESC);
+      const str = this.mobi.decode(buf.slice(16)).replace(/\0/g, "");
+      const index = str.search(/\?>/);
+      const xmlStr = `<package>${str.slice(index)}</package>`;
+      const opf = this.parser.parseFromString(xmlStr, MIME.XML);
+      for (const $itemref of opf.querySelectorAll("spine > itemref")) {
+        const i2 = parseInt($itemref.getAttribute("skelid"));
+        pageSpreads.set(i2, getPageSpread($itemref.getAttribute("properties")?.split(" ") ?? []));
+      }
+    }
+    this.sections = this.#sections.map(
+      (section, index) => section.frags.length ? {
+        id: index,
+        load: () => this.loadSection(section),
+        createDocument: () => this.createDocument(section),
+        size: section.length,
+        pageSpread: pageSpreads.get(index)
+      } : { linear: "no" }
+    );
+    try {
+      const ncx = await this.mobi.getNCX();
+      const map = ({ label, pos, children }) => {
+        const [fid, off] = pos;
+        const href = makePosURI(fid, off);
+        const arr = this.#fragmentOffsets.get(fid);
+        if (arr)
+          arr.push(off);
+        else
+          this.#fragmentOffsets.set(fid, [off]);
+        return { label: unescapeHTML(label), href, subitems: children?.map(map) };
+      };
+      this.toc = ncx?.map(map);
+      this.landmarks = await this.getGuide();
+    } catch (e2) {
+      console.warn(e2);
+    }
+    const { exth } = this.mobi.headers;
+    this.dir = exth.pageProgressionDirection;
+    this.rendition = {
+      layout: exth.fixedLayout === "true" ? "pre-paginated" : "reflowable",
+      viewport: Object.fromEntries(
+        exth.originalResolution?.split("x")?.slice(0, 2)?.map((x2, i2) => [i2 ? "height" : "width", x2]) ?? []
+      )
+    };
+    this.metadata = this.mobi.getMetadata();
+    this.getCover = this.mobi.getCover.bind(this.mobi);
+    return this;
+  }
+  // is this really the only way of getting to RESC, PAGE, etc.?
+  async getResourcesByMagic(keys) {
+    const results = {};
+    const start = this.mobi.headers.kf8.resourceStart;
+    const end = this.mobi.pdb.numRecords;
+    for (let i2 = start; i2 < end; i2++) {
+      try {
+        const magic = await this.mobi.loadMagic(i2);
+        const match2 = keys.find((key) => key === magic);
+        if (match2)
+          results[match2] = i2;
+      } catch {
+      }
+    }
+    return results;
+  }
+  async getGuide() {
+    const index = this.mobi.headers.kf8.guide;
+    if (index < 4294967295) {
+      const loadRecord = this.mobi.loadRecord.bind(this.mobi);
+      const { table, cncx } = await getIndexData(index, loadRecord);
+      return table.map(({ name, tagMap }) => ({
+        label: cncx[tagMap[1][0]] ?? "",
+        type: name?.split(/\s/),
+        href: makePosURI(tagMap[6]?.[0] ?? tagMap[3]?.[0])
+      }));
+    }
+  }
+  async loadResourceBlob(str) {
+    const { resourceType, id: id2, type } = parseResourceURI(str);
+    const raw = resourceType === "flow" ? await this.loadFlow(id2) : await this.mobi.loadResource(id2 - 1);
+    const result = [MIME.XHTML, MIME.HTML, MIME.CSS, MIME.SVG].includes(type) ? await this.replaceResources(this.mobi.decode(raw)) : raw;
+    const doc2 = type === MIME.SVG ? this.parser.parseFromString(result, type) : null;
+    return [
+      new Blob([result], { type }),
+      // SVG wrappers need to be inlined
+      // as browsers don't allow external resources when loading SVG as an image
+      doc2?.getElementsByTagNameNS("http://www.w3.org/2000/svg", "image")?.length ? doc2.documentElement : null
+    ];
+  }
+  async loadResource(str) {
+    if (this.#cache.has(str))
+      return this.#cache.get(str);
+    const [blob, inline] = await this.loadResourceBlob(str);
+    const url = inline ? str : URL.createObjectURL(blob);
+    if (inline)
+      this.#inlineMap.set(url, inline);
+    this.#cache.set(str, url);
+    return url;
+  }
+  replaceResources(str) {
+    const regex = new RegExp(kindleResourceRegex, "g");
+    return replaceSeries(str, regex, this.loadResource.bind(this));
+  }
+  // NOTE: there doesn't seem to be a way to access text randomly?
+  // how to know the decompressed size of the records without decompressing?
+  // 4096 is just the maximum size
+  async loadRaw(start, end) {
+    const distanceHead = end - this.#rawHead.length;
+    const distanceEnd = this.#fullRawLength == null ? Infinity : this.#fullRawLength - this.#rawTail.length - start;
+    if (distanceHead < 0 || distanceHead < distanceEnd) {
+      while (this.#rawHead.length < end) {
+        const index = ++this.#lastLoadedHead;
+        const data2 = await this.mobi.loadText(index);
+        this.#rawHead = concatTypedArray(this.#rawHead, data2);
+      }
+      return this.#rawHead.slice(start, end);
+    }
+    while (this.#fullRawLength - this.#rawTail.length > start) {
+      const index = this.mobi.headers.palmdoc.numTextRecords - 1 - ++this.#lastLoadedTail;
+      const data2 = await this.mobi.loadText(index);
+      this.#rawTail = concatTypedArray(data2, this.#rawTail);
+    }
+    const rawTailStart = this.#fullRawLength - this.#rawTail.length;
+    return this.#rawTail.slice(start - rawTailStart, end - rawTailStart);
+  }
+  loadFlow(index) {
+    if (index < 4294967295)
+      return this.loadRaw(...this.#tables.fdstTable[index]);
+  }
+  async loadText(section) {
+    const { skel, frags, length } = section;
+    const raw = await this.loadRaw(skel.offset, skel.offset + length);
+    let skeleton = raw.slice(0, skel.length);
+    for (const frag of frags) {
+      const insertOffset = frag.insertOffset - skel.offset;
+      const offset = skel.length + frag.offset;
+      const fragRaw = raw.slice(offset, offset + frag.length);
+      skeleton = concatTypedArray3(
+        skeleton.slice(0, insertOffset),
+        fragRaw,
+        skeleton.slice(insertOffset)
+      );
+      const offsets = this.#fragmentOffsets.get(frag.index);
+      if (offsets)
+        for (const offset2 of offsets) {
+          const str = this.mobi.decode(fragRaw).slice(offset2);
+          const selector2 = getFragmentSelector(str);
+          this.#setFragmentSelector(frag.index, offset2, selector2);
+        }
+    }
+    return this.mobi.decode(skeleton);
+  }
+  async createDocument(section) {
+    const str = await this.loadText(section);
+    return this.parser.parseFromString(str, this.#type);
+  }
+  async loadSection(section) {
+    if (this.#cache.has(section))
+      return this.#cache.get(section);
+    const str = await this.loadText(section);
+    const replaced = await this.replaceResources(str);
+    let doc2 = this.parser.parseFromString(replaced, this.#type);
+    if (doc2.querySelector("parsererror")) {
+      this.#type = MIME.HTML;
+      doc2 = this.parser.parseFromString(replaced, this.#type);
+    }
+    for (const [url2, node] of this.#inlineMap) {
+      for (const el of doc2.querySelectorAll(`img[src="${url2}"]`))
+        el.replaceWith(node);
+    }
+    const url = URL.createObjectURL(
+      new Blob([this.serializer.serializeToString(doc2)], { type: this.#type })
+    );
+    this.#cache.set(section, url);
+    return url;
+  }
+  getIndexByFID(fid) {
+    return this.#sections.findIndex((section) => section.frags.some((frag) => frag.index === fid));
+  }
+  #setFragmentSelector(id2, offset, selector2) {
+    const map = this.#fragmentSelectors.get(id2);
+    if (map)
+      map.set(offset, selector2);
+    else {
+      const map2 = /* @__PURE__ */ new Map();
+      this.#fragmentSelectors.set(id2, map2);
+      map2.set(offset, selector2);
+    }
+  }
+  async resolveHref(href) {
+    const { fid, off } = parsePosURI(href);
+    const index = this.getIndexByFID(fid);
+    if (index < 0)
+      return;
+    const saved = this.#fragmentSelectors.get(fid)?.get(off);
+    if (saved)
+      return { index, anchor: (doc2) => doc2.querySelector(saved) };
+    const { skel, frags } = this.#sections[index];
+    const frag = frags.find((frag2) => frag2.index === fid);
+    const offset = skel.offset + skel.length + frag.offset;
+    const fragRaw = await this.loadRaw(offset, offset + frag.length);
+    const str = this.mobi.decode(fragRaw).slice(off);
+    const selector2 = getFragmentSelector(str);
+    this.#setFragmentSelector(fid, off, selector2);
+    const anchor = (doc2) => doc2.querySelector(selector2);
+    return { index, anchor };
+  }
+  splitTOCHref(href) {
+    const pos = parsePosURI(href);
+    const index = this.getIndexByFID(pos.fid);
+    return [index, pos];
+  }
+  getTOCFragment(doc2, { fid, off }) {
+    const selector2 = this.#fragmentSelectors.get(fid)?.get(off);
+    return doc2.querySelector(selector2);
+  }
+  isExternal(uri) {
+    return /^(?!blob|kindle)\w+:/i.test(uri);
+  }
+  destroy() {
+    for (const url of this.#cache.values())
+      URL.revokeObjectURL(url);
+  }
+}
+var r = Uint8Array, e = Uint16Array, n = Uint32Array, a = new r([
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  1,
+  1,
+  2,
+  2,
+  2,
+  2,
+  3,
+  3,
+  3,
+  3,
+  4,
+  4,
+  4,
+  4,
+  5,
+  5,
+  5,
+  5,
+  0,
+  0,
+  0,
+  0
+]), t = new r([
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  2,
+  2,
+  3,
+  3,
+  4,
+  4,
+  5,
+  5,
+  6,
+  6,
+  7,
+  7,
+  8,
+  8,
+  9,
+  9,
+  10,
+  10,
+  11,
+  11,
+  12,
+  12,
+  13,
+  13,
+  0,
+  0
+]), i = new r([16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15]), f = function(r2, a2) {
+  for (var t2 = new e(31), i2 = 0; i2 < 31; ++i2)
+    t2[i2] = a2 += 1 << r2[i2 - 1];
+  var f2 = new n(t2[30]);
+  for (i2 = 1; i2 < 30; ++i2)
+    for (var o2 = t2[i2]; o2 < t2[i2 + 1]; ++o2)
+      f2[o2] = o2 - t2[i2] << 5 | i2;
+  return [t2, f2];
+}, o = f(a, 2), v = o[0], l = o[1];
+v[28] = 258, l[258] = 28;
+for (var u = f(t, 0)[0], c = new e(32768), d = 0; d < 32768; ++d) {
+  var s = (43690 & d) >>> 1 | (21845 & d) << 1;
+  s = (61680 & (s = (52428 & s) >>> 2 | (13107 & s) << 2)) >>> 4 | (3855 & s) << 4, c[d] = ((65280 & s) >>> 8 | (255 & s) << 8) >>> 1;
+}
+var w = function(r2, n2, a2) {
+  for (var t2 = r2.length, i2 = 0, f2 = new e(n2); i2 < t2; ++i2)
+    r2[i2] && ++f2[r2[i2] - 1];
+  var o2, v2 = new e(n2);
+  for (i2 = 0; i2 < n2; ++i2)
+    v2[i2] = v2[i2 - 1] + f2[i2 - 1] << 1;
+  {
+    o2 = new e(1 << n2);
+    var l2 = 15 - n2;
+    for (i2 = 0; i2 < t2; ++i2)
+      if (r2[i2])
+        for (var u = i2 << 4 | r2[i2], d = n2 - r2[i2], s = v2[r2[i2] - 1]++ << d, w2 = s | (1 << d) - 1; s <= w2; ++s)
+          o2[c[s] >>> l2] = u;
+  }
+  return o2;
+}, b = new r(288);
+for (d = 0; d < 144; ++d)
+  b[d] = 8;
+for (d = 144; d < 256; ++d)
+  b[d] = 9;
+for (d = 256; d < 280; ++d)
+  b[d] = 7;
+for (d = 280; d < 288; ++d)
+  b[d] = 8;
+var h = new r(32);
+for (d = 0; d < 32; ++d)
+  h[d] = 5;
+var E = w(b, 9), p = w(h, 5), g = function(r2) {
+  for (var e2 = r2[0], n2 = 1; n2 < r2.length; ++n2)
+    r2[n2] > e2 && (e2 = r2[n2]);
+  return e2;
+}, y = function(r2, e2, n2) {
+  var a2 = e2 / 8 | 0;
+  return (r2[a2] | r2[a2 + 1] << 8) >> (7 & e2) & n2;
+}, k = function(r2, e2) {
+  var n2 = e2 / 8 | 0;
+  return (r2[n2] | r2[n2 + 1] << 8 | r2[n2 + 2] << 16) >> (7 & e2);
+}, T = [
+  "unexpected EOF",
+  "invalid block type",
+  "invalid length/literal",
+  "invalid distance",
+  "stream finished",
+  "no stream handler",
+  ,
+  "no callback",
+  "invalid UTF-8 data",
+  "extra field too long",
+  "date not in range 1980-2099",
+  "filename too long",
+  "stream finishing",
+  "invalid zip data"
+], m = function(r2, e2, n2) {
+  var a2 = new Error(e2 || T[r2]);
+  if (a2.code = r2, Error.captureStackTrace && Error.captureStackTrace(a2, m), !n2)
+    throw a2;
+  return a2;
+}, x = function(f2, o2, l2) {
+  var c = f2.length;
+  if (!c || l2 && l2.f && !l2.l)
+    return o2 || new r(0);
+  var d = !o2 || l2, s = !l2 || l2.i;
+  l2 || (l2 = {}), o2 || (o2 = new r(3 * c));
+  var b2 = function(e2) {
+    var n2 = o2.length;
+    if (e2 > n2) {
+      var a2 = new r(Math.max(2 * n2, e2));
+      a2.set(o2), o2 = a2;
+    }
+  }, h2 = l2.f || 0, T2 = l2.p || 0, x2 = l2.b || 0, S2 = l2.l, U2 = l2.d, _2 = l2.m, z2 = l2.n, A = 8 * c;
+  do {
+    if (!S2) {
+      h2 = y(f2, T2, 1);
+      var M = y(f2, T2 + 1, 3);
+      if (T2 += 3, !M) {
+        var B = f2[(C = 4 + ((T2 + 7) / 8 | 0)) - 4] | f2[C - 3] << 8, D = C + B;
+        if (D > c) {
+          s && m(0);
+          break;
+        }
+        d && b2(x2 + B), o2.set(f2.subarray(C, D), x2), l2.b = x2 += B, l2.p = T2 = 8 * D, l2.f = h2;
+        continue;
+      }
+      if (1 == M)
+        S2 = E, U2 = p, _2 = 9, z2 = 5;
+      else if (2 == M) {
+        var F = y(f2, T2, 31) + 257, L = y(f2, T2 + 10, 15) + 4, N = F + y(f2, T2 + 5, 31) + 1;
+        T2 += 14;
+        for (var P = new r(N), R = new r(19), Y = 0; Y < L; ++Y)
+          R[i[Y]] = y(f2, T2 + 3 * Y, 7);
+        T2 += 3 * L;
+        var O = g(R), j = (1 << O) - 1, q = w(R, O);
+        for (Y = 0; Y < N; ) {
+          var C, G = q[y(f2, T2, j)];
+          if (T2 += 15 & G, (C = G >>> 4) < 16)
+            P[Y++] = C;
+          else {
+            var H = 0, I = 0;
+            for (16 == C ? (I = 3 + y(f2, T2, 3), T2 += 2, H = P[Y - 1]) : 17 == C ? (I = 3 + y(f2, T2, 7), T2 += 3) : 18 == C && (I = 11 + y(f2, T2, 127), T2 += 7); I--; )
+              P[Y++] = H;
+          }
+        }
+        var J = P.subarray(0, F), K = P.subarray(F);
+        _2 = g(J), z2 = g(K), S2 = w(J, _2), U2 = w(K, z2);
+      } else
+        m(1);
+      if (T2 > A) {
+        s && m(0);
+        break;
+      }
+    }
+    d && b2(x2 + 131072);
+    for (var Q = (1 << _2) - 1, V = (1 << z2) - 1, W = T2; ; W = T2) {
+      var X2 = (H = S2[k(f2, T2) & Q]) >>> 4;
+      if ((T2 += 15 & H) > A) {
+        s && m(0);
+        break;
+      }
+      if (H || m(2), X2 < 256)
+        o2[x2++] = X2;
+      else {
+        if (256 == X2) {
+          W = T2, S2 = null;
+          break;
+        }
+        var Z = X2 - 254;
+        if (X2 > 264) {
+          var $2 = a[Y = X2 - 257];
+          Z = y(f2, T2, (1 << $2) - 1) + v[Y], T2 += $2;
+        }
+        var rr = U2[k(f2, T2) & V], er = rr >>> 4;
+        rr || m(3), T2 += 15 & rr;
+        K = u[er];
+        if (er > 3) {
+          $2 = t[er];
+          K += k(f2, T2) & (1 << $2) - 1, T2 += $2;
+        }
+        if (T2 > A) {
+          s && m(0);
+          break;
+        }
+        d && b2(x2 + 131072);
+        for (var nr = x2 + Z; x2 < nr; x2 += 4)
+          o2[x2] = o2[x2 - K], o2[x2 + 1] = o2[x2 + 1 - K], o2[x2 + 2] = o2[x2 + 2 - K], o2[x2 + 3] = o2[x2 + 3 - K];
+        x2 = nr;
+      }
+    }
+    l2.l = S2, l2.p = W, l2.b = x2, l2.f = h2, S2 && (h2 = 1, l2.m = _2, l2.d = U2, l2.n = z2);
+  } while (!h2);
+  return x2 == o2.length ? o2 : function(a2, t2, i2) {
+    (null == i2 || i2 > a2.length) && (i2 = a2.length);
+    var f3 = new (2 == a2.BYTES_PER_ELEMENT ? e : 4 == a2.BYTES_PER_ELEMENT ? n : r)(i2 - t2);
+    return f3.set(a2.subarray(t2, i2)), f3;
+  }(o2, 0, x2);
+}, S = new r(0), U = function(r2) {
+  (8 != (15 & r2[0]) || r2[0] >>> 4 > 7 || (r2[0] << 8 | r2[1]) % 31) && m(6, "invalid zlib data"), 32 & r2[1] && m(6, "invalid zlib data: preset dictionaries not supported");
+};
+function _(r2, e2) {
+  return x((U(r2), r2.subarray(2, -4)), e2);
+}
+var z = "undefined" != typeof TextDecoder && new TextDecoder();
+try {
+  z.decode(S, { stream: true }), 1;
+} catch (r2) {
+}
+const isZip = async (file2) => {
+  const arr = new Uint8Array(await file2.slice(0, 4).arrayBuffer());
+  return arr[0] === 80 && arr[1] === 75 && arr[2] === 3 && arr[3] === 4;
+};
+const isPDF = async (file2) => {
+  const arr = new Uint8Array(await file2.slice(0, 5).arrayBuffer());
+  return arr[0] === 37 && arr[1] === 80 && arr[2] === 68 && arr[3] === 70 && arr[4] === 45;
+};
+const makeZipLoader = async (file2) => {
+  const { configure, ZipReader, BlobReader, TextWriter, BlobWriter } = await __vitePreload(() => import("./zip-Ciets8Rr.js"), true ? [] : void 0, import.meta.url);
+  configure({ useWebWorkers: false });
+  const reader = new ZipReader(new BlobReader(file2));
+  const entries = await reader.getEntries();
+  const map = new Map(entries.map((entry) => [entry.filename, entry]));
+  const load = (f2) => (name, ...args) => map.has(name) ? f2(map.get(name), ...args) : null;
+  const loadText = load((entry) => entry.getData(new TextWriter()));
+  const loadBlob = load((entry, type) => entry.getData(new BlobWriter(type)));
+  const getSize = (name) => map.get(name)?.uncompressedSize ?? 0;
+  return { entries, loadText, loadBlob, getSize };
+};
+const getFileEntries = async (entry) => entry.isFile ? entry : (await Promise.all(
+  Array.from(
+    await new Promise(
+      (resolve2, reject) => entry.createReader().readEntries(
+        (entries) => resolve2(entries),
+        (error) => reject(error)
+      )
+    ),
+    getFileEntries
+  )
+)).flat();
+const makeDirectoryLoader = async (entry) => {
+  const entries = await getFileEntries(entry);
+  const files = await Promise.all(
+    entries.map(
+      (entry2) => new Promise(
+        (resolve2, reject) => entry2.file(
+          (file2) => resolve2([file2, entry2.fullPath]),
+          (error) => reject(error)
+        )
+      )
+    )
+  );
+  const map = new Map(files.map(([file2, path]) => [path.replace(entry.fullPath + "/", ""), file2]));
+  const decoder2 = new TextDecoder();
+  const decode2 = (x2) => x2 ? decoder2.decode(x2) : null;
+  const getBuffer = (name) => map.get(name)?.arrayBuffer() ?? null;
+  const loadText = async (name) => decode2(await getBuffer(name));
+  const loadBlob = (name) => map.get(name);
+  const getSize = (name) => map.get(name)?.size ?? 0;
+  return { loadText, loadBlob, getSize };
+};
+const isCBZ = ({ name, type }) => type === "application/vnd.comicbook+zip" || name.endsWith(".cbz");
+const isFB2 = ({ name, type }) => type === "application/x-fictionbook+xml" || name.endsWith(".fb2");
+const isFBZ = ({ name, type }) => type === "application/x-zip-compressed-fb2" || name.endsWith(".fb2.zip") || name.endsWith(".fbz");
+const getBook = async (file2) => {
+  let book2;
+  if (file2.isDirectory) {
+    const loader = await makeDirectoryLoader(file2);
+    book2 = await new EPUB2(loader).init();
+  } else if (!file2.size)
+    throw new Error("File not found");
+  else if (await isZip(file2)) {
+    const loader = await makeZipLoader(file2);
+    if (isCBZ(file2)) {
+      book2 = makeComicBook(loader, file2);
+    } else if (isFBZ(file2)) {
+      const { entries } = loader;
+      const entry = entries.find((entry2) => entry2.filename.endsWith(".fb2"));
+      const blob = await loader.loadBlob((entry ?? entries[0]).filename);
+      book2 = await makeFB2(blob);
+    } else {
+      book2 = await new EPUB2(loader).init();
+    }
+  } else if (await isPDF(file2)) {
+    const { makePDF } = await __vitePreload(() => import("./pdf-DczSHcqS.js"), true ? [] : void 0, import.meta.url);
+    book2 = await makePDF(file2);
+  } else {
+    if (await isMOBI(file2)) {
+      book2 = await new MOBI2({ unzlib: _ }).open(file2);
+    } else if (isFB2(file2)) {
+      book2 = await makeFB2(file2);
+    }
+  }
+  if (!book2)
+    throw new Error("File type not supported");
+  return book2;
+};
+const estimatedHeight = (node) => {
+  node.classList.add("prose", "prose-width", "prose-hidden");
+  document.body.appendChild(node);
+  const height = window.getComputedStyle(node).height;
+  document.body.removeChild(node);
+  return +height.replace("px", "");
+};
+class Reader2 {
+  blobs = /* @__PURE__ */ new Map();
+  // 保存图片 blob内容
+  book;
+  constructor() {
+    this.#handleImg.bind(this);
+    this.#handleLinks.bind(this);
+    this.#resolveCFI.bind(this);
+    this.#handleRecIndexImg.bind(this);
+  }
+  /**
+   * 打开文件渲染器
+   * @param {*} file 文件内容
+   * @param {*} isHandle 是否对章节额外处理，比如处理图片链接。如果只是读取文件信息，则不需要处理
+   * @returns
+   */
+  open = async (file2) => {
+    this.book = await getBook(file2);
+  };
+  /**
+   * 根据href 获取blob格式的图片内容
+   * @param {*} href
+   * @returns
+   */
+  getImgBlob = (href) => {
+    let result = null;
+    if (href && this.blobs.has(href)) {
+      result = this.blobs.get(href);
+    }
+    return result;
+  };
+  /**
+   * 获取元信息
+   */
+  getMetadata = () => {
+    return this.book.metadata;
+  };
+  /**
+   * 获取封面
+   * @returns
+   */
+  getCover = async () => {
+    return await Promise.resolve(this.book.getCover?.());
+  };
+  getSections = async () => {
+    if (this.book.type !== "pdf") {
+      const result = [];
+      for (const section of this.book.sections) {
+        const id2 = section.id;
+        const doc2 = await section.createDocument();
+        const body = doc2.querySelector("body");
+        const height = estimatedHeight(body.cloneNode(true));
+        this.#handleLinks(body, section);
+        await this.#handleImg(body, section);
+        const html = body.innerHTML.replace(/xmlns=".*?"/g, "").replace(/<([a-zA-Z0-9]+)(\s[^>]*)?>\s*<\/\1>/g, "");
+        result.push({ height, html, id: id2 });
+      }
+      return result;
+    } else {
+      return this.book.sections;
+    }
+  };
+  /**
+   * 判断书本内容里的链接是否是外部链接
+   * @param {*} href
+   * @returns
+   */
+  isExternal = (href) => {
+    return this.book.isExternal?.(href);
+  };
+  resolveNavigation = (target) => {
+    try {
+      if (typeof target === "number")
+        return { index: target };
+      if (isCFI.test(target))
+        return this.resolveCFI(target);
+      return this.book.resolveHref(target);
+    } catch (e2) {
+      console.error(e2);
+      console.error(`Could not resolve target ${target}`);
+    }
+  };
+  destroy = () => {
+    this.book.destroy();
+    this.blobs.clear();
+  };
+  #resolveCFI(cfi) {
+    if (this.book.resolveCFI)
+      return this.book.resolveCFI(cfi);
+    else {
+      const parts = parse(cfi);
+      const index = fake.toIndex((parts.parent ?? parts).shift());
+      const anchor = (doc2) => toRange(doc2, parts);
+      return { index, anchor };
+    }
+  }
+  #replace(dom, section, attr) {
+    const href_ = dom.getAttribute(attr);
+    const href = section?.resolveHref?.(href_) ?? href_;
+    dom.setAttribute(attr, href);
+    return href;
+  }
+  /**
+   * 处理书本链接
+   */
+  #handleLinks(dom, section) {
+    const links = dom.querySelectorAll("a[href]");
+    for (const item of links) {
+      this.#replace(item, section, "href");
+    }
+  }
+  async #handleRecIndexImg(dom, section) {
+    for (const img of dom.querySelectorAll("img[recindex]")) {
+      const href = this.#replace(img, section, "recindex");
+      if (href) {
+        const blob = await this.book?.loadBlob(href);
+        if (blob) {
+          this.blobs.set(href, blob);
+        }
+      }
+    }
+  }
+  /**
+   * 处理图片
+   * @param dom
+   * @param section
+   */
+  async #handleImg(dom, section) {
+    try {
+      await this.#handleRecIndexImg(dom, section);
+      const imgs = dom.querySelectorAll("img[src]");
+      for (const img of imgs) {
+        const href = this.#replace(img, section, "src");
+        if (href) {
+          if (this.book.loadBlob) {
+            const blob = await this.book?.loadBlob(href);
+            if (blob) {
+              this.blobs.set(href, blob);
+            }
+          } else if (this.book.loadResourceBlob) {
+            console.log("mobi azw3 loadResourceBlob");
+            const blob = await this.book.loadResourceBlob(href);
+            if (blob) {
+              this.blobs.set(href, blob);
+            }
+          } else {
+            console.log("todo handle imgae resource");
+          }
+        }
+      }
+    } catch (e2) {
+      console.error("handle img to blob error: ", e2);
+    }
+  }
+  /**
+   * 获取字符串形式的作者
+   * @param {*} author
+   * @returns
+   */
+  static handleAuthor = (author) => {
+    return typeof author === "string" ? author : author?.map((author2) => typeof author2 === "string" ? author2 : author2.name)?.join(", ") ?? "";
+  };
+  /**
+   * 获取字符串形式的语言
+   * @param {*} language
+   * @returns
+   */
+  static handleLanguage = (language) => {
+    return typeof language === "string" ? language : language?.join(", ") ?? "";
+  };
+}
 let bookRender = null;
 class DPFUtil {
   static isPDF = ref(false);
@@ -51040,7 +54353,7 @@ class DPFUtil {
   static sections = [];
 }
 const render = async (file2) => {
-  bookRender = new Reader();
+  bookRender = new Reader2();
   await bookRender.open(file2);
   const sections = await bookRender.getSections();
   const toc = bookRender.book.toc || [];
@@ -59912,10 +63225,10 @@ const _sfc_main$4 = /* @__PURE__ */ defineComponent({
     );
     const list = computed(() => {
       return [
-        { id: "auto", value: t$2("pdf.auto") },
-        { id: "page-actual", value: t$2("pdf.pageActual") },
-        { id: "page-fit", value: t$2("pdf.pageFit") },
-        { id: "page-width", value: t$2("pdf.pageWidth") },
+        { id: "auto", value: t$3("pdf.auto") },
+        { id: "page-actual", value: t$3("pdf.pageActual") },
+        { id: "page-fit", value: t$3("pdf.pageFit") },
+        { id: "page-width", value: t$3("pdf.pageWidth") },
         { id: "50%", value: "50%" },
         { id: "75%", value: "75%" },
         { id: "100%", value: "100%" },
@@ -60206,7 +63519,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
       tags.value.splice(index, 1);
       const tag2 = TagAction.toJSON(get(tags));
       await NoteAction.update(get(note2).id, { tag: tag2 });
-      toastSuccess(t$2("tag.removeTagSuccess"));
+      toastSuccess(t$3("tag.removeTagSuccess"));
     };
     const note2 = ref();
     const noteRef = ref(null);
@@ -60243,7 +63556,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     const removeNote = async (_2, index) => {
       noteList.value.splice(index, 1);
       await NoteAction.update(get(note2).id, { notes: JSON.stringify(get(noteList)) });
-      toastSuccess(t$2("note.removeSuccess"));
+      toastSuccess(t$3("note.removeSuccess"));
     };
     onClickOutside$1(noteRef, (e2) => {
       closeDom(container, e2);
@@ -60261,11 +63574,11 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
     const list = computed(() => {
       return [
-        { name: t$2("common.copy"), icon: Copy, click: () => noteToolBar.copySource(), active: "copy" },
-        { name: t$2("line.marker"), icon: Highlighter, click: () => noteToolBar.marker(), active: HighlightType.marker },
-        { name: t$2("line.beeline"), icon: Baseline, click: () => noteToolBar.beeline(), active: HighlightType.beeline },
-        { name: t$2("line.wavy"), icon: SpellCheck2, click: () => noteToolBar.wavy(), active: HighlightType.wavy },
-        { name: t$2("note.write"), icon: MessageSquareMore, click: openNoteRich, active: "note" }
+        { name: t$3("common.copy"), icon: Copy, click: () => noteToolBar.copySource(), active: "copy" },
+        { name: t$3("line.marker"), icon: Highlighter, click: () => noteToolBar.marker(), active: HighlightType.marker },
+        { name: t$3("line.beeline"), icon: Baseline, click: () => noteToolBar.beeline(), active: HighlightType.beeline },
+        { name: t$3("line.wavy"), icon: SpellCheck2, click: () => noteToolBar.wavy(), active: HighlightType.wavy },
+        { name: t$3("note.write"), icon: MessageSquareMore, click: openNoteRich, active: "note" }
       ];
     });
     const onRemove = () => {
@@ -60295,7 +63608,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
             createBaseVNode("div", _hoisted_5$1, [
               createBaseVNode("div", {
                 class: "tooltip flex",
-                "data-tip": unref(t$2)("setting.autoHighlight")
+                "data-tip": unref(t$3)("setting.autoHighlight")
               }, [
                 withDirectives(createBaseVNode("input", {
                   type: "checkbox",
@@ -60327,7 +63640,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
               key: 0,
               onClick: _cache[1] || (_cache[1] = withModifiers(($event) => onRemove(), ["stop"])),
               class: "tooltip",
-              "data-tip": unref(t$2)("common.remove")
+              "data-tip": unref(t$3)("common.remove")
             }, [
               createBaseVNode("a", null, [
                 createVNode(unref(Trash))
@@ -60618,7 +63931,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
       sessionStorage.removeItem("book-wise_refrersh");
       if (!postion)
         return;
-      toastSuccess(t$2("book.jumpToLastPosition"));
+      toastSuccess(t$3("book.jumpToLastPosition"));
       const data2 = JSON.parse(postion);
       if (get(isPDF2)) {
         PDF.pageJump(data2.page);
@@ -60782,7 +64095,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
                           createBaseVNode("a", _hoisted_15, [
                             createVNode(unref(_sfc_main$A), { "summary-class": "flex flex-row justify-between  w-52 dropdown-left px-4 py-2" }, {
                               summary: withCtx(() => [
-                                createBaseVNode("span", _hoisted_16, toDisplayString$1(unref(t$2)("setting.theme")), 1),
+                                createBaseVNode("span", _hoisted_16, toDisplayString$1(unref(t$3)("setting.theme")), 1),
                                 createBaseVNode("div", _hoisted_17, toDisplayString$1(unref(settingStore).theme), 1)
                               ]),
                               default: withCtx(() => [
@@ -60801,7 +64114,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
                           createBaseVNode("a", _hoisted_18, [
                             createVNode(unref(_sfc_main$A), { "summary-class": "flex flex-row justify-between  w-52  dropdown-left px-4 py-2" }, {
                               summary: withCtx(() => [
-                                createBaseVNode("span", _hoisted_19, toDisplayString$1(unref(t$2)("setting.readMode")), 1),
+                                createBaseVNode("span", _hoisted_19, toDisplayString$1(unref(t$3)("setting.readMode")), 1),
                                 createBaseVNode("div", _hoisted_20, toDisplayString$1(unref(getSelectReadMode)(unref(settingStore).readMode)), 1)
                               ]),
                               default: withCtx(() => [
