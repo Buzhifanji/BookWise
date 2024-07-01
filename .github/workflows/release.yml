@@ -70,7 +70,8 @@ jobs:
       - name: Install Snapcraft
         uses: samuelmeuli/action-snapcraft@v2
         if: startsWith(matrix.os, 'ubuntu')
-
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SECRET_TOKEN }}
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
