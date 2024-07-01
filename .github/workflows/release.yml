@@ -14,13 +14,8 @@ jobs:
     permissions:
       contents: write
 
-      runs-on:
-        ${{ matrix.os }} 
+      runs-on: ubuntu-latest
 
-      strategy:
-        matrix:
-          os: [ubuntu-latest]
-      
       steps:
         - name: Check out Git repository
           uses: actions/checkout@v4
