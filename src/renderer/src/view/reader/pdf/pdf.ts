@@ -1,25 +1,43 @@
+// import {
+//   EventBus,
+//   // GenericL10n,
+//   PDFFindController,
+//   PDFLinkService,
+//   PDFViewer
+// } from '@renderer/reader/pdf-lib/web'
 import { $ } from '@renderer/shared'
-import { GlobalWorkerOptions, PDFDocumentProxy, getDocument } from 'pdfjs-dist'
+// import { GlobalWorkerOptions, PDFDocumentProxy, getDocument } from 'pdfjs-dist'
+// import { EventBus, PDFFindController, PDFLinkService, PDFViewer } from 'pdfjs-dist/web/pdf_viewer'
+import * as PDFLib from '@renderer/reader/pdf-lib'
+import {
+  EventBus,
+  PDFFindController,
+  PDFLinkService,
+  PDFViewer
+} from '@renderer/reader/pdf-lib/web'
 
 import { NoteAction } from '@renderer/components'
 import { ReadMode } from '@renderer/enum'
 import { settingStore } from '@renderer/store'
 
-import {
-  EventBus,
-  GenericL10n,
-  PDFFindController,
-  PDFLinkService,
-  PDFViewer
-} from 'pdfjs-dist/web/pdf_viewer'
+// import {
+//   EventBus,
+//   GenericL10n,
+//   PDFFindController,
+//   PDFLinkService,
+//   PDFViewer
+// } from 'pdfjs-dist/web/pdf_viewer'
 import { highlighter } from '../highlight'
 import { getSourceTarget } from '../util'
 
-GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url).href
+PDFLib.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.mjs',
+  import.meta.url
+).href
 
 class PDFTool {
   pdfViewer: any | null = null // pdf 上下文
-  pdfDocument: PDFDocumentProxy | null = null
+  pdfDocument: PDFLib.PDFDocumentProxy | null = null
   bookId: string | null = null
 
   async render(content: ArrayBuffer, bookId: string) {
@@ -33,21 +51,21 @@ class PDFTool {
 
         const findController = new PDFFindController({ eventBus, linkService })
 
-        const l10n = new GenericL10n('zh-CN')
+        // const l10n = new GenericL10n('zh-CN')
 
         const view = new PDFViewer({
           container: container,
           eventBus,
           linkService,
-          findController,
-          l10n
+          findController
+          // l10n
         })
 
         view.currentScale = settingStore.value.pdfScale
 
         linkService.setViewer(view)
 
-        const loadingTask = getDocument(content)
+        const loadingTask = PDFLib.getDocument(content)
 
         const pdfDocument = await loadingTask.promise
 

@@ -2,7 +2,6 @@
 import { t } from '@renderer/view/setting';
 import { onClickOutside, set, useStorage } from '@vueuse/core';
 import { Minus, Plus } from 'lucide-vue-next';
-import 'pdfjs-dist/web/pdf_viewer.css';
 import { computed, ref } from 'vue';
 import { PDF } from './pdf';
 

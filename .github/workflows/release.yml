@@ -31,12 +31,15 @@ jobs:
         with:
           node-version: 20
 
+      - name: Install PNPM
+        run: npm i -g pnpm
+
       - name: Install dependencies
-        run: npm i
+        run: pnpm install --frozen-lockfile
 
       - name: Build web
         # 构建网页版
-        run: npm run build
+        run: pnpm build
         env:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
@@ -49,7 +52,7 @@ jobs:
 
       - name: Build Electron package
         # 不同系统会对应打包出不同类型安装包，打包完成会自动生成 Releases 草稿
-        run: npm run release
+        run: pnpm release
         env:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 

@@ -6,7 +6,8 @@ import { cloneBuffer, convertBlobToUint8Array, isElectron, now, toastSuccess, to
 import { t } from '@renderer/view/setting';
 import { useToggle } from '@vueuse/core';
 import { Upload } from 'lucide-vue-next';
-import { PDFPageProxy, getDocument } from 'pdfjs-dist';
+// import { PDFPageProxy, getDocument } from 'pdfjs-dist';
+import * as PDFLib from '@renderer/reader/pdf-lib';
 import { v4 as uuidv4 } from 'uuid';
 import { defineExpose, ref } from 'vue';
 import { BookAction, BookContentAction } from '../book/action';
@@ -20,7 +21,7 @@ defineExpose({ open: openDialog })
 
 const inputRef = ref<HTMLInputElement | null>(null)
 
-const getPDFCover = async (page: PDFPageProxy) => {
+const getPDFCover = async (page: PDFLib.PDFPageProxy) => {
     const naturalPdfSize = page.getViewport({ scale: 1 })
     const naturalPdfRatio = naturalPdfSize.width / naturalPdfSize.height
     const appRatio = innerWidth / innerHeight
@@ -70,7 +71,7 @@ const handleFiles = async (files: FileList) => {
             }
 
             if (reader.book.type === 'pdf') {
-                const pdf = await getDocument({ data: cloneBuffer(data) }).promise
+                const pdf = await PDFLib.getDocument({ data: cloneBuffer(data) }).promise
                 const info = (await pdf.getMetadata())?.info as any
                 const blob = await getPDFCover(await pdf.getPage(1)) as Blob
                 const cover = await convertBlobToUint8Array(blob)

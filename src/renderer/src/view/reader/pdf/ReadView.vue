@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { settingStore, useBookPageStore } from '@renderer/store';
 import { get, onKeyStroke, useDebounceFn, useElementSize, useResizeObserver, useThrottleFn } from '@vueuse/core';
-import 'pdfjs-dist/web/pdf_viewer.css';
+// import 'pdfjs-dist/web/pdf_viewer.css';
+import '../../../assets/css/viewer.css';
+
 import { onUnmounted, ref, watchEffect } from 'vue';
 import { toNextView, toPrewView } from '../util';
 import { PDF, setSpreadMode } from './pdf';
