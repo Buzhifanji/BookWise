@@ -44,7 +44,7 @@ jobs:
           folder: out/renderer
   release:
     permissions:
-      contents: write
+      contents: read
 
     runs-on:
       ${{ matrix.os }} # 使用矩阵策略来确定操作系统
@@ -73,7 +73,7 @@ jobs:
       - name: Build Action
         run: pnpm release
         env:
-          github_token: ${{ secrets.SECRET_TOKEN }}
+          GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
       - name: Electron app
         uses: softprops/action-gh-release@v2
