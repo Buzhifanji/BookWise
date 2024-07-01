@@ -44,7 +44,6 @@ jobs:
         # 部署github page
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          ACCESS_TOKEN: ${{ secrets.SECRET_TOKEN }}
           BRANCH: gh-pages
           FOLDER: out/renderer
 
