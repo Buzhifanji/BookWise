@@ -73,8 +73,6 @@ jobs:
       - name: Build Action
         run: pnpm release
         env:
-            GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
-        with:
           github_token: ${{ secrets.SECRET_TOKEN }}
 
       - name: Electron app
