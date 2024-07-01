@@ -10,7 +10,7 @@ on:
 
 jobs:
   # 构建网页版
-  web: 
+  build: 
     permissions:
       contents: write
 
