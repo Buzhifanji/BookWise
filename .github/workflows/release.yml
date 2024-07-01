@@ -47,9 +47,9 @@ jobs:
 
       - name: Deploy website
         # 部署github page
-        uses: actions/deploy-pages@v4
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          BRANCH: gh-pages
+          BRANCH: docs
           FOLDER: out/renderer
 
       - name: Build Electron package
