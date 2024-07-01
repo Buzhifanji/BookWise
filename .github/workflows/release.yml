@@ -11,7 +11,9 @@ on:
 jobs:
   release:
     permissions:
-      contents: write
+      contents: read
+      pages: write
+      id-token: write
 
     runs-on:
       ${{ matrix.os }} # 使用矩阵策略来确定操作系统
@@ -45,9 +47,8 @@ jobs:
 
       - name: Deploy website
         # 部署github page
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: actions/deploy-pages@v4
         with:
-          ACCESS_TOKEN: ${{ secrets.SECRET_GH }}
           BRANCH: gh-pages
           FOLDER: out/renderer
 
