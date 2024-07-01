@@ -31,7 +31,7 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install PNPM
+      - name: Install pnpm
         run: npm i -g pnpm
 
       - name: Install dependencies
@@ -54,7 +54,7 @@ jobs:
         # 不同系统会对应打包出不同类型安装包，打包完成会自动生成 Releases 草稿
         run: pnpm release
         env:
-          GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
+          github_token: ${{ secrets.SECRET_TOKEN }}
 
       - name: Cleanup Artifacts for Windows
         if: matrix.os == 'windows-latest'
