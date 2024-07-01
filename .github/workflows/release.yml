@@ -1,0 +1,77 @@
+name: Build/release
+
+on:
+  push:
+    branches:
+      # 确保这是你正在使用的分支名称
+      - main
+    tags:
+      - 'v*' # 在推送的标签以"v"开头时执行
+
+jobs:
+  release:
+    runs-on:
+      ${{ matrix.os }} # 使用矩阵策略来确定操作系统
+
+
+      # 这个定义会启用3个系统进行打包
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js, NPM and Pnpm
+        uses: actions/setup-node@v1
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build web
+        # 构建网页版
+        run: pnpm build
+        env:
+          GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
+
+      - name: Deploy website
+        # 部署github page
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          ACCESS_TOKEN: ${{ secrets.SECRET_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: out/renderer
+
+      - name: Build Electron package
+        # 不同系统会对应打包出不同类型安装包，打包完成会自动生成 Releases 草稿
+        run: pnpm release
+        env:
+          GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
+
+      - name: Cleanup Artifacts for Windows
+        if: matrix.os == 'windows-latest'
+        run: |
+          npx rimraf "dist/!(*.exe)"
+
+      - name: Cleanup Artifacts for MacOS
+        if: matrix.os == 'macos-latest'
+        run: |
+          npx rimraf "dist/!(*.dmg)"
+
+      - name: upload artifacts
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          name: ${{ matrix.os }}
+          path: dist
+
+      - name: release
+        uses: softprops/action-gh-release@v2.0.16
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: 'dist/**'
+        env:
+          GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
