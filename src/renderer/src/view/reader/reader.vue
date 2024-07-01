@@ -92,8 +92,6 @@ async function loadData() {
     section.value = sections
     tocList.value = toc
     bookContent.value = content
-    // console.log(info)
-    // console.log(content)
     setLoading(false)
 
     await nextTick()
