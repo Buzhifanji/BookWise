@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { NoteText } from '@renderer/components';
 import dayjs from 'dayjs';
+import { NoteText } from './action';
 
 interface Props {
   data: NoteText[],

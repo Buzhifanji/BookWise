@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Note } from '@renderer/batabase';
-import { NoteAction, NoteText, bookJump } from '@renderer/components';
 import { useDialog } from '@renderer/hooks';
 import { RouterName } from '@renderer/route';
 import { chuankArray, remToPx, toastSuccess } from '@renderer/shared';
@@ -12,8 +11,10 @@ import { set } from '@vueuse/core';
 import dayjs from 'dayjs';
 import { Flag } from 'lucide-vue-next';
 import { computed, defineProps, ref, toRaw, withDefaults } from 'vue';
+import { bookJump } from '../book/action';
 import Card from './Card.vue';
 import NoteView from './Note.vue';
+import { NoteAction, NoteText } from './action';
 
 interface Props {
   data: Note[],

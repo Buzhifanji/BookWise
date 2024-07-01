@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { Note } from '@renderer/batabase';
-import { NoteAction } from '@renderer/components';
 import { settingStore } from '@renderer/store';
 import { t } from '@renderer/view/setting';
 import dayjs from 'dayjs';
 import { BellElectric, Ellipsis, Trash2 } from 'lucide-vue-next';
 import { computed, defineProps, ref } from 'vue';
+import { NoteAction } from './action';
 
 const props = defineProps<{ data: Note }>()
 

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
-import { BookReadTimeAction, BookshelfAction, NoteAction, ScoreInputView, SkeletonView } from '@renderer/components';
 import { useDialog } from '@renderer/hooks';
 import { convertUint8ArrayToURL, formatDecimal, formatFileSize, getInterval, isUndefined, toastError } from '@renderer/shared';
 import { t } from '@renderer/view/setting';
@@ -8,6 +7,9 @@ import { vOnClickOutside } from '@vueuse/components';
 import { useToggle } from '@vueuse/core';
 import dayjs from 'dayjs';
 import { nextTick, ref } from 'vue';
+import { BookshelfAction } from '../../bookshelf/action';
+import { NoteAction } from '../../note/action';
+import { BookReadTimeAction } from '../action';
 
 const props = defineProps<{ book: Book }>()
 

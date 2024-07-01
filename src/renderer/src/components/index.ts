@@ -8,6 +8,7 @@ import List from './list/List.vue'
 import RingLoadingView from './loading/RingLoading.vue'
 import SkeletonView from './loading/Skeleton.vue'
 import NoteListView from './note/NoteList.vue'
+import { NoteAction, NoteText } from './note/action'
 import Select from './select/Select.vue'
 import SelectView from './select/SelectView.vue'
 import { SelectItem } from './select/type'
@@ -25,7 +26,6 @@ export * from './book/enum'
 export * from './book/score'
 export * from './bookshelf/action'
 export * from './drawer/toggle'
-export * from './note/action'
 export * from './tag/action'
 export * from './toast'
 
@@ -39,6 +39,7 @@ export {
   FileUploadView,
   FoldTreeView,
   List,
+  NoteAction,
   NoteListView,
   RingLoadingView,
   ScoreInputView,
@@ -49,4 +50,4 @@ export {
   TagListView
 }
 
-export { type SelectItem }
+export { type NoteText, type SelectItem }
