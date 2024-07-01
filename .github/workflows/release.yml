@@ -44,7 +44,7 @@ jobs:
           folder: out/renderer
   release:
     permissions:
-      contents: read
+      contents: write
 
     runs-on:
       ${{ matrix.os }} # 使用矩阵策略来确定操作系统
