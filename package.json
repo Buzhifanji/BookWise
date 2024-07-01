@@ -100,7 +100,7 @@
     "publish": {
       "provider": "github",
       "repo": "Bookwise",
-      "owner": "Bookwise"
+      "owner": "Buzhifanji"
     },
     "buildDependenciesFromSource": false,
     "nodeGypRebuild": false,
