@@ -9,6 +9,44 @@ on:
       - 'v*' # 在推送的标签以"v"开头时执行
 
 jobs:
+  # 构建网页版
+  web: 
+    permissions:
+      contents: write
+
+      runs-on:
+        ${{ matrix.os }} 
+
+      strategy:
+        matrix:
+          os: [ubuntu-latest]
+      
+      steps:
+        - name: Check out Git repository
+          uses: actions/checkout@v4
+
+        - name: Install Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version: 20
+
+        - name: Install pnpm
+          run: npm i -g pnpm
+
+        - name: Install dependencies
+          run: pnpm install --frozen-lockfile
+
+        - name: Build web
+          run: pnpm build
+          env:
+            GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
+
+        - name: Deploy website
+          # 部署github page
+          uses: JamesIves/github-pages-deploy-action@v4
+          with:
+            branch: docs
+            folder: out/renderer
   release:
     permissions:
       contents: write
@@ -37,30 +75,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build web
-        # 构建网页版
-        run: pnpm build
-        env:
-          GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
-
-      # - name: Install rsync 📚
-      #   run: |
-      #     apt-get update && apt-get install -y rsync
-
-      - name: Deploy website
-        # 部署github page
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Build/release Electron app
+        uses: samuelmeuli/action-electron-builder@v1
         with:
-          branch: docs
-          folder: out/renderer
+          # GitHub token, automatically provided to the action
+          # (No need to define this secret in the repo settings)
+          github_token: ${{ secrets.SECRET_TOKEN }}
 
-      # - name: Build/release Electron app
-      #   uses: samuelmeuli/action-electron-builder@v1
-      #   with:
-      #     # GitHub token, automatically provided to the action
-      #     # (No need to define this secret in the repo settings)
-      #     github_token: ${{ secrets.SECRET_TOKEN }}
-
-      #     # If the commit is tagged with a version (e.g. "v1.0.0"),
-      #     # release the app after building
-      #     release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+          # If the commit is tagged with a version (e.g. "v1.0.0"),
+          # release the app after building
+          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
