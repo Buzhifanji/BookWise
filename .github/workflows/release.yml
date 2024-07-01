@@ -11,9 +11,7 @@ on:
 jobs:
   release:
     permissions:
-      contents: read
-      pages: write
-      id-token: write
+      contents: write
 
     runs-on:
       ${{ matrix.os }} # 使用矩阵策略来确定操作系统
@@ -49,8 +47,8 @@ jobs:
         # 部署github page
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          BRANCH: docs
-          FOLDER: out/renderer
+          branch: docs
+          folder: out/renderer
 
       - name: Build Electron package
         # 不同系统会对应打包出不同类型安装包，打包完成会自动生成 Releases 草稿
