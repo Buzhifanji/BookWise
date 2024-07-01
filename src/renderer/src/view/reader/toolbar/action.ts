@@ -1,7 +1,7 @@
-import { DomSource } from '@book-wise/web-highlight'
 import { Note, Tag } from '@renderer/batabase'
 import { NoteAction, NoteText, TagAction } from '@renderer/components'
 import { now, toastSuccess, toastWarning } from '@renderer/shared'
+import { DomSource } from '@renderer/web-highlight'
 import { get, set, useClipboard } from '@vueuse/core'
 import { Ref, ref, shallowReactive } from 'vue'
 import { highlighter } from '../highlight'

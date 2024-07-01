@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Reader } from '@book-wise/reader';
 import { Book } from '@renderer/batabase';
 import { useDialog } from '@renderer/hooks';
+import { Reader } from '@renderer/reader';
 import { cloneBuffer, convertBlobToUint8Array, isElectron, now, toastSuccess, toastWarning } from '@renderer/shared';
 import { t } from '@renderer/view/setting';
 import { useToggle } from '@vueuse/core';

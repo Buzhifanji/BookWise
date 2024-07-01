@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { DomSource } from '@book-wise/web-highlight';
 import { settingStore } from '@renderer/store';
+import { DomSource } from '@renderer/web-highlight';
 import { get, set } from '@vueuse/core';
 import { ref, watchEffect } from 'vue';
 

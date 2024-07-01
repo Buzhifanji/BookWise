@@ -1,7 +1,7 @@
-import { DomSource } from '@book-wise/web-highlight'
 import { Note, db } from '@renderer/batabase'
 import { now, toastError } from '@renderer/shared'
 import { t } from '@renderer/view/setting'
+import { DomSource } from '@renderer/web-highlight'
 import { useObservable } from '@vueuse/rxjs'
 import { liveQuery } from 'dexie'
 import { v4 as uuidv4 } from 'uuid'
