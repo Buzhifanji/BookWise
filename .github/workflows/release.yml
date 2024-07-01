@@ -23,11 +23,13 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v4
 
-      - name: Install Node.js, NPM and Pnpm
+      - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: pnpm
+
+      - name: Install PNPM
+        run: npm i -g pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
