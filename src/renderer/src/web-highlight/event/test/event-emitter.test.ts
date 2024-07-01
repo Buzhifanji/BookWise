@@ -14,9 +14,9 @@ describe('测试 event-emitter 类', () => {
 
   test('测试 on 函数参数是否传递', () => {
     const bus = new EventEmitter()
-    const fn = vi.fn((a) => a + 1)
+    const fn = vi.fn((a: number) => a + 1)
 
-    bus.on('param', (a) => fn(a))
+    bus.on('param', (a: number) => fn(a))
     bus.emit('param', 2)
 
     expect(fn).toBeCalled()

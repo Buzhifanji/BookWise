@@ -1,4 +1,4 @@
-import { Reader } from '@book-wise/reader'
+import { Reader } from '@renderer/reader'
 import { isElectron } from '@renderer/shared'
 import { set } from '@vueuse/core'
 import { ref, shallowReactive } from 'vue'
