@@ -9,15 +9,6 @@ import App from './App.vue'
 
 import { ExpandTreeView, FoldTreeView } from '@renderer/components'
 
-// const workerSrc = new URL(
-//   '../../../node_modules/pdfjs-dist/legacy/build/pdf.worker.min.js',
-//   import.meta.url
-// ).href
-
-// console.log(workerSrc)
-
-// GlobalWorkerOptions.workerSrc = workerSrc
-
 const pinia = createPinia()
 
 createApp(App)
