@@ -67,6 +67,10 @@ jobs:
       - name: Install pnpm
         run: npm i -g pnpm
 
+      - name: Install Snapcraft
+        uses: samuelmeuli/action-snapcraft@v2
+        if: startsWith(matrix.os, 'ubuntu')
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
