@@ -15,7 +15,7 @@ jobs:
       contents: write
 
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
@@ -71,7 +71,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@v1
+        uses: samuelmeuli/action-electron-builder@v1.6.0
         with:
           # GitHub token, automatically provided to the action
           # (No need to define this secret in the repo settings)
