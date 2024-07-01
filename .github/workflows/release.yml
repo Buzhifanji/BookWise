@@ -40,7 +40,7 @@ jobs:
         # 部署github page
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: docs
+          branch: gh-pages
           folder: out/renderer
   release:
     permissions:
