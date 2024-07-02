@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { RouterName } from '@renderer/route';
+import { t } from '@renderer/view/setting';
 import { Book, PencilLine, Settings, Trash2 } from 'lucide-vue-next';
 import { ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
@@ -41,7 +42,7 @@ watchEffect(() => {
           <RouterLink :to="item.path" class="hover:bg-base-content/15" :class="{ 'active': index === activeIndex }">
             <div class="flex items-center gap-2">
               <component :is="item.icon" class="w-4 h-4" />
-              {{ $t(item.name) }}
+              {{ t(item.name) }}
             </div>
           </RouterLink>
         </li>

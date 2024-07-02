@@ -217,47 +217,47 @@ const onBookshelf = () => dialogAction(bookshelfDialog)
       <template v-if="isRecycleBin">
         <li @click="restoreOneBook()">
           <a>
-            <UndoDot class="h-5 w-5" />{{ $t('common.restore') }}
+            <UndoDot class="h-5 w-5" />{{ t('common.restore') }}
           </a>
         </li>
         <li @click="onRemove(true)">
           <a class="text-error">
-            <Trash2 class="h-5 w-5" />{{ $t('common.forceRemove') }}
+            <Trash2 class="h-5 w-5" />{{ t('common.forceRemove') }}
           </a>
         </li>
       </template>
       <template v-else>
         <li @click="onLove()">
           <a v-if="selectData?.isLove">
-            <HeartOff class="h-5 w-5" />{{ $t('common.removeLove') }}
+            <HeartOff class="h-5 w-5" />{{ t('common.removeLove') }}
           </a>
           <a v-else>
-            <Heart class="h-5 w-5" />{{ $t('common.addLove') }}
+            <Heart class="h-5 w-5" />{{ t('common.addLove') }}
           </a>
         </li>
         <li @click="onBookshelf()">
           <a>
-            <SquareLibrary class="h-5 w-5" />{{ $t('common.addBookshelf') }}
+            <SquareLibrary class="h-5 w-5" />{{ t('common.addBookshelf') }}
           </a>
         </li>
         <li @click="onRemove(false)">
           <a class="text-error">
-            <Trash2 class="h-5 w-5" />{{ $t('common.remove') }}
+            <Trash2 class="h-5 w-5" />{{ t('common.remove') }}
           </a>
         </li>
         <li @click="onEdite()">
           <a>
-            <PencilLine class="h-5 w-5" />{{ $t('common.edit') }}
+            <PencilLine class="h-5 w-5" />{{ t('common.edit') }}
           </a>
         </li>
         <li @click="onScore()">
           <a>
-            <Star class="h-5 w-5" />{{ $t('common.score') }}
+            <Star class="h-5 w-5" />{{ t('common.score') }}
           </a>
         </li>
         <li @click="onDetail()">
           <a>
-            <BellElectric class="h-5 w-5" />{{ $t('common.detail') }}
+            <BellElectric class="h-5 w-5" />{{ t('common.detail') }}
           </a>
         </li>
       </template>
@@ -267,11 +267,11 @@ const onBookshelf = () => dialogAction(bookshelfDialog)
     <div class="hero-content text-center">
       <div class="max-w-md" v-if="isRecycleBin">
         <h1 class="text-5xl font-bold">{{ t('common.empty') }}</h1>
-        <p class="py-6">{{ $t('book.recycleNoRecord') }}</p>
+        <p class="py-6">{{ t('book.recycleNoRecord') }}</p>
       </div>
       <div class="max-w-md" v-else>
-        <h1 class="text-5xl font-bold">{{ $t('book.empty') }}</h1>
-        <p class="py-6">{{ $t('book.uploadBookTip') }}</p>
+        <h1 class="text-5xl font-bold">{{ t('book.empty') }}</h1>
+        <p class="py-6">{{ t('book.uploadBookTip') }}</p>
         <button class="btn btn-accent" @click="uploadAction()">
           <Plus />{{ t('file.upload') }}
         </button>

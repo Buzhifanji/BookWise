@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { RouterName } from '@renderer/route';
+import { t } from '@renderer/view/setting';
 
 </script>
 
@@ -30,10 +31,10 @@ import { RouterName } from '@renderer/route';
             fill="#FFEFB5" />
           <circle cx="113" cy="113" fill="none" r="109" stroke="#6E6E96" stroke-width="8" />
         </svg>
-        <h1 class="text-5xl font-bold pt-8">404 {{ $t('unfound.title') }}</h1>
-        <p class="py-6">{{ $t('unfound.desc') }}</p>
+        <h1 class="text-5xl font-bold pt-8">404 {{ t('unfound.title') }}</h1>
+        <p class="py-6">{{ t('unfound.desc') }}</p>
         <button class="btn btn-primary">
-          <RouterLink :to="RouterName.Home">{{ $t('unfound.tip') }}</RouterLink>
+          <RouterLink :to="RouterName.Home">{{ t('unfound.tip') }}</RouterLink>
         </button>
       </div>
     </div>

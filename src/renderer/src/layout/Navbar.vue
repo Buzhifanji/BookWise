@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { FileUploadView } from '@renderer/components';
 import { MENU_DRAWER } from '@renderer/shared';
+import { t } from '@renderer/view/setting';
 import { useWindowSize } from '@vueuse/core';
 import { AlignJustify, Search } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
@@ -40,7 +41,7 @@ function uploadAction() {
     </div>
     <div class="navbar-center"></div>
     <div class="navbar-end gap-4">
-      <button class="btn btn-sm btn-primary " @click="uploadAction()">{{ $t('file.upload') }}</button>
+      <button class="btn btn-sm btn-primary " @click="uploadAction()">{{ t('file.upload') }}</button>
       <FileUploadView ref="dialogRef" />
     </div>
   </div>

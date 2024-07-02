@@ -1332,9 +1332,9 @@
     0px - (var(--outline-width) + var(--resizer-size)) / 2 - var(--outline-around-width)
   );
   --editorFreeText-editing-cursor: text;
-  --editorInk-editing-cursor: url(images/cursor-editorInk.svg) 0 16, pointer;
+  /* --editorInk-editing-cursor: url(images/cursor-editorInk.svg) 0 16, pointer;
   --editorHighlight-editing-cursor: url(images/cursor-editorTextHighlight.svg) 24 24, text;
-  --editorFreeHighlight-editing-cursor: url(images/cursor-editorFreeHighlight.svg) 1 18, pointer;
+  --editorFreeHighlight-editing-cursor: url(images/cursor-editorFreeHighlight.svg) 1 18, pointer; */
 }
 .visuallyHidden {
   position: absolute;
@@ -1362,11 +1362,11 @@
   cursor: var(--editorFreeHighlight-editing-cursor);
 }
 
-@media (min-resolution: 1.1dppx) {
+/* @media (min-resolution: 1.1dppx) {
   :root {
     --editorFreeText-editing-cursor: url(images/cursor-editorFreeText.svg) 0 16, text;
   }
-}
+} */
 
 @media screen and (forced-colors: active) {
   :root {
@@ -1470,9 +1470,9 @@
     .textLayer
   )
   .editToolbar {
-  --editor-toolbar-delete-image: url(images/editor-toolbar-delete.svg);
+  /* --editor-toolbar-delete-image: url(images/editor-toolbar-delete.svg); */
   --editor-toolbar-bg-color: #f0f0f4;
-  --editor-toolbar-highlight-image: url(images/toolbarButton-editorHighlight.svg);
+  /* --editor-toolbar-highlight-image: url(images/toolbarButton-editorHighlight.svg); */
   --editor-toolbar-fg-color: #2e2e56;
   --editor-toolbar-border-color: #8f8f9d;
   --editor-toolbar-hover-border-color: var(--editor-toolbar-border-color);
@@ -1743,8 +1743,8 @@
   .editToolbar
   .buttons
   .altText {
-  --alt-text-add-image: url(images/altText_add.svg);
-  --alt-text-done-image: url(images/altText_done.svg);
+  /* --alt-text-add-image: url(images/altText_add.svg);
+  --alt-text-done-image: url(images/altText_done.svg); */
 
   display: flex;
   align-items: center;
@@ -2560,11 +2560,11 @@
   cursor: pointer;
 }
 
-.annotationEditorLayer .highlightEditor .editToolbar {
+/* .annotationEditorLayer .highlightEditor .editToolbar {
   --editor-toolbar-colorpicker-arrow-image: url(images/toolbarButton-menuArrow.svg);
 
   transform-origin: center !important;
-}
+} */
 
 .annotationEditorLayer .highlightEditor .editToolbar .buttons .colorPicker {
   position: relative;
@@ -3000,7 +3000,7 @@
   content: '';
   width: 100%;
   height: 100%;
-  background: url('images/loading-icon.gif') center no-repeat;
+  background: url('../loading-icon.gif') center no-repeat;
   display: none;
   transition-property: display;
   transition-delay: var(--loading-icon-delay);

@@ -3,6 +3,8 @@ import { BrowserWindow, app, ipcMain } from 'electron'
 import { join } from 'path'
 import { getIcon } from './util'
 
+if (require('electron-squirrel-startup')) app.quit()
+
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({

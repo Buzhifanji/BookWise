@@ -181,7 +181,7 @@ const handleDrop = (e: DragEvent) => {
     <dialog class="modal" ref="dialogRef">
         <div class="modal-box max-w-2xl">
             <h3 class="font-bold text-lg flex justify-between mb-4">
-                <span>{{ $t('file.upload') }}</span>
+                <span>{{ t('file.upload') }}</span>
                 <kbd class="kbd kbd-sm cursor-pointer" @click="closeDialog()">ESC</kbd>
             </h3>
             <div class="flex items-center justify-center w-full " :class="{ 'bg-base-200/60': isDragging }"
@@ -194,15 +194,15 @@ const handleDrop = (e: DragEvent) => {
                             <Upload />
                         </div>
                         <p class="pointer-none text-base-content text-lg" v-if="isDragging">
-                            {{ $t('file.releaseMouse') }} </p>
+                            {{ t('file.releaseMouse') }} </p>
                         <p class="pointer-none text-base-content text-lg" v-else>
-                            <span>{{ $t('file.dragFile') }}</span>
-                            <span class="mx-1">{{ $t('common.or') }}</span>
-                            <a class="text-info hover:underline">{{ $t('file.choose') }}</a>
+                            <span>{{ t('file.dragFile') }}</span>
+                            <span class="mx-1">{{ t('common.or') }}</span>
+                            <a class="text-info hover:underline">{{ t('file.choose') }}</a>
                         </p>
 
                         <p class="text-sm text-base-content/60 mt-2">
-                            <span>{{ $t('file.supportFormat') }}</span>
+                            <span>{{ t('file.supportFormat') }}</span>
                             <template v-for="item, index in supportBookType">
                                 <span class="mx-1">{{ item }}</span>
                                 <span v-if="index < supportBookType.length - 1">/</span>
