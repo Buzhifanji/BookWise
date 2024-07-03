@@ -93,6 +93,5 @@ publish:
   provider: github
   repo: Bookwise
   owner: Buzhifanji
-  token: ${secrets.SECRET_TOKEN}
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/
