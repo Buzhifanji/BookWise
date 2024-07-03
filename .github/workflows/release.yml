@@ -88,12 +88,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}
-          path: dist
-
-      - name: release
-        uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
           path: |
             dist/bookwise-*.exe
             dist/bookwise-*.dmg
@@ -103,6 +97,12 @@ jobs:
             dist/bookwise-*.AppImage
             dist/bookwise-*.deb
             dist/bookwise-*.rpm
+
+      - name: release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: dist/*
         env:
           GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
       # - name: release
