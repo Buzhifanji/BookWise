@@ -1,5 +1,6 @@
 appId: xyz.886886.bookwise
 productName: bookwise
+detectUpdateChannel: true
 directories:
   buildResources: build
 files:

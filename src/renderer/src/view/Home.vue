@@ -157,7 +157,7 @@ init()
 </script>
 
 <template>
-  <div class="p-6  h-full overflow-auto absolute inset-0">
+  <div class="p-6  h-full overflow-auto absolute inset-0 scrollbar-thin">
     <div class="grid gap-5 lg:grid-cols-2 xl:grid-cols-4">
       <template v-if="loading">
         <div class="skeleton h-40 w-full" v-for="_ in 4"></div>
