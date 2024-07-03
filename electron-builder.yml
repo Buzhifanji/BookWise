@@ -89,6 +89,6 @@ publish:
   provider: github
   repo: Bookwise
   owner: Buzhifanji
-  publish: onTag # 仅在标签推送时
+  publish: always # 仅在标签推送时
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/
