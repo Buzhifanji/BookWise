@@ -91,5 +91,5 @@ publish:
   provider: github
   repo: Bookwise
   owner: Buzhifanji
-electronDownload:
-  mirror: https://npmmirror.com/mirrors/electron/
+# electronDownload:
+#   mirror: https://npmmirror.com/mirrors/electron/
