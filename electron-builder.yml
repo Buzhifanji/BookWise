@@ -90,5 +90,6 @@ publish:
   repo: Bookwise
   owner: Buzhifanji
   publish: always
+  slug: Repository slug/name
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/
