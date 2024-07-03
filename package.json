@@ -61,7 +61,7 @@
     "@vue/eslint-config-typescript": "^13.0.0",
     "autoprefixer": "^10.4.19",
     "daisyui": "^4.12.10",
-    "electron": "^28.2.10",
+    "electron": "^31.1.0",
     "electron-builder": "^24.13.3",
     "electron-vite": "^2.3.0",
     "eslint": "^8.57.0",

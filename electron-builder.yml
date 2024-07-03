@@ -68,20 +68,20 @@ linux:
   target:
     - target: AppImage
       arch:
-        - ia32
         - x64
         - arm64
     - target: snap
       arch:
         - x64
+        - arm64
     - target: deb
       arch:
-        - ia32
         - x64
         - arm64
     - target: rpm
       arch:
         - x64
+        - arm64
   category: Office
   artifactName: ${productName}-${version}-${arch}.${ext}
 npmRebuild: false
