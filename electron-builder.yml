@@ -84,8 +84,6 @@ linux:
         - x64
   category: Office
   artifactName: ${productName}-${version}-${arch}.${ext}
-# appImage:
-#   artifactName: ${name}-${version}.${ext}
 npmRebuild: false
 buildDependenciesFromSource: false
 nodeGypRebuild: false
@@ -93,5 +91,5 @@ publish:
   provider: github
   repo: Bookwise
   owner: Buzhifanji
-# electronDownload:
-#   mirror: https://npmmirror.com/mirrors/electron/
+electronDownload:
+  mirror: https://npmmirror.com/mirrors/electron/
