@@ -1,12 +1,13 @@
 name: Build/release
 
 on:
+  label:
+    types:
+      - created
   push:
     branches:
       # 确保这是你正在使用的分支名称
       - main
-    tags:
-      - 'v*' # 在推送的标签以"v"开头时执行
 
 jobs:
   # 构建网页版
