@@ -78,10 +78,10 @@ linux:
       arch:
         - x64
         - arm64
-    - target: rpm
-      arch:
-        - x64
-        - arm64
+    # - target: rpm
+    #   arch:
+    #     - x64
+    #     - arm64
   category: Office
   artifactName: ${productName}-${version}-${arch}.${ext}
 npmRebuild: false
