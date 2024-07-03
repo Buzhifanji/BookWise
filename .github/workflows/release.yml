@@ -1,9 +1,11 @@
 name: Build/release
 
 on:
-  label:
-    types:
-      - created
+  tags:
+    push:
+      label:
+        types:
+          - edited
   push:
     branches:
       # 确保这是你正在使用的分支名称
