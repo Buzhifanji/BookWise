@@ -94,7 +94,15 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: dist/**
+          path: |
+            dist/bookwise-*.exe
+            dist/bookwise-*.dmg
+            dist/bookwise-*.zip
+            dist/bookwise-*.blockmap
+            dist/bookwise-*.snap
+            dist/bookwise-*.AppImage
+            dist/bookwise-*.deb
+            dist/bookwise-*.rpm
         env:
           GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
       # - name: release
@@ -116,18 +124,3 @@ jobs:
 
       # If the commit is tagged with a version (e.g. "v1.0.0"),
       # release the app after building
-  # release:
-  #   permissions:
-  #     contents: write
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
-
-  #     - name: Publish release
-  #       if: ${{ startsWith(github.ref, 'refs/tags/v') }}
-  #       # 编辑 Releases 草稿并发布
-  #       run: gh release edit ${{ github.ref_name }} --draft=false
-  #       env:
-  #         GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
