@@ -81,6 +81,10 @@ jobs:
         run: |
           pnpm build:mac --publish onTag
 
+      - name: Install Snapcraft
+        if: startsWith(matrix.os, 'ubuntu')
+        uses: samuelmeuli/action-snapcraft@v2
+
       - name: Build Linux
         if: startsWith(matrix.os, 'ubuntu')
         env:
