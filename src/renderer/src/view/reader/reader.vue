@@ -2,7 +2,7 @@
 import { Book, BookContent, Note } from '@renderer/batabase';
 import { BookAction, BookContentAction, DrawerView, DropdownView, ErrorView, List, NoteAction, RingLoadingView, useToggleDrawer } from '@renderer/components';
 import { ReadMode } from '@renderer/enum';
-import { $, $$, CETALOG_DRAWER, NOTE_DRAWER, arrayBufferToFile, getInterval, isElectron, now, toastSuccess } from '@renderer/shared';
+import { $, $$, arrayBufferToFile, getInterval, isElectron, now, toastSuccess } from '@renderer/shared';
 import { isReload } from '@renderer/shared/navigation';
 import { bookPositionStore, bookReadTimeStore, settingStore, useBookPageStore } from '@renderer/store';
 import { getSelectReadMode, readModeList, t, themes } from '@renderer/view/setting';
@@ -391,7 +391,7 @@ onBeforeUnmount(() => {
     <template v-if="book && bookContent">
       <!-- 目录 -->
       <div class="block lg:hidden">
-        <DrawerView :id="CETALOG_DRAWER">
+        <DrawerView id="catalog-drawer">
           <CatalogView :data="tocList" @click="catalogJump" />
         </DrawerView>
       </div>
@@ -409,7 +409,7 @@ onBeforeUnmount(() => {
             class="navbar justify-between border-b border-base-200 px-3 py-0 min-h-12 ">
             <div class="gap-3 flex">
               <!-- 控制侧边栏菜单栏 -->
-              <label :for="CETALOG_DRAWER" class="cursor-pointer " v-if="isSM">
+              <label for="catalog-drawer" class="cursor-pointer " v-if="isSM">
                 <AlignJustify class="w-5 h-5" />
               </label>
               <button aria-label="Leftmenu toggle" @click="toggleCatalog" class="btn btn-sm btn-square btn-ghost"
@@ -485,7 +485,7 @@ onBeforeUnmount(() => {
                   </li>
                 </ul>
               </DropdownView>
-              <label :for="NOTE_DRAWER" class="cursor-pointer " v-if="isSM">
+              <label for="note-drawer" class="cursor-pointer " v-if="isSM">
                 <AlignJustify class="w-5 h-5" />
               </label>
               <button aria-label="Leftmenu toggle" @click="toggleNote" class="btn btn-sm btn-square btn-ghost" v-else>
@@ -518,7 +518,7 @@ onBeforeUnmount(() => {
       </div>
       <!-- 笔记 -->
       <div class="block lg:hidden">
-        <DrawerView :id="NOTE_DRAWER" :is-right="true">
+        <DrawerView id="note-drawer" :is-right="true">
           <NoteView :book="book" @jump="noteJump" :read-time="readTime" />
         </DrawerView>
       </div>

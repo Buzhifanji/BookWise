@@ -2,7 +2,6 @@
 import { DrawerView, useToggleDrawer } from '@renderer/components';
 import Menu from '@renderer/layout/Menu.vue';
 import Navbar from '@renderer/layout/Navbar.vue';
-import { MENU_DRAWER } from '@renderer/shared';
 import { useContentCantianerStore } from '@renderer/store';
 import { useDebounceFn, useElementSize, useResizeObserver } from '@vueuse/core';
 import { ref } from 'vue';
@@ -25,7 +24,7 @@ useResizeObserver(contentRef, debouncedFn)
 
 <template>
   <div class="block lg:hidden">
-    <DrawerView :id="MENU_DRAWER">
+    <DrawerView id="sidbar-drawer">
       <Menu />
     </DrawerView>
   </div>

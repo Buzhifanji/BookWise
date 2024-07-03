@@ -13,241 +13,68 @@
     "npm": ">=10.8.0"
   },
   "scripts": {
-    "forge": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,.vue --fix",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "vue-tsc --noEmit -p tsconfig.web.json --composite false",
-    "typecheck": "pnpm typecheck:node && pnpm typecheck:web",
-    "start": "electron-forge start",
+    "typecheck": "pnpm run typecheck:node && pnpm run typecheck:web",
+    "start": "electron-vite preview",
     "dev": "electron-vite dev",
-    "build": "pnpm typecheck && electron-vite build",
+    "build": "pnpm run typecheck && electron-vite build && electron-builder",
+    "build:web": "pnpm run typecheck && electron-vite build",
     "postinstall": "electron-builder install-app-deps",
-    "release": "electron-vite build && electron-builder",
-    "build:unpack": "pnpm build && electron-builder --dir",
-    "build:win": "pnpm build && electron-builder --win",
-    "build:mac": "pnpm build && electron-builder --mac",
-    "build:linux": "pnpm build && electron-builder --linux"
+    "build:unpack": "pnpm run build && electron-builder --dir",
+    "build:win": "pnpm run build && electron-builder --win",
+    "build:mac": "pnpm run build && electron-builder --mac",
+    "build:linux": "pnpm run build && electron-builder --linux"
   },
   "dependencies": {
-    "@electron-toolkit/preload": "^3.0.1",
+    "@electron-toolkit/preload": "^3.0.0",
     "@electron-toolkit/utils": "^3.0.0",
-    "@tanstack/vue-virtual": "^3.5.0",
-    "@types/spark-md5": "^3.0.4",
-    "@vueuse/components": "^10.10.0",
-    "@vueuse/core": "^10.10.0",
-    "@vueuse/router": "^10.10.1",
-    "@vueuse/rxjs": "^10.10.0",
+    "@tanstack/vue-virtual": "^3.8.1",
+    "@vueuse/components": "^10.11.0",
+    "@vueuse/core": "^10.11.0",
+    "@vueuse/router": "^10.11.0",
+    "@vueuse/rxjs": "^10.11.0",
     "dayjs": "^1.11.11",
     "dexie": "^4.0.7",
-    "electron-squirrel-startup": "^1.0.1",
-    "electron-updater": "^6.2.1",
-    "lucide-vue-next": "^0.379.0",
+    "electron-updater": "^6.1.7",
+    "lucide-vue-next": "^0.400.0",
     "pinia": "^2.1.7",
     "rxjs": "^7.8.1",
     "scroll-into-view-if-needed": "^3.1.0",
     "spark-md5": "^3.0.2",
-    "uuid": "^9.0.1",
+    "uuid": "^10.0.0",
     "vue-i18n": "^9.13.1",
-    "vue-router": "^4.3.2"
+    "vue-router": "^4.4.0"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^7.4.0",
-    "@electron-forge/maker-deb": "^7.4.0",
-    "@electron-forge/maker-squirrel": "^7.4.0",
-    "@electron-forge/maker-zip": "^7.4.0",
     "@electron-toolkit/eslint-config": "^1.0.2",
     "@electron-toolkit/eslint-config-ts": "^2.0.0",
     "@electron-toolkit/tsconfig": "^1.0.1",
     "@rushstack/eslint-patch": "^1.10.3",
     "@tailwindcss/typography": "^0.5.13",
-    "@types/node": "^20.12.12",
-    "@vitejs/plugin-vue": "^5.0.4",
+    "@types/node": "^20.14.8",
+    "@types/spark-md5": "^3.0.4",
+    "@vitejs/plugin-vue": "^5.0.5",
     "@vue/eslint-config-prettier": "^9.0.0",
     "@vue/eslint-config-typescript": "^13.0.0",
     "autoprefixer": "^10.4.19",
-    "daisyui": "^4.11.1",
-    "electron": "^30.0.8",
-    "electron-icon-builder": "^2.0.1",
-    "electron-vite": "^2.2.0",
-    "eslint": "^8.56.0",
+    "daisyui": "^4.12.10",
+    "electron": "^31.0.2",
+    "electron-builder": "^24.13.3",
+    "electron-vite": "^2.3.0",
+    "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.26.0",
     "postcss": "^8.4.38",
     "prettier": "^3.2.5",
     "tailwind-scrollbar": "^3.1.0",
     "tailwindcss": "^3.4.3",
-    "typescript": "^5.4.5",
+    "typescript": "^5.5.2",
     "vee-validate": "^4.13.1",
-    "vite": "^5.2.11",
+    "vite": "^5.3.1",
     "vitest": "^1.6.0",
-    "vue": "^3.4.27",
-    "vue-tsc": "^2.0.19"
-  },
-  "config": {
-    "forge": {
-      "packagerConfig": {},
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "electron_quick_start"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
-      ]
-    }
-  },
-  "build": {
-    "appId": "xyz.886886.bookwise",
-    "productName": "Bookwise",
-    "copyright": "Copyright (c) 2024 ${author}",
-    "files": [
-      "!**/.vscode/*",
-      "!src/*",
-      "!electron.vite.config.{js,ts,mjs,cjs}",
-      "!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}",
-      "!{.env,.env.*,.npmrc,pnpm-lock.yaml}",
-      "!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}",
-      "resources/**/*",
-      "out/**/*",
-      "node_modules/**/*",
-      "package.json"
-    ],
-    "directories": {
-      "buildResources": "resources"
-    },
-    "publish": {
-      "provider": "github",
-      "repo": "Bookwise",
-      "owner": "Buzhifanji"
-    },
-    "buildDependenciesFromSource": false,
-    "nodeGypRebuild": false,
-    "extends": null,
-    "dmg": {
-      "contents": [
-        {
-          "x": 410,
-          "y": 150,
-          "type": "link",
-          "path": "/Applications"
-        },
-        {
-          "x": 130,
-          "y": 150,
-          "type": "file"
-        }
-      ]
-    },
-    "mac": {
-      "target": [
-        {
-          "target": "dmg",
-          "arch": [
-            "x64",
-            "arm64"
-          ]
-        }
-      ],
-      "icon": "resources/icon.icns",
-      "category": "public.app-category.productivity",
-      "entitlementsInherit": "resources/entitlements.mac.plist",
-      "artifactName": "${productName}-${version}-${arch}.${ext}"
-    },
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "zip",
-          "arch": [
-            "x64",
-            "ia32",
-            "arm64"
-          ]
-        },
-        {
-          "target": "portable",
-          "arch": [
-            "x64"
-          ]
-        }
-      ],
-      "icon": "resources/icon.ico",
-      "executableName": "${productName}",
-      "artifactName": "${productName}-${version}-${arch}-Win.${ext}",
-      "publisherName": "App by ${author}"
-    },
-    "linux": {
-      "icon": "resources/icons",
-      "category": "Office",
-      "target": [
-        {
-          "target": "snap",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "deb",
-          "arch": [
-            "arm64",
-            "ia32",
-            "x64"
-          ]
-        },
-        {
-          "target": "rpm",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "AppImage",
-          "arch": [
-            "arm64",
-            "ia32",
-            "x64"
-          ]
-        }
-      ],
-      "artifactName": "${productName}-${version}-${arch}.${ext}"
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowElevation": false,
-      "allowToChangeInstallationDirectory": true,
-      "include": "resources/installer.nsh"
-    },
-    "portable": {
-      "artifactName": "${productName}-${version}-Portable.${ext}"
-    },
-    "snap": {
-      "publish": [
-        {
-          "provider": "github"
-        }
-      ]
-    }
+    "vue": "^3.4.30",
+    "vue-tsc": "^2.0.22"
   }
 }
