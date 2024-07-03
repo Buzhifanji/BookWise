@@ -48,7 +48,7 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
               :desc="t('setting.openRecycleBinDesc')" />
             <CheckBoxView v-model="settingStore.isNoteShowClass" :title="t('setting.noteShowClassTitle')"
               :desc="t('setting.noteShowClassDesc')" />
-            <CheckBoxView v-model="settingStore.isAutoHighlight" title="t('setting.autoHighlightTitle')"
+            <CheckBoxView v-model="settingStore.isAutoHighlight" :title="t('setting.autoHighlightTitle')"
               :desc="t('setting.autoHighlightDesc')" />
             <CheckBoxView v-model="settingStore.isRemeberPosition" :title="t('setting.rememberPositionTitle')"
               :desc="t('setting.rememberPositionDesc')" />
