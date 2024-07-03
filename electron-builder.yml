@@ -90,7 +90,7 @@ buildDependenciesFromSource: false
 nodeGypRebuild: false
 publish:
   provider: github
-  repo: Buzhifanji
-  owner: Bookwise
+  repo: Bookwise
+  owner: Buzhifanji
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/
