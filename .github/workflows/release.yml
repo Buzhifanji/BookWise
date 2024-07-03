@@ -75,14 +75,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
         run: |
-          pnpm build:win
+          pnpm build:win --publish onTag
 
       - name: Build Mac
         if: startsWith(matrix.os, 'macos')
         env:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
         run: |
-          pnpm build:mac
+          pnpm build:mac --publish onTag
 
       - name: upload artifacts
         uses: actions/upload-artifact@v4

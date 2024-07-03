@@ -3,6 +3,7 @@ productName: bookwise
 detectUpdateChannel: true
 directories:
   buildResources: build
+asar: true
 files:
   - '!**/.vscode/*'
   - '!src/*'
@@ -29,8 +30,6 @@ win:
         - ia32
         - x64
         - arm64
-  publish:
-    - github
   publisherName: App by ${author}
   artifactName: ${productName}-${version}-${arch}-Win.${ext}
 nsis:
@@ -51,8 +50,6 @@ mac:
     - NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
     - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
   notarize: false
-  publish:
-    - github
   target:
     - target: dmg
       arch:
@@ -63,6 +60,9 @@ mac:
         - x64
         - arm64
 dmg:
+  contents:
+    - { x: 380, y: 240, type: link, path: /Applications }
+    - { x: 122, y: 240, type: file }
   artifactName: ${productName}-${version}-${arch}-dmg.${ext}
 linux:
   target:
@@ -82,8 +82,6 @@ linux:
     - target: rpm
       arch:
         - x64
-  publish:
-    - github
   category: Office
   artifactName: ${productName}-${version}-${arch}.${ext}
 # appImage:
@@ -96,6 +94,5 @@ publish:
   repo: Bookwise
   owner: Buzhifanji
   token: ${secrets.SECRET_TOKEN}
-  publish: always # 仅在标签推送时
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/
