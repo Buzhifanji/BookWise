@@ -29,6 +29,8 @@ win:
         - ia32
         - x64
         - arm64
+  publish:
+    - github
   publisherName: App by ${author}
   artifactName: ${productName}-${version}-${arch}-Win.${ext}
 nsis:
@@ -49,6 +51,8 @@ mac:
     - NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
     - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
   notarize: false
+  publish:
+    - github
   target:
     - target: dmg
       arch:
@@ -78,6 +82,8 @@ linux:
     - target: rpm
       arch:
         - x64
+  publish:
+    - github
   category: Office
   artifactName: ${productName}-${version}-${arch}.${ext}
 # appImage:
