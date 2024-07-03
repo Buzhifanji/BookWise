@@ -10,7 +10,7 @@ on:
 
 jobs:
   # 构建网页版
-  build:
+  web:
     permissions:
       contents: write
 
@@ -42,7 +42,7 @@ jobs:
         with:
           branch: gh-pages
           folder: out/renderer
-  release:
+  build:
     permissions:
       contents: write
 
@@ -53,7 +53,7 @@ jobs:
       # 这个定义会启用3个系统进行打包
     strategy:
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [macos-latest, windows-latest, ubuntu-latest]
 
     steps:
       - name: Check out Git repository
@@ -83,13 +83,28 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
-      - name: Electron app
-        uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          # GitHub token, automatically provided to the action
-          # (No need to define this secret in the repo settings)
-          github_token: ${{ secrets.SECRET_TOKEN }}
+      # - name: Electron app
+      #   uses: softprops/action-gh-release@v2
+      #   if: startsWith(github.ref, 'refs/tags/')
+      #   with:
+      #     # GitHub token, automatically provided to the action
+      #     # (No need to define this secret in the repo settings)
+      #     github_token: ${{ secrets.SECRET_TOKEN }}
 
-          # If the commit is tagged with a version (e.g. "v1.0.0"),
-          # release the app after building
+      # If the commit is tagged with a version (e.g. "v1.0.0"),
+      # release the app after building
+  release:
+    permissions:
+      contents: write
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Publish release
+        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        # 编辑 Releases 草稿并发布
+        run: gh release edit ${{ github.ref_name }} --draft=false
+        env:
+          GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
