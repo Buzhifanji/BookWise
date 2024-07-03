@@ -50,7 +50,7 @@ jobs:
       # 这个定义会启用3个系统进行打包
     strategy:
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
       - name: Check out Git repository
@@ -80,6 +80,13 @@ jobs:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
         run: |
           pnpm build:mac --publish onTag
+
+      - name: Build Linux
+        if: startsWith(matrix.os, 'ubuntu')
+        env:
+          GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
+        run: |
+          pnpm build:linux --publish onTag
 
       - name: upload artifacts
         uses: actions/upload-artifact@v4
