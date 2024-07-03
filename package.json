@@ -1,6 +1,6 @@
 {
   "name": "book-wise",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "A modern cross-platform e-book reader",
   "main": "./out/main/index.js",
   "author": {
