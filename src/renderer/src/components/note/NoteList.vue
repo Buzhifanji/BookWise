@@ -2,7 +2,7 @@
 import { Note } from '@renderer/batabase';
 import { RouterName } from '@renderer/route';
 import { chuankArray, remToPx } from '@renderer/shared';
-import { noteNavbarStore, useContentCantianerStore } from '@renderer/store';
+import { noteNavbarStore, useContentCantianerStore, useFilterNoteStore } from '@renderer/store';
 import { t } from '@renderer/view/setting';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { get } from '@vueuse/core';
@@ -20,6 +20,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   data: () => [],
 })
+
+const filterStore = useFilterNoteStore()
 
 // 笔记内容
 const store = useContentCantianerStore()
@@ -43,6 +45,13 @@ const sortByTime = (list: Note[], isUp: boolean) => {
 const list = computed(() => {
   const count = parseInt(((store.width) / remToPx(24 + 1)).toString())
 
+  let originalData = [...toRaw(props.data)]
+  // 书名过滤
+  const bookId = filterStore.eBookId
+  if (bookId) {
+    originalData = originalData.filter((item) => item.eBookId === bookId)
+  }
+
   // 排序
   const isUp = get(noteNavbarStore).isUp
   const sortBy = get(noteNavbarStore).sortBy
@@ -51,10 +60,10 @@ const list = computed(() => {
 
   if (sortBy === 'bookName') {
     // 按照书名进行排序
-    data = sortByName([...toRaw(props.data)], isUp)
+    data = sortByName(originalData, isUp)
   } else if (sortBy === 'addTime') {
     // 按照添加时间排序
-    data = sortByTime([...toRaw(props.data)], isUp)
+    data = sortByTime(originalData, isUp)
   }
 
   return chuankArray(toRaw(data) || [], count)

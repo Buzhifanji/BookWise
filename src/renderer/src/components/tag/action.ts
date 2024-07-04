@@ -63,7 +63,7 @@ export class TagAction {
 
   static toTag(val: string) {
     try {
-      return JSON.parse(val)
+      return JSON.parse(val) as Tag[]
     } catch (error) {
       return []
     }

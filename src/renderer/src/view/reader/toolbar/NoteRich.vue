@@ -152,7 +152,7 @@ init()
           <div class="card-actions justify-end">
             <button class="btn btn-success" @click="submit">
               <span class="loading loading-spinner" v-if="submitLoading"></span>
-              添加</button>
+              {{ t('common.add') }}</button>
           </div>
         </template>
       </div>
