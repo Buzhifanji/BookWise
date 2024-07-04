@@ -1,10 +1,13 @@
 <script setup lang="ts">
-
 import { FileUploadView, NoteNavbarView } from '@renderer/components';
 import { t } from '@renderer/view/setting';
 import { useWindowSize } from '@vueuse/core';
 import { AlignJustify, Search } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
+
 const emit = defineEmits<{
   (e: 'toggleSidebar', payload: string): void;
 }>();
@@ -20,6 +23,8 @@ const dialogRef = ref<InstanceType<typeof FileUploadView> | null>(null);
 function uploadAction() {
   dialogRef.value?.open()
 }
+
+const routePath = computed(() => router.currentRoute.value.path);
 
 </script>
 
@@ -38,8 +43,8 @@ function uploadAction() {
         class="btn hidden h-9 w-48 items-center justify-start gap-3 border-base-content/20 hover:border-transparent hover:bg-base-content/20 sm:flex btn-sm btn-outline">
         <Search class="w-4 h-4" />
       </button>
-      <NoteNavbarView />
-    </div>
+      <NoteNavbarView v-if="routePath.startsWith('/note')" />
+    </div </div>
 
     <div class="navbar-center"></div>
     <div class="navbar-end gap-4">

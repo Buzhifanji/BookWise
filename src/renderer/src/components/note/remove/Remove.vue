@@ -6,7 +6,6 @@ import { t } from '@renderer/view/setting';
 import { vOnClickOutside } from '@vueuse/components';
 import { set } from '@vueuse/core';
 import { nextTick, ref } from 'vue';
-import { BookAction } from '../../book/action';
 import { NoteAction, NoteText } from '../action';
 import DetailContent from '../detail/DetailContent.vue';
 
@@ -21,15 +20,10 @@ const removeAction = async () => {
   toastSuccess(t('note.removeSuccess'))
 }
 
-const bookName = ref('')
-
 const initEdite = async () => {
   openDialog()
   await nextTick()
   set(noteList, NoteAction.getNoteText(props.note.notes))
-  BookAction.fineOne(props.note.eBookId).then(res => {
-    bookName.value = res.name
-  })
   openDialog()
 }
 
@@ -45,7 +39,7 @@ initEdite()
         <h3 class="font-bold text-lg">{{ t('note.sureRemove') }}</h3>
         <div @click="closeDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
       </div>
-      <DetailContent :note="note" :noteList="noteList" :bookName="bookName" />
+      <DetailContent :note="note" :noteList="noteList" />
       <p class="text-warning mt-4">{{ t('note.forceRemove') }}</p>
       <div class="modal-action">
         <button class="btn btn-outline " @click="closeDialog">{{ t('common.cancel') }}</button>

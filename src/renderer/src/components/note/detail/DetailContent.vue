@@ -7,7 +7,7 @@ import { TagAction } from '../../tag/action';
 import NoteView from '../Note.vue';
 import { NoteAction, NoteText } from '../action';
 
-defineProps<{ note: Note, noteList: NoteText[], bookName: string }>()
+defineProps<{ note: Note, noteList: NoteText[] }>()
 
 // 跳转
 const jump = (value: Note) => NoteAction.jumpToBook(value)
@@ -30,6 +30,6 @@ const jump = (value: Note) => NoteAction.jumpToBook(value)
   </div>
   <div class="pt-2 text-right">
     <span class="text-base-content/70">{{ t('common.comeFrom') }}----</span>
-    <a class="link link-accent" @click="jump(note)">{{ bookName }}</a>
+    <a class="link link-accent" @click="jump(note)">{{ note.eBookName }}</a>
   </div>
 </template>

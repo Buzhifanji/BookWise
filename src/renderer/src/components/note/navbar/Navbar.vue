@@ -32,13 +32,13 @@ const isSortBy = (val: string) => get(noteNavbarStore).sortBy === val
         </li>
         <li @click="changNavbarStore('isUp', true)">
           <a class="justify-between">
-            <span>升序</span>
+            <div>升序<span class="ml-1 text-base-content/60" v-if="isSortBy('bookName')">(A-Z)</span></div>
             <Check v-if="noteNavbarStore.isUp" />
           </a>
         </li>
         <li @click="changNavbarStore('isUp', false)">
           <a class="justify-between">
-            <span>降序</span>
+            <div>降序<span class="ml-1 text-base-content/60" v-if="isSortBy('bookName')">(Z-A)</span></div>
             <Check v-if="!noteNavbarStore.isUp" />
           </a>
         </li>

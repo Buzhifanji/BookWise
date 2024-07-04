@@ -26,16 +26,36 @@ const store = useContentCantianerStore()
 
 const parentRef = ref<HTMLElement | null>(null)
 
+const sortByName = (list: Note[], isUp: boolean) => {
+  return list.sort((a, b) => {
+    const titleA = a.eBookName.toLowerCase();
+    const titleB = b.eBookName.toLowerCase();
+    return isUp ? titleA.localeCompare(titleB) : titleB.localeCompare(titleA);
+  });
+}
+
+const sortByTime = (list: Note[], isUp: boolean) => {
+  return list.sort((a, b) => {
+    return isUp ? a.createTime - b.createTime : b.createTime - a.createTime;
+  });
+}
 
 const list = computed(() => {
   const count = parseInt(((store.width) / remToPx(24 + 1)).toString())
 
   // 排序
   const isUp = get(noteNavbarStore).isUp
-  const data = [...toRaw(props.data)].sort((a, b) => {
-    return isUp ? a.createTime - b.createTime :
-      b.createTime - a.createTime
-  })
+  const sortBy = get(noteNavbarStore).sortBy
+
+  let data: Note[] = []
+
+  if (sortBy === 'bookName') {
+    // 按照书名进行排序
+    data = sortByName([...toRaw(props.data)], isUp)
+  } else if (sortBy === 'addTime') {
+    // 按照添加时间排序
+    data = sortByTime([...toRaw(props.data)], isUp)
+  }
 
   return chuankArray(toRaw(data) || [], count)
 })
