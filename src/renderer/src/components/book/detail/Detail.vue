@@ -8,8 +8,10 @@ import { useToggle } from '@vueuse/core';
 import dayjs from 'dayjs';
 import { nextTick, ref } from 'vue';
 import { BookshelfAction } from '../../bookshelf/action';
+import SkeletonView from '../../loading/Skeleton.vue';
 import { NoteAction } from '../../note/action';
 import { BookReadTimeAction } from '../action';
+import ScoreInputView from '../score/ScoreInput.vue';
 
 const props = defineProps<{ book: Book }>()
 

@@ -4,6 +4,7 @@ import CheckBoxView from './checkbox/CheckBox.vue'
 import DrawerView from './drawer/Drawer.vue'
 import DropdownView from './dropdown/Dropdown.vue'
 import ErrorView from './error/404.vue'
+import ImgView from './img/Img.vue'
 import List from './list/List.vue'
 import RingLoadingView from './loading/RingLoading.vue'
 import SkeletonView from './loading/Skeleton.vue'
@@ -38,6 +39,7 @@ export {
   ExpandTreeView,
   FileUploadView,
   FoldTreeView,
+  ImgView,
   List,
   NoteAction,
   NoteListView,

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
-import { FileUploadView } from '@renderer/components';
+import { FileUploadView, ImgView } from '@renderer/components';
 import { BookshelftMode } from '@renderer/enum';
 import { useBgOpacity, useRightClick } from '@renderer/hooks';
-import { chuankArray, convertUint8ArrayToURL, remToPx, toastSuccess } from '@renderer/shared';
+import { chuankArray, remToPx, toastSuccess } from '@renderer/shared';
 import { settingStore, useContentCantianerStore } from '@renderer/store';
 import { t } from '@renderer/view/setting';
 import { useVirtualizer } from '@tanstack/vue-virtual';
@@ -160,10 +160,9 @@ const onBookshelf = () => dialogAction(bookshelfDialog)
                   @click="emit('click', item)"
                   :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight + remToPx(3.5)}px` }"
                   @contextmenu="rightEvent($event, item)">
-                  <div :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight}px` }" class="rounded">
-                    <img :src="convertUint8ArrayToURL(item.cover)" class="w-full rounded h-full object-cover"
-                      :alt="t('book.cover')">
-                  </div>
+                  <figure :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight}px` }" class="rounded">
+                    <ImgView :data="item.cover" />
+                  </figure>
                   <div class="line-clamp-2 mx-1 mb-1 text-sm">{{ item.name }}</div>
                 </div>
               </template>
@@ -178,8 +177,8 @@ const onBookshelf = () => dialogAction(bookshelfDialog)
                 class="card flex-row items-center gap-4 p-4 bg-base-100 shadow-md cursor-pointer transition ease-in-out duration-150  hover:scale-110"
                 @click="emit('click', item)" @contextmenu="rightEvent($event, item)"
                 :style="{ width: `${bookCardWidth}px` }">
-                <figure :style="{ width: `${84}px`, height: `${121}px` }"><img :src="convertUint8ArrayToURL(item.cover)"
-                    class="w-full rounded h-full object-cover" :alt="t('book.cover')">
+                <figure :style="{ width: `${84}px`, height: `${121}px` }">
+                  <ImgView :data="item.cover" />
                 </figure>
                 <div class="flex flex-1 flex-col gap-2">
                   <p class="line-clamp-2">{{ item.name }}</p>
@@ -196,9 +195,8 @@ const onBookshelf = () => dialogAction(bookshelfDialog)
               @mouseenter="hoverAction(0.3, virtualRow.index)" @mouseleave="hoverAction(1, -1)"
               @click="emit('click', list[virtualRow.index] as Book)"
               @contextmenu="rightEvent($event, list[virtualRow.index] as Book)">
-              <figure :style="{ width: `${84}px`, height: `${121}px` }"><img
-                  :src="convertUint8ArrayToURL((list[virtualRow.index] as Book).cover)"
-                  class="w-full rounded h-full object-cover" :alt="t('book.cover')">
+              <figure :style="{ width: `${84}px`, height: `${121}px` }">
+                <ImgView :data="(list[virtualRow.index] as Book).cover" />
               </figure>
               <div class="flexflex-col flex-1 py-2">
                 <p class="line-clamp-1">{{ (list[virtualRow.index] as Book).name }}</p>

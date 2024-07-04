@@ -28,7 +28,7 @@ export const convertBlobToUint8Array = async (blob?: Blob) => {
 }
 
 export const convertUint8ArrayToURL = (buffer: Uint8Array) => {
-  const blob = new Blob([buffer], { type: 'application/octet-stream' })
+  const blob = new Blob([buffer])
   return URL.createObjectURL(blob)
 }
 

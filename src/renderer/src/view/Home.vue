@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
-import { BookAction, BookReadTimeAction, NoteAction, bookJump } from '@renderer/components';
-import { convertUint8ArrayToURL, getInterval, remToPx } from '@renderer/shared';
+import { BookAction, bookJump, BookReadTimeAction, ImgView, NoteAction } from '@renderer/components';
+import { getInterval, remToPx } from '@renderer/shared';
 import { useContentCantianerStore } from '@renderer/store';
 import { t } from '@renderer/view/setting';
 import { get, set, useToggle } from '@vueuse/core';
@@ -211,7 +211,7 @@ init()
               <div v-for="item in recentBook" class="cursor-pointer" @click="bookJump(item.id)">
                 <div class="rounded over-hidden "
                   :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight + remToPx(3.5)}px` }">
-                  <img :src="convertUint8ArrayToURL(item.cover)" class="w-full h-full rounded object-cover" alt="书籍封面">
+                  <ImgView :data="item.cover" />
                 </div>
                 <div class="line-clamp-2 mx-1 mb-1 text-sm" :style="{ width: `${bookshelfWidht}px`, }">{{ item.name }}
                 </div>
@@ -238,7 +238,7 @@ init()
               <div v-for="item in loveBook" class="cursor-pointer" @click="bookJump(item.id)">
                 <div class="rounded over-hidden "
                   :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight + remToPx(3.5)}px` }">
-                  <img :src="convertUint8ArrayToURL(item.cover)" class="w-full h-full rounded object-cover" alt="书籍封面">
+                  <ImgView :data="item.cover" />
                 </div>
                 <div class="line-clamp-2 mx-1 mb-1 text-sm" :style="{ width: `${bookshelfWidht}px`, }">{{ item.name }}
                 </div>
