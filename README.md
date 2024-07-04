@@ -20,21 +20,29 @@
 
 <div align="center">
   <br>
-  <kbd>
-    <img src="./doc/image/en/home_en.png" width="800px"/>
-  </kbd>
+  <p>
+    <kbd>
+      <img src="./doc/image/en/home_en.png" width="800px"/>
+    </kbd>
+  </p>
   <br>
-  <kbd>
-    <img src="./doc/image/en/reader-toolbar_en.png" width="800px"/>
-  </kbd>
+  <p>
+    <kbd>
+      <img src="./doc/image/en/reader-toolbar_en.png" width="800px"/>
+    </kbd>
+  </p>
   <br>
-  <kbd>
-    <img src="./doc/image/en/reader-edit-note_en.png" width="800px"/>
-  </kbd>
+  <p>
+    <kbd>
+      <img src="./doc/image/en/reader-edit-note_en.png" width="800px"/>
+    </kbd>
+  </p>
   <br>
-  <kbd>
-    <img src="./doc/image/en/reader-theme-dark_en.png" width="800px"/>
-  </kbd>
+  <p>
+    <kbd>
+      <img src="./doc/image/en/reader-theme-dark_en.png" width="800px"/>
+    </kbd>
+  </p>
   <br>
 </div>
 
