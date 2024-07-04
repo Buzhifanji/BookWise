@@ -136,7 +136,8 @@
     "removeSuccess": "메모가 삭제되었습니다.",
     "sureRemove": "메모 삭제 확인",
     "placeholder": "이때의 생각을 적어보세요...",
-    "write": "아이디어를 쓰다"
+    "write": "아이디어를 쓰다",
+    "myNote": "내 메모"
   },
   "tag": {
     "needTag": "태그를 입력해주세요",

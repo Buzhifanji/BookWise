@@ -136,7 +136,8 @@
     "removeSuccess": "Note deleted successfully",
     "sureRemove": "Confirm note deletion",
     "placeholder": "Write down your thoughts at this time...",
-    "write": "write ideas"
+    "write": "write ideas",
+    "myNote": "my notes"
   },
   "tag": {
     "needTag": "Please enter tag",

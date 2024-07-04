@@ -2,6 +2,7 @@
 import { Note, Tag } from '@renderer/batabase';
 import { NoteAction, NoteText, SkeletonView, TagAction, TagInputView } from '@renderer/components';
 import { toastError, toastWarning } from '@renderer/shared';
+import { t } from '@renderer/view/setting';
 import { get, onClickOutside, onKeyStroke, set, useElementBounding, useParentElement, useToggle } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
 import { computed, onMounted, ref } from 'vue';
@@ -131,7 +132,7 @@ init()
       :style="style" ref="cardRef">
       <div class="card-body">
         <div class="flex flex-row justify-between items-center mb-2">
-          <h3 class="font-bold text-lg">我的笔记</h3>
+          <h3 class="font-bold text-lg">{{ t('note.myNote') }}</h3>
           <div @click="closeNoteRich()"> <kbd class="kbd">Esc</kbd></div>
         </div>
         <SkeletonView v-if="loading" />

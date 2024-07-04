@@ -136,7 +136,8 @@
     "removeSuccess": "Opmerking succesvol verwijderd",
     "sureRemove": "Bevestig het verwijderen van de notitie",
     "placeholder": "Schrijf uw gedachten op dit moment op...",
-    "write": "schrijf ideeën"
+    "write": "schrijf ideeën",
+    "myNote": "mijn notities"
   },
   "tag": {
     "needTag": "Voer een tag in",

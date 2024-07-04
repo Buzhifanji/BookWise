@@ -141,7 +141,8 @@ const onBookshelf = () => dialogAction(bookshelfDialog)
 </script>
 
 <template>
-  <div ref="parentRef" id="book-list-dialog" class="p-6 flex h-full overflow-auto" v-if="data.length">
+  <div ref="parentRef" id="book-list-dialog"
+    class="p-6 flex h-full overflow-auto hover:scrollbar-thin scrollbar-none scrollbar-thin" v-if="data.length">
     <div class="relative w-full" :style="{
       height: `${totalSize}px`,
     }">

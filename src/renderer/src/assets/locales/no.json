@@ -136,7 +136,8 @@
     "removeSuccess": "Notatet ble slettet",
     "sureRemove": "Bekreft sletting av notat",
     "placeholder": "Skriv ned tankene dine nå...",
-    "write": "skrive ideer"
+    "write": "skrive ideer",
+    "myNote": "mine notater"
   },
   "tag": {
     "needTag": "Vennligst skriv inn tag",

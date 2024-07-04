@@ -136,7 +136,8 @@
     "removeSuccess": "Notiz erfolgreich gelöscht",
     "sureRemove": "Bestätigen Sie das Löschen der Notiz",
     "placeholder": "Schreiben Sie Ihre Gedanken zu diesem Zeitpunkt auf ...",
-    "write": "Ideen schreiben"
+    "write": "Ideen schreiben",
+    "myNote": "meine Notizen"
   },
   "tag": {
     "needTag": "Bitte Tag eingeben",

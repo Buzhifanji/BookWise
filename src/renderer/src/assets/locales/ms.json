@@ -136,7 +136,8 @@
     "removeSuccess": "Nota berjaya dipadamkan",
     "sureRemove": "Sahkan pemadaman nota",
     "placeholder": "Tuliskan pendapat anda pada masa ini...",
-    "write": "menulis idea"
+    "write": "menulis idea",
+    "myNote": "nota saya"
   },
   "tag": {
     "needTag": "Sila masukkan tag",

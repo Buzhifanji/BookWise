@@ -136,7 +136,8 @@
     "removeSuccess": "Not başarıyla silindi",
     "sureRemove": "Not silme işlemini onaylayın",
     "placeholder": "Bu sefer düşüncelerinizi yazın...",
-    "write": "fikir yaz"
+    "write": "fikir yaz",
+    "myNote": "notlarım"
   },
   "tag": {
     "needTag": "Lütfen etiketi girin",

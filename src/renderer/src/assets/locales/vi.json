@@ -136,7 +136,8 @@
     "removeSuccess": "Đã xóa ghi chú thành công",
     "sureRemove": "Xác nhận xóa ghi chú",
     "placeholder": "Hãy viết ra suy nghĩ của bạn lúc này...",
-    "write": "viết ý tưởng"
+    "write": "viết ý tưởng",
+    "myNote": "ghi chú của tôi"
   },
   "tag": {
     "needTag": "Vui lòng nhập thẻ",

@@ -1,34 +1,43 @@
-# my-app
+<div align="center">
+  <img src="./build/512x512.png" width="96px" height="96px"/>
+</div>
 
-An Electron application with Vue and TypeScript
+<h1 align="center">
+  Bookwise Reader
+</h1>
 
-## Recommended IDE Setup
+<h3 align="center">
+  A modern | free | cross-platform | beautiful themes  e-book reader
+</h3>
 
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin)
+<div align="center">
 
-## Project Setup
+**English** · [简体中文](./README.zh_CN.md) · [Oneline](buzhifanji.github.io/BookWise) · [Download](https://github.com/Buzhifanji/BookWise/releases/latest)
 
-### Install
+</div>
 
-```bash
-$ pnpm install
-```
+## Preview
 
-### Development
+<div align="center">
+  <br>
+  <img src="./doc/image/en/home_en.png" width="800px"/>
+  <br>
+  <img src="./doc/image/en/reader-toolbar_en.png" width="800px"/>
+  <br>
+  <img src="./doc/image/en/reader-edit-note_en.png" width="800px"/>
+  <br>
+  <img src="./doc/image/en/reader-theme-dark_en.png" width="800px"/>
+  <br>
+</div>
 
-```bash
-$ pnpm dev
-```
+## Feature
 
-### Build
-
-```bash
-# For windows
-$ pnpm build:win
-
-# For macOS
-$ pnpm build:mac
-
-# For Linux
-$ pnpm build:linux
-```
+- Format support:
+  - EPUB (**.epub**)
+  - PDF (**.pdf**)
+  - DRM-free Mobipocket (**.mobi**) and Kindle (**.azw3**, **.azw**)
+  - FictionBook (**.fb2**)
+  - Platform support: **Windows**, **macOS**, **Linux** and **Web**
+  - Built-in 32 themes
+  - Add notes, highlights to your books
+  

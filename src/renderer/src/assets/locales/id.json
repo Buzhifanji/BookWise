@@ -136,7 +136,8 @@
     "removeSuccess": "Catatan berhasil dihapus",
     "sureRemove": "Konfirmasikan penghapusan catatan",
     "placeholder": "Tuliskan pemikiran Anda saat ini...",
-    "write": "menulis ide"
+    "write": "menulis ide",
+    "myNote": "catatan Saya"
   },
   "tag": {
     "needTag": "Silakan masukkan tag",

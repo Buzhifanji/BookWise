@@ -136,7 +136,8 @@
     "removeSuccess": "Uwaga została pomyślnie usunięta",
     "sureRemove": "Potwierdź usunięcie notatki",
     "placeholder": "Zapisz swoje myśli w tej chwili...",
-    "write": "pisać pomysły"
+    "write": "pisać pomysły",
+    "myNote": "moje notatki"
   },
   "tag": {
     "needTag": "Proszę wpisać tag",

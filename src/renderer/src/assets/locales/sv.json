@@ -136,7 +136,8 @@
     "removeSuccess": "Anteckningen har raderats",
     "sureRemove": "Bekräfta radering av anteckning",
     "placeholder": "Skriv ner dina tankar just nu...",
-    "write": "skriva idéer"
+    "write": "skriva idéer",
+    "myNote": "mina anteckningar"
   },
   "tag": {
     "needTag": "Vänligen ange tagg",

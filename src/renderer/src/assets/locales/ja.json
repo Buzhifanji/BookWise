@@ -136,7 +136,8 @@
     "removeSuccess": "メモは正常に削除されました",
     "sureRemove": "メモの削除を確認する",
     "placeholder": "この時の感想を書いてみる…",
-    "write": "アイデアを書く"
+    "write": "アイデアを書く",
+    "myNote": "私のノート"
   },
   "tag": {
     "needTag": "タグを入力してください",

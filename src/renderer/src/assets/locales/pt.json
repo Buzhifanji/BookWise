@@ -136,7 +136,8 @@
     "removeSuccess": "Nota excluída com sucesso",
     "sureRemove": "Confirmar exclusão da nota",
     "placeholder": "Escreva seus pensamentos neste momento...",
-    "write": "escreva ideias"
+    "write": "escreva ideias",
+    "myNote": "minhas anotações"
   },
   "tag": {
     "needTag": "Por favor insira a etiqueta",
