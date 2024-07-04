@@ -2,9 +2,10 @@
 import { Note } from '@renderer/batabase';
 import { RouterName } from '@renderer/route';
 import { chuankArray, remToPx } from '@renderer/shared';
-import { useContentCantianerStore } from '@renderer/store';
+import { noteNavbarStore, useContentCantianerStore } from '@renderer/store';
 import { t } from '@renderer/view/setting';
 import { useVirtualizer } from '@tanstack/vue-virtual';
+import { get } from '@vueuse/core';
 import { Flag } from 'lucide-vue-next';
 import { computed, defineProps, ref, toRaw, withDefaults } from 'vue';
 import { NoteAction } from './action';
@@ -24,9 +25,19 @@ const props = withDefaults(defineProps<Props>(), {
 const store = useContentCantianerStore()
 
 const parentRef = ref<HTMLElement | null>(null)
+
+
 const list = computed(() => {
   const count = parseInt(((store.width) / remToPx(24 + 1)).toString())
-  return chuankArray(toRaw(props.data) || [], count)
+
+  // 排序
+  const isUp = get(noteNavbarStore).isUp
+  const data = [...toRaw(props.data)].sort((a, b) => {
+    return isUp ? a.createTime - b.createTime :
+      b.createTime - a.createTime
+  })
+
+  return chuankArray(toRaw(data) || [], count)
 })
 
 // 虚拟列表
@@ -61,6 +72,7 @@ const onDetail = (value: Note) => detaiNotelDialog(value)
 
 // 跳转
 const jump = (value: Note) => NoteAction.jumpToBook(value)
+
 
 </script>
 

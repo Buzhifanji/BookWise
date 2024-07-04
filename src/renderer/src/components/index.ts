@@ -10,6 +10,7 @@ import RingLoadingView from './loading/RingLoading.vue'
 import SkeletonView from './loading/Skeleton.vue'
 import NoteListView from './note/NoteList.vue'
 import { NoteAction, NoteText } from './note/action'
+import NoteNavbarView from './note/navbar/Navbar.vue'
 import Select from './select/Select.vue'
 import SelectView from './select/SelectView.vue'
 import { SelectItem } from './select/type'
@@ -43,6 +44,7 @@ export {
   List,
   NoteAction,
   NoteListView,
+  NoteNavbarView,
   RingLoadingView,
   ScoreInputView,
   Select,
