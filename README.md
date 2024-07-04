@@ -20,21 +20,21 @@
 
 <div align="center">
   <br>
-  <p>
+  <kbd>
     <img src="./doc/image/en/home_en.png" width="800px"/>
-  </p>
+  </kbd>
   <br>
-  <p>
+  <kbd>
     <img src="./doc/image/en/reader-toolbar_en.png" width="800px"/>
-  </p>
+  </kbd>
   <br>
-  <p>
+  <kbd>
     <img src="./doc/image/en/reader-edit-note_en.png" width="800px"/>
-  </p>
+  </kbd>
   <br>
-  <p>
+  <kbd>
     <img src="./doc/image/en/reader-theme-dark_en.png" width="800px"/>
-  </p>
+  </kbd>
   <br>
 </div>
 
