@@ -69,7 +69,8 @@
     "prewView": "Page précédente",
     "getFirstView": "Déjà la première page",
     "getLastView": "Déjà la dernière page",
-    "nextView": "Page suivante"
+    "nextView": "Page suivante",
+    "comeFrom": "depuis"
   },
   "readMode": {
     "double": "Mode double page",

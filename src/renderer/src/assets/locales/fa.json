@@ -69,7 +69,8 @@
     "prewView": "صفحه قبلی",
     "getFirstView": "در حال حاضر صفحه اول",
     "getLastView": "در حال حاضر آخرین صفحه",
-    "nextView": "صفحه بعد"
+    "nextView": "صفحه بعد",
+    "comeFrom": "از جانب"
   },
   "readMode": {
     "double": "حالت دو صفحه",

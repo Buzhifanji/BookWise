@@ -69,7 +69,8 @@
     "prewView": "Forrige side",
     "getFirstView": "Allerede første side",
     "getLastView": "Allerede siste side",
-    "nextView": "Neste side"
+    "nextView": "Neste side",
+    "comeFrom": "fra"
   },
   "readMode": {
     "double": "Dobbeltsidemodus",

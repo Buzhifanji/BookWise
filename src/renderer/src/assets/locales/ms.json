@@ -69,7 +69,8 @@
     "prewView": "Halaman sebelumnya",
     "getFirstView": "Sudah muka surat pertama",
     "getLastView": "Sudah halaman terakhir",
-    "nextView": "Muka surat seterusnya"
+    "nextView": "Muka surat seterusnya",
+    "comeFrom": "daripada"
   },
   "readMode": {
     "double": "Mod muka surat dua",

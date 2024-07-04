@@ -69,7 +69,8 @@
     "prewView": "前のページ",
     "getFirstView": "すでに最初のページ",
     "getLastView": "もう最後のページ",
-    "nextView": "次のページ"
+    "nextView": "次のページ",
+    "comeFrom": "から"
   },
   "readMode": {
     "double": "見開きモード",

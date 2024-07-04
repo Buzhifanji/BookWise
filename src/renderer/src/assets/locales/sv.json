@@ -69,7 +69,8 @@
     "prewView": "Föregående sida",
     "getFirstView": "Redan första sidan",
     "getLastView": "Redan sista sidan",
-    "nextView": "Nästa sida"
+    "nextView": "Nästa sida",
+    "comeFrom": "från"
   },
   "readMode": {
     "double": "Dubbelsidigt läge",

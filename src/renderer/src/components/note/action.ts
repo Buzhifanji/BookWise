@@ -6,6 +6,7 @@ import { useObservable } from '@vueuse/rxjs'
 import { liveQuery } from 'dexie'
 import { v4 as uuidv4 } from 'uuid'
 import { ref } from 'vue'
+import { bookJump } from '../book/action'
 
 export type NoteText = {
   value: string
@@ -167,5 +168,10 @@ export class NoteAction {
     if (!value) return []
 
     return JSON.parse(value) as NoteText[]
+  }
+
+  static jumpToBook(value: Note) {
+    localStorage.setItem('__note__', JSON.stringify(value))
+    bookJump(value.eBookId)
   }
 }

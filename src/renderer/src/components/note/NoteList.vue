@@ -7,7 +7,7 @@ import { t } from '@renderer/view/setting';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { Flag } from 'lucide-vue-next';
 import { computed, defineProps, ref, toRaw, withDefaults } from 'vue';
-import { bookJump } from '../book/action';
+import { NoteAction } from './action';
 import Card from './Card.vue';
 import { detaiNotelDialog } from './detail';
 import { removeNoteDialog } from './remove';
@@ -60,10 +60,7 @@ const removeBefore = (value: Note) => removeNoteDialog(value)
 const onDetail = (value: Note) => detaiNotelDialog(value)
 
 // 跳转
-const jump = (value: Note) => {
-  localStorage.setItem('__note__', JSON.stringify(value))
-  bookJump(value.eBookId)
-}
+const jump = (value: Note) => NoteAction.jumpToBook(value)
 
 </script>
 

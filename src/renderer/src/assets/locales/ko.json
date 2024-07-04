@@ -69,7 +69,8 @@
     "prewView": "이전 페이지",
     "getFirstView": "벌써 첫 페이지",
     "getLastView": "벌써 마지막 페이지야",
-    "nextView": "다음 페이지"
+    "nextView": "다음 페이지",
+    "comeFrom": "~에서"
   },
   "readMode": {
     "double": "이중 페이지 모드",

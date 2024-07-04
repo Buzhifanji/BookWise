@@ -69,7 +69,8 @@
     "prewView": "Önceki sayfa",
     "getFirstView": "Zaten ilk sayfa",
     "getLastView": "Zaten son sayfa",
-    "nextView": "Sonraki Sayfa"
+    "nextView": "Sonraki Sayfa",
+    "comeFrom": "itibaren"
   },
   "readMode": {
     "double": "Çift sayfa modu",

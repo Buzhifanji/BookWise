@@ -69,7 +69,8 @@
     "prewView": "Trang trước",
     "getFirstView": "Đã là trang đầu tiên",
     "getLastView": "Đã là trang cuối cùng",
-    "nextView": "Trang tiếp theo"
+    "nextView": "Trang tiếp theo",
+    "comeFrom": "từ"
   },
   "readMode": {
     "double": "Chế độ trang đôi",

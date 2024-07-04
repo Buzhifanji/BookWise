@@ -69,7 +69,8 @@
     "prewView": "Vorige bladzijde",
     "getFirstView": "Al de eerste pagina",
     "getLastView": "Alweer de laatste pagina",
-    "nextView": "Volgende bladzijde"
+    "nextView": "Volgende bladzijde",
+    "comeFrom": "van"
   },
   "readMode": {
     "double": "Dubbele paginamodus",

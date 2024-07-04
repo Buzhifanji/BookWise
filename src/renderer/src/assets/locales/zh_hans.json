@@ -69,7 +69,8 @@
     "prewView": "上一页",
     "nextView": "下一页",
     "getLastView": "已经是最后一页了",
-    "getFirstView": "已经是第一页了"
+    "getFirstView": "已经是第一页了",
+    "comeFrom": "来自"
   },
   "readMode": {
     "scroll": "滚动模式",

@@ -69,7 +69,8 @@
     "prewView": "Halaman sebelumnya",
     "getFirstView": "Sudah halaman pertama",
     "getLastView": "Sudah halaman terakhir",
-    "nextView": "Halaman selanjutnya"
+    "nextView": "Halaman selanjutnya",
+    "comeFrom": "dari"
   },
   "readMode": {
     "double": "Mode halaman ganda",
