@@ -12,7 +12,7 @@
 
 <div align="center">
 
-**English** · [简体中文](./README.zh_CN.md) · <a src="https://buzhifanji.github.io/BookWise/" target="_bank">Oneline</a> · [Download](https://github.com/Buzhifanji/BookWise/releases/latest)
+**English** · [简体中文](./README.zh_CN.md) · <a href="https://buzhifanji.github.io/BookWise/" target="_blank">Oneline</a> · [Download](https://github.com/Buzhifanji/BookWise/releases/latest)
 
 </div>
 

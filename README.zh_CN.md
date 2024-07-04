@@ -12,8 +12,10 @@
 
 <div align="center">
 
-[简体中文](./README.md) · **简体中文** · <a href="https://buzhifanji.github.io/BookWise/" target="_blank">网页在线版</a> · [Download](https://github.com/Buzhifanji/BookWise/releases/latest)
-
+<a href="./README.md">简体中文</a> · 
+**简体中文** · 
+<a href="https://buzhifanji.github.io/BookWise/" target="_blank">网页在线版</a> · 
+<a href="https://github.com/Buzhifanji/BookWise/releases/latest" >下载</a> 
 </div>
 
 ## 预览
