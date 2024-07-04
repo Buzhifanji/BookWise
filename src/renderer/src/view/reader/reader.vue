@@ -458,7 +458,7 @@ onBeforeUnmount(() => {
                   <!-- 主题 -->
                   <li>
                     <a class="!p-0  my-1">
-                      <DropdownView summary-class="flex flex-row justify-between  w-52 dropdown-left px-4 py-2">
+                      <DropdownView summary-class="flex flex-row justify-between w-72 dropdown-left px-4 py-2">
                         <template v-slot:summary>
                           <span class="stat-title">{{ t('setting.theme') }}</span>
                           <div class="badge badge-outline">{{ settingStore.theme }}</div>
@@ -472,7 +472,7 @@ onBeforeUnmount(() => {
                   <!-- 阅读模式 -->
                   <li>
                     <a class="!p-0 my-1">
-                      <DropdownView summary-class="flex flex-row justify-between  w-52  dropdown-left px-4 py-2">
+                      <DropdownView summary-class="flex flex-row justify-between w-72 dropdown-left px-4 py-2">
                         <template v-slot:summary>
                           <span class="stat-title">{{ t('setting.readMode') }}</span>
                           <div class="badge badge-outline">{{ getSelectReadMode(settingStore.readMode) }}</div>

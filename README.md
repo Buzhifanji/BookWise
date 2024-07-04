@@ -12,7 +12,7 @@
 
 <div align="center">
 
-**English** · [简体中文](./README.zh_CN.md) · [Oneline](buzhifanji.github.io/BookWise) · [Download](https://github.com/Buzhifanji/BookWise/releases/latest)
+**English** · [简体中文](./README.zh_CN.md) · <a src="https://buzhifanji.github.io/BookWise/" target="_bank">Oneline</a> · [Download](https://github.com/Buzhifanji/BookWise/releases/latest)
 
 </div>
 
@@ -43,6 +43,11 @@
       <img src="./doc/image/en/reader-theme-dark_en.png" width="800px"/>
     </kbd>
   </p>
+  <p>
+    <kbd>
+      <img src="./doc/image/en/reader-theme-winter_en.png" width="800px"/>
+    </kbd>
+  </p>
   <br>
 </div>
 
@@ -53,7 +58,8 @@
   - PDF (**.pdf**)
   - DRM-free Mobipocket (**.mobi**) and Kindle (**.azw3**, **.azw**)
   - FictionBook (**.fb2**)
-  - Platform support: **Windows**, **macOS**, **Linux** and **Web**
-  - Built-in 32 themes
-  - Add notes, highlights to your books
-  
+- Platform support: **Windows**, **macOS**, **Linux** and **Web**
+- Reading mode: scroll mode, chapter mode, double column mode
+- themes：Built-in 32 themes
+- notes: Add notes, highlights, tag to your books
+- read time: Count each reading time
