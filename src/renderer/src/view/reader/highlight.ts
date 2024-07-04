@@ -65,7 +65,14 @@ export function initHighlight(book: Book) {
       }
 
       // 新建笔记
-      await NoteAction.add({ sources, eBookId: book.id, chapterName: '', notes, tag: '' })
+      await NoteAction.add({
+        sources,
+        eBookId: book.id,
+        eBookName: book.name,
+        chapterName: '',
+        notes,
+        tag: ''
+      })
     }
   })
 

@@ -1,7 +1,7 @@
 import Dexie, { type EntityTable } from 'dexie'
-import { Book, schemaBook, schemaBookId2 } from './book'
+import { Book, schemaBook } from './book'
 import { BookContent, schemaBookContent } from './book-content'
-import { Bookshelf, schemaBookshelf } from './bookshelf'
+import { Bookshelf } from './bookshelf'
 import { Note, schemaNote } from './note'
 import { ReadTime, schemeReadTime } from './read-time'
 import { Tag, schemaTag } from './tag'
@@ -23,24 +23,24 @@ db.version(1).stores({
   tag: schemaTag // 标签
 })
 
-db.version(3)
-  .stores({
-    books: schemaBookId2, //
-    bookContents: schemaBookContent, // 书本内容
-    notes: schemaNote, // 笔记
-    readTime: schemeReadTime, // 阅读时间
-    tag: schemaTag, // 标签
-    bookshelf: schemaBookshelf // 书架
-  })
-  .upgrade((transaction) => {
-    transaction
-      .table('books')
-      .toCollection()
-      .modify((item) => {
-        item.isReadDone = false
-        item.format = ''
-      })
-  })
+// db.version(3)
+//   .stores({
+//     books: schemaBookId2, //
+//     bookContents: schemaBookContent, // 书本内容
+//     notes: schemaNote, // 笔记
+//     readTime: schemeReadTime, // 阅读时间
+//     tag: schemaTag, // 标签
+//     bookshelf: schemaBookshelf // 书架
+//   })
+//   .upgrade((transaction) => {
+//     transaction
+//       .table('books')
+//       .toCollection()
+//       .modify((item) => {
+//         item.isReadDone = false
+//         item.format = ''
+//       })
+//   })
 
 export const clearDB = () => {
   db.books.clear()

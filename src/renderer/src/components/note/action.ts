@@ -17,12 +17,14 @@ export class NoteAction {
   static async add({
     sources,
     eBookId,
+    eBookName,
     chapterName,
     notes,
     tag
   }: {
     sources: DomSource[]
     eBookId: string
+    eBookName: string
     chapterName: string
     notes: string
     tag: string
@@ -37,6 +39,7 @@ export class NoteAction {
         id: uuidv4(),
         sourceId: sourceId,
         eBookId,
+        eBookName,
         notes,
         chapterName,
         domSource: JSON.stringify(sources),
@@ -84,6 +87,18 @@ export class NoteAction {
         return true
       }
       return false
+    } catch (error) {
+      toastError(t('common.updateFail'))
+      return Promise.reject(error)
+    }
+  }
+
+  static async updateBookName(bookId: string, bookName: string) {
+    try {
+      const notes = await this.findByEBookId(bookId)
+      for (const note of notes) {
+        await this.update(note.id, { eBookName: bookName })
+      }
     } catch (error) {
       toastError(t('common.updateFail'))
       return Promise.reject(error)

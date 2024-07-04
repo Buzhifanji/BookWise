@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { Note, Tag } from '@renderer/batabase';
+import { Book, Note, Tag } from '@renderer/batabase';
 import { NoteAction, NoteText, TagAction, TagListView } from '@renderer/components';
 import { toastSuccess } from '@renderer/shared';
 import { settingStore } from '@renderer/store';
 import { t } from '@renderer/view/setting';
 import { get, onClickOutside, set, useElementSize } from '@vueuse/core';
-import { useRouteParams } from '@vueuse/router';
 import { Baseline, Copy, Highlighter, MessageSquareMore, SpellCheck2, Trash } from 'lucide-vue-next';
 import { Ref, computed, ref } from 'vue';
 import { highlighter } from '../highlight';
@@ -13,6 +12,10 @@ import { HighlightType, highlightColor } from '../highlight-color';
 import { getSectionContainer } from '../util';
 import NoteListView from './NoteList.vue';
 import { NoteBarStyle, NoteToolBarAction, ToolbarStyle } from './action';
+
+const props = defineProps<{
+  book: Book
+}>()
 
 const container = ref<HTMLElement | null>(null)
 const { width, height } = useElementSize(container)
@@ -26,9 +29,8 @@ const style = computed(() => {
 })
 
 const isEdite = ToolbarStyle.isEdite;
-const bookParam = useRouteParams<string>('id')
 
-const noteToolBar = new NoteToolBarAction(ToolbarStyle.source, isEdite, bookParam)
+const noteToolBar = new NoteToolBarAction(ToolbarStyle.source, isEdite, props.book,)
 
 const activeTextDecoration = noteToolBar.decoration
 

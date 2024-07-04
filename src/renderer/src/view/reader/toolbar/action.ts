@@ -1,4 +1,4 @@
-import { Note, Tag } from '@renderer/batabase'
+import { Book, Note, Tag } from '@renderer/batabase'
 import { NoteAction, NoteText, TagAction } from '@renderer/components'
 import { now, toastSuccess, toastWarning } from '@renderer/shared'
 import { DomSource } from '@renderer/web-highlight'
@@ -51,7 +51,7 @@ export class NoteToolBarAction {
   constructor(
     public source: DomSource[],
     public isEdite: Ref<boolean>,
-    public bookParam: Ref<string>
+    public book: Book
   ) {
     this.init()
   }
@@ -114,7 +114,8 @@ export class NoteToolBarAction {
       const tag = TagAction.toJSON(tags)
       await NoteAction.add({
         sources: source,
-        eBookId: get(this.bookParam),
+        eBookId: this.book.id,
+        eBookName: this.book.name,
         chapterName: '',
         notes: '',
         tag
@@ -224,7 +225,7 @@ export class NoteRichAction {
    * @param source
    * @returns
    */
-  async firstAdd(source: DomSource[], tags: Tag[] = []) {
+  async firstAdd(source: DomSource[], tags: Tag[] = [], book: Book) {
     const value = get(this.value)
     if (!value) {
       toastWarning('请输入笔记内容')
@@ -240,7 +241,14 @@ export class NoteRichAction {
       return { ...item, className: highlightColor.getClassName() }
     })
 
-    await NoteAction.add({ sources, eBookId: get(this.bookParam), chapterName: '', notes: '', tag })
+    await NoteAction.add({
+      sources,
+      eBookId: book.id,
+      eBookName: book.name,
+      chapterName: '',
+      notes: '',
+      tag
+    })
 
     highlighter.remove(sources[0].id)
     highlighter.fromSource(sources)

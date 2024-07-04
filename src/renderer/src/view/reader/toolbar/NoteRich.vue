@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Note, Tag } from '@renderer/batabase';
+import { Book, Note, Tag } from '@renderer/batabase';
 import { NoteAction, NoteText, SkeletonView, TagAction, TagInputView } from '@renderer/components';
 import { toastError, toastWarning } from '@renderer/shared';
 import { t } from '@renderer/view/setting';
@@ -10,6 +10,11 @@ import { highlighter } from '../highlight';
 import NoteListView from './NoteList.vue';
 import SourceListView from './SourceList.vue';
 import { NoteBarStyle, NoteRichAction } from './action';
+
+
+const props = defineProps<{
+  book: Book
+}>()
 
 const parentEl = useParentElement()
 const cardRef = ref<HTMLElement | null>(null)
@@ -101,7 +106,7 @@ async function submit() {
       await noteRichAction.addInNoNotes(get(tags))
     } else {
       // 第一次新增，无高亮
-      await noteRichAction.firstAdd(get(source), get(tags))
+      await noteRichAction.firstAdd(get(source), get(tags), props.book)
     }
   } catch (error) {
     console.log(error)

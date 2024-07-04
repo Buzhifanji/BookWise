@@ -7,6 +7,7 @@ import { vOnClickOutside } from '@vueuse/components';
 import { get, set } from '@vueuse/core';
 import { useForm } from 'vee-validate';
 import { nextTick, ref } from 'vue';
+import { NoteAction } from '../../note/action';
 import { BookAction } from '../action';
 
 const props = defineProps<{ book: Book }>()
@@ -49,7 +50,14 @@ async function uploadCover(event: Event) {
 }
 
 const submitEdite = handleSubmit(values => {
-  BookAction.update(props.book.id, { ...values, cover: get(cover) })
+  const { id, name } = props.book
+
+  BookAction.update(id, { ...values, cover: get(cover) })
+
+  // 更新了书名
+  if (name !== values.name) {
+    NoteAction.updateBookName(id, values.name)
+  }
   closeDialog()
 });
 

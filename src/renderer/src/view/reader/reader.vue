@@ -509,10 +509,10 @@ onBeforeUnmount(() => {
             </template>
 
             <!-- 工具栏 -->
-            <ToolbarView v-if="isShowToolBar" />
+            <ToolbarView :book="book" v-if="isShowToolBar" />
 
             <!-- 添加笔记 -->
-            <NoteRichView v-if="isNoteRichShow" />
+            <NoteRichView :book="book" v-if="isNoteRichShow" />
           </div>
         </div>
       </div>

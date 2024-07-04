@@ -21,7 +21,6 @@ function uploadAction() {
   dialogRef.value?.open()
 }
 
-
 </script>
 
 <template>

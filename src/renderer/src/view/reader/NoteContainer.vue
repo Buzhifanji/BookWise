@@ -71,7 +71,7 @@ const tags = ref<Tag[]>([]) // 标签
 const selectNote = ref<Note>() // 选中的笔记
 const noteTop = ref(0) // 选中的dom 距离可视化区域的顶部距离
 const toolbarRef = ref<HTMLElement | null>(null) //工具栏dom
-const noteToolBar = new NoteToolBarAction([], ref(true), bookParam)
+const noteToolBar = new NoteToolBarAction([], ref(true), props.book)
 const activeTextDecoration = noteToolBar.decoration // 文字高亮类型
 const activeColor = noteToolBar.color // 文字高亮颜色
 

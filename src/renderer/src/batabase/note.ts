@@ -1,6 +1,7 @@
 export interface Note {
   id: string
   eBookId: string // 电子书id
+  eBookName: string // 电子书名
   chapterName: string // 章节名
   notes: string // 笔记
   createTime: number // 创建时间
@@ -12,4 +13,4 @@ export interface Note {
 }
 
 export const schemaNote =
-  '&id, eBookId,sourceId, chapterIndex, chapterName, bookText, notes, domSource, createTime, updateTime, isDelete, colorName, tag'
+  '&id, eBookId,sourceId, chapterIndex, chapterName, bookText, notes, domSource, createTime, updateTime, isDelete, colorName, tag,eBookName'
