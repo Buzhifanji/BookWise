@@ -24,25 +24,35 @@
   <br>
   <p>
     <kbd>
-      <img src="./doc/image/en/home_en.png" width="800px"/>
+      <img src="./doc/image/zh/home.png" width="800px"/>
     </kbd>
   </p>
   <br>
   <p>
     <kbd>
-      <img src="./doc/image/en/reader-toolbar_en.png" width="800px"/>
+      <img src="./doc/image/zh/reader-toolbar.png" width="800px"/>
     </kbd>
   </p>
   <br>
   <p>
     <kbd>
-      <img src="./doc/image/en/reader-edit-note_en.png" width="800px"/>
+      <img src="./doc/image/zh/reader-edit-note.png" width="800px"/>
     </kbd>
   </p>
   <br>
   <p>
     <kbd>
-      <img src="./doc/image/en/reader-theme-dark_en.png" width="800px"/>
+      <img src="./doc/image/zh/reader-theme-dark.png" width="800px"/>
+    </kbd>
+  </p>
+  <p>
+    <kbd>
+      <img src="./doc/image/zh/reader-theme-lemonade.png" width="800px"/>
+    </kbd>
+  </p>
+  <p>
+    <kbd>
+      <img src="./doc/image/zh/reader-theme-winter.png" width="800px"/>
     </kbd>
   </p>
   <br>

@@ -22,30 +22,35 @@
   <br>
   <p>
     <kbd>
-      <img src="./doc/image/en/home_en.png" width="800px"/>
+      <img src="./doc/image/en/home.png" width="800px"/>
     </kbd>
   </p>
   <br>
   <p>
     <kbd>
-      <img src="./doc/image/en/reader-toolbar_en.png" width="800px"/>
+      <img src="./doc/image/en/reader-toolbar.png" width="800px"/>
     </kbd>
   </p>
   <br>
   <p>
     <kbd>
-      <img src="./doc/image/en/reader-edit-note_en.png" width="800px"/>
+      <img src="./doc/image/en/reader-edit-note.png" width="800px"/>
     </kbd>
   </p>
   <br>
   <p>
     <kbd>
-      <img src="./doc/image/en/reader-theme-dark_en.png" width="800px"/>
+      <img src="./doc/image/en/reader-theme-dark.png" width="800px"/>
     </kbd>
   </p>
   <p>
     <kbd>
-      <img src="./doc/image/en/reader-theme-winter_en.png" width="800px"/>
+      <img src="./doc/image/en/reader-theme-lemonade.png" width="800px"/>
+    </kbd>
+  </p>
+  <p>
+    <kbd>
+      <img src="./doc/image/en/reader-theme-winter.png" width="800px"/>
     </kbd>
   </p>
   <br>
