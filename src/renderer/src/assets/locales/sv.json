@@ -65,7 +65,11 @@
     "editFail": "Redigeringen misslyckades",
     "updateFail": "Uppdateringen misslyckades",
     "add": "Lägg till",
-    "copy": "kopiera"
+    "copy": "kopiera",
+    "prewView": "Föregående sida",
+    "getFirstView": "Redan första sidan",
+    "getLastView": "Redan sista sidan",
+    "nextView": "Nästa sida"
   },
   "readMode": {
     "double": "Dubbelsidigt läge",

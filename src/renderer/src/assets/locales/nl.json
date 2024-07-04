@@ -65,7 +65,11 @@
     "editFail": "Bewerken mislukt",
     "updateFail": "Update mislukt",
     "add": "Optellen bij",
-    "copy": "kopiëren"
+    "copy": "kopiëren",
+    "prewView": "Vorige bladzijde",
+    "getFirstView": "Al de eerste pagina",
+    "getLastView": "Alweer de laatste pagina",
+    "nextView": "Volgende bladzijde"
   },
   "readMode": {
     "double": "Dubbele paginamodus",

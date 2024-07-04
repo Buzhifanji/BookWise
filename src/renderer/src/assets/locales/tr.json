@@ -65,7 +65,11 @@
     "editFail": "Düzenleme başarısız oldu",
     "updateFail": "Güncelleme başarısız oldu",
     "add": "a ekle",
-    "copy": "kopyala"
+    "copy": "kopyala",
+    "prewView": "Önceki sayfa",
+    "getFirstView": "Zaten ilk sayfa",
+    "getLastView": "Zaten son sayfa",
+    "nextView": "Sonraki Sayfa"
   },
   "readMode": {
     "double": "Çift sayfa modu",

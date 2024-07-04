@@ -65,7 +65,11 @@
     "editFail": "Pengeditan gagal",
     "updateFail": "Pembaharuan gagal",
     "add": "Tambahkan",
-    "copy": "menyalin"
+    "copy": "menyalin",
+    "prewView": "Halaman sebelumnya",
+    "getFirstView": "Sudah halaman pertama",
+    "getLastView": "Sudah halaman terakhir",
+    "nextView": "Halaman selanjutnya"
   },
   "readMode": {
     "double": "Mode halaman ganda",

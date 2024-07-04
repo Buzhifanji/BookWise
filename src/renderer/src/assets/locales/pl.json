@@ -65,7 +65,11 @@
     "editFail": "Edycja nie powiodła się",
     "updateFail": "Aktualizacja nie powiodła się",
     "add": "Dodać do",
-    "copy": "Kopiuj"
+    "copy": "Kopiuj",
+    "prewView": "Poprzednia strona",
+    "getFirstView": "Już pierwsza strona",
+    "getLastView": "Już ostatnia strona",
+    "nextView": "Następna strona"
   },
   "readMode": {
     "double": "Tryb podwójnej strony",

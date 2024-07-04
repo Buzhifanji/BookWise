@@ -12,7 +12,7 @@
 
 <div align="center">
 
-<a href="./README.md">简体中文</a> · 
+<a href="./README.md">English</a> · 
 **简体中文** · 
 <a href="https://buzhifanji.github.io/BookWise/" target="_blank">网页在线版</a> · 
 <a href="https://github.com/Buzhifanji/BookWise/releases/latest" >下载</a> 

@@ -65,7 +65,11 @@
     "editFail": "Edit gagal",
     "updateFail": "Kemas kini gagal",
     "add": "Tambah ke",
-    "copy": "salinan"
+    "copy": "salinan",
+    "prewView": "Halaman sebelumnya",
+    "getFirstView": "Sudah muka surat pertama",
+    "getLastView": "Sudah halaman terakhir",
+    "nextView": "Muka surat seterusnya"
   },
   "readMode": {
     "double": "Mod muka surat dua",

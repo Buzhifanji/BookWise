@@ -65,7 +65,11 @@
     "editFail": "Échec de la modification",
     "updateFail": "Mise à jour a échoué",
     "add": "Ajouter à",
-    "copy": "copie"
+    "copy": "copie",
+    "prewView": "Page précédente",
+    "getFirstView": "Déjà la première page",
+    "getLastView": "Déjà la dernière page",
+    "nextView": "Page suivante"
   },
   "readMode": {
     "double": "Mode double page",

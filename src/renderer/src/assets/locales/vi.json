@@ -65,7 +65,11 @@
     "editFail": "Chỉnh sửa không thành công",
     "updateFail": "Cập nhật không thành công",
     "add": "Thêm vào",
-    "copy": "sao chép"
+    "copy": "sao chép",
+    "prewView": "Trang trước",
+    "getFirstView": "Đã là trang đầu tiên",
+    "getLastView": "Đã là trang cuối cùng",
+    "nextView": "Trang tiếp theo"
   },
   "readMode": {
     "double": "Chế độ trang đôi",

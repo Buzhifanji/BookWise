@@ -464,7 +464,7 @@ onBeforeUnmount(() => {
                           <div class="badge badge-outline">{{ settingStore.theme }}</div>
                         </template>
                         <List
-                          class="dropdown-content !top-0 !right-[13.5rem]  !border-secondary  rounded-s-lg rounded-ee-lg z-[2] w-52"
+                          class="dropdown-content !top-0 !right-[18.5rem]  !border-secondary  rounded-s-lg rounded-ee-lg z-[2] w-52"
                           :list="themes" v-model="settingStore.theme" />
                       </DropdownView>
                     </a>
@@ -478,7 +478,7 @@ onBeforeUnmount(() => {
                           <div class="badge badge-outline">{{ getSelectReadMode(settingStore.readMode) }}</div>
                         </template>
                         <List
-                          class="dropdown-content !top-0 !right-[13.5rem]  !border-secondary  rounded-s-lg rounded-ee-lg z-[2] w-52"
+                          class="dropdown-content !top-0 !right-[18.5rem]  !border-secondary  rounded-s-lg rounded-ee-lg z-[2] w-52"
                           :list="readModeList" v-model="settingStore.readMode" />
                       </DropdownView>
                     </a>

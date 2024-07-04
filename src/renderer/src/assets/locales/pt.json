@@ -65,7 +65,11 @@
     "editFail": "Falha na edição",
     "updateFail": "Atualização falhou",
     "add": "adicionar à",
-    "copy": "cópia de"
+    "copy": "cópia de",
+    "prewView": "Página anterior",
+    "getFirstView": "Já é a primeira página",
+    "getLastView": "Já é a última página",
+    "nextView": "Próxima página"
   },
   "readMode": {
     "double": "Modo página dupla",

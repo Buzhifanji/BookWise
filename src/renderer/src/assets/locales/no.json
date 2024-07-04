@@ -65,7 +65,11 @@
     "editFail": "Redigering mislyktes",
     "updateFail": "Oppdatering mislyktes",
     "add": "Legge til",
-    "copy": "kopiere"
+    "copy": "kopiere",
+    "prewView": "Forrige side",
+    "getFirstView": "Allerede første side",
+    "getLastView": "Allerede siste side",
+    "nextView": "Neste side"
   },
   "readMode": {
     "double": "Dobbeltsidemodus",

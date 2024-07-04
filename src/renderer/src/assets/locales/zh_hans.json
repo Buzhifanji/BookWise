@@ -65,7 +65,11 @@
     "restoreFail": "还原失败",
     "updateFail": "更新失败",
     "add": "添加",
-    "copy": "复制"
+    "copy": "复制",
+    "prewView": "上一页",
+    "nextView": "下一页",
+    "getLastView": "已经是最后一页了",
+    "getFirstView": "已经是第一页了"
   },
   "readMode": {
     "scroll": "滚动模式",

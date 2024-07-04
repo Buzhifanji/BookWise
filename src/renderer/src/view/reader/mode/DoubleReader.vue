@@ -2,6 +2,7 @@
 import { RingLoadingView } from '@renderer/components';
 import { $, formatDecimal, toastWarning, wait } from '@renderer/shared';
 import { useBookPageStore } from '@renderer/store';
+import { t } from '@renderer/view/setting';
 import { get, onKeyStroke, set, useDebounceFn, useResizeObserver, useScroll, useThrottleFn, useToggle } from '@vueuse/core';
 import { nextTick, onMounted, ref, watchEffect } from 'vue';
 import { CONTINAER_ID } from '../highlight';
@@ -171,7 +172,7 @@ async function prev() {
 
     dom.scrollTo({ left: dom.scrollWidth })
   } else {
-    toastWarning('已经是第一页了')
+    toastWarning(t('common.getFirstView'))
   }
 }
 
@@ -181,7 +182,7 @@ async function next() {
     await updateSection()
 
   } else {
-    toastWarning('已经是最后一页了')
+    toastWarning(t('common.getLastView'))
   }
 }
 
@@ -266,8 +267,10 @@ function linkClick(href: string) {
             </SectionView>
             <div ref="remendyRef" :style="style"></div>
           </div>
-          <button class="btn btn-outline absolute bottom-5 left-10 btn-sm" @click="prewView">上一页</button>
-          <button class="btn btn-outline absolute bottom-5 right-10 btn-sm" @click="nextView">下一页</button>
+          <button class="btn btn-outline absolute bottom-5 left-10 btn-sm" @click="prewView">{{ $t('common.prewView')
+            }}</button>
+          <button class="btn btn-outline absolute bottom-5 right-10 btn-sm" @click="nextView">{{ $t('common.nextView')
+            }}</button>
         </template>
       </div>
     </div>

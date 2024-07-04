@@ -65,7 +65,11 @@
     "editFail": "Die Bearbeitung ist fehlgeschlagen",
     "updateFail": "Update fehlgeschlagen",
     "add": "Hinzufügen zu",
-    "copy": "Kopieren"
+    "copy": "Kopieren",
+    "prewView": "Vorherige Seite",
+    "getFirstView": "Schon die erste Seite",
+    "getLastView": "Schon die letzte Seite",
+    "nextView": "Nächste Seite"
   },
   "readMode": {
     "double": "Doppelseitenmodus",
