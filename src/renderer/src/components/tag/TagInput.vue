@@ -86,7 +86,6 @@ const onAdd = useThrottleFn(async () => {
 const onPlaceholder = (val: Tag) => addAction(val)
 const onChoose = (i: number) => addAction(get(placeholderOption)[i])
 
-
 </script>
 
 <template>

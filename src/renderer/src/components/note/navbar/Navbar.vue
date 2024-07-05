@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useTabList } from '@renderer/hooks';
 import { changNavbarStore, noteNavbarStore, useFilterNoteStore } from '@renderer/store';
-import { vOnClickOutside } from '@vueuse/components';
-import { get, set, useToggle } from '@vueuse/core';
+import { get, set } from '@vueuse/core';
 import { ArrowDownNarrowWide, Check, Filter } from 'lucide-vue-next';
-import { computed, ref, watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
 import DropdownView from '../../dropdown/Dropdown.vue';
+import SelectSearchView from '../../select/SelectSearch.vue';
 import { TagAction } from '../../tag/action';
 import { NoteAction } from '../action';
+
 
 const store = useFilterNoteStore()
 
@@ -19,41 +19,17 @@ const noteList = NoteAction.observable()
 
 // 按书籍过滤
 const noteAllBook = ref<Data[]>([])
-const selectedBook = ref<Data>()
-const bookValue = ref<string>('')
-const placeholderBook = computed(() => {
-  const val = get(bookValue)
-  if (!val) return []
-
-  const all = get(noteAllBook) || []
-  return all.filter(item => item.value.includes(val))
-})
-const { onDown, onUp, onTab, activePlaceholder, listContianer } = useTabList(noteAllBook)
-const [showBookPlaceholder, setShowBookPlaceholder] = useToggle(false)
-const closeBook = () => setShowBookPlaceholder(false)
+const selectedBook = ref<Data>({ id: '', value: '' })
 watchEffect(() => {
-  const val = get(bookValue)
-  if (val && val !== get(selectedBook)?.value) {
-    setShowBookPlaceholder(true)
-  }
+  const id = get(selectedBook)?.id || ''
+  store.setEBookId(id)
 })
-const chooseBook = (index: number | Data) => {
-  let val = index
-  if (typeof index === 'number') {
-    const data = get(placeholderBook)[index]
-    if (!data) return
-    val = data
-  }
-
-  const _val = val as Data
-
-  set(selectedBook, _val)
-  set(bookValue, _val.value)
-  store.setEBookId(_val.id)
-  closeBook()
+const clearBookFilter = () => {
+  store.setEBookId('')
+  set(selectedBook, { id: '', value: '' })
 }
 
-
+// 标签过滤
 const noteAlltag = ref<Data[]>([])
 
 watchEffect(() => {
@@ -128,26 +104,17 @@ watchEffect(() => {
       <button class="btn btn-sm join-item rounded-r-full">
         <Filter />
       </button>
-      <div class="relative" v-on-click-outside="closeBook">
+      <SelectSearchView className="input-sm join-item" v-model="selectedBook" :data="noteAllBook"
+        @clear="clearBookFilter()">
+        <span>书名</span>
+      </SelectSearchView>
+      <div class="relative">
         <label class="input input-sm input-bordered join-item flex items-center gap-2">
-          书名
-          <input type="text" class="grow " v-model="bookValue" @keydown.enter="onTab(chooseBook)"
-            @keydown.prevent.down="onDown()" @keydown.prevent.up="onUp()" @keydown.prevent.tab="onTab(chooseBook)"
-            placeholder="过滤书名" />
+          标签
+          <input type="text" class="grow " placeholder="过滤标签" />
         </label>
-        <ul v-if="showBookPlaceholder && placeholderBook.length" ref="listContianer"
-          class="p-2 mt-4 z-[10] max-h-60 md:max-h-72 lg:max-h-96 w-full overflow-auto border border-accent absolute  rounded-md menu flex-nowrap  bg-base-100 shadow-2xl  gap-1 scrollbar-thin">
-          <li v-for="item, index in placeholderBook" :key="item.id" @click="chooseBook(item)" class="text-base-content">
-            <a :class="{ active: activePlaceholder === index }">
-              {{ item.value }}
-            </a>
-          </li>
-        </ul>
       </div>
-      <label class="input input-sm input-bordered join-item flex items-center gap-2">
-        标签
-        <input type="text" class="grow " placeholder="过滤标签" />
-      </label>
+
     </div>
   </div>
 </template>
