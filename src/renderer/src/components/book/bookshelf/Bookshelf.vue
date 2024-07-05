@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { Book, Bookshelf } from '@renderer/batabase';
 import { BookshelfAction } from '@renderer/components';
-import { useDialog } from '@renderer/hooks';
+import { useDialog, useTabList } from '@renderer/hooks';
 import { toastError, toastSuccess } from '@renderer/shared';
 import { t } from '@renderer/view/setting';
 import { vOnClickOutside } from '@vueuse/components';
 import { get, set, useThrottleFn, useToggle } from '@vueuse/core';
-import scrollIntoView from 'scroll-into-view-if-needed';
 import { computed, nextTick, ref } from 'vue';
 import { BookAction } from '../action';
 
@@ -14,7 +13,6 @@ const props = defineProps<{ book: Book }>()
 
 const { dialogRef, openDialog, closeDialog } = useDialog();
 
-const listContianer = ref<HTMLUListElement | null>(null)
 const inputRef = ref<HTMLInputElement | null>(null)
 
 const allGrops = ref<Bookshelf[]>([])
@@ -26,10 +24,10 @@ const placeholderOption = computed(() => {
   return allGrops.value.filter(item => item.name.includes(val))
 })
 const groupError = ref<string>('')
-const activePlaceholder = ref(-1)
 const [loading, setLoading] = useToggle(false)
 const [submitLoading, setSubmitLoading] = useToggle(false)
 
+const { onDown, onUp, onTab, activePlaceholder, listContianer } = useTabList(placeholderOption)
 const addAction = (val: Bookshelf) => {
   set(groupValue, BookshelfAction.toJSON(val))
 
@@ -37,17 +35,6 @@ const addAction = (val: Bookshelf) => {
   set(chooseGroup, '')
 }
 const onPlaceholder = (val: Bookshelf) => addAction(val)
-
-const activeToView = () => {
-  const node = get(listContianer)
-  if (!node) return
-  const { scrollHeight, clientHeight } = node
-  if (scrollHeight <= clientHeight) return // 无滚动条
-
-  const target = node.children[get(activePlaceholder)]?.firstElementChild
-  if (!target) return
-  scrollIntoView(target, { behavior: 'smooth', scrollMode: 'if-needed' })
-}
 
 const onAdd = useThrottleFn(async () => {
   const index = get(activePlaceholder)
@@ -71,31 +58,8 @@ const onAdd = useThrottleFn(async () => {
   }
 }, 150)
 
-const onDown = () => {
-  const index = get(activePlaceholder)
-  const len = get(placeholderOption).length
-  if (index < len - 1) {
-    set(activePlaceholder, index + 1)
-    activeToView()
-  }
-}
+const onChoose = (i: number) => addAction(get(placeholderOption)[i])
 
-const onUp = () => {
-  const index = get(activePlaceholder)
-  if (index <= 0) {
-    set(activePlaceholder, 0)
-  } else {
-    set(activePlaceholder, index - 1)
-  }
-  activeToView()
-}
-
-const onTab = () => {
-  const index = get(activePlaceholder)
-  if (index !== -1) {
-    addAction(get(placeholderOption)[index])
-  }
-}
 
 const init = async () => {
   try {
@@ -168,7 +132,7 @@ init()
               </span>
               <input type="text" class="grow" v-model="chooseGroup" :placeholder="t('book.needBookshelfName')"
                 ref="inputRef" @keydown.enter="onAdd()" @keydown.prevent.down="onDown()" @keydown.prevent.up="onUp()"
-                @keydown.prevent.tab="onTab()" />
+                @keydown.prevent.tab="onTab(onChoose)" />
             </label>
 
             <div class="label" v-if="groupError">

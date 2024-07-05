@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Tag } from '@renderer/batabase';
+import { useTabList } from '@renderer/hooks';
 import { isInClientRectTop } from '@renderer/shared';
 import { t } from '@renderer/view/setting';
 import { get, set, useThrottleFn } from '@vueuse/core';
-import scrollIntoView from 'scroll-into-view-if-needed';
 import { computed, defineProps, ref, watchEffect, withDefaults } from 'vue';
 import TagListView from './TagList.vue';
 import { TagAction } from './action';
@@ -19,11 +19,9 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits(['update:modelValue'])
 
 const container = ref<HTMLLabelElement | null>(null)
-const listContianer = ref<HTMLUListElement | null>(null)
 const list = ref(props.modelValue)
 const tagValue = ref<string>('')
 const allTag = TagAction.observable()
-
 watchEffect(() => {
   set(list, props.modelValue)
 })
@@ -41,7 +39,9 @@ const isTop = computed(() => {
   if (!dom) return false
   return isInClientRectTop(dom)
 })
-const activePlaceholder = ref(-1)
+
+const { onDown, onUp, onTab, activePlaceholder, listContianer } = useTabList(placeholderOption)
+
 
 const onRemove = (index: number) => {
   list.value.splice(index, 1)
@@ -84,43 +84,8 @@ const onAdd = useThrottleFn(async () => {
 }, 150)
 
 const onPlaceholder = (val: Tag) => addAction(val)
+const onChoose = (i: number) => addAction(get(placeholderOption)[i])
 
-const activeToView = () => {
-  const node = get(listContianer)
-  if (!node) return
-  const { scrollHeight, clientHeight } = node
-  if (scrollHeight <= clientHeight) return // 无滚动条
-
-  const target = node.children[get(activePlaceholder)]?.firstElementChild
-  if (!target) return
-  scrollIntoView(target, { behavior: 'smooth', scrollMode: 'if-needed' })
-}
-
-const onDown = () => {
-  const index = get(activePlaceholder)
-  const len = get(placeholderOption).length
-  if (index < len - 1) {
-    set(activePlaceholder, index + 1)
-    activeToView()
-  }
-}
-
-const onUp = () => {
-  const index = get(activePlaceholder)
-  if (index <= 0) {
-    set(activePlaceholder, 0)
-  } else {
-    set(activePlaceholder, index - 1)
-  }
-  activeToView()
-}
-
-const onTab = () => {
-  const index = get(activePlaceholder)
-  if (index !== -1) {
-    addAction(get(placeholderOption)[index])
-  }
-}
 
 </script>
 
@@ -136,7 +101,7 @@ const onTab = () => {
   <label class="input input-bordered flex items-center gap-2 flex-wrap min-h-12 h-auto py-2" ref="container">
     <TagListView :tag="list" @remove="onRemove" />
     <input type="text" class="grow" v-model="tagValue" :placeholder="t('tag.needTag')" @keydown.enter="onAdd()"
-      @keydown.prevent.down="onDown()" @keydown.prevent.up="onUp()" @keydown.prevent.tab="onTab()" />
+      @keydown.prevent.down="onDown()" @keydown.prevent.up="onUp()" @keydown.prevent.tab="onTab(onChoose)" />
   </label>
   <ul v-if="!isTop && placeholderOption.length" ref="listContianer"
     class="p-2 mt-2 z-[10] max-h-60 md:max-h-72 lg:max-h-96 w-full overflow-auto border border-accent  rounded-md menu flex-nowrap  bg-base-100 shadow-2xl  gap-1 scrollbar-thin">
