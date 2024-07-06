@@ -2,35 +2,47 @@
 import { changNavbarStore, noteNavbarStore, useFilterNoteStore } from '@renderer/store';
 import { get, set } from '@vueuse/core';
 import { ArrowDownNarrowWide, Check, Filter } from 'lucide-vue-next';
-import { ref, watchEffect } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import DropdownView from '../../dropdown/Dropdown.vue';
 import SelectSearchView from '../../select/SelectSearch.vue';
 import { TagAction } from '../../tag/action';
 import { NoteAction } from '../action';
-
+import TagListview from '../../tag/TagList.vue'
+import { TagItem } from '../../tag/type';
 
 const store = useFilterNoteStore()
 
 const isSortBy = (val: string) => get(noteNavbarStore).sortBy === val
 
-type Data = { id: string, value: string }
-
 const noteList = NoteAction.observable()
 
 // 按书籍过滤
-const noteAllBook = ref<Data[]>([])
-const selectedBook = ref<Data>({ id: '', value: '' })
-watchEffect(() => {
+const noteAllBook = ref<TagItem[]>([])
+const selectedBook = ref<TagItem>({ id: '', value: '' })
+const updateBook = () => {
   const id = get(selectedBook)?.id || ''
   store.setEBookId(id)
-})
+}
 const clearBookFilter = () => {
   store.setEBookId('')
   set(selectedBook, { id: '', value: '' })
 }
 
 // 标签过滤
-const noteAlltag = ref<Data[]>([])
+const noteAlltag = ref<TagItem[]>([])
+const selectTags = ref<TagItem[]>([])
+const getTagIds = () => get(selectTags).map(item => item.id)
+const updateTag = (_: TagItem) => {
+  store.setTags(getTagIds())
+}
+const removeTag = (i: number) => {
+  selectTags.value.splice(i, 1)
+  store.setTags(getTagIds())
+}
+const clearTagFilter = () => {
+  store.setTags([])
+  set(selectTags, [])
+}
 
 watchEffect(() => {
   const notes = noteList.value || []
@@ -104,16 +116,21 @@ watchEffect(() => {
       <button class="btn btn-sm join-item rounded-r-full">
         <Filter />
       </button>
-      <SelectSearchView className="input-sm join-item" v-model="selectedBook" :data="noteAllBook"
+      <SelectSearchView className="input-sm join-item" v-model="selectedBook" @update:model-value="updateBook"  :data="noteAllBook"
         @clear="clearBookFilter()">
         <span>书名</span>
       </SelectSearchView>
-      <div class="relative">
+      <SelectSearchView className="input-sm join-item" v-model="selectTags" @update:model-value="updateTag" :data="noteAlltag"
+        @clear="clearTagFilter()">
+        <span>标签</span>
+        <TagListview :tag="selectTags" @remove="removeTag"/>
+      </SelectSearchView>
+      <!-- <div class="relative">
         <label class="input input-sm input-bordered join-item flex items-center gap-2">
           标签
           <input type="text" class="grow " placeholder="过滤标签" />
         </label>
-      </div>
+      </div> -->
 
     </div>
   </div>

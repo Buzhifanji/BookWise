@@ -45,3 +45,21 @@ export function cloneBuffer(buffer: ArrayBuffer) {
 export function arrayBufferToFile(val: ArrayBuffer, fileName: string) {
   return new File([new Blob([val])], fileName)
 }
+
+/**
+ * 检查两个数组是否有交集
+ * @param arr1 
+ * @param arr2 
+ * @returns 
+ */
+export function haveIntersection<T>(arr1: T[], arr2: T[]) {
+  const set1 = new Set(arr1);
+  const set2 = new Set(arr2);
+
+  for (let item of set1) {
+    if (set2.has(item)) {
+      return true; // 找到交集
+    }
+  }
+  return false; // 没有交集
+}

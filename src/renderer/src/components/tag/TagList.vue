@@ -2,9 +2,10 @@
 import { Tag } from '@renderer/batabase';
 import { X } from 'lucide-vue-next';
 import { defineProps, withDefaults } from 'vue';
+import { TagItem } from './type';
 
 interface Props {
-  tag: Tag[],
+  tag: TagItem[] | Tag[],
   show?: boolean
 }
 
@@ -20,7 +21,7 @@ const emit = defineEmits(['remove'])
 
 <template>
   <div class="badge badge-info gap-2" v-for="item, index in tag">
-    {{ item.tagName }}
+    {{ (item as TagItem).value || (item as Tag).tagName }}
     <X v-if="show" class="w-4 h-4 cursor-pointer" @click="emit('remove', index)" />
   </div>
 </template>

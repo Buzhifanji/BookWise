@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Note } from '@renderer/batabase';
 import { RouterName } from '@renderer/route';
-import { chuankArray, remToPx } from '@renderer/shared';
+import { chuankArray, haveIntersection, remToPx } from '@renderer/shared';
 import { noteNavbarStore, useContentCantianerStore, useFilterNoteStore } from '@renderer/store';
 import { t } from '@renderer/view/setting';
 import { useVirtualizer } from '@tanstack/vue-virtual';
@@ -12,6 +12,7 @@ import { NoteAction } from './action';
 import Card from './Card.vue';
 import { detaiNotelDialog } from './detail';
 import { removeNoteDialog } from './remove';
+import { TagAction } from '../tag/action';
 
 interface Props {
   data: Note[],
@@ -50,6 +51,15 @@ const list = computed(() => {
   const bookId = filterStore.eBookId
   if (bookId) {
     originalData = originalData.filter((item) => item.eBookId === bookId)
+  }
+
+  // 标签过滤
+  const tagIds = filterStore.tags
+  if(tagIds.length) {
+    originalData = originalData.filter((item) => {
+      const tag = TagAction.toTag(item.tag).map(item => item.id)
+      return haveIntersection(tag, tagIds)
+    })
   }
 
   // 排序

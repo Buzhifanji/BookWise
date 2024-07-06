@@ -23,6 +23,8 @@ const props = withDefaults(defineProps<Props>(), {
   className: ''
 })
 
+console.log(props.data)
+
 const emit = defineEmits(['update:modelValue', 'clear'])
 const isMultiple = Array.isArray(props.modelValue) ? true : false
 const allData = computed(() => props.data)
@@ -40,7 +42,13 @@ watchEffect(() => {
 
 watchEffect(() => {
   const val = get(inputValue)
+  // 单选
   if (val && !isMultiple && val !== (props.modelValue as Item).value) {
+    setShow(true)
+  }
+
+  // 多选
+  if(val && isMultiple) {
     setShow(true)
   }
 })

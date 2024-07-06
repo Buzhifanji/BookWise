@@ -20,6 +20,7 @@ import TagListView from './tag/TagList.vue'
 import ExpandTreeView from './tree/ExpandTree.vue'
 import FoldTreeView from './tree/FoldTree.vue'
 import FileUploadView from './upload/FileUpload.vue'
+import { TagItem } from './tag/type'
 
 export * from './toast/type'
 
@@ -56,4 +57,4 @@ export {
   TagListView
 }
 
-export { type NoteText, type SelectItem }
+export { type NoteText, type SelectItem, type TagItem }
