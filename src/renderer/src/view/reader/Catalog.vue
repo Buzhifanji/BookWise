@@ -45,14 +45,14 @@ watchEffect(() => {
 
 <style scoped>
 .catalog-wrapper {
-  --catalog-bar-width: 20rem;
+  --catalog-bar-width: 16rem;
   width: var(--catalog-bar-width);
   transition: all .3s;
   position: sticky;
   bottom: 0;
   top: 0;
   height: 100vh;
-  min-width: 15rem;
+  min-width: 16rem;
   border-inline-end-width: 1px;
   --tw-border-opacity: 1;
   border-color: var(--fallback-b2, oklch(var(--b2) / var(--tw-border-opacity)));

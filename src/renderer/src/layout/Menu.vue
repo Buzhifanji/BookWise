@@ -56,7 +56,7 @@ watchEffect(() => {
 
 <style scoped>
 .leftmenu-wrapper {
-  --leftbar-width: 15rem;
+  --leftbar-width: 12rem;
 
   width: var(--leftbar-width);
   transition: all .3s;
@@ -64,7 +64,7 @@ watchEffect(() => {
   bottom: 0;
   top: 0;
   height: 100vh;
-  min-width: 15rem;
+  min-width: 12rem;
   border-inline-end-width: 1px;
   --tw-border-opacity: 1;
   border-color: var(--fallback-b2, oklch(var(--b2) / var(--tw-border-opacity)));
