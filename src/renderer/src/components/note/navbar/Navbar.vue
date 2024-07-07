@@ -2,7 +2,7 @@
 import { changNavbarStore, noteNavbarStore, useFilterNoteStore } from '@renderer/store';
 import { get, set } from '@vueuse/core';
 import { ArrowDownNarrowWide, Check, Filter } from 'lucide-vue-next';
-import { computed, ref, watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
 import DropdownView from '../../dropdown/Dropdown.vue';
 import SelectSearchView from '../../select/SelectSearch.vue';
 import { TagAction } from '../../tag/action';
@@ -125,13 +125,6 @@ watchEffect(() => {
         <span>标签</span>
         <TagListview :tag="selectTags" @remove="removeTag"/>
       </SelectSearchView>
-      <!-- <div class="relative">
-        <label class="input input-sm input-bordered join-item flex items-center gap-2">
-          标签
-          <input type="text" class="grow " placeholder="过滤标签" />
-        </label>
-      </div> -->
-
     </div>
   </div>
 </template>

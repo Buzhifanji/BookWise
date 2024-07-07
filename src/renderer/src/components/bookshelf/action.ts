@@ -1,5 +1,7 @@
 import { Bookshelf, db } from '@renderer/batabase'
 import { now, toastError } from '@renderer/shared'
+import { useObservable } from '@vueuse/rxjs'
+import { liveQuery } from 'dexie'
 import { v4 as uuidv4 } from 'uuid'
 
 export class BookshelfAction {
@@ -13,10 +15,23 @@ export class BookshelfAction {
         isDelete: null
       }
       await db.bookshelf.put(val)
-      return await this.findOne(val.id)
+      return val
     } catch (error) {
       toastError('新增书架失败' + error)
       return Promise.reject(error)
+    }
+  }
+
+  static observable() {
+    try {
+      return useObservable<Bookshelf[], Bookshelf[]>(
+        liveQuery(async () =>
+          (await db.bookshelf.toArray())
+        ) as any
+      )
+    } catch (error) {
+      // toastError(t('book.getBookListFail') + error)
+      return [] as Bookshelf[]
     }
   }
 

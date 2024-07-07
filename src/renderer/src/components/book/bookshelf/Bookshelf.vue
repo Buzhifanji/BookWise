@@ -1,106 +1,79 @@
 <script setup lang="ts">
-import { Book, Bookshelf } from '@renderer/batabase';
-import { BookshelfAction } from '@renderer/components';
-import { useDialog, useTabList } from '@renderer/hooks';
+import { Book } from '@renderer/batabase';
+import { BookshelfAction, TagItem } from '@renderer/components';
+import { useDialog } from '@renderer/hooks';
 import { toastError, toastSuccess } from '@renderer/shared';
 import { t } from '@renderer/view/setting';
 import { vOnClickOutside } from '@vueuse/components';
-import { get, set, useThrottleFn, useToggle } from '@vueuse/core';
+import { get, set, useToggle } from '@vueuse/core';
 import { computed, nextTick, ref } from 'vue';
 import { BookAction } from '../action';
+import SelectSearchView from '../../select/SelectSearch.vue';
+import TagListview from '../../tag/TagList.vue'
 
 const props = defineProps<{ book: Book }>()
+const [loading, setLoading] = useToggle(false)
 
 const { dialogRef, openDialog, closeDialog } = useDialog();
 
-const inputRef = ref<HTMLInputElement | null>(null)
+const selectBookshelf = ref<TagItem[]>([])
 
-const allGrops = ref<Bookshelf[]>([])
-const groupValue = ref<string>('')
-const chooseGroup = ref<string>('')
-const placeholderOption = computed(() => {
-  const val = get(chooseGroup)
-  if (!val) return []
-  return allGrops.value.filter(item => item.name.includes(val))
-})
-const groupError = ref<string>('')
-const [loading, setLoading] = useToggle(false)
-const [submitLoading, setSubmitLoading] = useToggle(false)
+const removeBookshelf = (i: number) => selectBookshelf.value.splice(i, 1)
+const updateBookshelf = (val: TagItem[]) => set(selectBookshelf, [val[val.length -1]])
 
-const { onDown, onUp, onTab, activePlaceholder, listContianer } = useTabList(placeholderOption)
-const addAction = (val: Bookshelf) => {
-  set(groupValue, BookshelfAction.toJSON(val))
+const allBookshelf = BookshelfAction.observable()
 
-  set(activePlaceholder, -1)
-  set(chooseGroup, '')
+const bookshelfList = computed(() => (get(allBookshelf) || []).map(item => ({id: item.id, value: item.name}))) 
+
+const addBookshelf = async (val: string) => {
+  setLoading(true)
+  let result =get(allBookshelf).find(item => item.name === val)
+  if(!result) {
+    result = await BookshelfAction.add(val)
+
+  } 
+  await BookAction.update(props.book.id, { groupId: result.id, groupName:val })
+  
+  setLoading(false)
+  set(selectBookshelf, [{id: result.id, value: result.name}])
+  return {id: result.id, value: result.name}
 }
-const onPlaceholder = (val: Bookshelf) => addAction(val)
-
-const onAdd = useThrottleFn(async () => {
-  const index = get(activePlaceholder)
-  if (index !== -1) {
-    addAction(get(placeholderOption)[index])
-    return
-  }
-
-  const val = get(chooseGroup).trim()
-  if (val) {
-    const all = get(allGrops)
-    const isExist = all.find(item => item.name === val)
-    if (!isExist) {
-      const res = await BookshelfAction.add(val)
-      if (res) {
-        addAction(get(res))
-      }
-    } else {
-      addAction(get(isExist))
-    }
-  }
-}, 150)
-
-const onChoose = (i: number) => addAction(get(placeholderOption)[i])
 
 
 const init = async () => {
   try {
-    setLoading(true)
-    const val = props.book.group
-    set(groupValue, val)
-    openDialog()
-    await nextTick()
-    openDialog()
-
-    const res = await BookshelfAction.getAll()
-    set(allGrops, res)
-
-  } catch (err) {
-    toastError(`t('book.getBookshelfFail'): ${err}`)
-  } finally {
-    setLoading(false)
-    await nextTick()
-    if (!props.book.group) {
-      get(inputRef)?.focus()
+    const val = props.book
+    if(val.groupId) {
+      set(selectBookshelf, [{id: val.groupId, value: val.groupName}])
     }
-  }
+    openDialog()
+    await nextTick()
+    openDialog()
+  } catch (err) {
+    console.log(err)
+    toastError(`${t('book.getBookshelfFail')}: ${err}`)
+  } 
 }
 
 const submit = async () => {
   try {
-    if (get(submitLoading)) return
-
-    setSubmitLoading(true)
-    const group = get(groupValue)
-    if (!group) {
-      set(groupError, t('book.neeSelectBookshelf'))
-      return
+    if (get(loading)) return
+    const val = get(selectBookshelf)
+    setLoading(true)
+    
+    if(val.length === 0) {
+      await BookAction.update(props.book.id, { groupId: '', groupName:'' })
+      toastSuccess('移除书架成功')
+    } else {
+      await BookAction.update(props.book.id, { groupId: val[0].id, groupName:val[0].value })
+      toastSuccess(t('book.addToBookshelfSuccess'))
     }
-    await BookAction.update(props.book.id, { group })
-    toastSuccess(t('book.addToBookshelfSuccess'))
+
     closeDialog()
   } catch (err) {
     toastError(`${t('book.addToBookshelfFail')}: ${err}`)
   } finally {
-    setSubmitLoading(false)
+    setLoading(false)
   }
 }
 
@@ -114,45 +87,24 @@ init()
         <h3 class="font-bold text-lg">{{ t('book.addToBookshelf') }}</h3>
         <div @click="closeDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
       </div>
-      <div class="flex flex-col gap-2 py-4" v-if="loading">
-        <div class="skeleton h-12 w-full"></div>
-        <div class="skeleton h-12 w-full"></div>
-      </div>
-      <form v-else>
+      <form>
         <div class="flex flex-col gap-2">
           <div class="min-h-12 px-4 rounded-lg bg-base-200 flex flex-row gap-2 items-center">
             <span>{{ t('book.name') }}</span>
             <div class="flex-1">{{ book.name }}</div>
           </div>
           <div class="mt-6">
-            <label class="input input-bordered flex items-center gap-2" :class="{ 'input-error': groupError }">
-              {{ t('book.bookshelf') }}
-              <span class="badge badge-accent" v-if="groupValue">
-                {{ BookshelfAction.toBookshelf(groupValue).name }}
-              </span>
-              <input type="text" class="grow" v-model="chooseGroup" :placeholder="t('book.needBookshelfName')"
-                ref="inputRef" @keydown.enter="onAdd()" @keydown.prevent.down="onDown()" @keydown.prevent.up="onUp()"
-                @keydown.prevent.tab="onTab(onChoose)" />
-            </label>
+            <SelectSearchView :model-value="selectBookshelf" @update:model-value="updateBookshelf"  :data="bookshelfList" :add="addBookshelf">
+              <span>{{ t('book.bookshelf') }}</span>
+              <TagListview :tag="selectBookshelf" @remove="removeBookshelf"/>
 
-            <div class="label" v-if="groupError">
-              <span class="label-text text-error">{{ groupError }}</span>
-            </div>
-            <ul v-if="placeholderOption.length" ref="listContianer"
-              class="p-2 mt-2 z-[10] max-h-60 md:max-h-72 lg:max-h-96 w-full overflow-auto border border-accent  rounded-md menu flex-nowrap  bg-base-100 shadow-2xl  gap-1 scrollbar-thin">
-              <li v-for="item, index in placeholderOption" :key="item.id" @click="onPlaceholder(item)"
-                class="text-base-content">
-                <a :class="{ active: activePlaceholder === index }">
-                  {{ item.name }}
-                </a>
-              </li>
-            </ul>
+            </SelectSearchView>
           </div>
         </div>
         <div class="modal-action">
           <button class="btn btn-outline" type="button" @click="closeDialog">{{ t('common.cancel') }}</button>
           <button class="btn btn-success ml-4" type="button" @click="submit">
-            <span class="loading loading-spinner" v-if="submitLoading"></span>
+            <span class="loading loading-spinner" v-if="loading"></span>
             {{ t('common.sure') }}</button>
         </div>
       </form>

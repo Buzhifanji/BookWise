@@ -20,7 +20,8 @@ export interface Book {
   lastReadPosition: string // 最后一次阅读位置
   score: number // 评分
   progress: number // 进度
-  group: string // 分组
+  groupId: string // 分组
+  groupName: string
   isReadDone: boolean // 是否阅读完毕
   format: string // 书籍格式
   isLove: boolean // 是否收藏

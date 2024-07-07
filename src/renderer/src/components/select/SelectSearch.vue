@@ -23,8 +23,6 @@ const props = withDefaults(defineProps<Props>(), {
   className: ''
 })
 
-console.log(props.data)
-
 const emit = defineEmits(['update:modelValue', 'clear'])
 const isMultiple = Array.isArray(props.modelValue) ? true : false
 const allData = computed(() => props.data)
@@ -34,6 +32,7 @@ const inputValue = ref<string>('')
 const activePlaceholder = ref(-1)
 const listContianer = ref<HTMLUListElement | null>(null)
 const [show, setShow] = useToggle(false)
+// set(inputValue,props.modelValue)
 watchEffect(() => {
   if (isMultiple) {
     set(list, props.modelValue as Item[])
