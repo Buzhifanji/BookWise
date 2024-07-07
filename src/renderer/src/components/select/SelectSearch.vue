@@ -113,13 +113,11 @@ const onAdd = useThrottleFn(async () => {
     if (props.add) {
       // 新增一个新的数据
       const res = await props.add(val)
-      if (res) {
+      if (res.value) {
         addAction(res)
       }
     }
 
-    if (!isMultiple) {
-    }
   } else {
     addAction(isExist)
   }

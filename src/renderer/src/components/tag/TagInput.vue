@@ -24,6 +24,21 @@ const tags = computed(() => handleTag(get(allTag) || []))
 const selectTag = computed(() => handleTag(props.modelValue))
 const updateTag = (val: TagItem[]) => emit('update:modelValue', toTag([...val]))
 
+
+const addTag = async (val: string) => {
+ const res = await TagAction.add(val)
+ 
+ if(res) {
+  const isExist = get(selectTag).find(item => item.value === val)
+  if (!isExist) {
+    const data = {id: res.id, value: res.tagName}
+    updateTag([...get(selectTag),data])
+    return data
+  }
+ }
+ return {id: '', value: ''}
+}
+
 const removeTag = (i: number) => {
   const data = [...get(selectTag)]
   data.splice(i, 1)
@@ -33,7 +48,7 @@ const removeTag = (i: number) => {
 </script>
 
 <template>
-  <SelectSearchView :modelValue="selectTag" @update:modelValue="updateTag" :data="tags">
+  <SelectSearchView :modelValue="selectTag" :add="addTag" @update:modelValue="updateTag" :data="tags">
     <TagListView :tag="selectTag" @remove="removeTag" />
   </SelectSearchView>
 </template>
