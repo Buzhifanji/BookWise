@@ -128,7 +128,7 @@ initEdite()
               <div>{{ t('book.notesLen') }}</div>
               <div class="stat-title">{{ notesLen }}</div>
             </div>
-            <div class="flex gap-4 mb-3" v-if="book.groupName">
+            <div class="flex items-center gap-4 mb-3" v-if="book.groupName">
               <div>{{ t('book.bookshelf') }}</div>
               <div class="badge badge-accent">{{ book.groupName}}</div>
             </div>
