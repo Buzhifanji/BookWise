@@ -128,7 +128,6 @@ export class Reader {
   book
 
   constructor() {
-    this.#handleImg.bind(this)
     this.#handleLinks.bind(this)
     this.#resolveCFI.bind(this)
     this.#handleRecIndexImg.bind(this)
@@ -181,7 +180,6 @@ export class Reader {
         const body = doc.querySelector('body')
         const height = estimatedHeight(body.cloneNode(true))
         this.#handleLinks(body, section)
-        await this.#handleImg(body, section)
         const html = body.innerHTML
           .replace(/xmlns=".*?"/g, '')
           .replace(/<([a-zA-Z0-9]+)(\s[^>]*)?>\s*<\/\1>/g, '') // 过滤掉空节点
@@ -254,42 +252,6 @@ export class Reader {
           this.blobs.set(href, blob)
         }
       }
-    }
-  }
-
-  /**
-   * 处理图片
-   * @param dom
-   * @param section
-   */
-  async #handleImg(dom, section) {
-    try {
-      await this.#handleRecIndexImg(dom, section)
-
-      const imgs = dom.querySelectorAll('img[src]')
-      for (const img of imgs) {
-        const href = this.#replace(img, section, 'src')
-        if (href) {
-          if (this.book.loadBlob) {
-            // epub commic
-            const blob = await this.book?.loadBlob(href)
-            if (blob) {
-              this.blobs.set(href, blob)
-            }
-          } else if (this.book.loadResourceBlob) {
-            // mobi azw3
-            console.log('mobi azw3 loadResourceBlob')
-            const blob = await this.book.loadResourceBlob(href)
-            if (blob) {
-              this.blobs.set(href, blob)
-            }
-          } else {
-            console.log('todo handle imgae resource')
-          }
-        }
-      }
-    } catch (e) {
-      console.error('handle img to blob error: ', e)
     }
   }
 

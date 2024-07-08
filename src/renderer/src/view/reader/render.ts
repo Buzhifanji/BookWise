@@ -21,7 +21,6 @@ export const render = async (file: File) => {
   bookRender = new Reader()
   await bookRender.open(file)
   const sections = await bookRender.getSections()
-
   const toc = bookRender.book.toc || []
   handleToc(toc)
 
@@ -70,10 +69,6 @@ export function getBookHref(href: string) {
 
 export function isExternal(href: string) {
   return bookRender!.isExternal(href)
-}
-
-export function getImgBlob(href: string) {
-  return bookRender?.getImgBlob(href) || null
 }
 
 /**

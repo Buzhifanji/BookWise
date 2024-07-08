@@ -957,7 +957,10 @@ class MOBI6 {
   }
   async createDocument(section) {
     const str = await this.loadText(section)
-    return this.parser.parseFromString(str, this.#type)
+    const doc = this.parser.parseFromString(str, this.#type)
+    await this.replaceResources(doc)
+
+    return doc
   }
   async loadSection(section) {
     if (this.#cache.has(section)) return this.#cache.get(section)
@@ -1290,7 +1293,19 @@ class KF8 {
   }
   async createDocument(section) {
     const str = await this.loadText(section)
-    return this.parser.parseFromString(str, this.#type)
+    const doc = this.parser.parseFromString(str, this.#type)
+
+    const replaced = await this.replaceResources(str)
+
+    if (doc.querySelector('parsererror')) {
+      this.#type = MIME.HTML
+      doc = this.parser.parseFromString(replaced, this.#type)
+    }
+    for (const [url, node] of this.#inlineMap) {
+      for (const el of doc.querySelectorAll(`img[src="${url}"]`)) el.replaceWith(node)
+    }
+
+    return doc
   }
   async loadSection(section) {
     if (this.#cache.has(section)) return this.#cache.get(section)
