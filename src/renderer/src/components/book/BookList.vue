@@ -3,11 +3,12 @@ import { Book } from '@renderer/batabase';
 import { FileUploadView, ImgView } from '@renderer/components';
 import { BookshelftMode } from '@renderer/enum';
 import { useBgOpacity, useRightClick } from '@renderer/hooks';
-import { chuankArray, remToPx, toastSuccess } from '@renderer/shared';
-import { settingStore, useContentCantianerStore } from '@renderer/store';
+import { chuankArray, remToPx, sort, toastSuccess } from '@renderer/shared';
+import { bookSortStore, settingStore, useContentCantianerStore } from '@renderer/store';
 import { t } from '@renderer/view/setting';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
+import { get } from '@vueuse/core';
 import { BellElectric, Heart, HeartOff, PencilLine, Plus, SquareLibrary, Star, Trash2, UndoDot } from 'lucide-vue-next';
 import { computed, defineProps, onMounted, ref, toRaw, withDefaults } from 'vue';
 import { BookAction } from './action';
@@ -49,6 +50,7 @@ const parentRef = ref<HTMLElement | null>(null)
 
 const parentOffsetRef = ref(0)
 
+
 onMounted(() => {
   parentOffsetRef.value = parentRef.value?.offsetTop ?? 0
 })
@@ -56,7 +58,46 @@ onMounted(() => {
 const list = computed(() => {
   const width = bookMode(BookshelftMode.bookshelf) ? bookshelfWidht : bookMode(BookshelftMode.card) ? bookCardWidth : 0
   const count = parseInt(((store.width) / (width + remToPx(2.5))).toString())
-  return bookMode(BookshelftMode.list) ? toRaw(props.data) : chuankArray(toRaw(props.data) || [], count)
+
+  let originalData = [...toRaw(props.data)]
+
+  // 排序
+  const isUp = get(bookSortStore).isUp
+  const sortBy = get(bookSortStore).sortBy
+  let data: Book[] = []
+
+  if (props.isRecycleBin) {
+    // 回收站
+    // 按照更新时间排序
+    data = sort(originalData, isUp, 'updateTime')
+  } else {
+    if (sortBy === 'addTime') {
+      // 按照添加时间排序
+      data = sort(originalData, isUp, 'createTime')
+    } else if (sortBy === 'updateTime') {
+      // 按照更新时间排序
+      data = sort(originalData, isUp, 'updateTime')
+    } else if (sortBy === 'readTime') {
+      // 按照阅读时间排序
+
+      // todo
+
+    } else if (sortBy === 'readProgress') {
+      // 按照阅读进度排序
+      data = sort(originalData, isUp, 'progress')
+    } else if (sortBy === 'bookName') {
+      // 按照书名排序
+      data = sort(originalData, isUp, 'name')
+    } else if (sortBy === 'author') {
+      // 按照作者排序
+      data = sort(originalData, isUp, 'author')
+    } else if (sortBy === 'score') {
+      // 按照评分排序
+      data = sort(originalData, isUp, 'score')
+    }
+  }
+
+  return bookMode(BookshelftMode.list) ? data : chuankArray(data, count)
 })
 
 // 虚拟列表

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FileUploadView, NoteNavbarView } from '@renderer/components';
+import { BookNavBarView, FileUploadView, NoteNavbarView } from '@renderer/components';
 import { t } from '@renderer/view/setting';
 import { useWindowSize } from '@vueuse/core';
 import { AlignJustify, Search } from 'lucide-vue-next';
@@ -43,7 +43,9 @@ const routePath = computed(() => router.currentRoute.value.path);
         class="btn hidden h-8 w-28 items-center justify-start gap-3 border-base-content/20 hover:border-transparent hover:bg-base-content/20 sm:flex btn-sm btn-outline">
         <Search class="w-4 h-4" />
       </button>
+      <!-- 笔记导航栏 -->
       <NoteNavbarView v-if="routePath.startsWith('/note')" />
+      <BookNavBarView v-if="routePath.startsWith('/book')" />
     </div </div>
 
     <!-- <div class="navbar-center"></div> -->

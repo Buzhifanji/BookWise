@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { Note } from '@renderer/batabase';
 import { RouterName } from '@renderer/route';
-import { chuankArray, haveIntersection, remToPx } from '@renderer/shared';
-import { noteNavbarStore, useContentCantianerStore, useFilterNoteStore } from '@renderer/store';
+import { chuankArray, haveIntersection, remToPx, sort } from '@renderer/shared';
+import { noteSortStore, useContentCantianerStore, useFilterNoteStore } from '@renderer/store';
 import { t } from '@renderer/view/setting';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { get } from '@vueuse/core';
 import { Flag } from 'lucide-vue-next';
 import { computed, defineProps, ref, toRaw, withDefaults } from 'vue';
+import { TagAction } from '../tag/action';
 import { NoteAction } from './action';
 import Card from './Card.vue';
 import { detaiNotelDialog } from './detail';
 import { removeNoteDialog } from './remove';
-import { TagAction } from '../tag/action';
 
 interface Props {
   data: Note[],
@@ -29,20 +29,6 @@ const store = useContentCantianerStore()
 
 const parentRef = ref<HTMLElement | null>(null)
 
-const sortByName = (list: Note[], isUp: boolean) => {
-  return list.sort((a, b) => {
-    const titleA = a.eBookName.toLowerCase();
-    const titleB = b.eBookName.toLowerCase();
-    return isUp ? titleA.localeCompare(titleB) : titleB.localeCompare(titleA);
-  });
-}
-
-const sortByTime = (list: Note[], isUp: boolean) => {
-  return list.sort((a, b) => {
-    return isUp ? a.createTime - b.createTime : b.createTime - a.createTime;
-  });
-}
-
 const list = computed(() => {
   const count = parseInt(((store.width) / remToPx(24 + 1)).toString())
 
@@ -55,7 +41,7 @@ const list = computed(() => {
 
   // 标签过滤
   const tagIds = filterStore.tags
-  if(tagIds.length) {
+  if (tagIds.length) {
     originalData = originalData.filter((item) => {
       const tag = TagAction.toTag(item.tag).map(item => item.id)
       return haveIntersection(tag, tagIds)
@@ -63,17 +49,17 @@ const list = computed(() => {
   }
 
   // 排序
-  const isUp = get(noteNavbarStore).isUp
-  const sortBy = get(noteNavbarStore).sortBy
+  const isUp = get(noteSortStore).isUp
+  const sortBy = get(noteSortStore).sortBy
 
   let data: Note[] = []
 
   if (sortBy === 'bookName') {
     // 按照书名进行排序
-    data = sortByName(originalData, isUp)
+    data = sort(originalData, isUp, 'eBookName')
   } else if (sortBy === 'addTime') {
     // 按照添加时间排序
-    data = sortByTime(originalData, isUp)
+    data = sort(originalData, isUp, 'createTime')
   }
 
   return chuankArray(toRaw(data) || [], count)

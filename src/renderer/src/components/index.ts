@@ -1,4 +1,5 @@
 import BookListView from './book/BookList.vue'
+import BookNavBarView from './book/navbar/Navbar.vue'
 import ScoreInputView from './book/score/ScoreInput.vue'
 import CheckBoxView from './checkbox/CheckBox.vue'
 import DrawerView from './drawer/Drawer.vue'
@@ -17,10 +18,10 @@ import SelectView from './select/SelectView.vue'
 import { SelectItem } from './select/type'
 import TagInputView from './tag/TagInput.vue'
 import TagListView from './tag/TagList.vue'
+import { TagItem } from './tag/type'
 import ExpandTreeView from './tree/ExpandTree.vue'
 import FoldTreeView from './tree/FoldTree.vue'
 import FileUploadView from './upload/FileUpload.vue'
-import { TagItem } from './tag/type'
 
 export * from './toast/type'
 
@@ -35,6 +36,7 @@ export * from './toast'
 
 export {
   BookListView,
+  BookNavBarView,
   CheckBoxView,
   DrawerView,
   DropdownView,

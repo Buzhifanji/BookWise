@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { changNavbarStore, noteNavbarStore, useFilterNoteStore } from '@renderer/store';
+import { changNoteSortStore, noteSortStore, useFilterNoteStore } from '@renderer/store';
 import { get, set } from '@vueuse/core';
 import { ArrowDownNarrowWide, Check, Filter } from 'lucide-vue-next';
 import { ref, watchEffect } from 'vue';
 import DropdownView from '../../dropdown/Dropdown.vue';
 import SelectSearchView from '../../select/SelectSearch.vue';
 import { TagAction } from '../../tag/action';
-import { NoteAction } from '../action';
-import TagListview from '../../tag/TagList.vue'
+import TagListview from '../../tag/TagList.vue';
 import { TagItem } from '../../tag/type';
+import { NoteAction } from '../action';
 
 const store = useFilterNoteStore()
 
-const isSortBy = (val: string) => get(noteNavbarStore).sortBy === val
+const isSortBy = (val: string) => get(noteSortStore).sortBy === val
 
 const noteList = NoteAction.observable()
 
@@ -84,13 +84,13 @@ watchEffect(() => {
       </template>
       <ul
         class="dropdown-content z-[1] menu p-2 min-w-52 gap-1 mt-3 shadow-lg bg-base-100 border border-accent  rounded-md ">
-        <li @click="changNavbarStore('sortBy', 'bookName')">
+        <li @click="changNoteSortStore('sortBy', 'bookName')">
           <a class="justify-between ">
             <span>书名</span>
             <Check v-if="isSortBy('bookName')" />
           </a>
         </li>
-        <li @click="changNavbarStore('sortBy', 'addTime')">
+        <li @click="changNoteSortStore('sortBy', 'addTime')">
           <a class="justify-between">
             <span>按添加时间排序</span>
             <Check v-if="isSortBy('addTime')" />
@@ -98,16 +98,16 @@ watchEffect(() => {
         </li>
         <li>
         </li>
-        <li @click="changNavbarStore('isUp', true)">
+        <li @click="changNoteSortStore('isUp', true)">
           <a class="justify-between">
             <div>升序<span class="ml-1 text-base-content/60" v-if="isSortBy('bookName')">(A-Z)</span></div>
-            <Check v-if="noteNavbarStore.isUp" />
+            <Check v-if="noteSortStore.isUp" />
           </a>
         </li>
-        <li @click="changNavbarStore('isUp', false)">
+        <li @click="changNoteSortStore('isUp', false)">
           <a class="justify-between">
             <div>降序<span class="ml-1 text-base-content/60" v-if="isSortBy('bookName')">(Z-A)</span></div>
-            <Check v-if="!noteNavbarStore.isUp" />
+            <Check v-if="!noteSortStore.isUp" />
           </a>
         </li>
       </ul>
@@ -116,14 +116,14 @@ watchEffect(() => {
       <button class="btn btn-sm join-item rounded-r-full">
         <Filter />
       </button>
-      <SelectSearchView className="input-sm join-item" v-model="selectedBook" @update:model-value="updateBook"  :data="noteAllBook"
-        @clear="clearBookFilter()">
+      <SelectSearchView className="input-sm join-item" v-model="selectedBook" @update:model-value="updateBook"
+        :data="noteAllBook" @clear="clearBookFilter()">
         <span>书名</span>
       </SelectSearchView>
-      <SelectSearchView className="input-sm join-item" v-model="selectTags" @update:model-value="updateTag" :data="noteAlltag"
-        @clear="clearTagFilter()">
+      <SelectSearchView className="input-sm join-item" v-model="selectTags" @update:model-value="updateTag"
+        :data="noteAlltag" @clear="clearTagFilter()">
         <span>标签</span>
-        <TagListview :tag="selectTags" @remove="removeTag"/>
+        <TagListview :tag="selectTags" @remove="removeTag" />
       </SelectSearchView>
     </div>
   </div>

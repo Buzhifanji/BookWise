@@ -12,7 +12,8 @@ const defaultData: NoteNavbar = {
   isUp: true // 是不是升序
 }
 
-export const noteNavbarStore = useStorage<NoteNavbar>(
+// 笔记排序
+export const noteSortStore = useStorage<NoteNavbar>(
   'book-wise_note_navbar',
   defaultData,
   localStorage,
@@ -21,6 +22,7 @@ export const noteNavbarStore = useStorage<NoteNavbar>(
   }
 )
 
+// 笔记过滤
 export const useFilterNoteStore = defineStore('useFilterNoteStore', () => {
   const eBookId = ref('') // eBookId
   const tags = ref<string[]>([]) // 标签
@@ -36,6 +38,6 @@ export const useFilterNoteStore = defineStore('useFilterNoteStore', () => {
   return { eBookId, setEBookId, tags, setTags }
 })
 
-export const changNavbarStore = <T extends keyof NoteNavbar>(key: T, value: NoteNavbar[T]) => {
-  noteNavbarStore.value[key] = value
+export const changNoteSortStore = <T extends keyof NoteNavbar>(key: T, value: NoteNavbar[T]) => {
+  noteSortStore.value[key] = value
 }
