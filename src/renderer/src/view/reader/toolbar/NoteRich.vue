@@ -78,14 +78,14 @@ async function init() {
     note = await NoteAction.findBySourceId(domSource[0].id)
 
     if (!note) {
-      toastError('数据丢失：本地未找到笔记')
+      toastError(t('note.findNoteError'))
       NoteBarStyle.close()
     } else {
       set(tags, TagAction.toTag(note.tag))
       noteRichAction.setNotes(note)
     }
   } catch (err) {
-    toastError(`获取笔记失败：${err}`)
+    toastError(`${t('note.getNoteFail')}：${err}`)
   } finally {
     setLoading(false)
   }
@@ -95,7 +95,7 @@ async function init() {
 async function submit() {
   const value = get(textareaValue)
   if (!value && get(tags).length === 0) {
-    toastWarning('请输入笔记内容')
+    toastWarning(t('note.writeYouNore'))
     return
   }
   try {
@@ -145,7 +145,8 @@ init()
           <SourceListView :data="source" />
           <NoteListView class-name="rounded-md" :data="noteList" @remove="remove" />
           <textarea ref="textareatRef" v-model="textareaValue" rows="6"
-            class="textarea textarea-accent w-full bg-base-200 my-3 rounded-lg" placeholder="写下此时的想法..."></textarea>
+            class="textarea textarea-accent w-full bg-base-200 my-3 rounded-lg"
+            :placeholder="t('note.placeholder')"></textarea>
           <div>
             <TagInputView v-model="tags" />
           </div>

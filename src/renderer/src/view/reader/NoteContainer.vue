@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Book, Note, Tag } from '@renderer/batabase';
-import { NoteAction, NoteText, TagAction, TagInputView, TagListView,SelectSearchView,TagItem } from '@renderer/components';
+import { NoteAction, NoteText, TagAction, TagInputView, TagListView } from '@renderer/components';
 import { useBgOpacity } from '@renderer/hooks';
 import { $, toastError } from '@renderer/shared';
 import { t } from '@renderer/view/setting';
@@ -67,12 +67,6 @@ const closeHover = () => {
 
 // 编辑（工具栏）
 const tags = ref<Tag[]>([]) // 标签
-
-  const allTag = TagAction.observable()
-const allTagList = computed(() => {
-  const data = get(allTag) || []
-  return data.map(item => ({id: item.id, value: item.tagName}))
-})
 const selectNote = ref<Note>() // 选中的笔记
 const noteTop = ref(0) // 选中的dom 距离可视化区域的顶部距离
 const toolbarRef = ref<HTMLElement | null>(null) //工具栏dom

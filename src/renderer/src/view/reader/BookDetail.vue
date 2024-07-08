@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Book, Note } from '@renderer/batabase';
-import { BookReadTimeAction, BookshelfAction, ScoreInputView, editDialog, scroreDialog } from '@renderer/components';
+import { BookReadTimeAction, ScoreInputView, editDialog, scroreDialog } from '@renderer/components';
 import { convertUint8ArrayToURL, formatDecimal, formatFileSize, getInterval, isUndefined, toastSuccess } from '@renderer/shared';
 import { t } from '@renderer/view/setting';
 import { useClipboard } from '@vueuse/core';

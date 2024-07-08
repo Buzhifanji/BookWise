@@ -142,11 +142,14 @@
     "sureRemove": "Conferma l'eliminazione della nota",
     "placeholder": "Scrivi i tuoi pensieri in questo momento...",
     "write": "scrivere idee",
-    "myNote": "I miei appunti"
+    "myNote": "I miei appunti",
+    "findNoteError": "Perdita di dati: nota non trovata localmente",
+    "writeYouNore": "Inserisci il contenuto della nota"
   },
   "tag": {
     "needTag": "Inserisci l'etichetta",
-    "removeTagSuccess": "Tag eliminato con successo"
+    "removeTagSuccess": "Tag eliminato con successo",
+    "name": "Etichetta"
   },
   "statistics": {
     "bookUnit": "Libro",
@@ -174,5 +177,13 @@
     "pageActual": "dimensione reale",
     "pageFit": "adatta alla pagina",
     "pageWidth": "Adatta alla larghezza della pagina"
+  },
+  "sort": {
+    "addTime": "aggiungere tempo",
+    "asc": "Ordine ascendente",
+    "desc": "ordine decrescente",
+    "readProgress": "progressi nella lettura",
+    "readTime": "Momento della lettura",
+    "updateTime": "Letto di recente"
   }
 }

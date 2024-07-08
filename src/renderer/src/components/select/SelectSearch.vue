@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { isInClientRectTop } from '@renderer/shared';
-import { t } from '@renderer/view/setting';
 import { vOnClickOutside } from '@vueuse/components';
 import { get, set, useThrottleFn, useToggle } from '@vueuse/core';
 import scrollIntoView from 'scroll-into-view-if-needed';
@@ -16,6 +15,7 @@ interface Props {
   data: Item[],
   add?: (val: string) => Promise<Item>
   className?: string
+  placeholder: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -47,7 +47,7 @@ watchEffect(() => {
   }
 
   // 多选
-  if(val && isMultiple) {
+  if (val && isMultiple) {
     setShow(true)
   }
 })
@@ -181,7 +181,7 @@ const onClose = () => setShow(false)
     </ul>
     <label class="input input-bordered flex items-center gap-2 " :class="className" ref="container">
       <slot></slot>
-      <input type="text" class="grow" v-model="inputValue" :placeholder="t('tag.needTag')" @keydown.enter="onAdd()"
+      <input type="text" class="grow" v-model="inputValue" :placeholder="placeholder" @keydown.enter="onAdd()"
         @keydown.prevent.down="onDown()" @keydown.prevent.up="onUp()" @keydown.prevent.tab="onTab(onChoose)" />
     </label>
     <ul v-if="!isTop && show && placeholderOption.length" ref="listContianer"

@@ -142,11 +142,14 @@
     "sureRemove": "Bekreft sletting av notat",
     "placeholder": "Skriv ned tankene dine nå...",
     "write": "skrive ideer",
-    "myNote": "mine notater"
+    "myNote": "mine notater",
+    "findNoteError": "Datatap: Merket ble ikke funnet lokalt",
+    "writeYouNore": "Vennligst skriv inn notatinnholdet"
   },
   "tag": {
     "needTag": "Vennligst skriv inn tag",
-    "removeTagSuccess": "Taggen er slettet"
+    "removeTagSuccess": "Taggen er slettet",
+    "name": "Merkelapp"
   },
   "statistics": {
     "bookUnit": "Bok",
@@ -174,5 +177,13 @@
     "pageActual": "Faktisk størrelse",
     "pageFit": "passer til side",
     "pageWidth": "Tilpass til sidebredde"
+  },
+  "sort": {
+    "addTime": "legge til tid",
+    "asc": "Stigende rekkefølge",
+    "desc": "Synkende rekkefølge",
+    "readProgress": "lesefremgang",
+    "readTime": "Lesetid",
+    "updateTime": "Nylig lest"
   }
 }

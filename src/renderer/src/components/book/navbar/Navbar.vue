@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { bookSortStore, BookSortType, changeBookSortStore, useBookFilterStore } from '@renderer/store';
+import { t } from '@renderer/view/setting';
 import { get, set } from '@vueuse/core';
 import { ArrowDownNarrowWide, Check, Filter } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
@@ -10,15 +11,15 @@ import SelectSearchView from '../../select/SelectSearch.vue';
 const store = useBookFilterStore()
 const isSortBy = (val: string) => get(bookSortStore).sortBy === val
 
-const list: { label: string, value: BookSortType }[] = [
-  { label: '最近阅读', value: 'updateTime' },
-  { label: '添加时间', value: 'addTime' },
-  { label: '阅读进度', value: 'readProgress' },
-  { label: '阅读时长', value: 'readTime' },
-  { label: '书名', value: 'bookName' },
-  { label: '作者', value: 'author' },
-  { label: '评分', value: 'score' },
-]
+const list = computed(() => [
+  { label: t('sort.updateTime'), value: 'updateTime' },
+  { label: t('sort.addTime'), value: 'addTime' },
+  { label: t('sort.readProgress'), value: 'readProgress' },
+  { label: t('sort.readTime'), value: 'readTime' },
+  { label: t('book.name'), value: 'bookName' },
+  { label: t('book.author'), value: 'author' },
+  { label: t('book.score'), value: 'score' },
+] as { label: string, value: BookSortType }[])
 
 // 按照书架过滤
 const bookshelf = BookshelfAction.observable()
@@ -49,13 +50,15 @@ const clearBookshelf = () => {
         </li>
         <li @click="changeBookSortStore('isUp', true)">
           <a class="justify-between">
-            <div>升序<span class="ml-1 text-base-content/60" v-if="isSortBy('bookName')">(A-Z)</span></div>
+            <div>{{ t('sort.asc') }}<span class="ml-1 text-base-content/60" v-if="isSortBy('bookName')">(A-Z)</span>
+            </div>
             <Check v-if="bookSortStore.isUp" />
           </a>
         </li>
         <li @click="changeBookSortStore('isUp', false)">
           <a class="justify-between">
-            <div>降序<span class="ml-1 text-base-content/60" v-if="isSortBy('bookName')">(Z-A)</span></div>
+            <div>{{ t('sort.desc') }}<span class="ml-1 text-base-content/60" v-if="isSortBy('bookName')">(Z-A)</span>
+            </div>
             <Check v-if="!bookSortStore.isUp" />
           </a>
         </li>
@@ -66,8 +69,9 @@ const clearBookshelf = () => {
         <Filter />
       </button>
       <SelectSearchView className="input-sm join-item" v-model="selectedBookshelft"
-        @update:model-value="updateBookshelf" :data="allBookshelf" @clear="clearBookshelf()">
-        <span>书架</span>
+        @update:model-value="updateBookshelf" :placeholder="t('book.needBookshelfName')" :data="allBookshelf"
+        @clear="clearBookshelf()">
+        <span>{{ t('book.bookshelf') }}</span>
       </SelectSearchView>
     </div>
   </div>

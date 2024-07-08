@@ -142,11 +142,14 @@
     "sureRemove": "メモの削除を確認する",
     "placeholder": "この時の感想を書いてみる…",
     "write": "アイデアを書く",
-    "myNote": "私のノート"
+    "myNote": "私のノート",
+    "findNoteError": "データ損失: メモがローカルに見つかりません",
+    "writeYouNore": "メモの内容を入力してください"
   },
   "tag": {
     "needTag": "タグを入力してください",
-    "removeTagSuccess": "タグが正常に削除されました"
+    "removeTagSuccess": "タグが正常に削除されました",
+    "name": "ラベル"
   },
   "statistics": {
     "bookUnit": "本",
@@ -174,5 +177,13 @@
     "pageActual": "実際のサイズ",
     "pageFit": "ページに合わせる",
     "pageWidth": "ページ幅に合わせる"
+  },
+  "sort": {
+    "addTime": "時間を追加する",
+    "asc": "昇順",
+    "desc": "降順",
+    "readProgress": "読書の進み具合",
+    "readTime": "読書の時間",
+    "updateTime": "最近読んだもの"
   }
 }

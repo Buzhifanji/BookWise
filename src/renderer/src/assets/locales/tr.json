@@ -142,11 +142,14 @@
     "sureRemove": "Not silme işlemini onaylayın",
     "placeholder": "Bu sefer düşüncelerinizi yazın...",
     "write": "fikir yaz",
-    "myNote": "notlarım"
+    "myNote": "notlarım",
+    "findNoteError": "Veri kaybı: Not yerel olarak bulunamadı",
+    "writeYouNore": "Lütfen not içeriğini girin"
   },
   "tag": {
     "needTag": "Lütfen etiketi girin",
-    "removeTagSuccess": "Etiket başarıyla silindi"
+    "removeTagSuccess": "Etiket başarıyla silindi",
+    "name": "Etiket"
   },
   "statistics": {
     "bookUnit": "Kitap",
@@ -174,5 +177,13 @@
     "pageActual": "gerçek boyutu",
     "pageFit": "sayfaya sığdır",
     "pageWidth": "Sayfa genişliğine sığdır"
+  },
+  "sort": {
+    "addTime": "Zaman ekle",
+    "asc": "Artan düzen",
+    "desc": "azalan sipariş",
+    "readProgress": "okuma ilerlemesi",
+    "readTime": "Okuma zamanı",
+    "updateTime": "Son zamanlarda okundu"
   }
 }

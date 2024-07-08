@@ -140,9 +140,12 @@
     "emptyNoteListTip": "在您的书籍列表界面，选择一本阅读，然后选中吸引您注意力的文字，在弹出的对话框中输入您的思考",
     "placeholder": "写下此时的想法...",
     "write": "写想法",
-    "myNote": "我的笔记"
+    "myNote": "我的笔记",
+    "findNoteError": "数据丢失：本地未找到笔记",
+    "writeYouNore": "请输入笔记内容"
   },
   "tag": {
+    "name": "标签",
     "needTag": "请输入标签",
     "removeTagSuccess": "删除标签成功"
   },
@@ -172,5 +175,13 @@
     "pageActual": "实际大小",
     "pageFit": "适合页面",
     "pageWidth": "适合页宽"
+  },
+  "sort": {
+    "updateTime": "最近阅读",
+    "addTime": "添加时间",
+    "readProgress": "阅读进度",
+    "readTime": "阅读时长",
+    "asc": "升序",
+    "desc": "降序"
   }
 }

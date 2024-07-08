@@ -142,11 +142,14 @@
     "sureRemove": "Bekräfta radering av anteckning",
     "placeholder": "Skriv ner dina tankar just nu...",
     "write": "skriva idéer",
-    "myNote": "mina anteckningar"
+    "myNote": "mina anteckningar",
+    "findNoteError": "Dataförlust: Anteckningen hittades inte lokalt",
+    "writeYouNore": "Ange anteckningens innehåll"
   },
   "tag": {
     "needTag": "Vänligen ange tagg",
-    "removeTagSuccess": "Taggen har tagits bort"
+    "removeTagSuccess": "Taggen har tagits bort",
+    "name": "Märka"
   },
   "statistics": {
     "bookUnit": "bok",
@@ -174,5 +177,13 @@
     "pageActual": "faktiska storleken",
     "pageFit": "anpassa till sida",
     "pageWidth": "Anpassa till sidans bredd"
+  },
+  "sort": {
+    "addTime": "lägga till tid",
+    "asc": "Stigande ordning",
+    "desc": "fallande ordning",
+    "readProgress": "läsframsteg",
+    "readTime": "Lästid",
+    "updateTime": "Nyligen läst"
   }
 }

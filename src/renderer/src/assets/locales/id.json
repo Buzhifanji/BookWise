@@ -142,11 +142,14 @@
     "sureRemove": "Konfirmasikan penghapusan catatan",
     "placeholder": "Tuliskan pemikiran Anda saat ini...",
     "write": "menulis ide",
-    "myNote": "catatan Saya"
+    "myNote": "catatan Saya",
+    "findNoteError": "Kehilangan data: Catatan tidak ditemukan secara lokal",
+    "writeYouNore": "Silakan masukkan isi catatan"
   },
   "tag": {
     "needTag": "Silakan masukkan tag",
-    "removeTagSuccess": "Tag berhasil dihapus"
+    "removeTagSuccess": "Tag berhasil dihapus",
+    "name": "Label"
   },
   "statistics": {
     "bookUnit": "Buku",
@@ -174,5 +177,13 @@
     "pageActual": "ukuran sebenarnya",
     "pageFit": "sesuai dengan halaman",
     "pageWidth": "Sesuaikan dengan lebar halaman"
+  },
+  "sort": {
+    "addTime": "tambahkan waktu",
+    "asc": "Urutan menaik",
+    "desc": "urutan menurun",
+    "readProgress": "kemajuan membaca",
+    "readTime": "Waktu membaca",
+    "updateTime": "Baru-baru ini dibaca"
   }
 }

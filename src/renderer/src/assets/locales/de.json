@@ -142,11 +142,14 @@
     "sureRemove": "Bestätigen Sie das Löschen der Notiz",
     "placeholder": "Schreiben Sie Ihre Gedanken zu diesem Zeitpunkt auf ...",
     "write": "Ideen schreiben",
-    "myNote": "meine Notizen"
+    "myNote": "meine Notizen",
+    "findNoteError": "Datenverlust: Notiz lokal nicht gefunden",
+    "writeYouNore": "Bitte geben Sie den Notizinhalt ein"
   },
   "tag": {
     "needTag": "Bitte Tag eingeben",
-    "removeTagSuccess": "Tag erfolgreich gelöscht"
+    "removeTagSuccess": "Tag erfolgreich gelöscht",
+    "name": "Etikett"
   },
   "statistics": {
     "bookUnit": "Buch",
@@ -174,5 +177,13 @@
     "pageActual": "tatsächliche Größe",
     "pageFit": "An die Seite anpassen",
     "pageWidth": "An Seitenbreite anpassen"
+  },
+  "sort": {
+    "addTime": "Zeit hinzufügen",
+    "asc": "Aufsteigende Reihenfolge",
+    "desc": "absteigende Reihenfolge",
+    "readProgress": "Lesefortschritt",
+    "readTime": "Lesezeit",
+    "updateTime": "Kürzlich gelesen"
   }
 }

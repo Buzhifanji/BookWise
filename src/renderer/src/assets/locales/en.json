@@ -142,11 +142,14 @@
     "sureRemove": "Confirm note deletion",
     "placeholder": "Write down your thoughts at this time...",
     "write": "write ideas",
-    "myNote": "my notes"
+    "myNote": "my notes",
+    "findNoteError": "Data loss: Note not found locally",
+    "writeYouNore": "Please enter the note content"
   },
   "tag": {
     "needTag": "Please enter tag",
-    "removeTagSuccess": "Tag deleted successfully"
+    "removeTagSuccess": "Tag deleted successfully",
+    "name": "Label"
   },
   "statistics": {
     "bookUnit": "Book",
@@ -174,5 +177,13 @@
     "pageActual": "actual size",
     "pageFit": "Fit to page",
     "pageWidth": "Fit to page width"
+  },
+  "sort": {
+    "addTime": "add time",
+    "asc": "Ascending order",
+    "desc": "descending order",
+    "readProgress": "reading progress",
+    "readTime": "Reading time",
+    "updateTime": "Recently read"
   }
 }

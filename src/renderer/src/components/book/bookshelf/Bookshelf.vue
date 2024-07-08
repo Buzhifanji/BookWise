@@ -7,9 +7,9 @@ import { t } from '@renderer/view/setting';
 import { vOnClickOutside } from '@vueuse/components';
 import { get, set, useToggle } from '@vueuse/core';
 import { computed, nextTick, ref } from 'vue';
-import { BookAction } from '../action';
 import SelectSearchView from '../../select/SelectSearch.vue';
-import TagListview from '../../tag/TagList.vue'
+import TagListview from '../../tag/TagList.vue';
+import { BookAction } from '../action';
 
 const props = defineProps<{ book: Book }>()
 const [loading, setLoading] = useToggle(false)
@@ -19,32 +19,32 @@ const { dialogRef, openDialog, closeDialog } = useDialog();
 const selectBookshelf = ref<TagItem[]>([])
 
 const removeBookshelf = (i: number) => selectBookshelf.value.splice(i, 1)
-const updateBookshelf = (val: TagItem[]) => set(selectBookshelf, [val[val.length -1]])
+const updateBookshelf = (val: TagItem[]) => set(selectBookshelf, [val[val.length - 1]])
 
 const allBookshelf = BookshelfAction.observable()
 
-const bookshelfList = computed(() => (get(allBookshelf) || []).map(item => ({id: item.id, value: item.name}))) 
+const bookshelfList = computed(() => (get(allBookshelf) || []).map(item => ({ id: item.id, value: item.name })))
 
 const addBookshelf = async (val: string) => {
   setLoading(true)
-  let result =get(allBookshelf).find(item => item.name === val)
-  if(!result) {
+  let result = get(allBookshelf).find(item => item.name === val)
+  if (!result) {
     result = await BookshelfAction.add(val)
 
-  } 
-  await BookAction.update(props.book.id, { groupId: result.id, groupName:val })
-  
+  }
+  await BookAction.update(props.book.id, { groupId: result.id, groupName: val })
+
   setLoading(false)
-  set(selectBookshelf, [{id: result.id, value: result.name}])
-  return {id: result.id, value: result.name}
+  set(selectBookshelf, [{ id: result.id, value: result.name }])
+  return { id: result.id, value: result.name }
 }
 
 
 const init = async () => {
   try {
     const val = props.book
-    if(val.groupId) {
-      set(selectBookshelf, [{id: val.groupId, value: val.groupName}])
+    if (val.groupId) {
+      set(selectBookshelf, [{ id: val.groupId, value: val.groupName }])
     }
     openDialog()
     await nextTick()
@@ -52,7 +52,7 @@ const init = async () => {
   } catch (err) {
     console.log(err)
     toastError(`${t('book.getBookshelfFail')}: ${err}`)
-  } 
+  }
 }
 
 const submit = async () => {
@@ -60,12 +60,12 @@ const submit = async () => {
     if (get(loading)) return
     const val = get(selectBookshelf)
     setLoading(true)
-    
-    if(val.length === 0) {
-      await BookAction.update(props.book.id, { groupId: '', groupName:'' })
+
+    if (val.length === 0) {
+      await BookAction.update(props.book.id, { groupId: '', groupName: '' })
       toastSuccess('移除书架成功')
     } else {
-      await BookAction.update(props.book.id, { groupId: val[0].id, groupName:val[0].value })
+      await BookAction.update(props.book.id, { groupId: val[0].id, groupName: val[0].value })
       toastSuccess(t('book.addToBookshelfSuccess'))
     }
 
@@ -94,10 +94,10 @@ init()
             <div class="flex-1">{{ book.name }}</div>
           </div>
           <div class="mt-6">
-            <SelectSearchView :model-value="selectBookshelf" @update:model-value="updateBookshelf"  :data="bookshelfList" :add="addBookshelf">
+            <SelectSearchView :model-value="selectBookshelf" :placeholder="t('book.needBookshelfName')"
+              @update:model-value="updateBookshelf" :data="bookshelfList" :add="addBookshelf">
               <span>{{ t('book.bookshelf') }}</span>
-              <TagListview :tag="selectBookshelf" @remove="removeBookshelf"/>
-
+              <TagListview :tag="selectBookshelf" @remove="removeBookshelf" />
             </SelectSearchView>
           </div>
         </div>

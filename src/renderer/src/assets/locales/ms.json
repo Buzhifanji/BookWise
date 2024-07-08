@@ -142,11 +142,14 @@
     "sureRemove": "Sahkan pemadaman nota",
     "placeholder": "Tuliskan pendapat anda pada masa ini...",
     "write": "menulis idea",
-    "myNote": "nota saya"
+    "myNote": "nota saya",
+    "findNoteError": "Kehilangan data: Nota tidak ditemui secara setempat",
+    "writeYouNore": "Sila masukkan kandungan nota"
   },
   "tag": {
     "needTag": "Sila masukkan tag",
-    "removeTagSuccess": "Tag berjaya dipadamkan"
+    "removeTagSuccess": "Tag berjaya dipadamkan",
+    "name": "Label"
   },
   "statistics": {
     "bookUnit": "Buku",
@@ -174,5 +177,13 @@
     "pageActual": "saiz sebenar",
     "pageFit": "Satu mukasurat penuh",
     "pageWidth": "Sesuai dengan lebar halaman"
+  },
+  "sort": {
+    "addTime": "tambah masa",
+    "asc": "Susunan menaik",
+    "desc": "dalam susunan menurun",
+    "readProgress": "kemajuan membaca",
+    "readTime": "Waktu membaca",
+    "updateTime": "Baru-baru ini dibaca"
   }
 }

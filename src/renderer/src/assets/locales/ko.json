@@ -142,11 +142,14 @@
     "sureRemove": "메모 삭제 확인",
     "placeholder": "이때의 생각을 적어보세요...",
     "write": "아이디어를 쓰다",
-    "myNote": "내 메모"
+    "myNote": "내 메모",
+    "findNoteError": "데이터 손실: 로컬에서 메모를 찾을 수 없음",
+    "writeYouNore": "메모 내용을 입력해주세요"
   },
   "tag": {
     "needTag": "태그를 입력해주세요",
-    "removeTagSuccess": "태그가 삭제되었습니다."
+    "removeTagSuccess": "태그가 삭제되었습니다.",
+    "name": "상표"
   },
   "statistics": {
     "bookUnit": "책",
@@ -174,5 +177,13 @@
     "pageActual": "실제 크기",
     "pageFit": "페이지에 맞추기",
     "pageWidth": "페이지 너비에 맞추기"
+  },
+  "sort": {
+    "addTime": "시간을 추가하다",
+    "asc": "오름차순",
+    "desc": "내림차순",
+    "readProgress": "읽기 진행 상황",
+    "readTime": "독서 시간",
+    "updateTime": "최근에 읽음"
   }
 }

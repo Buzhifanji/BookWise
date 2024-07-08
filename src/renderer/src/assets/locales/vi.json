@@ -142,11 +142,14 @@
     "sureRemove": "Xác nhận xóa ghi chú",
     "placeholder": "Hãy viết ra suy nghĩ của bạn lúc này...",
     "write": "viết ý tưởng",
-    "myNote": "ghi chú của tôi"
+    "myNote": "ghi chú của tôi",
+    "findNoteError": "Mất dữ liệu: Không tìm thấy ghi chú cục bộ",
+    "writeYouNore": "Vui lòng nhập nội dung ghi chú"
   },
   "tag": {
     "needTag": "Vui lòng nhập thẻ",
-    "removeTagSuccess": "Đã xóa thẻ thành công"
+    "removeTagSuccess": "Đã xóa thẻ thành công",
+    "name": "Nhãn"
   },
   "statistics": {
     "bookUnit": "Sách",
@@ -174,5 +177,13 @@
     "pageActual": "Kích thước thực sự",
     "pageFit": "phù hợp với trang",
     "pageWidth": "Vừa với chiều rộng trang"
+  },
+  "sort": {
+    "addTime": "thêm thời gian",
+    "asc": "Thứ tự tăng dần",
+    "desc": "Thứ tự giảm dần",
+    "readProgress": "tiến độ đọc",
+    "readTime": "Thời gian đọc",
+    "updateTime": "Gần đây đã đọc"
   }
 }

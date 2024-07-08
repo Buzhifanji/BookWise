@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { changNoteSortStore, noteSortStore, useFilterNoteStore } from '@renderer/store';
+import { t } from '@renderer/view/setting';
 import { get, set } from '@vueuse/core';
 import { ArrowDownNarrowWide, Check, Filter } from 'lucide-vue-next';
 import { ref, watchEffect } from 'vue';
@@ -86,13 +87,13 @@ watchEffect(() => {
         class="dropdown-content z-[1] menu p-2 min-w-52 gap-1 mt-3 shadow-lg bg-base-100 border border-accent  rounded-md ">
         <li @click="changNoteSortStore('sortBy', 'bookName')">
           <a class="justify-between ">
-            <span>书名</span>
+            <span>{{ t('book.name') }}</span>
             <Check v-if="isSortBy('bookName')" />
           </a>
         </li>
         <li @click="changNoteSortStore('sortBy', 'addTime')">
           <a class="justify-between">
-            <span>按添加时间排序</span>
+            <span>{{ t('sort.addTime') }}</span>
             <Check v-if="isSortBy('addTime')" />
           </a>
         </li>
@@ -100,13 +101,15 @@ watchEffect(() => {
         </li>
         <li @click="changNoteSortStore('isUp', true)">
           <a class="justify-between">
-            <div>升序<span class="ml-1 text-base-content/60" v-if="isSortBy('bookName')">(A-Z)</span></div>
+            <div>{{ t('sort.asc') }}<span class="ml-1 text-base-content/60" v-if="isSortBy('bookName')">(A-Z)</span>
+            </div>
             <Check v-if="noteSortStore.isUp" />
           </a>
         </li>
         <li @click="changNoteSortStore('isUp', false)">
           <a class="justify-between">
-            <div>降序<span class="ml-1 text-base-content/60" v-if="isSortBy('bookName')">(Z-A)</span></div>
+            <div>{{ t('sort.desc') }}<span class="ml-1 text-base-content/60" v-if="isSortBy('bookName')">(Z-A)</span>
+            </div>
             <Check v-if="!noteSortStore.isUp" />
           </a>
         </li>
@@ -117,12 +120,12 @@ watchEffect(() => {
         <Filter />
       </button>
       <SelectSearchView className="input-sm join-item" v-model="selectedBook" @update:model-value="updateBook"
-        :data="noteAllBook" @clear="clearBookFilter()">
-        <span>书名</span>
+        :data="noteAllBook" :placeholder="t('book.needBookshelfName')" @clear="clearBookFilter()">
+        <span>{{ t('book.bookshelf') }}</span>
       </SelectSearchView>
       <SelectSearchView className="input-sm join-item" v-model="selectTags" @update:model-value="updateTag"
-        :data="noteAlltag" @clear="clearTagFilter()">
-        <span>标签</span>
+        :data="noteAlltag" :placeholder="t('tag.needTag')" @clear="clearTagFilter()">
+        <span>{{ t('tag.name') }}</span>
         <TagListview :tag="selectTags" @remove="removeTag" />
       </SelectSearchView>
     </div>

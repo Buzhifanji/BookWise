@@ -142,11 +142,14 @@
     "sureRemove": "Confirmar exclusão da nota",
     "placeholder": "Escreva seus pensamentos neste momento...",
     "write": "escreva ideias",
-    "myNote": "minhas anotações"
+    "myNote": "minhas anotações",
+    "findNoteError": "Perda de dados: nota não encontrada localmente",
+    "writeYouNore": "Por favor insira o conteúdo da nota"
   },
   "tag": {
     "needTag": "Por favor insira a etiqueta",
-    "removeTagSuccess": "Tag excluída com sucesso"
+    "removeTagSuccess": "Tag excluída com sucesso",
+    "name": "Rótulo"
   },
   "statistics": {
     "bookUnit": "Livro",
@@ -174,5 +177,13 @@
     "pageActual": "tamanho atual",
     "pageFit": "ajustar à página",
     "pageWidth": "Ajustar à largura da página"
+  },
+  "sort": {
+    "addTime": "tempo extra",
+    "asc": "Ordem ascendente",
+    "desc": "ordem decrescente",
+    "readProgress": "progresso de leitura",
+    "readTime": "Tempo de leitura",
+    "updateTime": "Li recentemente"
   }
 }

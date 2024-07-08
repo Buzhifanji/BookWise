@@ -142,11 +142,14 @@
     "sureRemove": "Potwierdź usunięcie notatki",
     "placeholder": "Zapisz swoje myśli w tej chwili...",
     "write": "pisać pomysły",
-    "myNote": "moje notatki"
+    "myNote": "moje notatki",
+    "findNoteError": "Utrata danych: Notatka nie została znaleziona lokalnie",
+    "writeYouNore": "Proszę wpisać treść notatki"
   },
   "tag": {
     "needTag": "Proszę wpisać tag",
-    "removeTagSuccess": "Tag został pomyślnie usunięty"
+    "removeTagSuccess": "Tag został pomyślnie usunięty",
+    "name": "Etykieta"
   },
   "statistics": {
     "bookUnit": "Książka",
@@ -174,5 +177,13 @@
     "pageActual": "rzeczywisty rozmiar",
     "pageFit": "Dopasuj do strony",
     "pageWidth": "Dopasuj do szerokości strony"
+  },
+  "sort": {
+    "addTime": "Dodaj czas",
+    "asc": "Rosnąco",
+    "desc": "Kolejność malejąca",
+    "readProgress": "postęp w czytaniu",
+    "readTime": "Czas czytania",
+    "updateTime": "Niedawno przeczytane"
   }
 }

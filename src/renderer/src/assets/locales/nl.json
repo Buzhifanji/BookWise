@@ -142,11 +142,14 @@
     "sureRemove": "Bevestig het verwijderen van de notitie",
     "placeholder": "Schrijf uw gedachten op dit moment op...",
     "write": "schrijf ideeën",
-    "myNote": "mijn notities"
+    "myNote": "mijn notities",
+    "findNoteError": "Gegevensverlies: Opmerking niet lokaal gevonden",
+    "writeYouNore": "Voer de inhoud van de notitie in"
   },
   "tag": {
     "needTag": "Voer een tag in",
-    "removeTagSuccess": "Tag succesvol verwijderd"
+    "removeTagSuccess": "Tag succesvol verwijderd",
+    "name": "Etiket"
   },
   "statistics": {
     "bookUnit": "Boek",
@@ -174,5 +177,13 @@
     "pageActual": "daadwerkelijke grootte",
     "pageFit": "aanpassen aan pagina",
     "pageWidth": "Aanpassen aan paginabreedte"
+  },
+  "sort": {
+    "addTime": "Voeg tijd toe",
+    "asc": "Oplopende volgorde",
+    "desc": "aflopende volgorde",
+    "readProgress": "voortgang lezen",
+    "readTime": "Leestijd",
+    "updateTime": "Onlangs gelezen"
   }
 }
