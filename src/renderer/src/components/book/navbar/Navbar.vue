@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { bookSortStore, BookSortType, changeBookSortStore, noteSortStore, useBookFilterStore } from '@renderer/store';
+import { bookSortStore, BookSortType, changeBookSortStore, useBookFilterStore } from '@renderer/store';
 import { get } from '@vueuse/core';
 import { ArrowDownNarrowWide, Check } from 'lucide-vue-next';
 import DropdownView from '../../dropdown/Dropdown.vue';
@@ -7,11 +7,12 @@ import DropdownView from '../../dropdown/Dropdown.vue';
 const store = useBookFilterStore()
 const isSortBy = (val: string) => get(bookSortStore).sortBy === val
 
+
 const list: { label: string, value: BookSortType }[] = [
   { label: '最近阅读', value: 'updateTime' },
   { label: '添加时间', value: 'addTime' },
   { label: '阅读进度', value: 'readProgress' },
-  // { label: '阅读时长', value: 'readTime' },
+  { label: '阅读时长', value: 'readTime' },
   { label: '书名', value: 'bookName' },
   { label: '作者', value: 'author' },
   { label: '评分', value: 'score' },
@@ -38,13 +39,13 @@ const list: { label: string, value: BookSortType }[] = [
         <li @click="changeBookSortStore('isUp', true)">
           <a class="justify-between">
             <div>升序<span class="ml-1 text-base-content/60" v-if="isSortBy('bookName')">(A-Z)</span></div>
-            <Check v-if="noteSortStore.isUp" />
+            <Check v-if="bookSortStore.isUp" />
           </a>
         </li>
         <li @click="changeBookSortStore('isUp', false)">
           <a class="justify-between">
             <div>降序<span class="ml-1 text-base-content/60" v-if="isSortBy('bookName')">(Z-A)</span></div>
-            <Check v-if="!noteSortStore.isUp" />
+            <Check v-if="!bookSortStore.isUp" />
           </a>
         </li>
       </ul>

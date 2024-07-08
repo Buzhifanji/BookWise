@@ -8,10 +8,10 @@ import { bookSortStore, settingStore, useContentCantianerStore } from '@renderer
 import { t } from '@renderer/view/setting';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
-import { get } from '@vueuse/core';
+import { get, set } from '@vueuse/core';
 import { BellElectric, Heart, HeartOff, PencilLine, Plus, SquareLibrary, Star, Trash2, UndoDot } from 'lucide-vue-next';
-import { computed, defineProps, onMounted, ref, toRaw, withDefaults } from 'vue';
-import { BookAction } from './action';
+import { computed, defineProps, onMounted, ref, toRaw, watchEffect, withDefaults } from 'vue';
+import { BookAction, BookReadTimeAction } from './action';
 import { bookshelfDialog } from './bookshelf';
 import { detailDialog } from './detail';
 import { editDialog } from './edit';
@@ -27,8 +27,6 @@ const props = withDefaults(defineProps<Props>(), {
   data: () => [],
   isRecycleBin: false,
 })
-
-
 const emit = defineEmits<{
   (e: 'click', payload: Book): void;
 }>();
@@ -55,7 +53,29 @@ onMounted(() => {
   parentOffsetRef.value = parentRef.value?.offsetTop ?? 0
 })
 
-const list = computed(() => {
+const sortByReadTime = async (data: Book[], isUp: boolean) => {
+  const allReadTime = await BookReadTimeAction.getAll()
+  const timeMap = new Map<string, number>()
+  for (const item of allReadTime) {
+    const { id, startTime, endTime } = item
+    const time = endTime - startTime
+    if (timeMap.has(id)) {
+      timeMap.set(id, timeMap.get(id)! + time)
+    } else {
+      timeMap.set(id, time)
+    }
+  }
+
+  return data.sort((a, b) => {
+    const aTime = timeMap.get(a.id) ?? 0
+    const bTime = timeMap.get(b.id) ?? 0
+    return isUp ? aTime - bTime : bTime - aTime
+  })
+}
+
+const list = ref<Book[] | Book[][]>([])
+
+watchEffect(async () => {
   const width = bookMode(BookshelftMode.bookshelf) ? bookshelfWidht : bookMode(BookshelftMode.card) ? bookCardWidth : 0
   const count = parseInt(((store.width) / (width + remToPx(2.5))).toString())
 
@@ -79,7 +99,7 @@ const list = computed(() => {
       data = sort(originalData, isUp, 'updateTime')
     } else if (sortBy === 'readTime') {
       // 按照阅读时间排序
-
+      data = await sortByReadTime(originalData, isUp)
       // todo
 
     } else if (sortBy === 'readProgress') {
@@ -97,7 +117,8 @@ const list = computed(() => {
     }
   }
 
-  return bookMode(BookshelftMode.list) ? data : chuankArray(data, count)
+  const result = bookMode(BookshelftMode.list) ? data : chuankArray(data, count)
+  set(list, result)
 })
 
 // 虚拟列表

@@ -156,6 +156,17 @@ export class BookReadTimeAction {
     return db.readTime.toArray()
   }
 
+  static observable() {
+    try {
+      return useObservable<Book[], Book[]>(
+        liveQuery(async () => await db.readTime.toArray()) as any
+      )
+    } catch (error) {
+      toastError(t('book.getBookReadTimeFail') + error)
+      return []
+    }
+  }
+
   static observableOne(eBookId: string): any {
     try {
       return useObservable<Book[], Book[]>(
