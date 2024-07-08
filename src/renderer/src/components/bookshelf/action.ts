@@ -22,12 +22,28 @@ export class BookshelfAction {
     }
   }
 
+  static async update(id: string, name: string) {
+    try {
+      await db.bookshelf.update(id, { name, updateTime: now() })
+    } catch (error) {
+      toastError('更新书架失败' + error)
+      return Promise.reject(error)
+    }
+  }
+
+  static async removeByIds(id: string[]) {
+    try {
+      await db.bookshelf.bulkDelete(id)
+    } catch (error) {
+      toastError('删除书架失败' + error)
+      return Promise.reject(error)
+    }
+  }
+
   static observable() {
     try {
       return useObservable<Bookshelf[], Bookshelf[]>(
-        liveQuery(async () =>
-          (await db.bookshelf.toArray())
-        ) as any
+        liveQuery(async () => await db.bookshelf.toArray()) as any
       )
     } catch (error) {
       // toastError(t('book.getBookListFail') + error)

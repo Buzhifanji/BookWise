@@ -7,9 +7,9 @@ import { t } from '@renderer/view/setting';
 import { vOnClickOutside } from '@vueuse/components';
 import { get, set, useToggle } from '@vueuse/core';
 import { computed, nextTick, ref } from 'vue';
-import SelectSearchView from '../../select/SelectSearch.vue';
-import TagListview from '../../tag/TagList.vue';
-import { BookAction } from '../action';
+import { BookAction } from '../book/action';
+import SelectSearchView from '../select/SelectSearch.vue';
+import TagListview from '../tag/TagList.vue';
 
 const props = defineProps<{ book: Book }>()
 const [loading, setLoading] = useToggle(false)

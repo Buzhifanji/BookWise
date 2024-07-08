@@ -10,8 +10,8 @@ import { vOnClickOutside } from '@vueuse/components';
 import { get, set } from '@vueuse/core';
 import { BellElectric, Heart, HeartOff, PencilLine, Plus, SquareLibrary, Star, Trash2, UndoDot } from 'lucide-vue-next';
 import { defineProps, ref, toRaw, watchEffect, withDefaults } from 'vue';
+import { addBookshelfDialog } from '../bookshelf';
 import { BookAction, BookReadTimeAction } from './action';
-import { bookshelfDialog } from './bookshelf';
 import { detailDialog } from './detail';
 import { editDialog } from './edit';
 import BookShelfMode from './mode/Bookshelf.vue';
@@ -154,7 +154,7 @@ function onLove() {
 }
 
 // 书架
-const onBookshelf = () => dialogAction(bookshelfDialog)
+const onBookshelf = () => dialogAction(addBookshelfDialog)
 
 const onClick = (val: Book) => emit('click', val)
 

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { settingStore } from '@renderer/store';
 import { bookshelfModeList, getSelectBookshelfMode, t } from '@renderer/view/setting';
-import { Bolt } from 'lucide-vue-next';
+import { Bolt, SquareArrowUpLeft } from 'lucide-vue-next';
+import { editBookshelfDialog } from '../../bookshelf';
 import DropdownView from '../../dropdown/Dropdown.vue';
 import List from '../../list/List.vue';
-
 </script>
 
 <template>
@@ -24,6 +24,14 @@ import List from '../../list/List.vue';
               class="dropdown-content !top-0 !right-[18.5rem]  !border-secondary  rounded-s-lg rounded-ee-lg z-[2] w-52"
               :list="bookshelfModeList" v-model="settingStore.bookshelf" />
           </DropdownView>
+        </a>
+      </li>
+      <li @click="editBookshelfDialog()">
+        <a class="!p-0 my-1">
+          <div class="flex flex-row py-2 px-4 justify-between w-72">
+            <span class="stat-title">管理书架</span>
+            <SquareArrowUpLeft />
+          </div>
         </a>
       </li>
     </ul>

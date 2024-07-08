@@ -12,7 +12,7 @@ function createToastConatiner(position: Position[]) {
 
   const div = createElement('div')
   div.className = 'toast text-[16px] ' + position.join(' ')
-  div.style.zIndex = '1000'
+  div.style.zIndex = '100000'
   document.body.appendChild(div)
 
   return div
