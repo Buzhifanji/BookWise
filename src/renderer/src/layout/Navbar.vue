@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BookNavBarView, FileUploadView, NoteNavbarView } from '@renderer/components';
+import { BookNavbarSetting, BookNavBarView, FileUploadView, NoteNavbarView } from '@renderer/components';
 import { t } from '@renderer/view/setting';
 import { useWindowSize } from '@vueuse/core';
 import { AlignJustify, Search } from 'lucide-vue-next';
@@ -50,6 +50,7 @@ const routePath = computed(() => router.currentRoute.value.path);
 
     <!-- <div class="navbar-center"></div> -->
     <div class=" gap-4">
+      <BookNavbarSetting v-if="routePath.startsWith('/book')" />
       <button class="btn btn-sm btn-primary " @click="uploadAction()">{{ t('file.upload') }}</button>
       <FileUploadView ref="dialogRef" />
     </div>

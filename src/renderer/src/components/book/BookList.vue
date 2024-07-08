@@ -1,20 +1,22 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
-import { FileUploadView, ImgView } from '@renderer/components';
+import { FileUploadView } from '@renderer/components';
 import { BookshelftMode } from '@renderer/enum';
-import { useBgOpacity, useRightClick } from '@renderer/hooks';
-import { chuankArray, remToPx, sort, toastSuccess } from '@renderer/shared';
-import { bookSortStore, settingStore, useBookFilterStore, useContentCantianerStore } from '@renderer/store';
+import { useRightClick } from '@renderer/hooks';
+import { sort, toastSuccess } from '@renderer/shared';
+import { bookSortStore, settingStore, useBookFilterStore } from '@renderer/store';
 import { t } from '@renderer/view/setting';
-import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
 import { get, set } from '@vueuse/core';
 import { BellElectric, Heart, HeartOff, PencilLine, Plus, SquareLibrary, Star, Trash2, UndoDot } from 'lucide-vue-next';
-import { computed, defineProps, onMounted, ref, toRaw, watchEffect, withDefaults } from 'vue';
+import { defineProps, ref, toRaw, watchEffect, withDefaults } from 'vue';
 import { BookAction, BookReadTimeAction } from './action';
 import { bookshelfDialog } from './bookshelf';
 import { detailDialog } from './detail';
 import { editDialog } from './edit';
+import BookShelfMode from './mode/Bookshelf.vue';
+import CardMode from './mode/Card.vue';
+import ListMode from './mode/List.vue';
 import { removeDialog } from './remove';
 import { scroreDialog } from './score';
 
@@ -32,26 +34,7 @@ const emit = defineEmits<{
 }>();
 
 const filterStore = useBookFilterStore()
-const bookshelfWidht = 120
-const bookshelfHeight = 137
-const bookCardWidth = 282
-const textOpacity = { '--tw-text-opacity': 0.6 };
-
-// 鼠标选中效果
-const { indexBgOpacity, hoverAction } = useBgOpacity()
-
-const bookMode = (value: BookshelftMode) => value === settingStore.value.bookself
-
-const store = useContentCantianerStore()
-
-const parentRef = ref<HTMLElement | null>(null)
-
-const parentOffsetRef = ref(0)
-
-
-onMounted(() => {
-  parentOffsetRef.value = parentRef.value?.offsetTop ?? 0
-})
+const bookMode = (value: BookshelftMode) => value === settingStore.value.bookshelf
 
 const sortByReadTime = async (data: Book[], isUp: boolean) => {
   const allReadTime = await BookReadTimeAction.getAll()
@@ -73,12 +56,9 @@ const sortByReadTime = async (data: Book[], isUp: boolean) => {
   })
 }
 
-const list = ref<Book[] | Book[][]>([])
+const books = ref<Book[]>([])
 
 watchEffect(async () => {
-  const width = bookMode(BookshelftMode.bookshelf) ? bookshelfWidht : bookMode(BookshelftMode.card) ? bookCardWidth : 0
-  const count = parseInt(((store.width) / (width + remToPx(2.5))).toString())
-
   let originalData = [...toRaw(props.data)]
 
   const bookshelfId = filterStore.bookshelf
@@ -106,8 +86,6 @@ watchEffect(async () => {
     } else if (sortBy === 'readTime') {
       // 按照阅读时间排序
       data = await sortByReadTime(originalData, isUp)
-      // todo
-
     } else if (sortBy === 'readProgress') {
       // 按照阅读进度排序
       data = sort(originalData, isUp, 'progress')
@@ -122,36 +100,8 @@ watchEffect(async () => {
       data = sort(originalData, isUp, 'score')
     }
   }
-
-  const result = bookMode(BookshelftMode.list) ? data : chuankArray(data, count)
-  set(list, result)
+  set(books, data)
 })
-
-// 虚拟列表
-const rowVirtualizerOptions = computed(() => {
-  return {
-    count: list.value.length,
-    estimateSize: () => 350,
-    overscan: 5,
-    getScrollElement: () => parentRef.value,
-  }
-})
-
-const rowVirtualizer = useVirtualizer(rowVirtualizerOptions)
-
-const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems())
-
-const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
-
-const measureElement = (el: HTMLElement) => {
-  if (!el) {
-    return
-  }
-  setTimeout(() => {
-    rowVirtualizer.value.measureElement(el)
-  })
-  return undefined
-}
 
 const uploadRef = ref<InstanceType<typeof FileUploadView> | null>(null);
 function uploadAction() {
@@ -206,78 +156,16 @@ function onLove() {
 // 书架
 const onBookshelf = () => dialogAction(bookshelfDialog)
 
+const onClick = (val: Book) => emit('click', val)
+
 </script>
 
 <template>
-  <div ref="parentRef" id="book-list-dialog"
-    class="p-6 flex h-full overflow-auto hover:scrollbar-thin scrollbar-none scrollbar-thin" v-if="data.length">
-    <div class="relative w-full" :style="{
-      height: `${totalSize}px`,
-    }">
-      <template v-for="virtualRow in virtualRows" :key="virtualRow.key">
-        <div :ref="measureElement" :data-index="virtualRow.index" class="absolute top-0 left-0  w-full "
-          :class="[bookMode(BookshelftMode.list) ? 'pb-4' : bookMode(BookshelftMode.bookshelf) ? 'pb-10' : 'pb-5']"
-          :style="{
-            transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin
-              }px)`,
-          }">
-          <div class="relative w-full" v-if="bookMode(BookshelftMode.bookshelf)">
-            <!-- 书架模式 -->
-            <div class="flex w-full justify-start pb-[1.125rem] px-5 gap-10 class ">
-              <template v-for="item in list[virtualRow.index] as Book[]">
-                <div class="card bg-base-100  rounded shadow cursor-pointer gap-2 bookshelf transition ease-in-out"
-                  @click="emit('click', item)"
-                  :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight + remToPx(3.5)}px` }"
-                  @contextmenu="rightEvent($event, item)">
-                  <figure :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight}px` }" class="rounded">
-                    <ImgView :data="item.cover" />
-                  </figure>
-                  <div class="line-clamp-2 mx-1 mb-1 text-sm">{{ item.name }}</div>
-                </div>
-              </template>
-            </div>
-            <div class="shelf-shadows shadow-2xl"></div>
-            <div class="shelf bg-base-100"></div>
-          </div>
-          <div v-else-if="bookMode(BookshelftMode.card)" class="flex w-full justify-start  gap-8">
-            <!-- 卡片模式 -->
-            <template v-for="item in list[virtualRow.index] as Book[]">
-              <div
-                class="card flex-row items-center gap-4 p-4 bg-base-100 shadow-md cursor-pointer transition ease-in-out duration-150  hover:scale-110"
-                @click="emit('click', item)" @contextmenu="rightEvent($event, item)"
-                :style="{ width: `${bookCardWidth}px` }">
-                <figure :style="{ width: `${84}px`, height: `${121}px` }">
-                  <ImgView :data="item.cover" />
-                </figure>
-                <div class="flex flex-1 flex-col gap-2">
-                  <p class="line-clamp-2">{{ item.name }}</p>
-                  <p class="line-clamp-2 label-text" :style="textOpacity"> {{ item.author }}</p>
-                </div>
-              </div>
-            </template>
-          </div>
-          <div v-else class="flex w-full flex-col ">
-            <!-- 列表模式 -->
-            <div
-              class="card flex flex-row bg-base-100 p-2 gap-4 cursor-pointer shadow hover:bg-primary hover:text-primary-content"
-              :style="{ '--tw-bg-opacity': indexBgOpacity(virtualRow.index) }"
-              @mouseenter="hoverAction(0.3, virtualRow.index)" @mouseleave="hoverAction(1, -1)"
-              @click="emit('click', list[virtualRow.index] as Book)"
-              @contextmenu="rightEvent($event, list[virtualRow.index] as Book)">
-              <figure :style="{ width: `${84}px`, height: `${121}px` }">
-                <ImgView :data="(list[virtualRow.index] as Book).cover" />
-              </figure>
-              <div class="flexflex-col flex-1 py-2">
-                <p class="line-clamp-1">{{ (list[virtualRow.index] as Book).name }}</p>
-                <p class="line-clamp-1 label-text" :style="textOpacity">{{ (list[virtualRow.index] as Book).author }}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </template>
-    </div>
-
+  <div id="book-list-dialog" class="p-6 flex h-full overflow-auto hover:scrollbar-thin scrollbar-none scrollbar-thin"
+    v-if="data.length">
+    <BookShelfMode :data="books" @right="rightEvent" @click="onClick" v-if="bookMode(BookshelftMode.bookshelf)" />
+    <CardMode :data="books" @right="rightEvent" @click="onClick" v-else-if="bookMode(BookshelftMode.card)" />
+    <ListMode :data="books" @right="rightEvent" @click="onClick" v-else />
     <!-- 右键 -->
     <ul class="fixed menu bg-base-100 border border-accent rounded-md shadow-2xl gap-1 min-w-40 z-[99]"
       v-on-click-outside="closeRight" v-if="rightInfo.show" :style="{ top: rightInfo.top, left: rightInfo.left }">
@@ -386,4 +274,4 @@ const onBookshelf = () => dialogAction(bookshelfDialog)
     0px 5px 5px 0px rgba(0, 0, 0, 0.3),
     0px 5px 5px 0px rgba(0, 0, 0, 0.3);
 }
-</style>./action
+</style>

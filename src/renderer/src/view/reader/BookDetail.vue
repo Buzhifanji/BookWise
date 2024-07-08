@@ -86,7 +86,7 @@ const getScore = (val: unknown) => isUndefined(val) || val === -1 ? t('common.un
     </div>
     <div class="flex gap-1 ml-3 mb-2 cursor-pointer" @click="openBookScore()">
       <div>{{ t('book.score') }}</div>
-      <div class="rating rating-md rating-half" @click="openBookScore()">
+      <div class="rating rating-sm  rating-half" @click="openBookScore()">
         <ScoreInputView :value="book.score" :readonly="true" />
       </div>
       <div class="link  text-orange-400">{{ getScore(book.score) }}

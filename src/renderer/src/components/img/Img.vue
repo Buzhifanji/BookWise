@@ -13,6 +13,11 @@ const contianerRef = ref<HTMLImageElement | null>(null)
 
 onMounted(async () => {
   const imgDom = get(contianerRef)
+  const data = props.data
+  // if(data) {
+  //  const src = convertUint8ArrayToURL(data)
+  //  get(contianerRef)?.sr
+  // }
   if (imgDom) {
     await wait(100)
     imgDom.onload = () => {
@@ -26,6 +31,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  <img :src="loadingBookCover" :data-src="convertUint8ArrayToURL(props.data)" ref="contianerRef"
+  <img :src="loadingBookCover" :data-src="convertUint8ArrayToURL(data)" ref="contianerRef"
     class="w-full rounded h-full object-cover" :alt="t('book.cover')" loading="lazy">
 </template>

@@ -442,7 +442,7 @@ onBeforeUnmount(() => {
                   <Bolt />
                 </template>
                 <ul
-                  class="dropdown-content z-[1] menu p-2  mt-1 shadow bg-base-100 border border-accent  rounded-box  divide-y ">
+                  class="dropdown-content z-[1] menu p-2  mt-1 shadow bg-base-100 border border-accent  rounded-md divide-y ">
                   <!-- 调节宽带 -->
                   <template v-if="!isPDF">
                     <li class="flex flex-row justify-between  py-1">

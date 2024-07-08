@@ -21,3 +21,7 @@ export const bookshelfModeList = computed(() => {
     { id: BookshelftMode.list, value: t('bookMode.list') }
   ]
 })
+
+export const getSelectBookshelfMode = (bookshelfMode: BookshelftMode) => {
+  return bookshelfModeList.value.find((item) => item.id === bookshelfMode)?.value
+}

@@ -34,7 +34,7 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
         <div class="card w-full bg-base-100 shadow">
           <div class="card-body">
             <h2 class="card-title">{{ t('setting.mode') }}</h2>
-            <SelectView v-model="settingStore.bookself" :list="bookshelfModeList" :label="t('setting.bookMode')" />
+            <SelectView v-model="settingStore.bookshelf" :list="bookshelfModeList" :label="t('setting.bookMode')" />
             <SelectView v-model="settingStore.readMode" :list="readModeList" :label="t('setting.readMode')" />
           </div>
         </div>

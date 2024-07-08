@@ -1,5 +1,6 @@
 import BookListView from './book/BookList.vue'
 import BookNavBarView from './book/navbar/Navbar.vue'
+import BookNavbarSetting from './book/navbar/Setting.vue'
 import ScoreInputView from './book/score/ScoreInput.vue'
 import CheckBoxView from './checkbox/CheckBox.vue'
 import DrawerView from './drawer/Drawer.vue'
@@ -36,6 +37,7 @@ export * from './toast'
 
 export {
   BookListView,
+  BookNavbarSetting,
   BookNavBarView,
   CheckBoxView,
   DrawerView,

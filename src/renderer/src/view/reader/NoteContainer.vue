@@ -290,14 +290,14 @@ const throttleClick = useThrottleFn((val: Note) => {
 
 <style scoped>
 .left-note-wrapper {
-  --rightbar-width: 22rem;
+  --rightbar-width: 24rem;
   width: var(--rightbar-width);
   transition: all .3s;
   position: sticky;
   bottom: 0;
   top: 0;
   height: 100vh;
-  min-width: 22rem;
+  min-width: 24rem;
   border-inline-start-width: 1px;
   --tw-border-opacity: 1;
   border-color: var(--fallback-b2, oklch(var(--b2) / var(--tw-border-opacity)));
