@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import favicon from '@renderer/assets/favicon.ico';
-import { set, useFavicon } from '@vueuse/core';
+import { get, set, useFavicon } from '@vueuse/core';
 import { watchEffect } from 'vue';
 import { BookAction, BookReadTimeAction } from './components';
 import './dayjs';
-import { bookPositionStore, bookReadTimeStore, settingStore } from './store';
+import { bookPositionStore, bookReadTimeStore, settingStore, useBookStore } from './store';
 import { setI18nLanguage } from './view/setting/language';
 
 
@@ -38,6 +38,11 @@ watchEffect(async () => {
   bookReadTimeStore.value = {}
 })
 
+const bookStore = useBookStore()
+const allBook = BookAction.observable()
+watchEffect(() => {
+  bookStore.setBookList(get(allBook) || [])
+})
 </script>
 
 <template>

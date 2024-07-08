@@ -8,6 +8,7 @@ import { useToggle } from '@vueuse/core';
 import { Upload } from 'lucide-vue-next';
 // import { PDFPageProxy, getDocument } from 'pdfjs-dist';
 import * as PDFLib from '@renderer/reader/pdf-lib';
+import { useBookStore } from '@renderer/store';
 import { v4 as uuidv4 } from 'uuid';
 import { defineExpose, ref } from 'vue';
 import { BookAction, BookContentAction } from '../book/action';
@@ -16,7 +17,7 @@ import { readFiles } from './read-file';
 
 const { dialogRef, openDialog, closeDialog } = useDialog();
 const [isDragging, setDragging] = useToggle(false)
-
+const bookStore = useBookStore()
 defineExpose({ open: openDialog })
 
 const inputRef = ref<HTMLInputElement | null>(null)
@@ -43,9 +44,7 @@ const handleFiles = async (files: FileList) => {
         const result = await readFiles(Array.from(files))
         if (result.length === 0) return
 
-        const books = await BookAction.getAll()
-
-        const md5Set = new Set(books.map(book => book.md5));
+        const md5Set = new Set(bookStore.bookList.map(book => book.md5));
 
         // 过滤重复添加的文件
         const newBookData = result.filter(({ hash }) => {

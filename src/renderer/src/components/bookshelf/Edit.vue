@@ -2,6 +2,7 @@
 import { Bookshelf } from '@renderer/batabase';
 import { useDialog } from '@renderer/hooks';
 import { toastError } from '@renderer/shared';
+import { useBookStore } from '@renderer/store';
 import { t } from '@renderer/view/setting';
 import { vOnClickOutside } from '@vueuse/components';
 import { get, set, useToggle } from '@vueuse/core';
@@ -14,6 +15,7 @@ const [loading, setLoading] = useToggle(false)
 const [submitLoading, setSubmitLoading] = useToggle(false)
 const { dialogRef, openDialog, closeDialog } = useDialog();
 const { dialogRef: RenameDialogRef, openDialog: openRenameDialog, closeDialog: closeRenameDialog } = useDialog();
+const bookStore = useBookStore()
 
 const activeBookshelf = ref<Bookshelf | null>(null)
 const inputVal = ref<string>('')
@@ -32,9 +34,9 @@ const init = async () => {
     openDialog()
     await nextTick()
     openDialog()
-    const [bookshelf, book] = await Promise.all([BookshelfAction.getAll(), BookAction.getAll()])
+    const bookshelf = await BookshelfAction.getAll()
 
-    for (const item of book) {
+    for (const item of bookStore.bookList) {
       const bookshelfId = item.groupId
       if (bookshelfId) {
         const temp = bookMap.get(bookshelfId) || { count: 0, bookId: '' }

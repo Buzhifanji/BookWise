@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
-import { BookAction, bookJump, BookReadTimeAction, ImgView, NoteAction } from '@renderer/components';
+import { bookJump, BookReadTimeAction, ImgView, NoteAction } from '@renderer/components';
 import { getInterval, remToPx } from '@renderer/shared';
-import { useContentCantianerStore } from '@renderer/store';
+import { useBookStore, useContentCantianerStore } from '@renderer/store';
 import { t } from '@renderer/view/setting';
 import { get, set, useToggle } from '@vueuse/core';
 import dayjs from 'dayjs';
@@ -26,6 +26,7 @@ const store = useContentCantianerStore()
 const totalRecentBook = ref<Book[]>([])
 const totalLoveBook = ref<Book[]>([])
 const [loading, setLoading] = useToggle(false)
+const bookStore = useBookStore()
 
 function handlePercentage(num1: number, num2: number) {
   if (num1 === 0) {
@@ -52,11 +53,11 @@ const toStr = (val: number) => (val * 100).toFixed(2) + '%'
 async function init() {
   try {
     setLoading(true)
-    const [allBook, allNotes, allime] = await Promise.all([
-      BookAction.getAll(),
+    const [allNotes, allime] = await Promise.all([
       NoteAction.getAll(),
       BookReadTimeAction.getAll(),
     ])
+    const allBook = bookStore.bookList.filter(item => !item.isDelete)
     allBook.sort((a, b) => b.updateTime - a.updateTime)
 
     // 在读

@@ -1,3 +1,4 @@
+import { Book } from '@renderer/batabase'
 import { useStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
@@ -60,4 +61,15 @@ export const useBookFilterStore = defineStore('useBookFilterStore', () => {
   }
 
   return { bookshelf, setBookshelf }
+})
+
+// 全部书籍
+export const useBookStore = defineStore('useBookStore', () => {
+  const bookList = ref<Book[]>([])
+
+  function setBookList(val: any) {
+    bookList.value = val
+  }
+
+  return { bookList, setBookList }
 })

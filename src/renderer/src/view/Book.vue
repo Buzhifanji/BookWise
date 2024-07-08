@@ -1,41 +1,17 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
-import { BookAction, bookJump, BookListView, RingLoadingView } from '@renderer/components';
-import { get, set, useToggle } from '@vueuse/core';
-import { ref, watchEffect } from 'vue';
+import { bookJump, BookListView } from '@renderer/components';
+import { useBookStore } from '@renderer/store';
+import { computed } from 'vue';
 
-const bookList = BookAction.observable()
-
-const [loading, setLoading] = useToggle(false)
+const bookStore = useBookStore()
 
 async function onClick({ id }: Book) {
   bookJump(id)
 }
-
-const list = ref<Book[]>([])
-watchEffect(() => {
-  const data = get(bookList)
-  if (data) {
-    set(list, data)
-  }
-})
-
-async function init() {
-  try {
-    setLoading(true)
-    const data = await BookAction.getAll()
-    set(list, data)
-  } catch (err) {
-
-  } finally {
-    setLoading(false)
-  }
-
-}
-init()
+const books = computed(() => bookStore.bookList.filter(item => !item.isDelete))
 </script>
 
 <template>
-  <RingLoadingView v-if="loading"></RingLoadingView>
-  <BookListView v-else :data="bookList" @click="onClick" />
+  <BookListView :data="books" @click="onClick" />
 </template>

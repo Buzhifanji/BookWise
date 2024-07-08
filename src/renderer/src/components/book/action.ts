@@ -80,13 +80,9 @@ export class BookAction {
     }
   }
 
-  static observable(isDelete = false) {
+  static observable() {
     try {
-      return useObservable<Book[], Book[]>(
-        liveQuery(async () =>
-          (await db.books.toArray()).filter((item) => (isDelete ? item.isDelete : !item.isDelete))
-        ) as any
-      )
+      return useObservable<Book[], Book[]>(liveQuery(async () => await db.books.toArray()) as any)
     } catch (error) {
       toastError(t('book.getBookListFail') + error)
       return [] as Book[]
