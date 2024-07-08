@@ -1,3 +1,4 @@
+import { Note } from '@renderer/batabase'
 import { set, useStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
@@ -41,3 +42,11 @@ export const useFilterNoteStore = defineStore('useFilterNoteStore', () => {
 export const changNoteSortStore = <T extends keyof NoteNavbar>(key: T, value: NoteNavbar[T]) => {
   noteSortStore.value[key] = value
 }
+
+export const useNoteStore = defineStore('useNoteStore', () => {
+  const noteList = ref<Note[]>([])
+  function setNoteList(val: Note[]) {
+    set(noteList, val)
+  }
+  return { noteList, setNoteList }
+})

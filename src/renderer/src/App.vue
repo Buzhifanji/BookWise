@@ -2,9 +2,9 @@
 import favicon from '@renderer/assets/favicon.ico';
 import { get, set, useFavicon } from '@vueuse/core';
 import { watchEffect } from 'vue';
-import { BookAction, BookReadTimeAction } from './components';
+import { BookAction, BookReadTimeAction, NoteAction } from './components';
 import './dayjs';
-import { bookPositionStore, bookReadTimeStore, settingStore, useBookStore } from './store';
+import { bookPositionStore, bookReadTimeStore, settingStore, useBookStore, useNoteStore } from './store';
 import { setI18nLanguage } from './view/setting/language';
 
 
@@ -38,10 +38,18 @@ watchEffect(async () => {
   bookReadTimeStore.value = {}
 })
 
+// 全部书籍
 const bookStore = useBookStore()
 const allBook = BookAction.observable()
 watchEffect(() => {
   bookStore.setBookList(get(allBook) || [])
+})
+
+// 全部笔记
+const noteStore = useNoteStore()
+const allNote = NoteAction.observable()
+watchEffect(() => {
+  noteStore.setNoteList(get(allNote) || [])
 })
 </script>
 

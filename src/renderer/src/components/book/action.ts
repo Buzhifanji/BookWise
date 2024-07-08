@@ -69,17 +69,6 @@ export class BookAction {
     }
   }
 
-  static observableOne(id: string): any {
-    try {
-      return useObservable<Book[], Book[]>(
-        liveQuery(async () => (await db.books.toArray()).find((item) => item.id === id)) as any
-      )
-    } catch (error) {
-      toastError(t('book.getBookFail') + error)
-      return undefined
-    }
-  }
-
   static observable() {
     try {
       return useObservable<Book[], Book[]>(liveQuery(async () => await db.books.toArray()) as any)

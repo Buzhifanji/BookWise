@@ -4,11 +4,11 @@ import { BookAction, BookContentAction, DrawerView, DropdownView, ErrorView, Lis
 import { ReadMode } from '@renderer/enum';
 import { $, $$, arrayBufferToFile, getInterval, isElectron, now, toastSuccess } from '@renderer/shared';
 import { isReload } from '@renderer/shared/navigation';
-import { bookPositionStore, bookReadTimeStore, settingStore, useBookPageStore } from '@renderer/store';
+import { bookPositionStore, bookReadTimeStore, settingStore, useBookPageStore, useBookStore } from '@renderer/store';
 import { getSelectReadMode, readModeList, t, themes } from '@renderer/view/setting';
 import { get, set, useCssVar, useToggle, useWindowSize } from '@vueuse/core';
 import { AArrowDown, AArrowUp, AlignJustify, Bolt, SkipBack, ZoomIn, ZoomOut } from 'lucide-vue-next';
-import { Ref, computed, nextTick, onBeforeUnmount, onMounted, ref, watchEffect } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 import CatalogView from './Catalog.vue';
 import NoteView from './NoteContainer.vue';
@@ -32,13 +32,14 @@ const props = defineProps({
 
 const router = useRouter()
 
-const watchBook = BookAction.observableOne(props.id!) as Ref<Book>
+const bookStore = useBookStore()
 
 const bookInfo = ref<Book>()
 
 watchEffect(() => {
-  if (get(watchBook)) {
-    set(bookInfo, get(watchBook))
+  const data = bookStore.bookList.find(item => item.id === props.id)
+  if (data) {
+    set(bookInfo, data)
   }
 })
 

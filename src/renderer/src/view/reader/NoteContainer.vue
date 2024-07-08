@@ -3,6 +3,7 @@ import { Book, Note, Tag } from '@renderer/batabase';
 import { NoteAction, NoteText, TagAction, TagInputView, TagListView } from '@renderer/components';
 import { useBgOpacity } from '@renderer/hooks';
 import { $, toastError } from '@renderer/shared';
+import { useNoteStore } from '@renderer/store';
 import { t } from '@renderer/view/setting';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { get, onClickOutside, onKeyStroke, set, useElementSize, useThrottleFn, useToggle, useWindowSize } from '@vueuse/core';
@@ -14,6 +15,7 @@ import { HighlightType, highlightColor } from './highlight-color';
 import NoteListView from './toolbar/NoteList.vue';
 import SourceListView from './toolbar/SourceList.vue';
 import { NoteRichAction, NoteToolBarAction } from './toolbar/action';
+
 interface Props {
   book: Book,
   readTime: number
@@ -31,8 +33,8 @@ const activeTab = ref('book')
 const changeTab = (tab: string) => {
   activeTab.value = tab
 }
-
-const notes = NoteAction.observableByEBookId(props.book.id)
+const noteStore = useNoteStore()
+const notes = computed(() => noteStore.noteList.filter(item => item.eBookId === props.book.id))
 
 // 虚拟列表
 const containerRef = ref<HTMLElement | null>(null)
@@ -238,7 +240,7 @@ const throttleClick = useThrottleFn((val: Note) => {
         <!-- 笔记工具栏 -->
         <div class="fixed inset-0" v-if="selectNote">
           <div
-            class="card bg-base-100 absolute transition ease-in-out   right-[26rem] border border-primary z-50 select-none cursor-pointer max-w-md bar-shadow"
+            class="card bg-base-100 absolute transition ease-in-out   right-[24rem] border border-primary z-50 select-none cursor-pointer max-w-md bar-shadow"
             :style="{ top: `${barTop}px` }" ref="toolbarRef">
             <div class="card-body p-4">
               <div class="grid grid-cols-1 bg-base-200 rounded-lg p-2 divide-y divide-neutral"

@@ -116,21 +116,6 @@ export class NoteAction {
     }
   }
 
-  static observableByEBookId(eBookId: string) {
-    try {
-      return useObservable<Note[], Note[]>(
-        liveQuery(async () =>
-          (await db.notes.where('eBookId').equals(eBookId).toArray()).filter(
-            (item) => !item.isDelete
-          )
-        ) as any
-      )
-    } catch (error) {
-      toastError(t('note.getNoteListFail'))
-      return ref([] as Note[])
-    }
-  }
-
   static async findByEBookId(eBookId: string) {
     return await db.notes.where('eBookId').equals(eBookId).toArray()
   }

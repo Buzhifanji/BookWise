@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { NoteAction, NoteListView } from '@renderer/components';
+import { NoteListView } from '@renderer/components';
+import { useNoteStore } from '@renderer/store';
 
-const noteList = NoteAction.observable()
+const noteStore = useNoteStore()
 
 </script>
 
 <template>
-  <NoteListView :data="noteList || []" />
+  <NoteListView :data="noteStore.noteList" />
 </template>
