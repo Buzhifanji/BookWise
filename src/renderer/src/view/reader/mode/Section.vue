@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { NoteAction } from '@renderer/components';
+import { $ } from '@renderer/shared';
 import { useBookPageStore } from '@renderer/store';
-import { get, useIntersectionObserver } from '@vueuse/core';
+import { get } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
-import { onMounted, ref } from 'vue';
+import { onBeforeMount, onMounted, ref } from 'vue';
 import { highlighter } from '../highlight';
 
 interface Props {
@@ -40,22 +41,47 @@ async function drawHighlight() {
   highlighter?.fromSource(domSource)
 }
 
+const getThreshold = (step = 0.1) => {
+  const result: number[] = []
+  for (let i = 0; i < 1; i += step) {
+    result.push(+i.toFixed(1))
+  }
+  return result
+}
+
+let observe: IntersectionObserver
+
+function observeDom() {
+  const root = $('#reader-container')
+  const dom = get(contianer)
+  if (!dom) return
+  observe = new IntersectionObserver((entries) => {
+    entries.forEach(({ isIntersecting }) => {
+      if (isIntersecting) {
+        bookPageStore.setPage(props.index)
+      }
+    })
+
+  }, {
+    root,
+    threshold: getThreshold()
+  })
+}
+
+
 onMounted(() => {
   handleLink()
   drawHighlight()
+  observeDom()
+  observe?.observe(get(contianer)!)
 })
 
-
-useIntersectionObserver(contianer, ([{ isIntersecting }]) => {
-  if (isIntersecting) {
-    bookPageStore.setPage(props.index)
-    console.log(props.index, '进入')
-  } else {
-    // console.log(props.index, '离开')
-  }
+onBeforeMount(() => {
+  observe?.unobserve(get(contianer)!)
 })
+
 </script>
 
 <template>
-  <div ref="contianer" v-html="data"></div>
+  <div ref="contianer" v-html="data.html"></div>
 </template>

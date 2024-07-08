@@ -193,12 +193,12 @@ onKeyStroke(['ArrowDown'], littleNextView)
 
 <template>
   <!-- 书籍内容 -->
-  <div class=" bg-base-100 h-full cursor-pointer  overflow-auto  scrollbar-thin " ref="containerRef">
+  <div class=" bg-base-100 h-full cursor-pointer  overflow-auto  scrollbar-thin" ref="containerRef">
     <div class="relative w-full" :style="{ height: `${totalSize}px` }">
       <div class="absolute top-0 left-0 w-full " :style="{ transform: `translateY(${virtualRows[0]?.start ?? 0}px)` }">
         <div v-for="virtualRow in virtualRows" :key="virtualRow.key" :data-index="virtualRow.index"
           :data-page-number="virtualRow.index" :ref="measureElement" class="prose mx-auto my-0 mb-12 prose-width">
-          <SectionView :data="section[virtualRow.index].html" :index="virtualRow.index" @link-click="linkClick">
+          <SectionView :data="section[virtualRow.index]" :index="virtualRow.index" @link-click="linkClick">
           </SectionView>
         </div>
       </div>

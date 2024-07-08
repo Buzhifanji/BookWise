@@ -27,7 +27,7 @@ const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
 
 const index = ref<number>(0)
 const bookPageStore = useBookPageStore()
-const section = computed(() => props.section[index.value].html)
+const section = computed(() => props.section[index.value])
 
 const { y } = useScroll(containerRef)
 

@@ -41,8 +41,6 @@ useResizeObserver(containerRef, resize)
 
 const index = ref<number>(0)
 
-const section = ref<string>(props.section[0]?.html || '')
-
 // 进度
 const { x } = useScroll(containerRef)
 const calculateProgress = useDebounceFn((progress: number) => {
@@ -76,7 +74,6 @@ watchEffect(async () => {
 async function updateSection() {
   setLoading(true)
   currentIndex = 0
-  section.value = props.section[index.value].html || ''
   await wait(200)
   setLoading(false)
 }
@@ -263,7 +260,7 @@ function linkClick(href: string) {
         <template v-else>
           <div ref="containerRef" :data-page-number="index"
             class="columns-1 scroll-smooth transition ease-in-out lg:columns-2 gap-x-16 h-full overflow-auto scrollbar-none p-8 pb-12 double-container relative">
-            <SectionView :key="index" :index="index" :data="section" @link-click="linkClick">
+            <SectionView :key="index" :index="index" :data="section[index]" @link-click="linkClick">
             </SectionView>
             <div ref="remendyRef" :style="style"></div>
           </div>
