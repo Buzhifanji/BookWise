@@ -699,6 +699,49 @@ class Loader {
     if (!item) return href
     return this.loadItem(item, parents.concat(base))
   }
+
+  async repalceDocSource(doc, item, parents = []) {
+    const { href, mediaType } = item
+    if ([MIME.XHTML, MIME.HTML, MIME.SVG].includes(mediaType)) {
+      // change to HTML if it's not valid XHTML
+      if (mediaType === MIME.XHTML && doc.querySelector('parsererror')) {
+        console.warn(doc.querySelector('parsererror').innerText)
+        item.mediaType = MIME.HTML
+        doc = new DOMParser().parseFromString(str, item.mediaType)
+      }
+      // replace hrefs in XML processing instructions
+      // this is mainly for SVGs that use xml-stylesheet
+      if ([MIME.XHTML, MIME.SVG].includes(item.mediaType)) {
+        let child = doc.firstChild
+        while (child instanceof ProcessingInstruction) {
+          if (child.data) {
+            const replacedData = await replaceSeries(
+              child.data,
+              /(?:^|\s*)(href\s*=\s*['"])([^'"]*)(['"])/i,
+              (_, p1, p2, p3) => this.loadHref(p2, href, parents).then((p2) => `${p1}${p2}${p3}`)
+            )
+            child.replaceWith(doc.createProcessingInstruction(child.target, replacedData))
+          }
+          child = child.nextSibling
+        }
+      }
+      // replace hrefs (excluding anchors)
+      // TODO: srcset?
+      const replace = async (el, attr) =>
+        el.setAttribute(attr, await this.loadHref(el.getAttribute(attr), href, parents))
+      for (const el of doc.querySelectorAll('link[href]')) await replace(el, 'href')
+      for (const el of doc.querySelectorAll('[src]')) await replace(el, 'src')
+      for (const el of doc.querySelectorAll('[poster]')) await replace(el, 'poster')
+      for (const el of doc.querySelectorAll('object[data]')) await replace(el, 'data')
+      for (const el of doc.querySelectorAll('[*|href]:not([href]'))
+        el.setAttributeNS(
+          NS.XLINK,
+          'href',
+          await this.loadHref(el.getAttributeNS(NS.XLINK, 'href'), href, parents)
+        )
+    }
+  }
+
   async loadReplaced(item, parents = []) {
     const { href, mediaType } = item
     const parent = parents.at(-1)
@@ -990,49 +1033,10 @@ ${doc.querySelector('parsererror').innerText}`)
   }
   async loadDocument(item, parents = []) {
     const str = await this.loadText(item.href)
-    const { href, mediaType } = item
+
     const doc = this.parser.parseFromString(str, item.mediaType)
 
-    // parse and replace in HTML
-    if ([MIME.XHTML, MIME.HTML, MIME.SVG].includes(mediaType)) {
-      // change to HTML if it's not valid XHTML
-      if (mediaType === MIME.XHTML && doc.querySelector('parsererror')) {
-        console.warn(doc.querySelector('parsererror').innerText)
-        item.mediaType = MIME.HTML
-        doc = new DOMParser().parseFromString(str, item.mediaType)
-      }
-      // replace hrefs in XML processing instructions
-      // this is mainly for SVGs that use xml-stylesheet
-      if ([MIME.XHTML, MIME.SVG].includes(item.mediaType)) {
-        let child = doc.firstChild
-        while (child instanceof ProcessingInstruction) {
-          if (child.data) {
-            const replacedData = await replaceSeries(
-              child.data,
-              /(?:^|\s*)(href\s*=\s*['"])([^'"]*)(['"])/i,
-              (_, p1, p2, p3) => this.loadHref(p2, href, parents).then((p2) => `${p1}${p2}${p3}`)
-            )
-            child.replaceWith(doc.createProcessingInstruction(child.target, replacedData))
-          }
-          child = child.nextSibling
-        }
-      }
-      // replace hrefs (excluding anchors)
-      // TODO: srcset?
-      const replace = async (el, attr) =>
-        el.setAttribute(attr, await this.loadHref(el.getAttribute(attr), href, parents))
-      for (const el of doc.querySelectorAll('link[href]')) await replace(el, 'href')
-      for (const el of doc.querySelectorAll('[src]')) await replace(el, 'src')
-      for (const el of doc.querySelectorAll('[poster]')) await replace(el, 'poster')
-      for (const el of doc.querySelectorAll('object[data]')) await replace(el, 'data')
-      for (const el of doc.querySelectorAll('[*|href]:not([href]'))
-        el.setAttributeNS(
-          NS.XLINK,
-          'href',
-          await this.loadHref(el.getAttributeNS(NS.XLINK, 'href'), href, parents)
-        )
-    }
-
+    await this.#loader.repalceDocSource(doc, item)
     return doc
   }
   getMediaOverlay() {

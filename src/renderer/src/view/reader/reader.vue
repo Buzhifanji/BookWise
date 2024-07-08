@@ -32,7 +32,15 @@ const props = defineProps({
 
 const router = useRouter()
 
-const book = BookAction.observableOne(props.id!) as Ref<Book>// 书籍信息
+const watchBook = BookAction.observableOne(props.id!) as Ref<Book>
+
+const bookInfo = ref<Book>()
+
+watchEffect(() => {
+  if (get(watchBook)) {
+    set(bookInfo, get(watchBook))
+  }
+})
 
 const bookContent = ref<BookContent>() // 书籍内容
 
@@ -80,7 +88,6 @@ async function loadData() {
     // 获取书本信息
     const info = await BookAction.fineOne(bookId)
     if (!info) return
-
     // 获取书本内容
     const content = await getBookContent(bookId, info.path)
     if (!content) return
@@ -89,9 +96,10 @@ async function loadData() {
     // 获取书本渲染器
     const { sections, toc } = await render(file)
 
-    section.value = sections
-    tocList.value = toc
-    bookContent.value = content
+    set(bookContent, content)
+    set(section, sections)
+    set(tocList, toc)
+    set(bookInfo, info)
     setLoading(false)
 
     await nextTick()
@@ -101,6 +109,7 @@ async function loadData() {
       const outline = await PDF.getOutline()
       set(tocList, outline)
     }
+
 
     initHighlight(info);
     // 笔记跳转
@@ -150,7 +159,6 @@ async function catalogJump({ page }: any) {
 }
 
 async function noteJump(note: Note) {
-  console.log('note', note)
   const source = NoteAction.getDomSource(note.domSource)
   if (source.length === 0) return
 
@@ -249,7 +257,7 @@ function sizeIn() {
 // 阅读位置
 const bookPageStore = useBookPageStore()
 async function recordPosition() {
-  const info = get(book)
+  const info = get(bookInfo)
   if (!info) return
 
   let postion: Position | null = null
@@ -290,7 +298,7 @@ function restorePostion() {
     // 页面刷新，直接从localStorage取
     postion = sessionStorage.getItem('book-wise_refrersh')
   } else {
-    postion = get(book)?.lastReadPosition
+    postion = get(bookInfo)?.lastReadPosition
   }
   sessionStorage.removeItem('book-wise_refrersh')
 
@@ -309,7 +317,7 @@ function restorePostion() {
 
 // 进度
 const updateProgress = (val: number) => {
-  BookAction.update(get(book)!.id, { progress: val })
+  BookAction.update(get(bookInfo)!.id, { progress: val })
 }
 
 // 记录阅读时长
@@ -331,7 +339,7 @@ function resetReadTime() {
 }
 
 function recordReadTime() {
-  const info = get(book)
+  const info = get(bookInfo)
   if (!info) return
   const spaceTime = +get(readTime)
   if (spaceTime >= 1) {
@@ -388,7 +396,7 @@ onBeforeUnmount(() => {
 <template>
   <RingLoadingView class="min-h-screen" v-if="isLoading" />
   <template v-else>
-    <template v-if="book && bookContent">
+    <template v-if="bookInfo && bookContent">
       <!-- 目录 -->
       <div class="block lg:hidden">
         <DrawerView id="catalog-drawer">
@@ -399,9 +407,9 @@ onBeforeUnmount(() => {
         <CatalogView :class="{ 'hide': isCatalog }" :data="tocList" @click="catalogJump" />
       </div>
       <div class="w-full max-w-full h-screen ">
-        <progress v-if="book.progress"
+        <progress v-if="bookInfo.progress"
           class="progress progress-primary w-full fixed top-0 left-0 right-0 z-[9999999] h-[2px]"
-          :value="book.progress * 100" max="100"></progress>
+          :value="bookInfo.progress * 100" max="100"></progress>
 
         <div class="flex h-full flex-col ">
           <!-- 头部 -->
@@ -509,21 +517,21 @@ onBeforeUnmount(() => {
             </template>
 
             <!-- 工具栏 -->
-            <ToolbarView :book="book" v-if="isShowToolBar" />
+            <ToolbarView :book="bookInfo" v-if="isShowToolBar" />
 
             <!-- 添加笔记 -->
-            <NoteRichView :book="book" v-if="isNoteRichShow" />
+            <NoteRichView :book="bookInfo" v-if="isNoteRichShow" />
           </div>
         </div>
       </div>
       <!-- 笔记 -->
       <div class="block lg:hidden">
         <DrawerView id="note-drawer" :is-right="true">
-          <NoteView :book="book" @jump="noteJump" :read-time="readTime" />
+          <NoteView :book="bookInfo" @jump="noteJump" :read-time="readTime" />
         </DrawerView>
       </div>
       <div class="hidden lg:block">
-        <NoteView :book="book" :read-time="readTime" @jump="noteJump" :class="{ 'hide': isNote }" />
+        <NoteView :book="bookInfo" :read-time="readTime" @jump="noteJump" :class="{ 'hide': isNote }" />
       </div>
     </template>
     <ErrorView v-else />

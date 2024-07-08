@@ -173,18 +173,20 @@ export class Reader {
 
   getSections = async () => {
     if (this.book.type !== 'pdf') {
-      const result = []
-      for (const section of this.book.sections) {
-        const id = section.id
-        const doc = await section.createDocument()
-        const body = doc.querySelector('body')
-        const height = estimatedHeight(body.cloneNode(true))
-        this.#handleLinks(body, section)
-        const html = body.innerHTML
-          .replace(/xmlns=".*?"/g, '')
-          .replace(/<([a-zA-Z0-9]+)(\s[^>]*)?>\s*<\/\1>/g, '') // 过滤掉空节点
-        result.push({ height, html, id })
-      }
+      const result = await Promise.all(
+        this.book.sections.map(async (section) => {
+          const id = section.id
+          const doc = await section.createDocument()
+          const body = doc.querySelector('body')
+          const height = estimatedHeight(body.cloneNode(true))
+          this.#handleLinks(body, section)
+          const html = body.innerHTML
+            .replace(/xmlns=".*?"/g, '')
+            .replace(/<([a-zA-Z0-9]+)(\s[^>]*)?>\s*<\/\1>/g, '') // 过滤掉空节点
+
+          return { height, html, id }
+        })
+      )
       return result
     } else {
       return this.book.sections
