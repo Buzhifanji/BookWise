@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { bookSortStore, BookSortType, changeBookSortStore, useBookFilterStore } from '@renderer/store';
-import { t } from '@renderer/view/setting';
+import { bookSortStore, BookSortType, changeBookSortStore, settingStore, useBookFilterStore } from '@renderer/store';
+import { bookshelfModeList, t } from '@renderer/view/setting';
 import { get, set } from '@vueuse/core';
 import { ArrowDownNarrowWide, Check, Filter } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import { BookshelfAction } from '../../bookshelf/action';
 import DropdownView from '../../dropdown/Dropdown.vue';
+import Select from '../../select/Select.vue';
 import SelectSearchView from '../../select/SelectSearch.vue';
 
 const store = useBookFilterStore()
@@ -74,5 +75,6 @@ const clearBookshelf = () => {
         <span>{{ t('book.bookshelf') }}</span>
       </SelectSearchView>
     </div>
+    <Select v-model="settingStore.bookself" :list="bookshelfModeList" className="select-sm !w-52" />
   </div>
 </template>
