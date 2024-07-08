@@ -4,7 +4,7 @@ import { FileUploadView, ImgView } from '@renderer/components';
 import { BookshelftMode } from '@renderer/enum';
 import { useBgOpacity, useRightClick } from '@renderer/hooks';
 import { chuankArray, remToPx, sort, toastSuccess } from '@renderer/shared';
-import { bookSortStore, settingStore, useContentCantianerStore } from '@renderer/store';
+import { bookSortStore, settingStore, useBookFilterStore, useContentCantianerStore } from '@renderer/store';
 import { t } from '@renderer/view/setting';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
@@ -31,7 +31,7 @@ const emit = defineEmits<{
   (e: 'click', payload: Book): void;
 }>();
 
-
+const filterStore = useBookFilterStore()
 const bookshelfWidht = 120
 const bookshelfHeight = 137
 const bookCardWidth = 282
@@ -80,6 +80,12 @@ watchEffect(async () => {
   const count = parseInt(((store.width) / (width + remToPx(2.5))).toString())
 
   let originalData = [...toRaw(props.data)]
+
+  const bookshelfId = filterStore.bookshelf
+  // 过滤
+  if (!props.isRecycleBin && bookshelfId) {
+    originalData = originalData.filter(item => item.groupId && item.groupId === bookshelfId)
+  }
 
   // 排序
   const isUp = get(bookSortStore).isUp

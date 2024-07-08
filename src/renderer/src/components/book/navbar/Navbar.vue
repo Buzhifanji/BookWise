@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { bookSortStore, BookSortType, changeBookSortStore, useBookFilterStore } from '@renderer/store';
-import { get } from '@vueuse/core';
-import { ArrowDownNarrowWide, Check } from 'lucide-vue-next';
+import { get, set } from '@vueuse/core';
+import { ArrowDownNarrowWide, Check, Filter } from 'lucide-vue-next';
+import { computed, ref } from 'vue';
+import { BookshelfAction } from '../../bookshelf/action';
 import DropdownView from '../../dropdown/Dropdown.vue';
+import SelectSearchView from '../../select/SelectSearch.vue';
 
 const store = useBookFilterStore()
 const isSortBy = (val: string) => get(bookSortStore).sortBy === val
-
 
 const list: { label: string, value: BookSortType }[] = [
   { label: '最近阅读', value: 'updateTime' },
@@ -18,6 +20,15 @@ const list: { label: string, value: BookSortType }[] = [
   { label: '评分', value: 'score' },
 ]
 
+// 按照书架过滤
+const bookshelf = BookshelfAction.observable()
+const allBookshelf = computed(() => (get(bookshelf) || []).map(item => ({ id: item.id, value: item.name })))
+const selectedBookshelft = ref({ id: '', value: '' })
+const updateBookshelf = () => store.setBookshelf(get(selectedBookshelft).id)
+const clearBookshelf = () => {
+  store.setBookshelf('')
+  set(selectedBookshelft, { id: '', value: '' })
+}
 </script>
 
 <template>
@@ -50,19 +61,14 @@ const list: { label: string, value: BookSortType }[] = [
         </li>
       </ul>
     </DropdownView>
-    <!-- <div class="join">
+    <div class="join">
       <button class="btn btn-sm join-item rounded-r-full">
         <Filter />
       </button>
-      <SelectSearchView className="input-sm join-item" v-model="selectedBook" @update:model-value="updateBook"
-        :data="noteAllBook" @clear="clearBookFilter()">
-        <span>书名</span>
+      <SelectSearchView className="input-sm join-item" v-model="selectedBookshelft"
+        @update:model-value="updateBookshelf" :data="allBookshelf" @clear="clearBookshelf()">
+        <span>书架</span>
       </SelectSearchView>
-      <SelectSearchView className="input-sm join-item" v-model="selectTags" @update:model-value="updateTag"
-        :data="noteAlltag" @clear="clearTagFilter()">
-        <span>标签</span>
-        <TagListview :tag="selectTags" @remove="removeTag" />
-      </SelectSearchView>
-    </div> -->
+    </div>
   </div>
 </template>
