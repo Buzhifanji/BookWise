@@ -5,7 +5,8 @@ import loadingBookCover from '../../assets/bookmark.png';
 
 import { t } from '@renderer/view/setting';
 import { get } from '@vueuse/core';
-const props = defineProps<{
+
+defineProps<{
   data: Uint8Array
 }>()
 
@@ -13,11 +14,6 @@ const contianerRef = ref<HTMLImageElement | null>(null)
 
 onMounted(async () => {
   const imgDom = get(contianerRef)
-  const data = props.data
-  // if(data) {
-  //  const src = convertUint8ArrayToURL(data)
-  //  get(contianerRef)?.sr
-  // }
   if (imgDom) {
     await wait(100)
     imgDom.onload = () => {
