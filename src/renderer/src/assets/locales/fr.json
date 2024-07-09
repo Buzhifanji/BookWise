@@ -70,7 +70,9 @@
     "getFirstView": "Déjà la première page",
     "getLastView": "Déjà la dernière page",
     "nextView": "Page suivante",
-    "comeFrom": "depuis"
+    "comeFrom": "depuis",
+    "action": "fonctionner",
+    "rename": "Renommer"
   },
   "readMode": {
     "double": "Mode double page",
@@ -128,7 +130,14 @@
     "needAuthor": "Veuillez entrer le nom de l'auteur",
     "uploadCoverFail": "Échec du téléchargement de la couverture",
     "jumpToBookList": "Aller à la liste des livres",
-    "jumpToLastPosition": "Passer à la dernière position de lecture"
+    "jumpToLastPosition": "Passer à la dernière position de lecture",
+    "bookNumber": "Nombre de livres",
+    "bookshelfManage": "Gérer la bibliothèque",
+    "bookshelfTitle": "nom de la bibliothèque",
+    "clearEmptyBookshelf": "Effacez une bibliothèque vide en un seul clic",
+    "removeBookshelfSuccess": "Bibliothèque supprimée avec succès",
+    "removeBookshelftSuccess": "Bibliothèque supprimée avec succès",
+    "renameFail": "Échec du renommage de la bibliothèque"
   },
   "note": {
     "addNoteFail": "Échec de l'ajout d'une note",
@@ -144,12 +153,19 @@
     "write": "écrire des idées",
     "myNote": "mes notes",
     "findNoteError": "Perte de données : note introuvable localement",
-    "writeYouNore": "Veuillez saisir le contenu de la note"
+    "writeYouNore": "Veuillez saisir le contenu de la note",
+    "mode": "mode note",
+    "noteNumber": "Nombre de notes"
   },
   "tag": {
     "needTag": "Veuillez saisir le tag",
     "removeTagSuccess": "Balise supprimée avec succès",
-    "name": "Étiquette"
+    "name": "Étiquette",
+    "clearEmptyTag": "Effacez les balises vides en un seul clic",
+    "getTagListFail": "Échec de l'obtention de la liste des bibliothèques",
+    "manage": "gestion des balises",
+    "renameFail": "Échec du changement de nom de la bibliothèque :",
+    "tagTitle": "nom de la balise"
   },
   "statistics": {
     "bookUnit": "Livre",

@@ -70,7 +70,9 @@
     "nextView": "下一页",
     "getLastView": "已经是最后一页了",
     "getFirstView": "已经是第一页了",
-    "comeFrom": "来自"
+    "comeFrom": "来自",
+    "action": "操作",
+    "rename": "重命名"
   },
   "readMode": {
     "scroll": "滚动模式",
@@ -126,7 +128,14 @@
     "getBookReadTimeFail": "读取图书阅读时长列表失败",
     "getBookReadTimeListFail": "读取图书阅读时长列表失败",
     "jumpToBookList": "跳转到图书列表",
-    "jumpToLastPosition": "跳转到上次阅读位置"
+    "jumpToLastPosition": "跳转到上次阅读位置",
+    "removeBookshelfSuccess": "移除书架成功",
+    "bookshelfManage": "管理书架",
+    "bookshelfTitle": "书架名",
+    "bookNumber": "书籍数量",
+    "clearEmptyBookshelf": "一键清空空书架",
+    "renameFail": "重命名书架失败",
+    "removeBookshelftSuccess": "移除书架成功"
   },
   "note": {
     "addNoteFail": "添加笔记失败",
@@ -143,12 +152,18 @@
     "myNote": "我的笔记",
     "findNoteError": "数据丢失：本地未找到笔记",
     "writeYouNore": "请输入笔记内容",
-    "mode": "笔记模式"
+    "mode": "笔记模式",
+    "noteNumber": "笔记数量"
   },
   "tag": {
     "name": "标签",
     "needTag": "请输入标签",
-    "removeTagSuccess": "删除标签成功"
+    "removeTagSuccess": "删除标签成功",
+    "manage": "标签管理",
+    "getTagListFail": "获取书架列表失败",
+    "renameFail": "重命名书架失败：",
+    "tagTitle": "标签名",
+    "clearEmptyTag": "一键清空空标签"
   },
   "statistics": {
     "reading": "在读",

@@ -70,7 +70,9 @@
     "getFirstView": "Allerede første side",
     "getLastView": "Allerede siste side",
     "nextView": "Neste side",
-    "comeFrom": "fra"
+    "comeFrom": "fra",
+    "action": "operere",
+    "rename": "Gi nytt navn"
   },
   "readMode": {
     "double": "Dobbeltsidemodus",
@@ -128,7 +130,14 @@
     "needAuthor": "Vennligst skriv inn forfatternavn",
     "uploadCoverFail": "Kunne ikke laste opp omslaget",
     "jumpToBookList": "Gå til boklisten",
-    "jumpToLastPosition": "Hopp til siste leseposisjon"
+    "jumpToLastPosition": "Hopp til siste leseposisjon",
+    "bookNumber": "Antall bøker",
+    "bookshelfManage": "Administrer bokhylle",
+    "bookshelfTitle": "bokhyllenavn",
+    "clearEmptyBookshelf": "Rydd tom bokhylle med ett klikk",
+    "removeBookshelfSuccess": "Bokhyllen ble fjernet",
+    "removeBookshelftSuccess": "Bokhyllen ble fjernet",
+    "renameFail": "Kunne ikke gi nytt navn til bokhyllen"
   },
   "note": {
     "addNoteFail": "Kunne ikke legge til notatet",
@@ -144,12 +153,19 @@
     "write": "skrive ideer",
     "myNote": "mine notater",
     "findNoteError": "Datatap: Merket ble ikke funnet lokalt",
-    "writeYouNore": "Vennligst skriv inn notatinnholdet"
+    "writeYouNore": "Vennligst skriv inn notatinnholdet",
+    "mode": "notatmodus",
+    "noteNumber": "Antall notater"
   },
   "tag": {
     "needTag": "Vennligst skriv inn tag",
     "removeTagSuccess": "Taggen er slettet",
-    "name": "Merkelapp"
+    "name": "Merkelapp",
+    "clearEmptyTag": "Fjern tomme tagger med ett klikk",
+    "getTagListFail": "Kunne ikke hente bokhyllelisten",
+    "manage": "tag administrasjon",
+    "renameFail": "Kunne ikke gi nytt navn til bokhyllen:",
+    "tagTitle": "merkenavn"
   },
   "statistics": {
     "bookUnit": "Bok",

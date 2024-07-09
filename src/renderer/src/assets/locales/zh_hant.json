@@ -15,7 +15,7 @@
     "bookMode": "書架模式",
     "readMode": "閱讀模式",
     "openNewTitle": "閱讀器是否打開新頁面",
-    "openNewDesc": "如果是，將只會在當前頁面。",
+    "openNewDesc": "如果是否，將閱讀器只會在當前頁面。",
     "openRecycleBinTitle": "開啟回收站功能",
     "openRecycleBinDesc": "關閉回收站，刪除書籍的時候，將會被永久刪除，而不是移到回收站",
     "noteShowClassTitle": "筆記是否顯示高亮樣式",
@@ -50,7 +50,7 @@
     "remove": "刪除",
     "edit": "編輯",
     "score": "評分",
-    "detail": "詳情",
+    "detail": "詳細",
     "unknown": "未知",
     "close": "關閉",
     "copySuccess": "複製成功",
@@ -70,7 +70,9 @@
     "nextView": "下一页",
     "getLastView": "已經是最後一頁了",
     "getFirstView": "已經是第一頁了",
-    "comeFrom": "來自"
+    "comeFrom": "來自",
+    "action": "操作",
+    "rename": "重命名"
   },
   "readMode": {
     "scroll": "滾動模式",
@@ -83,7 +85,7 @@
     "list": "列表模式"
   },
   "book": {
-    "detail": "書籍詳情",
+    "detail": "書籍詳細",
     "name": "書名",
     "author": "作者",
     "size": "大小",
@@ -99,7 +101,7 @@
     "highlightLen": "高亮數量",
     "notesLen": "筆記數量",
     "bookshelf": "書架",
-    "readDetailFail": "讀取書籍詳情失敗",
+    "readDetailFail": "讀取書籍詳細失敗",
     "thisReadTime": "本次閱讀時長",
     "addToBookshelf": "添加到書架",
     "needBookshelfName": "請輸入書架名",
@@ -123,10 +125,17 @@
     "getBookFail": "獲取圖書失敗",
     "getBookListFail": "讀取圖書列表失敗",
     "recordBookTimeFail": "記錄閱讀時長失敗",
-    "getBookReadTimeFail": "讀取圖書閱讀時長列表失敗",
-    "getBookReadTimeListFail": "讀取圖書閱讀時長列表失敗",
+    "getBookReadTimeFail": "獲取閱讀時長列表失敗",
+    "getBookReadTimeListFail": "獲取閱讀時長列表失敗",
     "jumpToBookList": "跳轉到圖書列表",
-    "jumpToLastPosition": "跳轉到上次閱讀位置"
+    "jumpToLastPosition": "跳轉到上次閱讀位置",
+    "removeBookshelfSuccess": "移除書架成功",
+    "bookshelfManage": "管理書架",
+    "bookshelfTitle": "書架名",
+    "bookNumber": "書籍數量",
+    "clearEmptyBookshelf": "一鍵清空書架",
+    "renameFail": "重命名書架失敗",
+    "removeBookshelftSuccess": "移除書架成功"
   },
   "note": {
     "addNoteFail": "添加筆記失敗",
@@ -135,19 +144,26 @@
     "removeSuccess": "刪除筆記成功",
     "sureRemove": "確認刪除筆記",
     "forceRemove": "將該筆記永久刪除",
-    "noteDetail": "筆記詳情",
+    "noteDetail": "筆記詳細",
     "empty": "筆記列表為空",
-    "emptyNoteListTip": "在您的书籍列表界面，選擇一本閱讀，然後選中吸引您注意力的文字，在弹出的對話框中輸入您的思考",
+    "emptyNoteListTip": "在您的書籍列表界面，選擇一本閱讀，然後選中吸引您注意力的文字，在彈出的對話框中輸入您的思考",
     "placeholder": "寫下此時的想法...",
     "write": "寫想法",
     "myNote": "我的筆記",
     "findNoteError": "數據丟失：本地未找到筆記",
-    "writeYouNore": "請輸入筆記內容"
+    "writeYouNore": "請輸入筆記內容",
+    "mode": "筆記模式",
+    "noteNumber": "筆記數量"
   },
   "tag": {
     "name": "標簽",
     "needTag": "請輸入標簽",
-    "removeTagSuccess": "刪除標簽成功"
+    "removeTagSuccess": "刪除標簽成功",
+    "manage": "標簽管理",
+    "getTagListFail": "獲取標簽列表失敗",
+    "renameFail": "重命名書架失敗：",
+    "tagTitle": "標簽名",
+    "clearEmptyTag": "一鍵清空標簽"
   },
   "statistics": {
     "reading": "在讀",

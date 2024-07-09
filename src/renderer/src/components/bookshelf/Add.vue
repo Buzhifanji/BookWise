@@ -63,7 +63,7 @@ const submit = async () => {
 
     if (val.length === 0) {
       await BookAction.update(props.book.id, { groupId: '', groupName: '' })
-      toastSuccess('移除书架成功')
+      toastSuccess(t('book.removeBookshelfSuccess'))
     } else {
       await BookAction.update(props.book.id, { groupId: val[0].id, groupName: val[0].value })
       toastSuccess(t('book.addToBookshelfSuccess'))

@@ -70,7 +70,9 @@
     "getFirstView": "Já é a primeira página",
     "getLastView": "Já é a última página",
     "nextView": "Próxima página",
-    "comeFrom": "de"
+    "comeFrom": "de",
+    "action": "operar",
+    "rename": "Renomear"
   },
   "readMode": {
     "double": "Modo página dupla",
@@ -128,7 +130,14 @@
     "needAuthor": "Por favor insira o nome do autor",
     "uploadCoverFail": "Falha ao carregar a capa",
     "jumpToBookList": "Ir para a lista de livros",
-    "jumpToLastPosition": "Ir para a última posição de leitura"
+    "jumpToLastPosition": "Ir para a última posição de leitura",
+    "bookNumber": "Número de livros",
+    "bookshelfManage": "Gerenciar estante",
+    "bookshelfTitle": "nome da estante",
+    "clearEmptyBookshelf": "Limpe a estante vazia com um clique",
+    "removeBookshelfSuccess": "Estante removida com sucesso",
+    "removeBookshelftSuccess": "Estante removida com sucesso",
+    "renameFail": "Falha ao renomear estante"
   },
   "note": {
     "addNoteFail": "Falha ao adicionar nota",
@@ -144,12 +153,19 @@
     "write": "escreva ideias",
     "myNote": "minhas anotações",
     "findNoteError": "Perda de dados: nota não encontrada localmente",
-    "writeYouNore": "Por favor insira o conteúdo da nota"
+    "writeYouNore": "Por favor insira o conteúdo da nota",
+    "mode": "modo de nota",
+    "noteNumber": "Número de notas"
   },
   "tag": {
     "needTag": "Por favor insira a etiqueta",
     "removeTagSuccess": "Tag excluída com sucesso",
-    "name": "Rótulo"
+    "name": "Rótulo",
+    "clearEmptyTag": "Limpe tags vazias com um clique",
+    "getTagListFail": "Falha ao obter a lista da estante",
+    "manage": "gerenciamento de tags",
+    "renameFail": "Falha ao renomear estante:",
+    "tagTitle": "nome da etiqueta"
   },
   "statistics": {
     "bookUnit": "Livro",

@@ -70,7 +70,9 @@
     "getFirstView": "Già la prima pagina",
     "getLastView": "Già l'ultima pagina",
     "nextView": "Pagina successiva",
-    "comeFrom": "da"
+    "comeFrom": "da",
+    "action": "operare",
+    "rename": "Rinominare"
   },
   "readMode": {
     "double": "Modalità doppia pagina",
@@ -128,7 +130,14 @@
     "needAuthor": "Inserisci il nome dell'autore",
     "uploadCoverFail": "Impossibile caricare la copertina",
     "jumpToBookList": "Vai all'elenco dei libri",
-    "jumpToLastPosition": "Passa all'ultima posizione di lettura"
+    "jumpToLastPosition": "Passa all'ultima posizione di lettura",
+    "bookNumber": "Numero di libri",
+    "bookshelfManage": "Gestisci la libreria",
+    "bookshelfTitle": "nome della libreria",
+    "clearEmptyBookshelf": "Cancella lo scaffale vuoto con un clic",
+    "removeBookshelfSuccess": "Libreria rimossa con successo",
+    "removeBookshelftSuccess": "Libreria rimossa con successo",
+    "renameFail": "Impossibile rinominare lo scaffale"
   },
   "note": {
     "addNoteFail": "Impossibile aggiungere la nota",
@@ -144,12 +153,19 @@
     "write": "scrivere idee",
     "myNote": "I miei appunti",
     "findNoteError": "Perdita di dati: nota non trovata localmente",
-    "writeYouNore": "Inserisci il contenuto della nota"
+    "writeYouNore": "Inserisci il contenuto della nota",
+    "mode": "modalità nota",
+    "noteNumber": "Numero di note"
   },
   "tag": {
     "needTag": "Inserisci l'etichetta",
     "removeTagSuccess": "Tag eliminato con successo",
-    "name": "Etichetta"
+    "name": "Etichetta",
+    "clearEmptyTag": "Cancella i tag vuoti con un clic",
+    "getTagListFail": "Impossibile ottenere l'elenco degli scaffali",
+    "manage": "gestione delle etichette",
+    "renameFail": "Impossibile rinominare lo scaffale:",
+    "tagTitle": "nome dell'etichetta"
   },
   "statistics": {
     "bookUnit": "Libro",

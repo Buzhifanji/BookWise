@@ -29,7 +29,7 @@ import List from '../../list/List.vue';
       <li @click="editBookshelfDialog()">
         <a class="!p-0 my-1">
           <div class="flex flex-row py-2 px-4 justify-between w-72">
-            <span class="stat-title">管理书架</span>
+            <span class="stat-title">{{ t('book.bookshelfManage') }}</span>
             <SquareArrowUpLeft />
           </div>
         </a>

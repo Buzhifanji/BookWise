@@ -70,7 +70,9 @@
     "getFirstView": "すでに最初のページ",
     "getLastView": "もう最後のページ",
     "nextView": "次のページ",
-    "comeFrom": "から"
+    "comeFrom": "から",
+    "action": "操作する",
+    "rename": "名前の変更"
   },
   "readMode": {
     "double": "見開きモード",
@@ -128,7 +130,14 @@
     "needAuthor": "著者名を入力してください",
     "uploadCoverFail": "表紙のアップロードに失敗しました",
     "jumpToBookList": "書籍リストへジャンプ",
-    "jumpToLastPosition": "最後の読み取り位置にジャンプ"
+    "jumpToLastPosition": "最後の読み取り位置にジャンプ",
+    "bookNumber": "冊数",
+    "bookshelfManage": "本棚の管理",
+    "bookshelfTitle": "本棚名",
+    "clearEmptyBookshelf": "ワンクリックで空の本棚をクリア",
+    "removeBookshelfSuccess": "本棚は正常に削除されました",
+    "removeBookshelftSuccess": "本棚は正常に削除されました",
+    "renameFail": "本棚の名前変更に失敗しました"
   },
   "note": {
     "addNoteFail": "メモの追加に失敗しました",
@@ -144,12 +153,19 @@
     "write": "アイデアを書く",
     "myNote": "私のノート",
     "findNoteError": "データ損失: メモがローカルに見つかりません",
-    "writeYouNore": "メモの内容を入力してください"
+    "writeYouNore": "メモの内容を入力してください",
+    "mode": "ノートモード",
+    "noteNumber": "ノートの数"
   },
   "tag": {
     "needTag": "タグを入力してください",
     "removeTagSuccess": "タグが正常に削除されました",
-    "name": "ラベル"
+    "name": "ラベル",
+    "clearEmptyTag": "ワンクリックで空のタグをクリア",
+    "getTagListFail": "本棚リストの取得に失敗しました",
+    "manage": "タグ管理",
+    "renameFail": "本棚の名前を変更できませんでした:",
+    "tagTitle": "タグ名"
   },
   "statistics": {
     "bookUnit": "本",

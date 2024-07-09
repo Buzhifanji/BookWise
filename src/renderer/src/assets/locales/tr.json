@@ -70,7 +70,9 @@
     "getFirstView": "Zaten ilk sayfa",
     "getLastView": "Zaten son sayfa",
     "nextView": "Sonraki Sayfa",
-    "comeFrom": "itibaren"
+    "comeFrom": "itibaren",
+    "action": "işletmek",
+    "rename": "Yeniden isimlendirmek"
   },
   "readMode": {
     "double": "Çift sayfa modu",
@@ -128,7 +130,14 @@
     "needAuthor": "Lütfen yazar adını girin",
     "uploadCoverFail": "Kapak yüklenemedi",
     "jumpToBookList": "Kitap listesine atla",
-    "jumpToLastPosition": "Son okuma konumuna atla"
+    "jumpToLastPosition": "Son okuma konumuna atla",
+    "bookNumber": "Kitap sayısı",
+    "bookshelfManage": "Kitap rafını yönet",
+    "bookshelfTitle": "kitaplık adı",
+    "clearEmptyBookshelf": "Boş kitaplığı tek tıklamayla temizleyin",
+    "removeBookshelfSuccess": "Kitaplık başarıyla kaldırıldı",
+    "removeBookshelftSuccess": "Kitaplık başarıyla kaldırıldı",
+    "renameFail": "Kitap rafı yeniden adlandırılamadı"
   },
   "note": {
     "addNoteFail": "Not eklenemedi",
@@ -144,12 +153,19 @@
     "write": "fikir yaz",
     "myNote": "notlarım",
     "findNoteError": "Veri kaybı: Not yerel olarak bulunamadı",
-    "writeYouNore": "Lütfen not içeriğini girin"
+    "writeYouNore": "Lütfen not içeriğini girin",
+    "mode": "not modu",
+    "noteNumber": "Not sayısı"
   },
   "tag": {
     "needTag": "Lütfen etiketi girin",
     "removeTagSuccess": "Etiket başarıyla silindi",
-    "name": "Etiket"
+    "name": "Etiket",
+    "clearEmptyTag": "Boş etiketleri tek tıklamayla temizleyin",
+    "getTagListFail": "Kitaplık listesi alınamadı",
+    "manage": "etiket yönetimi",
+    "renameFail": "Kitap rafı yeniden adlandırılamadı:",
+    "tagTitle": "etiket adı"
   },
   "statistics": {
     "bookUnit": "Kitap",

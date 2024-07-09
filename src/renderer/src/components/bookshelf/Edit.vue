@@ -50,7 +50,7 @@ const init = async () => {
 
   } catch (err) {
     console.log(err)
-    toastError(`获取书架列表失败: ${err}`)
+    toastError(`${t('book.getBookshelfFail')}: ${err}`)
   } finally {
     setLoading(false)
   }
@@ -93,7 +93,7 @@ const onRename = async () => {
     }
     closeRenameDialog()
   } catch (err) {
-    toastError(`重命名书架失败：${err}`)
+    toastError(`${t('book.renameFail')}：${err}`)
   } finally {
     setSubmitLoading(false)
   }
@@ -126,7 +126,7 @@ init()
   <dialog class="modal" ref="dialogRef">
     <div class="modal-box max-w-3xl" v-on-click-outside="closeDialog" @contextmenu.prevent>
       <div class="flex flex-row justify-between items-center mb-5">
-        <h3 class="font-bold text-lg">管理书架</h3>
+        <h3 class="font-bold text-lg">{{ t('book.bookshelfManage') }}</h3>
         <div @click="closeDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
       </div>
       <SkeletonView v-if="loading" />
@@ -137,9 +137,9 @@ init()
               <thead>
                 <tr>
                   <th></th>
-                  <th>书架名</th>
-                  <th>书籍数量</th>
-                  <th>操作</th>
+                  <th>{{ t('book.bookshelfTitle') }}</th>
+                  <th>{{ t('book.bookNumber') }}</th>
+                  <th>{{ t('common.action') }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -150,10 +150,10 @@ init()
                   <td>
                     <div class="join join-horizontal">
                       <button class="btn btn-sm btn-outline join-item" @click="editBookshelf(item)">
-                        修改
+                        {{ t('common.rename') }}
                       </button>
                       <button class="btn btn-sm btn-outline btn-error join-item" @click="onRemove(item)">
-                        删除
+                        {{ t('common.remove') }}
                       </button>
                     </div>
                   </td>
@@ -162,7 +162,7 @@ init()
             </table>
           </div>
           <div class="modal-action justify-between">
-            <button class="btn  btn-success" @click="onClearEmpty()">一键清空空书架</button>
+            <button class="btn  btn-success" @click="onClearEmpty()">{{ t('book.clearEmptyBookshelf') }}</button>
             <button class="btn btn-outline" type="button" @click="closeDialog">{{ t('common.close') }}</button>
           </div>
         </form>
@@ -176,7 +176,7 @@ init()
       <dialog class="modal" ref="RenameDialogRef">
         <div class="modal-box max-w-fit" v-on-click-outside="closeRenameDialog" @contextmenu.prevent>
           <div class="flex flex-row justify-between items-center mb-5">
-            <h3 class="font-bold text-lg">重新命名</h3>
+            <h3 class="font-bold text-lg">{{ t('common.rename') }}</h3>
             <div @click="closeRenameDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
           </div>
           <form>

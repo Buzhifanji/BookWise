@@ -70,7 +70,9 @@
     "getFirstView": "Sudah halaman pertama",
     "getLastView": "Sudah halaman terakhir",
     "nextView": "Halaman selanjutnya",
-    "comeFrom": "dari"
+    "comeFrom": "dari",
+    "action": "beroperasi",
+    "rename": "Ganti nama"
   },
   "readMode": {
     "double": "Mode halaman ganda",
@@ -128,7 +130,14 @@
     "needAuthor": "Silakan masukkan nama penulis",
     "uploadCoverFail": "Gagal mengunggah sampul",
     "jumpToBookList": "Lompat ke daftar buku",
-    "jumpToLastPosition": "Lompat ke posisi membaca terakhir"
+    "jumpToLastPosition": "Lompat ke posisi membaca terakhir",
+    "bookNumber": "Jumlah buku",
+    "bookshelfManage": "Kelola rak buku",
+    "bookshelfTitle": "nama rak buku",
+    "clearEmptyBookshelf": "Kosongkan rak buku kosong dengan satu klik",
+    "removeBookshelfSuccess": "Rak buku berhasil dihapus",
+    "removeBookshelftSuccess": "Rak buku berhasil dihapus",
+    "renameFail": "Gagal mengganti nama rak buku"
   },
   "note": {
     "addNoteFail": "Gagal menambahkan catatan",
@@ -144,12 +153,19 @@
     "write": "menulis ide",
     "myNote": "catatan Saya",
     "findNoteError": "Kehilangan data: Catatan tidak ditemukan secara lokal",
-    "writeYouNore": "Silakan masukkan isi catatan"
+    "writeYouNore": "Silakan masukkan isi catatan",
+    "mode": "modus catatan",
+    "noteNumber": "Jumlah catatan"
   },
   "tag": {
     "needTag": "Silakan masukkan tag",
     "removeTagSuccess": "Tag berhasil dihapus",
-    "name": "Label"
+    "name": "Label",
+    "clearEmptyTag": "Hapus tag kosong dengan satu klik",
+    "getTagListFail": "Gagal mendapatkan daftar rak buku",
+    "manage": "manajemen tag",
+    "renameFail": "Gagal mengganti nama rak buku:",
+    "tagTitle": "nama tag"
   },
   "statistics": {
     "bookUnit": "Buku",

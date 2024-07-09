@@ -70,7 +70,9 @@
     "getFirstView": "Redan första sidan",
     "getLastView": "Redan sista sidan",
     "nextView": "Nästa sida",
-    "comeFrom": "från"
+    "comeFrom": "från",
+    "action": "fungera",
+    "rename": "Döp om"
   },
   "readMode": {
     "double": "Dubbelsidigt läge",
@@ -128,7 +130,14 @@
     "needAuthor": "Ange författarens namn",
     "uploadCoverFail": "Det gick inte att ladda upp omslaget",
     "jumpToBookList": "Hoppa till boklistan",
-    "jumpToLastPosition": "Hoppa till sista läsposition"
+    "jumpToLastPosition": "Hoppa till sista läsposition",
+    "bookNumber": "Antal böcker",
+    "bookshelfManage": "Hantera bokhylla",
+    "bookshelfTitle": "bokhyllans namn",
+    "clearEmptyBookshelf": "Rensa tom bokhylla med ett klick",
+    "removeBookshelfSuccess": "Bokhyllan har tagits bort",
+    "removeBookshelftSuccess": "Bokhyllan har tagits bort",
+    "renameFail": "Det gick inte att byta namn på bokhyllan"
   },
   "note": {
     "addNoteFail": "Det gick inte att lägga till anteckning",
@@ -144,12 +153,19 @@
     "write": "skriva idéer",
     "myNote": "mina anteckningar",
     "findNoteError": "Dataförlust: Anteckningen hittades inte lokalt",
-    "writeYouNore": "Ange anteckningens innehåll"
+    "writeYouNore": "Ange anteckningens innehåll",
+    "mode": "notläge",
+    "noteNumber": "Antal anteckningar"
   },
   "tag": {
     "needTag": "Vänligen ange tagg",
     "removeTagSuccess": "Taggen har tagits bort",
-    "name": "Märka"
+    "name": "Märka",
+    "clearEmptyTag": "Rensa tomma taggar med ett klick",
+    "getTagListFail": "Det gick inte att hämta bokhyllalistan",
+    "manage": "tagghantering",
+    "renameFail": "Det gick inte att byta namn på bokhyllan:",
+    "tagTitle": "taggnamn"
   },
   "statistics": {
     "bookUnit": "bok",

@@ -70,7 +70,9 @@
     "getFirstView": "در حال حاضر صفحه اول",
     "getLastView": "در حال حاضر آخرین صفحه",
     "nextView": "صفحه بعد",
-    "comeFrom": "از جانب"
+    "comeFrom": "از جانب",
+    "action": "عمل کنند",
+    "rename": "تغییر نام دهید"
   },
   "readMode": {
     "double": "حالت دو صفحه",
@@ -128,7 +130,14 @@
     "needAuthor": "لطفا نام نویسنده را وارد کنید",
     "uploadCoverFail": "جلد آپلود نشد",
     "jumpToBookList": "پرش به فهرست کتاب",
-    "jumpToLastPosition": "پرش به آخرین موقعیت خواندن"
+    "jumpToLastPosition": "پرش به آخرین موقعیت خواندن",
+    "bookNumber": "تعداد کتاب",
+    "bookshelfManage": "مدیریت قفسه کتاب",
+    "bookshelfTitle": "نام قفسه کتاب",
+    "clearEmptyBookshelf": "قفسه خالی کتاب را با یک کلیک پاک کنید",
+    "removeBookshelfSuccess": "قفسه کتاب با موفقیت حذف شد",
+    "removeBookshelftSuccess": "قفسه کتاب با موفقیت حذف شد",
+    "renameFail": "تغییر نام قفسه کتاب انجام نشد"
   },
   "note": {
     "addNoteFail": "یادداشت اضافه نشد",
@@ -144,12 +153,19 @@
     "write": "ایده بنویس",
     "myNote": "نوشته های من",
     "findNoteError": "از دست دادن داده: یادداشت به صورت محلی یافت نشد",
-    "writeYouNore": "لطفا محتوای یادداشت را وارد کنید"
+    "writeYouNore": "لطفا محتوای یادداشت را وارد کنید",
+    "mode": "حالت یادداشت",
+    "noteNumber": "تعداد یادداشت ها"
   },
   "tag": {
     "needTag": "لطفا برچسب را وارد کنید",
     "removeTagSuccess": "برچسب با موفقیت حذف شد",
-    "name": "برچسب"
+    "name": "برچسب",
+    "clearEmptyTag": "برچسب های خالی را با یک کلیک پاک کنید",
+    "getTagListFail": "فهرست قفسه کتاب دریافت نشد",
+    "manage": "مدیریت برچسب",
+    "renameFail": "تغییر نام قفسه کتاب انجام نشد:",
+    "tagTitle": "نام تگ"
   },
   "statistics": {
     "bookUnit": "کتاب",

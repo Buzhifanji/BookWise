@@ -70,7 +70,9 @@
     "getFirstView": "Đã là trang đầu tiên",
     "getLastView": "Đã là trang cuối cùng",
     "nextView": "Trang tiếp theo",
-    "comeFrom": "từ"
+    "comeFrom": "từ",
+    "action": "vận hành",
+    "rename": "Đổi tên"
   },
   "readMode": {
     "double": "Chế độ trang đôi",
@@ -128,7 +130,14 @@
     "needAuthor": "Vui lòng nhập tên tác giả",
     "uploadCoverFail": "Không thể tải lên bìa",
     "jumpToBookList": "Chuyển đến danh sách sách",
-    "jumpToLastPosition": "Chuyển đến vị trí đọc cuối cùng"
+    "jumpToLastPosition": "Chuyển đến vị trí đọc cuối cùng",
+    "bookNumber": "Số lượng sách",
+    "bookshelfManage": "Quản lý giá sách",
+    "bookshelfTitle": "tên giá sách",
+    "clearEmptyBookshelf": "Xóa giá sách trống chỉ bằng một cú nhấp chuột",
+    "removeBookshelfSuccess": "Đã xóa giá sách thành công",
+    "removeBookshelftSuccess": "Đã xóa giá sách thành công",
+    "renameFail": "Không đổi tên được giá sách"
   },
   "note": {
     "addNoteFail": "Không thể thêm ghi chú",
@@ -144,12 +153,19 @@
     "write": "viết ý tưởng",
     "myNote": "ghi chú của tôi",
     "findNoteError": "Mất dữ liệu: Không tìm thấy ghi chú cục bộ",
-    "writeYouNore": "Vui lòng nhập nội dung ghi chú"
+    "writeYouNore": "Vui lòng nhập nội dung ghi chú",
+    "mode": "chế độ ghi chú",
+    "noteNumber": "Số lượng ghi chú"
   },
   "tag": {
     "needTag": "Vui lòng nhập thẻ",
     "removeTagSuccess": "Đã xóa thẻ thành công",
-    "name": "Nhãn"
+    "name": "Nhãn",
+    "clearEmptyTag": "Xóa các thẻ trống bằng một cú nhấp chuột",
+    "getTagListFail": "Không lấy được danh sách giá sách",
+    "manage": "quản lý thẻ",
+    "renameFail": "Không thể đổi tên giá sách:",
+    "tagTitle": "tên thẻ"
   },
   "statistics": {
     "bookUnit": "Sách",

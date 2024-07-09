@@ -70,7 +70,9 @@
     "getFirstView": "Already the first page",
     "getLastView": "Already the last page",
     "nextView": "Next page",
-    "comeFrom": "from"
+    "comeFrom": "from",
+    "action": "operate",
+    "rename": "Rename"
   },
   "readMode": {
     "double": "Double page mode",
@@ -128,7 +130,14 @@
     "needAuthor": "Please enter author name",
     "uploadCoverFail": "Failed to upload cover",
     "jumpToBookList": "Jump to book list",
-    "jumpToLastPosition": "Jump to last reading position"
+    "jumpToLastPosition": "Jump to last reading position",
+    "bookNumber": "Number of books",
+    "bookshelfManage": "Manage bookshelf",
+    "bookshelfTitle": "bookshelf name",
+    "clearEmptyBookshelf": "Clear empty bookshelf with one click",
+    "removeBookshelfSuccess": "Bookshelf removed successfully",
+    "removeBookshelftSuccess": "Bookshelf removed successfully",
+    "renameFail": "Failed to rename bookshelf"
   },
   "note": {
     "addNoteFail": "Failed to add note",
@@ -144,12 +153,19 @@
     "write": "write ideas",
     "myNote": "my notes",
     "findNoteError": "Data loss: Note not found locally",
-    "writeYouNore": "Please enter the note content"
+    "writeYouNore": "Please enter the note content",
+    "mode": "note mode",
+    "noteNumber": "Number of notes"
   },
   "tag": {
     "needTag": "Please enter tag",
     "removeTagSuccess": "Tag deleted successfully",
-    "name": "Label"
+    "name": "Label",
+    "clearEmptyTag": "Clear empty tags with one click",
+    "getTagListFail": "Failed to get bookshelf list",
+    "manage": "tag management",
+    "renameFail": "Failed to rename bookshelf:",
+    "tagTitle": "tag name"
   },
   "statistics": {
     "bookUnit": "Book",

@@ -70,7 +70,9 @@
     "getFirstView": "Ya la primera pagina",
     "getLastView": "Ya la ultima pagina",
     "nextView": "Siguiente página",
-    "comeFrom": "de"
+    "comeFrom": "de",
+    "action": "funcionar",
+    "rename": "Rebautizar"
   },
   "readMode": {
     "double": "Modo de doble página",
@@ -128,7 +130,14 @@
     "needAuthor": "Por favor ingrese el nombre del autor",
     "uploadCoverFail": "No se pudo cargar la portada",
     "jumpToBookList": "Saltar a la lista de libros",
-    "jumpToLastPosition": "Saltar a la última posición de lectura"
+    "jumpToLastPosition": "Saltar a la última posición de lectura",
+    "bookNumber": "numero de libros",
+    "bookshelfManage": "Administrar estantería",
+    "bookshelfTitle": "nombre de estantería",
+    "clearEmptyBookshelf": "Limpia la estantería vacía con un clic",
+    "removeBookshelfSuccess": "Estantería eliminada con éxito",
+    "removeBookshelftSuccess": "Estantería eliminada con éxito",
+    "renameFail": "No se pudo cambiar el nombre de la estantería"
   },
   "note": {
     "addNoteFail": "No se pudo agregar la nota",
@@ -144,12 +153,19 @@
     "write": "escribir ideas",
     "myNote": "mis notas",
     "findNoteError": "Pérdida de datos: nota no encontrada localmente",
-    "writeYouNore": "Por favor ingrese el contenido de la nota."
+    "writeYouNore": "Por favor ingrese el contenido de la nota.",
+    "mode": "modo nota",
+    "noteNumber": "numero de notas"
   },
   "tag": {
     "needTag": "Por favor ingresa la etiqueta",
     "removeTagSuccess": "Etiqueta eliminada correctamente",
-    "name": "Etiqueta"
+    "name": "Etiqueta",
+    "clearEmptyTag": "Borre etiquetas vacías con un clic",
+    "getTagListFail": "No se pudo obtener la lista de estanterías",
+    "manage": "gestión de etiquetas",
+    "renameFail": "No se pudo cambiar el nombre de la estantería:",
+    "tagTitle": "nombre de etiqueta"
   },
   "statistics": {
     "bookUnit": "Libro",

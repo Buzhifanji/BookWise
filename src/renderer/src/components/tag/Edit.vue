@@ -55,7 +55,7 @@ const init = async () => {
     }
   } catch (err) {
     console.log(err)
-    toastError(`获取书架列表失败: ${err}`)
+    toastError(`${t('tag.getTagListFail')}: ${err}`)
   } finally {
     setLoading(false)
   }
@@ -111,7 +111,7 @@ const onRename = async () => {
     }
     closeRenameDialog()
   } catch (err) {
-    toastError(`重命名书架失败：${err}`)
+    toastError(`${t('tag.renameFail')}: ${err}`)
   } finally {
     setSubmitLoading(false)
   }
@@ -154,7 +154,7 @@ init()
     <div class="modal-box max-w-3xl overflow-hidden flex flex-col" v-on-click-outside="closeDialog"
       @contextmenu.prevent>
       <div class="flex flex-row justify-between items-center mb-5">
-        <h3 class="font-bold text-lg">标签管理</h3>
+        <h3 class="font-bold text-lg">{{ t('tag.manage') }}</h3>
         <div @click="closeDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
       </div>
       <SkeletonView v-if="loading" />
@@ -165,9 +165,9 @@ init()
               <thead>
                 <tr>
                   <th></th>
-                  <th>标签名</th>
-                  <th>笔记数量</th>
-                  <th>操作</th>
+                  <th>{{ t('tag.tagTitle') }}</th>
+                  <th>{{ t('note.noteNumber') }}</th>
+                  <th>{{ t('common.action') }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -178,10 +178,10 @@ init()
                   <td>
                     <div class="join join-horizontal">
                       <button class="btn btn-sm btn-outline join-item" @click="onEdit(item)">
-                        修改
+                        {{ t('common.rename') }}
                       </button>
                       <button class="btn btn-sm btn-outline btn-error join-item" @click="onRemove(item)">
-                        删除
+                        {{ t('common.remove') }}
                       </button>
                     </div>
                   </td>
@@ -197,7 +197,7 @@ init()
           </div>
         </div>
         <div class="modal-action justify-between">
-          <button class="btn  btn-success" @click="onClearEmpty()">一键清空空标签</button>
+          <button class="btn  btn-success" @click="onClearEmpty()">{{ t('tag.clearEmptyTag') }}</button>
           <button class="btn btn-outline" type="button" @click="closeDialog">{{ t('common.close') }}</button>
         </div>
       </template>
@@ -205,7 +205,7 @@ init()
       <dialog class="modal" ref="RenameDialogRef">
         <div class="modal-box max-w-fit" v-on-click-outside="closeRenameDialog" @contextmenu.prevent>
           <div class="flex flex-row justify-between items-center mb-5">
-            <h3 class="font-bold text-lg">重新命名</h3>
+            <h3 class="font-bold text-lg">{{ t('common.rename') }}</h3>
             <div @click="closeRenameDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
           </div>
           <form>

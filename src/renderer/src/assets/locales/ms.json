@@ -70,7 +70,9 @@
     "getFirstView": "Sudah muka surat pertama",
     "getLastView": "Sudah halaman terakhir",
     "nextView": "Muka surat seterusnya",
-    "comeFrom": "daripada"
+    "comeFrom": "daripada",
+    "action": "beroperasi",
+    "rename": "Namakan semula"
   },
   "readMode": {
     "double": "Mod muka surat dua",
@@ -128,7 +130,14 @@
     "needAuthor": "Sila masukkan nama pengarang",
     "uploadCoverFail": "Gagal memuat naik muka depan",
     "jumpToBookList": "Lompat ke senarai buku",
-    "jumpToLastPosition": "Lompat ke kedudukan bacaan terakhir"
+    "jumpToLastPosition": "Lompat ke kedudukan bacaan terakhir",
+    "bookNumber": "Bilangan buku",
+    "bookshelfManage": "Menguruskan rak buku",
+    "bookshelfTitle": "nama rak buku",
+    "clearEmptyBookshelf": "Kosongkan rak buku kosong dengan satu klik",
+    "removeBookshelfSuccess": "Rak buku berjaya dikeluarkan",
+    "removeBookshelftSuccess": "Rak buku berjaya dikeluarkan",
+    "renameFail": "Gagal menamakan semula rak buku"
   },
   "note": {
     "addNoteFail": "Gagal menambah nota",
@@ -144,12 +153,19 @@
     "write": "menulis idea",
     "myNote": "nota saya",
     "findNoteError": "Kehilangan data: Nota tidak ditemui secara setempat",
-    "writeYouNore": "Sila masukkan kandungan nota"
+    "writeYouNore": "Sila masukkan kandungan nota",
+    "mode": "mod nota",
+    "noteNumber": "Bilangan nota"
   },
   "tag": {
     "needTag": "Sila masukkan tag",
     "removeTagSuccess": "Tag berjaya dipadamkan",
-    "name": "Label"
+    "name": "Label",
+    "clearEmptyTag": "Kosongkan tag kosong dengan satu klik",
+    "getTagListFail": "Gagal mendapatkan senarai rak buku",
+    "manage": "pengurusan tag",
+    "renameFail": "Gagal menamakan semula rak buku:",
+    "tagTitle": "tag nama"
   },
   "statistics": {
     "bookUnit": "Buku",

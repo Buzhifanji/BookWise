@@ -70,7 +70,9 @@
     "getFirstView": "بالفعل الصفحة الأولى",
     "getLastView": "بالفعل الصفحة الأخيرة",
     "nextView": "الصفحة التالية",
-    "comeFrom": "من"
+    "comeFrom": "من",
+    "action": "العمل",
+    "rename": "إعادة تسمية"
   },
   "readMode": {
     "double": "وضع الصفحة المزدوجة",
@@ -128,7 +130,14 @@
     "needAuthor": "الرجاء إدخال اسم المؤلف",
     "uploadCoverFail": "فشل تحميل الغلاف",
     "jumpToBookList": "انتقل إلى قائمة الكتب",
-    "jumpToLastPosition": "انتقل إلى موضع القراءة الأخير"
+    "jumpToLastPosition": "انتقل إلى موضع القراءة الأخير",
+    "bookNumber": "عدد الكتب",
+    "bookshelfManage": "إدارة رف الكتب",
+    "bookshelfTitle": "اسم رف الكتب",
+    "clearEmptyBookshelf": "مسح رف الكتب الفارغ بنقرة واحدة",
+    "removeBookshelfSuccess": "تمت إزالة رف الكتب بنجاح",
+    "removeBookshelftSuccess": "تمت إزالة رف الكتب بنجاح",
+    "renameFail": "فشلت إعادة تسمية رف الكتب"
   },
   "note": {
     "addNoteFail": "فشلت إضافة ملاحظة",
@@ -144,12 +153,19 @@
     "write": "كتابة الأفكار",
     "myNote": "ملاحظاتي",
     "findNoteError": "فقدان البيانات: لم يتم العثور على الملاحظة محليًا",
-    "writeYouNore": "الرجاء إدخال محتوى الملاحظة"
+    "writeYouNore": "الرجاء إدخال محتوى الملاحظة",
+    "mode": "وضع الملاحظة",
+    "noteNumber": "عدد الملاحظات"
   },
   "tag": {
     "needTag": "الرجاء إدخال العلامة",
     "removeTagSuccess": "تم حذف العلامة بنجاح",
-    "name": "ملصق"
+    "name": "ملصق",
+    "clearEmptyTag": "مسح العلامات الفارغة بنقرة واحدة",
+    "getTagListFail": "فشل الحصول على قائمة رف الكتب",
+    "manage": "إدارة العلامات",
+    "renameFail": "فشلت إعادة تسمية رف الكتب:",
+    "tagTitle": "اسم العلامة"
   },
   "statistics": {
     "bookUnit": "كتاب",

@@ -70,7 +70,9 @@
     "getFirstView": "Al de eerste pagina",
     "getLastView": "Alweer de laatste pagina",
     "nextView": "Volgende bladzijde",
-    "comeFrom": "van"
+    "comeFrom": "van",
+    "action": "bedienen",
+    "rename": "Hernoemen"
   },
   "readMode": {
     "double": "Dubbele paginamodus",
@@ -128,7 +130,14 @@
     "needAuthor": "Voer de naam van de auteur in",
     "uploadCoverFail": "Kan de omslag niet uploaden",
     "jumpToBookList": "Ga naar de boekenlijst",
-    "jumpToLastPosition": "Spring naar de laatste leespositie"
+    "jumpToLastPosition": "Spring naar de laatste leespositie",
+    "bookNumber": "Aantal boeken",
+    "bookshelfManage": "Beheer boekenplank",
+    "bookshelfTitle": "naam boekenplank",
+    "clearEmptyBookshelf": "Ruim lege boekenplank op met één klik",
+    "removeBookshelfSuccess": "Boekenplank succesvol verwijderd",
+    "removeBookshelftSuccess": "Boekenplank succesvol verwijderd",
+    "renameFail": "Kan de naam van de boekenplank niet wijzigen"
   },
   "note": {
     "addNoteFail": "Kan notitie niet toevoegen",
@@ -144,12 +153,19 @@
     "write": "schrijf ideeën",
     "myNote": "mijn notities",
     "findNoteError": "Gegevensverlies: Opmerking niet lokaal gevonden",
-    "writeYouNore": "Voer de inhoud van de notitie in"
+    "writeYouNore": "Voer de inhoud van de notitie in",
+    "mode": "notitiemodus",
+    "noteNumber": "Aantal notities"
   },
   "tag": {
     "needTag": "Voer een tag in",
     "removeTagSuccess": "Tag succesvol verwijderd",
-    "name": "Etiket"
+    "name": "Etiket",
+    "clearEmptyTag": "Wis lege tags met één klik",
+    "getTagListFail": "Kan de boekenplanklijst niet ophalen",
+    "manage": "tagbeheer",
+    "renameFail": "Kan de naam van de boekenplank niet wijzigen:",
+    "tagTitle": "tagnaam"
   },
   "statistics": {
     "bookUnit": "Boek",

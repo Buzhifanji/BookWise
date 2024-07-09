@@ -70,7 +70,9 @@
     "getFirstView": "Schon die erste Seite",
     "getLastView": "Schon die letzte Seite",
     "nextView": "Nächste Seite",
-    "comeFrom": "aus"
+    "comeFrom": "aus",
+    "action": "arbeiten",
+    "rename": "Umbenennen"
   },
   "readMode": {
     "double": "Doppelseitenmodus",
@@ -128,7 +130,14 @@
     "needAuthor": "Bitte geben Sie den Namen des Autors ein",
     "uploadCoverFail": "Das Cover konnte nicht hochgeladen werden",
     "jumpToBookList": "Zur Buchliste springen",
-    "jumpToLastPosition": "Zur letzten Leseposition springen"
+    "jumpToLastPosition": "Zur letzten Leseposition springen",
+    "bookNumber": "Anzahl Bücher",
+    "bookshelfManage": "Bücherregal verwalten",
+    "bookshelfTitle": "Name des Bücherregals",
+    "clearEmptyBookshelf": "Räumen Sie leere Bücherregale mit einem Klick auf",
+    "removeBookshelfSuccess": "Bücherregal erfolgreich entfernt",
+    "removeBookshelftSuccess": "Bücherregal erfolgreich entfernt",
+    "renameFail": "Bücherregal konnte nicht umbenannt werden"
   },
   "note": {
     "addNoteFail": "Notiz konnte nicht hinzugefügt werden",
@@ -144,12 +153,19 @@
     "write": "Ideen schreiben",
     "myNote": "meine Notizen",
     "findNoteError": "Datenverlust: Notiz lokal nicht gefunden",
-    "writeYouNore": "Bitte geben Sie den Notizinhalt ein"
+    "writeYouNore": "Bitte geben Sie den Notizinhalt ein",
+    "mode": "Notenmodus",
+    "noteNumber": "Anzahl der Noten"
   },
   "tag": {
     "needTag": "Bitte Tag eingeben",
     "removeTagSuccess": "Tag erfolgreich gelöscht",
-    "name": "Etikett"
+    "name": "Etikett",
+    "clearEmptyTag": "Leere Tags mit einem Klick löschen",
+    "getTagListFail": "Bücherregalliste konnte nicht abgerufen werden",
+    "manage": "Tag-Verwaltung",
+    "renameFail": "Bücherregal konnte nicht umbenannt werden:",
+    "tagTitle": "Verlinke den Namen"
   },
   "statistics": {
     "bookUnit": "Buch",

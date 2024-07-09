@@ -70,7 +70,9 @@
     "getFirstView": "Już pierwsza strona",
     "getLastView": "Już ostatnia strona",
     "nextView": "Następna strona",
-    "comeFrom": "z"
+    "comeFrom": "z",
+    "action": "działać",
+    "rename": "Przemianować"
   },
   "readMode": {
     "double": "Tryb podwójnej strony",
@@ -128,7 +130,14 @@
     "needAuthor": "Proszę wpisać nazwisko autora",
     "uploadCoverFail": "Nie udało się przesłać okładki",
     "jumpToBookList": "Przejdź do listy książek",
-    "jumpToLastPosition": "Przejdź do ostatniej pozycji czytania"
+    "jumpToLastPosition": "Przejdź do ostatniej pozycji czytania",
+    "bookNumber": "Liczba książek",
+    "bookshelfManage": "Zarządzaj półką z książkami",
+    "bookshelfTitle": "nazwa półki na książki",
+    "clearEmptyBookshelf": "Wyczyść pustą półkę jednym kliknięciem",
+    "removeBookshelfSuccess": "Półka na książki została pomyślnie usunięta",
+    "removeBookshelftSuccess": "Półka na książki została pomyślnie usunięta",
+    "renameFail": "Nie udało się zmienić nazwy półki na książki"
   },
   "note": {
     "addNoteFail": "Nie udało się dodać notatki",
@@ -144,12 +153,19 @@
     "write": "pisać pomysły",
     "myNote": "moje notatki",
     "findNoteError": "Utrata danych: Notatka nie została znaleziona lokalnie",
-    "writeYouNore": "Proszę wpisać treść notatki"
+    "writeYouNore": "Proszę wpisać treść notatki",
+    "mode": "tryb notatki",
+    "noteNumber": "Liczba notatek"
   },
   "tag": {
     "needTag": "Proszę wpisać tag",
     "removeTagSuccess": "Tag został pomyślnie usunięty",
-    "name": "Etykieta"
+    "name": "Etykieta",
+    "clearEmptyTag": "Wyczyść puste tagi jednym kliknięciem",
+    "getTagListFail": "Nie udało się pobrać listy półek na książki",
+    "manage": "zarządzanie tagami",
+    "renameFail": "Nie udało się zmienić nazwy półki na książki:",
+    "tagTitle": "Nazwa znacznika"
   },
   "statistics": {
     "bookUnit": "Książka",

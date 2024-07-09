@@ -30,7 +30,7 @@ import { editTagDialog } from '../../tag';
       <li @click="editTagDialog()">
         <a class="!p-0 my-1">
           <div class="flex flex-row py-2 px-4 justify-between w-72">
-            <span class="stat-title">标签管理</span>
+            <span class="stat-title">{{ t('tag.manage') }}</span>
             <SquareArrowUpLeft />
           </div>
         </a>
