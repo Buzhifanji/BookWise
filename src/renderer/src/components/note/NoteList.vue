@@ -1,18 +1,16 @@
 <script setup lang="ts">
 import { Note } from '@renderer/batabase';
+import { NoteMode } from '@renderer/enum';
 import { RouterName } from '@renderer/route';
-import { chuankArray, haveIntersection, remToPx, sort } from '@renderer/shared';
-import { noteSortStore, useContentCantianerStore, useFilterNoteStore } from '@renderer/store';
+import { haveIntersection, sort } from '@renderer/shared';
+import { noteSortStore, settingStore, useFilterNoteStore } from '@renderer/store';
 import { t } from '@renderer/view/setting';
-import { useVirtualizer } from '@tanstack/vue-virtual';
 import { get } from '@vueuse/core';
 import { Flag } from 'lucide-vue-next';
-import { computed, defineProps, ref, toRaw, withDefaults } from 'vue';
+import { computed, defineProps, toRaw, withDefaults } from 'vue';
 import { TagAction } from '../tag/action';
-import { NoteAction } from './action';
-import Card from './Card.vue';
-import { detaiNotelDialog } from './detail';
-import { removeNoteDialog } from './remove';
+import CardMode from './mode/Card.vue';
+import ListMode from './mode/List.vue';
 
 interface Props {
   data: Note[],
@@ -25,13 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
 const filterStore = useFilterNoteStore()
 
 // 笔记内容
-const store = useContentCantianerStore()
-
-const parentRef = ref<HTMLElement | null>(null)
-
 const list = computed(() => {
-  const count = parseInt(((store.width) / remToPx(24 + 1)).toString())
-
   let originalData = [...toRaw(props.data)]
   // 书名过滤
   const bookId = filterStore.eBookId
@@ -62,58 +54,16 @@ const list = computed(() => {
     data = sort(originalData, isUp, 'createTime')
   }
 
-  return chuankArray(toRaw(data) || [], count)
+  return data
 })
-
-// 虚拟列表
-const rowVirtualizerOptions = computed(() => {
-  return {
-    count: list.value.length,
-    estimateSize: () => 350,
-    overscan: 5,
-    getScrollElement: () => parentRef.value,
-  }
-})
-
-const rowVirtualizer = useVirtualizer(rowVirtualizerOptions)
-const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems())
-const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
-
-const measureElement = (el: HTMLElement) => {
-  if (!el) {
-    return
-  }
-  setTimeout(() => {
-    rowVirtualizer.value.measureElement(el)
-  })
-  return undefined
-}
-
-// 删除
-const removeBefore = (value: Note) => removeNoteDialog(value)
-
-// 详情
-const onDetail = (value: Note) => detaiNotelDialog(value)
-
-// 跳转
-const jump = (value: Note) => NoteAction.jumpToBook(value)
-
 
 </script>
 
 <template>
-  <div ref="parentRef" class="p-6  h-full overflow-auto" v-if="data.length">
-    <div class="relative w-full" :style="{ height: `${totalSize}px`, }">
-      <template v-for="virtualRow in virtualRows" :key="virtualRow.key">
-        <div :ref="measureElement" :data-index="virtualRow.index" class="flex gap-4 absolute top-0 left-0  w-full pb-5"
-          :style="{ transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin}px)` }">
-          <template v-for="item in list[virtualRow.index]">
-            <Card :data="item" @delete="removeBefore" @detail="onDetail" @jump="jump" />
-          </template>
-        </div>
-      </template>
-    </div>
-  </div>
+  <template v-if="data.length">
+    <CardMode v-if="settingStore.noteMode === NoteMode.card" :data="list" />
+    <ListMode :data="list" v-else />
+  </template>
   <div class="hero min-h-screen bg-base-200" v-else>
     <div class="hero-content text-center">
       <div class="max-w-md">
