@@ -120,17 +120,17 @@
   - Filtering
     - Book title filter (single book)
     - Tag filter (multiple tags): <kbd>Upcoming</kbd>
-  - Modes:
-    - Card mode
-    - List mode: <kbd>Upcoming</kbd>
+  - Modes:Card mode, List mode
   - Jump to source
   - Shortcut keys: <kbd>Upcoming</kbd>
 - Upload: Supports drag and drop, multi-file upload
 - Tag Management
-  - One-click clear for tags not bound to notes: <kbd>Upcoming</kbd>
+  - One-click clear for tags not bound to notes
+  - Rename, Delete
   - Nested tags: <kbd>Under Consideration</kbd>
 - Bookshelf Management
-  - One-click clear for empty bookshelves: <kbd>Upcoming</kbd>
+  - One-click clear for empty bookshelves
+  - Rename, Delete
 - Idle mode: <kbd>Upcoming</kbd>
 - Cloud synchronization feature: <kbd>Upcoming</kbd>
 - Backup feature: <kbd>Upcoming</kbd>
