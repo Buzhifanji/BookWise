@@ -134,4 +134,4 @@
 - Idle mode: <kbd>Upcoming</kbd>
 - Cloud synchronization feature: <kbd>Upcoming</kbd>
 - Backup feature: <kbd>Upcoming</kbd>
-- Global search: <kbd>Upcoming</kbd>
+- Global search
