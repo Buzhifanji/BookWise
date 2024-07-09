@@ -2,7 +2,7 @@
 import { Tag } from '@renderer/batabase';
 import { useDialog } from '@renderer/hooks';
 import { toastError } from '@renderer/shared';
-import { useNoteStore } from '@renderer/store';
+import { useNoteStore, useTagStore } from '@renderer/store';
 import { t } from '@renderer/view/setting';
 import { vOnClickOutside } from '@vueuse/components';
 import { get, set, useToggle } from '@vueuse/core';
@@ -16,6 +16,7 @@ const [submitLoading, setSubmitLoading] = useToggle(false)
 const { dialogRef, openDialog, closeDialog } = useDialog();
 const { dialogRef: RenameDialogRef, openDialog: openRenameDialog, closeDialog: closeRenameDialog } = useDialog();
 const noteStore = useNoteStore()
+const tagStore = useTagStore()
 
 const activeBookshelf = ref<Tag | null>(null)
 const inputVal = ref<string>('')
@@ -26,12 +27,6 @@ const onEdit = (val: Tag) => {
 }
 
 const noteMap = new Map<string, { count: number, ids: Set<string> }>()
-const allTag = ref<Tag[]>([])
-
-const onLoad = async () => {
-  const tags = await TagAction.getAll()
-  set(allTag, tags)
-}
 
 const init = async () => {
   try {
@@ -39,8 +34,6 @@ const init = async () => {
     openDialog()
     await nextTick()
     openDialog()
-
-    await onLoad()
 
     for (const item of noteStore.noteList) {
       const tags = TagAction.toTag(item.tag)
@@ -60,8 +53,6 @@ const init = async () => {
     setLoading(false)
   }
 }
-
-
 
 // 重命名
 const onRename = async () => {
@@ -106,8 +97,6 @@ const onRename = async () => {
           return null
         }))
       }
-
-      await onLoad()
     }
     closeRenameDialog()
   } catch (err) {
@@ -119,10 +108,9 @@ const onRename = async () => {
 
 // 一键清空空书架
 const onClearEmpty = async () => {
-  const ids = get(allTag).filter(item => !noteMap.has(item.id)).map(item => item.id)
+  const ids = tagStore.tagList.filter(item => !noteMap.has(item.id)).map(item => item.id)
   if (!ids.length) return
   await TagAction.removeByIds(ids)
-  await onLoad()
 }
 
 // 删除
@@ -142,8 +130,6 @@ const onRemove = async (val: Tag) => {
       return null
     }))
   }
-
-  await onLoad()
 }
 
 init()
@@ -159,7 +145,7 @@ init()
       </div>
       <SkeletonView v-if="loading" />
       <template v-else>
-        <form v-if="allTag.length" class="flex-1 overflow-auto relative scrollbar-thin">
+        <form v-if="tagStore.tagList.length" class="flex-1 overflow-auto relative scrollbar-thin">
           <div class="overflow-y-auto ">
             <table class="table table-auto table-pin-rows table-pin-cols">
               <thead>
@@ -171,7 +157,7 @@ init()
                 </tr>
               </thead>
               <tbody>
-                <tr class="hover" v-for="item, index in allTag">
+                <tr class="hover" v-for="item, index in tagStore.tagList">
                   <th>{{ index + 1 }}</th>
                   <td>{{ item.tagName }}</td>
                   <td>{{ noteMap.get(item.id)?.count || 0 }}</td>

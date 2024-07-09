@@ -2,9 +2,9 @@
 import favicon from '@renderer/assets/favicon.ico';
 import { get, set, useFavicon } from '@vueuse/core';
 import { watchEffect } from 'vue';
-import { BookAction, BookReadTimeAction, NoteAction } from './components';
+import { BookAction, BookReadTimeAction, BookshelfAction, NoteAction, TagAction } from './components';
 import './dayjs';
-import { bookPositionStore, bookReadTimeStore, settingStore, useBookStore, useNoteStore } from './store';
+import { bookPositionStore, bookReadTimeStore, settingStore, useBookshelfStore, useBookStore, useNoteStore, useTagStore } from './store';
 import { setI18nLanguage } from './view/setting/language';
 
 
@@ -50,6 +50,20 @@ const noteStore = useNoteStore()
 const allNote = NoteAction.observable()
 watchEffect(() => {
   noteStore.setNoteList(get(allNote) || [])
+})
+
+// 全部标签
+const tagStore = useTagStore()
+const allTag = TagAction.observable()
+watchEffect(() => {
+  tagStore.setTagList(get(allTag) || [])
+})
+
+// 全部书架
+const boohshelfStore = useBookshelfStore()
+const allBookshelf = BookshelfAction.observable()
+watchEffect(() => {
+  boohshelfStore.setBookshelf(get(allBookshelf) || [])
 })
 </script>
 

@@ -33,6 +33,7 @@ export * from './book/enum'
 export * from './book/score'
 export * from './bookshelf/action'
 export * from './drawer/toggle'
+export * from './search'
 export * from './tag/action'
 export * from './toast'
 

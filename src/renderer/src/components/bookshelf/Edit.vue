@@ -2,7 +2,7 @@
 import { Bookshelf } from '@renderer/batabase';
 import { useDialog } from '@renderer/hooks';
 import { toastError } from '@renderer/shared';
-import { useBookStore } from '@renderer/store';
+import { useBookshelfStore, useBookStore } from '@renderer/store';
 import { t } from '@renderer/view/setting';
 import { vOnClickOutside } from '@vueuse/components';
 import { get, set, useToggle } from '@vueuse/core';
@@ -16,6 +16,7 @@ const [submitLoading, setSubmitLoading] = useToggle(false)
 const { dialogRef, openDialog, closeDialog } = useDialog();
 const { dialogRef: RenameDialogRef, openDialog: openRenameDialog, closeDialog: closeRenameDialog } = useDialog();
 const bookStore = useBookStore()
+const boohshelfStore = useBookshelfStore()
 
 const activeBookshelf = ref<Bookshelf | null>(null)
 const inputVal = ref<string>('')
@@ -25,7 +26,6 @@ const editBookshelf = (val: Bookshelf) => {
   openRenameDialog()
 }
 
-const allBookshelf = ref<Bookshelf[]>([])
 const bookMap = new Map<string, { count: number, bookId: string }>()
 
 const init = async () => {
@@ -34,7 +34,6 @@ const init = async () => {
     openDialog()
     await nextTick()
     openDialog()
-    const bookshelf = await BookshelfAction.getAll()
 
     for (const item of bookStore.bookList) {
       const bookshelfId = item.groupId
@@ -45,9 +44,6 @@ const init = async () => {
         bookMap.set(bookshelfId, temp)
       }
     }
-
-    set(allBookshelf, bookshelf)
-
   } catch (err) {
     console.log(err)
     toastError(`${t('book.getBookshelfFail')}: ${err}`)
@@ -56,10 +52,6 @@ const init = async () => {
   }
 }
 
-const onLoad = async () => {
-  const res = await BookshelfAction.getAll()
-  set(allBookshelf, res)
-}
 
 // 重命名
 const onRename = async () => {
@@ -88,8 +80,6 @@ const onRename = async () => {
       if (oldInfo) {
         await BookAction.update(oldInfo.bookId, { groupName: val })
       }
-
-      await onLoad()
     }
     closeRenameDialog()
   } catch (err) {
@@ -101,10 +91,9 @@ const onRename = async () => {
 
 // 一键清空空书架
 const onClearEmpty = async () => {
-  const ids = get(allBookshelf).filter(item => !bookMap.has(item.id)).map(item => item.id)
+  const ids = boohshelfStore.bookshelf.filter(item => !bookMap.has(item.id)).map(item => item.id)
   if (!ids.length) return
   await BookshelfAction.removeByIds(ids)
-  await onLoad()
 }
 
 // 删除
@@ -115,8 +104,6 @@ const onRemove = async (val: Bookshelf) => {
   if (oldInfo) {
     await BookAction.update(oldInfo.bookId, { groupName: '', groupId: '' })
   }
-
-  await onLoad()
 }
 
 init()
@@ -131,7 +118,7 @@ init()
       </div>
       <SkeletonView v-if="loading" />
       <template v-else>
-        <form v-if="allBookshelf.length">
+        <form v-if="boohshelfStore.bookshelf.length">
           <div class="overflow-x-auto">
             <table class="table">
               <thead>
@@ -143,7 +130,7 @@ init()
                 </tr>
               </thead>
               <tbody>
-                <tr class="hover" v-for="item, index in allBookshelf">
+                <tr class="hover" v-for="item, index in boohshelfStore.bookshelf">
                   <th>{{ index + 1 }}</th>
                   <td>{{ item.name }}</td>
                   <td>{{ bookMap.get(item.id)?.count || 0 }}</td>

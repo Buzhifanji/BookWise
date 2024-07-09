@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BookNavbarSetting, BookNavBarView, FileUploadView, NoteNavbarSetting, NoteNavbarView } from '@renderer/components';
+import { BookNavbarSetting, BookNavBarView, FileUploadView, NoteNavbarSetting, NoteNavbarView, searchDialog } from '@renderer/components';
 import { t } from '@renderer/view/setting';
 import { useWindowSize } from '@vueuse/core';
 import { AlignJustify, Search } from 'lucide-vue-next';
@@ -26,6 +26,8 @@ function uploadAction() {
 
 const routePath = computed(() => router.currentRoute.value.path);
 
+
+
 </script>
 
 <template>
@@ -39,7 +41,7 @@ const routePath = computed(() => router.currentRoute.value.path);
         <AlignJustify class="w-5 h-5" />
       </button>
       <!-- 打开搜索框按钮 -->
-      <button aria-label="Search button"
+      <button aria-label="Search button" @click="searchDialog()"
         class="btn hidden h-8 w-28 items-center justify-start gap-3 border-base-content/20 hover:border-transparent hover:bg-base-content/20 sm:flex btn-sm btn-outline">
         <Search class="w-4 h-4" />
       </button>

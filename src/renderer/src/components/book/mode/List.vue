@@ -42,13 +42,9 @@ const rowVirtualizerOptions = computed(() => {
     getScrollElement: () => parentRef.value,
   }
 })
-
 const rowVirtualizer = useVirtualizer(rowVirtualizerOptions)
-
 const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems())
-
 const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
-
 const measureElement = (el: HTMLElement) => {
   if (!el) {
     return
@@ -62,9 +58,7 @@ const measureElement = (el: HTMLElement) => {
 </script>
 
 <template>
-  <div class="relative w-full" ref="containerRef" :style="{
-    height: `${totalSize}px`,
-  }">
+  <div class="relative w-full" ref="containerRef" :style="{ height: `${totalSize}px` }">
     <div v-for="virtualRow in virtualRows" :key="virtualRow.key" :ref="measureElement" :data-index="virtualRow.index"
       class="absolute top-0 left-0  w-full pb-4" :style="{
         transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin
