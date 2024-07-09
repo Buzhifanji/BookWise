@@ -103,7 +103,7 @@
     - Search engine search: <kbd>Upcoming</kbd>
 - Book Management
   - Modes: Bookshelf mode, Card mode, List mode
-  - Search: <kbd>Upcoming</kbd>
+  - Search
   - Sorting: adding time, reading time, reading progress, reading duration, book title, author, rating
   - Filtering: bookshelf
   - Support for editing book title, author, cover
@@ -115,7 +115,7 @@
   - Review feature: <kbd>Upcoming</kbd>
   - Shortcut keys: <kbd>Upcoming</kbd>
 - Note Management
-  - Search: <kbd>Upcoming</kbd>
+  - Search
   - Sorting: Time-based sorting, Book title sorting
   - Filtering
     - Book title filter (single book)
