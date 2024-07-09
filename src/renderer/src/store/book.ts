@@ -55,12 +55,17 @@ export const changeBookSortStore = <T extends keyof BookSort>(key: T, value: Boo
 // 书籍过滤
 export const useBookFilterStore = defineStore('useBookFilterStore', () => {
   const bookshelf = ref('') // 书架
+  const searchBookshelf = ref<{ id: string; value: string }>() // 搜索书架
 
   function setBookshelf(val: string) {
     bookshelf.value = val
   }
 
-  return { bookshelf, setBookshelf }
+  function setSearchBookshelf(val: { id: string; value: string } | undefined) {
+    searchBookshelf.value = val
+  }
+
+  return { bookshelf, setBookshelf, searchBookshelf, setSearchBookshelf }
 })
 
 // 全部书籍

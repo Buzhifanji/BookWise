@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 
 const props = defineProps<{ value: string, search: string }>();
+const emit = defineEmits(['click']);
 
 const val = computed(() => {
   const regex = new RegExp(props.search, 'gi');
@@ -11,5 +12,5 @@ const val = computed(() => {
 </script>
 
 <template>
-  <div class="ml-4 whitespace-normal block" v-html="val"></div>
+  <div class="ml-4 whitespace-normal block" @click="emit('click')" v-html="val"></div>
 </template>

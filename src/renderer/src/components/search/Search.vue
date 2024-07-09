@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { useDialog } from '@renderer/hooks';
-import { useBookshelfStore, useBookStore, useNoteStore, useTagStore } from '@renderer/store';
+import { router, RouterName } from '@renderer/route';
+import { useBookFilterStore, useBookshelfStore, useBookStore, useFilterNoteStore, useNoteStore, useTagStore } from '@renderer/store';
 import { t } from '@renderer/view/setting';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
 import { get, set, useDebounceFn } from '@vueuse/core';
 import { Search } from 'lucide-vue-next';
 import { computed, nextTick, ref, toRaw } from 'vue';
+import { bookJump } from '../book/action';
 import { NoteAction } from '../note/action';
 import TextView from './Text.vue';
 
@@ -20,6 +22,8 @@ const bookStore = useBookStore()
 const noteStore = useNoteStore()
 const tagStore = useTagStore()
 const boohshelfStore = useBookshelfStore()
+const filterTagStore = useFilterNoteStore()
+const filterBookshelfStore = useBookFilterStore()
 
 const searchedList = ref<Data[]>([])
 const containerRef = ref<HTMLElement | null>(null)
@@ -151,6 +155,27 @@ const onSearch = () => {
   debouncedFn()
 }
 
+const onClick = ({ type, id, value }: Content) => {
+  if (type === 'book') {
+    bookJump(id)
+  } else if (type === 'note' || type == 'highlight') {
+    const note = noteStore.noteList.find((item) => item.id === id)
+    if (note) {
+      NoteAction.jumpToBook(note)
+    }
+  } else if (type == 'tag') {
+    filterTagStore.setSearchTag({ id, value })
+    closeDialog()
+    router.push({ name: RouterName.Note })
+  } else if (type == 'bookshelf') {
+    filterBookshelfStore.setSearchBookshelf({ id, value })
+    closeDialog()
+    router.push({ name: RouterName.Book })
+  }
+
+  closeDialog()
+}
+
 initEdite()
 </script>
 
@@ -173,7 +198,8 @@ initEdite()
               {{ (searchedList[virtualRow.index] as Title).name }}
             </h2>
             <template v-else>
-              <TextView :value="(searchedList[virtualRow.index] as Content).value" :search="searchVal" />
+              <TextView @click="onClick((searchedList[virtualRow.index] as Content))"
+                :value="(searchedList[virtualRow.index] as Content).value" :search="searchVal" />
               <div class="divider mt-0 hover:bg-base-200"></div>
             </template>
           </li>

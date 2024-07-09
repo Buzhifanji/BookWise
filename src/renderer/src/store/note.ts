@@ -27,6 +27,7 @@ export const noteSortStore = useStorage<NoteNavbar>(
 export const useFilterNoteStore = defineStore('useFilterNoteStore', () => {
   const eBookId = ref('') // eBookId
   const tags = ref<string[]>([]) // 标签
+  const searchTag = ref<{ id: string; value: string }>() // 搜索的标签
 
   function setEBookId(val: string) {
     set(eBookId, val)
@@ -36,7 +37,11 @@ export const useFilterNoteStore = defineStore('useFilterNoteStore', () => {
     set(tags, val)
   }
 
-  return { eBookId, setEBookId, tags, setTags }
+  function setSearchTag(val: { id: string; value: string } | undefined) {
+    set(searchTag, val)
+  }
+
+  return { eBookId, setEBookId, tags, setTags, searchTag, setSearchTag }
 })
 
 export const changNoteSortStore = <T extends keyof NoteNavbar>(key: T, value: NoteNavbar[T]) => {

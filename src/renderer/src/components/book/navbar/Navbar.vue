@@ -3,10 +3,11 @@ import { bookSortStore, BookSortType, changeBookSortStore, useBookFilterStore } 
 import { t } from '@renderer/view/setting';
 import { get, set } from '@vueuse/core';
 import { ArrowDownNarrowWide, Check, Filter } from 'lucide-vue-next';
-import { computed, ref } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import { BookshelfAction } from '../../bookshelf/action';
 import DropdownView from '../../dropdown/Dropdown.vue';
 import SelectSearchView from '../../select/SelectSearch.vue';
+import TagListview from '../../tag/TagList.vue';
 
 const store = useBookFilterStore()
 const isSortBy = (val: string) => get(bookSortStore).sortBy === val
@@ -24,12 +25,30 @@ const list = computed(() => [
 // 按照书架过滤
 const bookshelf = BookshelfAction.observable()
 const allBookshelf = computed(() => (get(bookshelf) || []).map(item => ({ id: item.id, value: item.name })))
-const selectedBookshelft = ref({ id: '', value: '' })
-const updateBookshelf = () => store.setBookshelf(get(selectedBookshelft).id)
+const selectedBookshelft = ref<{ id: string, value: string }[]>([])
 const clearBookshelf = () => {
   store.setBookshelf('')
-  set(selectedBookshelft, { id: '', value: '' })
+  set(selectedBookshelft, [])
 }
+const updateBookshelf = () => {
+  const val = get(selectedBookshelft)
+  if (val.length) {
+    store.setBookshelf(val[0].id)
+  } else {
+    clearBookshelf()
+  }
+}
+const onRemove = () => clearBookshelf()
+
+// 搜索书架
+watchEffect(() => {
+  const tag = store.searchBookshelf
+  if (tag) {
+    set(selectedBookshelft, [tag])
+    store.setBookshelf(tag.id)
+    store.setSearchBookshelf(undefined)
+  }
+})
 </script>
 
 <template>
@@ -72,6 +91,7 @@ const clearBookshelf = () => {
         @update:model-value="updateBookshelf" :placeholder="t('book.needBookshelfName')" :data="allBookshelf"
         @clear="clearBookshelf()">
         <span>{{ t('book.bookshelf') }}</span>
+        <TagListview :tag="selectedBookshelft" @remove="onRemove" />
       </SelectSearchView>
     </div>
   </div>

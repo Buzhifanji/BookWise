@@ -17,6 +17,8 @@ const isSortBy = (val: string) => get(noteSortStore).sortBy === val
 
 const noteList = NoteAction.observable()
 
+
+
 // 按书籍过滤
 const noteAllBook = ref<TagItem[]>([])
 const selectedBook = ref<TagItem>({ id: '', value: '' })
@@ -44,6 +46,19 @@ const clearTagFilter = () => {
   store.setTags([])
   set(selectTags, [])
 }
+
+// 搜索标签
+watchEffect(() => {
+  const tag = store.searchTag
+  if (tag) {
+    if (!get(selectTags).find(item => item.id === tag.id)) {
+      selectTags.value.push(tag)
+      store.setTags(getTagIds())
+    }
+
+    store.setSearchTag(undefined)
+  }
+})
 
 watchEffect(() => {
   const notes = noteList.value || []
@@ -120,8 +135,8 @@ watchEffect(() => {
         <Filter />
       </button>
       <SelectSearchView className="input-sm join-item" v-model="selectedBook" @update:model-value="updateBook"
-        :data="noteAllBook" :placeholder="t('book.needBookshelfName')" @clear="clearBookFilter()">
-        <span>{{ t('book.bookshelf') }}</span>
+        :data="noteAllBook" :placeholder="t('book.needBookName')" @clear="clearBookFilter()">
+        <span>{{ t('book.name') }}</span>
       </SelectSearchView>
       <SelectSearchView className="input-sm join-item" v-model="selectTags" @update:model-value="updateTag"
         :data="noteAlltag" :placeholder="t('tag.needTag')" @clear="clearTagFilter()">
