@@ -3,7 +3,8 @@
     "book": "bøker",
     "note": "notater",
     "setting": "sette opp",
-    "recycleBin": "papirkurven"
+    "recycleBin": "papirkurven",
+    "highlight": "Fremheve"
   },
   "setting": {
     "chooseLanguage": "Velg et språk",
@@ -72,7 +73,9 @@
     "nextView": "Neste side",
     "comeFrom": "fra",
     "action": "operere",
-    "rename": "Gi nytt navn"
+    "rename": "Gi nytt navn",
+    "search": "Søk",
+    "noRegList": "Ingen samsvarende liste"
   },
   "readMode": {
     "double": "Dobbeltsidemodus",
@@ -201,5 +204,8 @@
     "readProgress": "lesefremgang",
     "readTime": "Lesetid",
     "updateTime": "Nylig lest"
+  },
+  "search": {
+    "searchRange": "Søk i bøker, notater, tagger, høydepunkter, bokhylle"
   }
 }

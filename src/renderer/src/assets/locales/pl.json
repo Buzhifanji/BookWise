@@ -3,7 +3,8 @@
     "book": "książki",
     "note": "Notatki",
     "setting": "Ustawienia",
-    "recycleBin": "kosz"
+    "recycleBin": "kosz",
+    "highlight": "Atrakcja"
   },
   "setting": {
     "chooseLanguage": "Wybierz język",
@@ -72,7 +73,9 @@
     "nextView": "Następna strona",
     "comeFrom": "z",
     "action": "działać",
-    "rename": "Przemianować"
+    "rename": "Przemianować",
+    "search": "szukaj",
+    "noRegList": "Brak pasującej listy"
   },
   "readMode": {
     "double": "Tryb podwójnej strony",
@@ -201,5 +204,8 @@
     "readProgress": "postęp w czytaniu",
     "readTime": "Czas czytania",
     "updateTime": "Niedawno przeczytane"
+  },
+  "search": {
+    "searchRange": "Szukaj książek, notatek, tagów, najważniejszych wydarzeń, półek na książki"
   }
 }

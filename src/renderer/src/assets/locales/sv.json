@@ -3,7 +3,8 @@
     "book": "böcker",
     "note": "anteckningar",
     "setting": "uppstart",
-    "recycleBin": "papperskorgen"
+    "recycleBin": "papperskorgen",
+    "highlight": "Markera"
   },
   "setting": {
     "chooseLanguage": "Välj ett språk",
@@ -72,7 +73,9 @@
     "nextView": "Nästa sida",
     "comeFrom": "från",
     "action": "fungera",
-    "rename": "Döp om"
+    "rename": "Döp om",
+    "search": "Sök",
+    "noRegList": "Ingen matchande lista"
   },
   "readMode": {
     "double": "Dubbelsidigt läge",
@@ -201,5 +204,8 @@
     "readProgress": "läsframsteg",
     "readTime": "Lästid",
     "updateTime": "Nyligen läst"
+  },
+  "search": {
+    "searchRange": "Sök i böcker, anteckningar, taggar, höjdpunkter, bokhylla"
   }
 }

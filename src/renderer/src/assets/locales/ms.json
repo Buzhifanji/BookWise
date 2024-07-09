@@ -3,7 +3,8 @@
     "book": "buku",
     "note": "Nota",
     "setting": "tetapan",
-    "recycleBin": "tong kitar semula"
+    "recycleBin": "tong kitar semula",
+    "highlight": "Serlahkan"
   },
   "setting": {
     "chooseLanguage": "Pilih bahasa",
@@ -72,7 +73,9 @@
     "nextView": "Muka surat seterusnya",
     "comeFrom": "daripada",
     "action": "beroperasi",
-    "rename": "Namakan semula"
+    "rename": "Namakan semula",
+    "search": "cari",
+    "noRegList": "Tiada senarai yang sepadan"
   },
   "readMode": {
     "double": "Mod muka surat dua",
@@ -201,5 +204,8 @@
     "readProgress": "kemajuan membaca",
     "readTime": "Waktu membaca",
     "updateTime": "Baru-baru ini dibaca"
+  },
+  "search": {
+    "searchRange": "Cari buku, nota, tag, sorotan, rak buku"
   }
 }

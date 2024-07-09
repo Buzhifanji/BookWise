@@ -3,7 +3,8 @@
     "book": "livres",
     "note": "Remarques",
     "setting": "installation",
-    "recycleBin": "corbeille"
+    "recycleBin": "corbeille",
+    "highlight": "Souligner"
   },
   "setting": {
     "chooseLanguage": "Choisissez une langue",
@@ -72,7 +73,9 @@
     "nextView": "Page suivante",
     "comeFrom": "depuis",
     "action": "fonctionner",
-    "rename": "Renommer"
+    "rename": "Renommer",
+    "search": "recherche",
+    "noRegList": "Aucune liste correspondante"
   },
   "readMode": {
     "double": "Mode double page",
@@ -201,5 +204,8 @@
     "readProgress": "progression de la lecture",
     "readTime": "Temps de lecture",
     "updateTime": "Lu récemment"
+  },
+  "search": {
+    "searchRange": "Rechercher des livres, des notes, des balises, des surlignages, une bibliothèque"
   }
 }

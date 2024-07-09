@@ -3,7 +3,8 @@
     "book": "kitabın",
     "note": "notlar",
     "setting": "kurmak",
-    "recycleBin": "geridönüşüm kutusu"
+    "recycleBin": "geridönüşüm kutusu",
+    "highlight": "Vurgulamak"
   },
   "setting": {
     "chooseLanguage": "Bir dil seçin",
@@ -72,7 +73,9 @@
     "nextView": "Sonraki Sayfa",
     "comeFrom": "itibaren",
     "action": "işletmek",
-    "rename": "Yeniden isimlendirmek"
+    "rename": "Yeniden isimlendirmek",
+    "search": "aramak",
+    "noRegList": "Eşleşen liste yok"
   },
   "readMode": {
     "double": "Çift sayfa modu",
@@ -201,5 +204,8 @@
     "readProgress": "okuma ilerlemesi",
     "readTime": "Okuma zamanı",
     "updateTime": "Son zamanlarda okundu"
+  },
+  "search": {
+    "searchRange": "Kitapları, notları, etiketleri, öne çıkanları, kitap rafını arayın"
   }
 }

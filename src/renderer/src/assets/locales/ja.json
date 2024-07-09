@@ -3,7 +3,8 @@
     "book": "本",
     "note": "ノート",
     "setting": "設定",
-    "recycleBin": "ゴミ箱"
+    "recycleBin": "ゴミ箱",
+    "highlight": "ハイライト"
   },
   "setting": {
     "chooseLanguage": "言語を選択してください",
@@ -72,7 +73,9 @@
     "nextView": "次のページ",
     "comeFrom": "から",
     "action": "操作する",
-    "rename": "名前の変更"
+    "rename": "名前の変更",
+    "search": "検索",
+    "noRegList": "一致するリストがありません"
   },
   "readMode": {
     "double": "見開きモード",
@@ -201,5 +204,8 @@
     "readProgress": "読書の進み具合",
     "readTime": "読書の時間",
     "updateTime": "最近読んだもの"
+  },
+  "search": {
+    "searchRange": "本、メモ、タグ、ハイライト、本棚を検索"
   }
 }

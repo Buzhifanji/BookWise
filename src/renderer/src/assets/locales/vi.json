@@ -3,7 +3,8 @@
     "book": "sách",
     "note": "Ghi chú",
     "setting": "Cài đặt",
-    "recycleBin": "thùng rác"
+    "recycleBin": "thùng rác",
+    "highlight": "Điểm nổi bật"
   },
   "setting": {
     "chooseLanguage": "Chọn một ngôn ngữ",
@@ -72,7 +73,9 @@
     "nextView": "Trang tiếp theo",
     "comeFrom": "từ",
     "action": "vận hành",
-    "rename": "Đổi tên"
+    "rename": "Đổi tên",
+    "search": "tìm kiếm",
+    "noRegList": "Không có danh sách phù hợp"
   },
   "readMode": {
     "double": "Chế độ trang đôi",
@@ -201,5 +204,8 @@
     "readProgress": "tiến độ đọc",
     "readTime": "Thời gian đọc",
     "updateTime": "Gần đây đã đọc"
+  },
+  "search": {
+    "searchRange": "Tìm kiếm sách, ghi chú, thẻ, điểm nổi bật, giá sách"
   }
 }

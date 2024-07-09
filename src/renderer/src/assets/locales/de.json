@@ -3,7 +3,8 @@
     "book": "Bücher",
     "note": "Anmerkungen",
     "setting": "aufstellen",
-    "recycleBin": "Papierkorb"
+    "recycleBin": "Papierkorb",
+    "highlight": "Markieren"
   },
   "setting": {
     "chooseLanguage": "Wählen Sie eine Sprache",
@@ -72,7 +73,9 @@
     "nextView": "Nächste Seite",
     "comeFrom": "aus",
     "action": "arbeiten",
-    "rename": "Umbenennen"
+    "rename": "Umbenennen",
+    "search": "suchen",
+    "noRegList": "Keine passende Liste"
   },
   "readMode": {
     "double": "Doppelseitenmodus",
@@ -201,5 +204,8 @@
     "readProgress": "Lesefortschritt",
     "readTime": "Lesezeit",
     "updateTime": "Kürzlich gelesen"
+  },
+  "search": {
+    "searchRange": "Durchsuchen Sie Bücher, Notizen, Tags, Markierungen und Bücherregale"
   }
 }

@@ -3,7 +3,8 @@
     "book": "books",
     "note": "notes",
     "setting": "set up",
-    "recycleBin": "recycle bin"
+    "recycleBin": "recycle bin",
+    "highlight": "Highlight"
   },
   "setting": {
     "chooseLanguage": "Choose a language",
@@ -72,7 +73,9 @@
     "nextView": "Next page",
     "comeFrom": "from",
     "action": "operate",
-    "rename": "Rename"
+    "rename": "Rename",
+    "search": "search",
+    "noRegList": "No matching list"
   },
   "readMode": {
     "double": "Double page mode",
@@ -201,5 +204,8 @@
     "readProgress": "reading progress",
     "readTime": "Reading time",
     "updateTime": "Recently read"
+  },
+  "search": {
+    "searchRange": "Search books, notes, tags, highlights, bookshelf"
   }
 }

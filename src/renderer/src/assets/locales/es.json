@@ -3,7 +3,8 @@
     "book": "libros",
     "note": "notas",
     "setting": "configuración",
-    "recycleBin": "papelera de reciclaje"
+    "recycleBin": "papelera de reciclaje",
+    "highlight": "Destacar"
   },
   "setting": {
     "chooseLanguage": "Elige un idioma",
@@ -72,7 +73,9 @@
     "nextView": "Siguiente página",
     "comeFrom": "de",
     "action": "funcionar",
-    "rename": "Rebautizar"
+    "rename": "Rebautizar",
+    "search": "buscar",
+    "noRegList": "No hay lista coincidente"
   },
   "readMode": {
     "double": "Modo de doble página",
@@ -201,5 +204,8 @@
     "readProgress": "progreso de lectura",
     "readTime": "Tiempo de leer",
     "updateTime": "Leído recientemente"
+  },
+  "search": {
+    "searchRange": "Buscar libros, notas, etiquetas, destacados, estantería"
   }
 }

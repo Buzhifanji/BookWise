@@ -108,7 +108,7 @@ const debouncedFn = useDebounceFn(() => {
     // 搜索书籍
     const book = searchBook(val)
     if (book.length) {
-      res.push({ name: '书籍' })
+      res.push({ name: t('menu.book') })
       const books = book.map((item) => ({ id: item.id, value: item.name, eBookId: item.id, type: 'book' }))
       res.push(...books)
     }
@@ -116,7 +116,7 @@ const debouncedFn = useDebounceFn(() => {
     // 搜索笔记
     const note = searchNote(val)
     if (note.length) {
-      res.push({ name: '笔记' })
+      res.push({ name: t('menu.note') })
       const notes = note.map((item) => ({ id: item.id, value: item.noteText.value, eBookId: item.eBookId, type: 'note' }))
       res.push(...notes)
     }
@@ -124,7 +124,7 @@ const debouncedFn = useDebounceFn(() => {
     // 高亮内容
     const highlight = searchHighlight(val)
     if (highlight.length) {
-      res.push({ name: '高亮' })
+      res.push({ name: t('menu.highlight') })
       const highlights: Data[] = highlight.map((item) => ({ id: item.id, value: item.highlightSource, eBookId: item.eBookId, type: 'highlight' }))
       res.push(...highlights)
     }
@@ -132,7 +132,7 @@ const debouncedFn = useDebounceFn(() => {
     // 搜索标签
     const tag = searchTag(val)
     if (tag.length) {
-      res.push({ name: '标签' })
+      res.push({ name: t('tag.name') })
       const tags = tag.map((item) => ({ id: item.id, value: item.tagName, eBookId: item.id, type: 'tag' }))
       res.push(...tags)
     }
@@ -140,7 +140,7 @@ const debouncedFn = useDebounceFn(() => {
     // 搜索书架
     const bookshelf = searchBookshelf(val)
     if (bookshelf.length) {
-      res.push({ name: '书架' })
+      res.push({ name: t('book.bookshelf') })
       const bookshelves = bookshelf.map((item) => ({ id: item.id, value: item.name, eBookId: item.id, type: 'bookshelf' }))
       res.push(...bookshelves)
     }
@@ -185,7 +185,7 @@ initEdite()
       <div class="flex flex-row justify-between items-center mb-5">
         <label class="input input-md flex w-1/2 items-center gap-2">
           <Search />
-          <input type="text" class="grow" v-model="searchVal" placeholder="搜索" @input="onSearch" />
+          <input type="text" class="grow" v-model="searchVal" :placeholder="t('common.search')" @input="onSearch" />
         </label>
         <div @click="closeDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
       </div>
@@ -207,13 +207,13 @@ initEdite()
         <div v-else-if="searchVal" class="flex justify-center items-center h-full mt-10 ">
           <div class="text-center">
             <div class="text-3xl">🗑📢</div>
-            <div class="text-sm mt-2 text-base-content/70">无匹配列表</div>
+            <div class="text-sm mt-2 text-base-content/70">{{ t('common.noRegList') }}</div>
           </div>
         </div>
         <div v-else class="flex justify-center items-center h-full mt-10 ">
           <div class="text-center">
             <div class="text-3xl">🔍</div>
-            <div class="text-sm mt-2 text-base-content/70">搜索图书、笔记、标签、高亮、书架</div>
+            <div class="text-sm mt-2 text-base-content/70">{{ t('search.searchRange') }}</div>
           </div>
         </div>
       </div>

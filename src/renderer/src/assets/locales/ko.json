@@ -3,7 +3,8 @@
     "book": "서적",
     "note": "노트",
     "setting": "설정",
-    "recycleBin": "쓰레기통"
+    "recycleBin": "쓰레기통",
+    "highlight": "가장 밝은 부분"
   },
   "setting": {
     "chooseLanguage": "언어를 선택하세요",
@@ -72,7 +73,9 @@
     "nextView": "다음 페이지",
     "comeFrom": "~에서",
     "action": "작동하다",
-    "rename": "이름 바꾸기"
+    "rename": "이름 바꾸기",
+    "search": "찾다",
+    "noRegList": "일치하는 목록이 없습니다."
   },
   "readMode": {
     "double": "이중 페이지 모드",
@@ -201,5 +204,8 @@
     "readProgress": "읽기 진행 상황",
     "readTime": "독서 시간",
     "updateTime": "최근에 읽음"
+  },
+  "search": {
+    "searchRange": "책, 메모, 태그, 하이라이트, 책장 검색"
   }
 }

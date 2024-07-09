@@ -3,7 +3,8 @@
     "book": "boeken",
     "note": "notities",
     "setting": "opgericht",
-    "recycleBin": "prullenbak"
+    "recycleBin": "prullenbak",
+    "highlight": "Hoogtepunt"
   },
   "setting": {
     "chooseLanguage": "Kies een taal",
@@ -72,7 +73,9 @@
     "nextView": "Volgende bladzijde",
     "comeFrom": "van",
     "action": "bedienen",
-    "rename": "Hernoemen"
+    "rename": "Hernoemen",
+    "search": "zoekopdracht",
+    "noRegList": "Geen overeenkomende lijst"
   },
   "readMode": {
     "double": "Dubbele paginamodus",
@@ -201,5 +204,8 @@
     "readProgress": "voortgang lezen",
     "readTime": "Leestijd",
     "updateTime": "Onlangs gelezen"
+  },
+  "search": {
+    "searchRange": "Zoek boeken, notities, tags, hoogtepunten, boekenplank"
   }
 }

@@ -3,7 +3,8 @@
     "book": "圖書",
     "note": "筆記",
     "setting": "設置",
-    "recycleBin": "回收站"
+    "recycleBin": "回收站",
+    "highlight": "高亮"
   },
   "setting": {
     "userSetting": "用戶設置",
@@ -72,7 +73,9 @@
     "getFirstView": "已經是第一頁了",
     "comeFrom": "來自",
     "action": "操作",
-    "rename": "重命名"
+    "rename": "重命名",
+    "search": "搜索",
+    "noRegList": "無匹配列表"
   },
   "readMode": {
     "scroll": "滾動模式",
@@ -199,5 +202,8 @@
     "readTime": "閱讀時長",
     "asc": "升序",
     "desc": "降序"
+  },
+  "search": {
+    "searchRange": "搜索圖書、筆記、標簽、高亮、書架"
   }
 }

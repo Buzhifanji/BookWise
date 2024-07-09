@@ -3,7 +3,8 @@
     "book": "كتب",
     "note": "ملحوظات",
     "setting": "يثبت",
-    "recycleBin": "سلة المهملات"
+    "recycleBin": "سلة المهملات",
+    "highlight": "تسليط الضوء"
   },
   "setting": {
     "chooseLanguage": "اختر لغة",
@@ -72,7 +73,9 @@
     "nextView": "الصفحة التالية",
     "comeFrom": "من",
     "action": "العمل",
-    "rename": "إعادة تسمية"
+    "rename": "إعادة تسمية",
+    "search": "يبحث",
+    "noRegList": "لا توجد قائمة مطابقة"
   },
   "readMode": {
     "double": "وضع الصفحة المزدوجة",
@@ -201,5 +204,8 @@
     "readProgress": "تقدم القراءة",
     "readTime": "وقت القراءة",
     "updateTime": "قرأت مؤخرا"
+  },
+  "search": {
+    "searchRange": "البحث في الكتب والملاحظات والعلامات والإبرازات ورف الكتب"
   }
 }
