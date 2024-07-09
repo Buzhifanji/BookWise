@@ -3,7 +3,7 @@ import { CheckBoxView, Select, SelectView } from '@renderer/components';
 import { settingStore } from '@renderer/store';
 import { t } from '@renderer/view/setting';
 import { langs } from './language';
-import { bookshelfModeList, readModeList } from './mode';
+import { bookshelfModeList, nodeModeList, readModeList } from './mode';
 import { themes } from './theme';
 
 const textOpacity = { '--tw-text-opacity': 0.6 };
@@ -36,6 +36,7 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
             <h2 class="card-title">{{ t('setting.mode') }}</h2>
             <SelectView v-model="settingStore.bookshelf" :list="bookshelfModeList" :label="t('setting.bookMode')" />
             <SelectView v-model="settingStore.readMode" :list="readModeList" :label="t('setting.readMode')" />
+            <SelectView v-model="settingStore.noteMode" :list="nodeModeList" :label="t('note.mode')" />
           </div>
         </div>
       </div>

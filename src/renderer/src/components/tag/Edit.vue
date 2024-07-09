@@ -1,32 +1,37 @@
 <script setup lang="ts">
-import { Bookshelf } from '@renderer/batabase';
+import { Tag } from '@renderer/batabase';
 import { useDialog } from '@renderer/hooks';
 import { toastError } from '@renderer/shared';
-import { useBookStore } from '@renderer/store';
+import { useNoteStore } from '@renderer/store';
 import { t } from '@renderer/view/setting';
 import { vOnClickOutside } from '@vueuse/components';
 import { get, set, useToggle } from '@vueuse/core';
 import { nextTick, ref } from 'vue';
-import { BookAction } from '../book/action';
 import SkeletonView from '../loading/Skeleton.vue';
-import { BookshelfAction } from './action';
+import { NoteAction } from '../note/action';
+import { TagAction } from './action';
 
 const [loading, setLoading] = useToggle(false)
 const [submitLoading, setSubmitLoading] = useToggle(false)
 const { dialogRef, openDialog, closeDialog } = useDialog();
 const { dialogRef: RenameDialogRef, openDialog: openRenameDialog, closeDialog: closeRenameDialog } = useDialog();
-const bookStore = useBookStore()
+const noteStore = useNoteStore()
 
-const activeBookshelf = ref<Bookshelf | null>(null)
+const activeBookshelf = ref<Tag | null>(null)
 const inputVal = ref<string>('')
-const editBookshelf = (val: Bookshelf) => {
+const onEdit = (val: Tag) => {
   set(activeBookshelf, val)
-  set(inputVal, val.name)
+  set(inputVal, val.tagName)
   openRenameDialog()
 }
 
-const allBookshelf = ref<Bookshelf[]>([])
-const bookMap = new Map<string, { count: number, bookId: string }>()
+const noteMap = new Map<string, { count: number, ids: Set<string> }>()
+const allTag = ref<Tag[]>([])
+
+const onLoad = async () => {
+  const tags = await TagAction.getAll()
+  set(allTag, tags)
+}
 
 const init = async () => {
   try {
@@ -34,20 +39,20 @@ const init = async () => {
     openDialog()
     await nextTick()
     openDialog()
-    const bookshelf = await BookshelfAction.getAll()
 
-    for (const item of bookStore.bookList) {
-      const bookshelfId = item.groupId
-      if (bookshelfId) {
-        const temp = bookMap.get(bookshelfId) || { count: 0, bookId: '' }
-        temp.bookId = item.id
-        temp.count++
-        bookMap.set(bookshelfId, temp)
+    await onLoad()
+
+    for (const item of noteStore.noteList) {
+      const tags = TagAction.toTag(item.tag)
+      if (tags.length) {
+        for (const tag of tags) {
+          const temp = noteMap.get(tag.id) || { count: 0, ids: new Set() }
+          temp.ids.add(item.id)
+          temp.count++
+          noteMap.set(tag.id, temp)
+        }
       }
     }
-
-    set(allBookshelf, bookshelf)
-
   } catch (err) {
     console.log(err)
     toastError(`获取书架列表失败: ${err}`)
@@ -56,10 +61,7 @@ const init = async () => {
   }
 }
 
-const onLoad = async () => {
-  const res = await BookshelfAction.getAll()
-  set(allBookshelf, res)
-}
+
 
 // 重命名
 const onRename = async () => {
@@ -79,14 +81,30 @@ const onRename = async () => {
 
   setSubmitLoading(true)
   try {
-    const { name, id } = active
-    if (name !== val) {
-      await BookshelfAction.update(id, val)
+    const { tagName, id } = active
+    if (tagName !== val) {
+      await TagAction.update(id, val)
 
       // 更新绑定的书籍
-      const oldInfo = bookMap.get(id)
+      const oldInfo = noteMap.get(id)
       if (oldInfo) {
-        await BookAction.update(oldInfo.bookId, { groupName: val })
+        const ids = [...oldInfo.ids]
+        await Promise.all(ids.map(noteId => {
+          const note = noteStore.noteList.find(sub => sub.id === noteId)
+          if (note) {
+            const temp = TagAction.toTag(note.tag)
+            temp.some(tag => {
+              if (tag.id == id) {
+                tag.tagName = val
+                return true
+              } else {
+                return false
+              }
+            })
+            return NoteAction.update(noteId, { tag: TagAction.toJSON(temp) })
+          }
+          return null
+        }))
       }
 
       await onLoad()
@@ -101,19 +119,28 @@ const onRename = async () => {
 
 // 一键清空空书架
 const onClearEmpty = async () => {
-  const ids = get(allBookshelf).filter(item => !bookMap.has(item.id)).map(item => item.id)
+  const ids = get(allTag).filter(item => !noteMap.has(item.id)).map(item => item.id)
   if (!ids.length) return
-  await BookshelfAction.removeByIds(ids)
+  await TagAction.removeByIds(ids)
   await onLoad()
 }
 
 // 删除
-const onRemove = async (val: Bookshelf) => {
-  await BookshelfAction.removeByIds([val.id])
+const onRemove = async (val: Tag) => {
+  await TagAction.removeByIds([val.id])
 
-  const oldInfo = bookMap.get(val.id)
+  const oldInfo = noteMap.get(val.id)
   if (oldInfo) {
-    await BookAction.update(oldInfo.bookId, { groupName: '', groupId: '' })
+    const ids = [...oldInfo.ids]
+    await Promise.all(ids.map(noteId => {
+      const note = noteStore.noteList.find(sub => sub.id === noteId)
+      if (note) {
+        let temp = TagAction.toTag(note.tag)
+        temp = temp.filter(tag => tag.id !== val.id)
+        return NoteAction.update(noteId, { tag: TagAction.toJSON(temp) })
+      }
+      return null
+    }))
   }
 
   await onLoad()
@@ -124,32 +151,33 @@ init()
 
 <template>
   <dialog class="modal" ref="dialogRef">
-    <div class="modal-box max-w-3xl" v-on-click-outside="closeDialog" @contextmenu.prevent>
+    <div class="modal-box max-w-3xl overflow-hidden flex flex-col" v-on-click-outside="closeDialog"
+      @contextmenu.prevent>
       <div class="flex flex-row justify-between items-center mb-5">
-        <h3 class="font-bold text-lg">管理书架</h3>
+        <h3 class="font-bold text-lg">标签管理</h3>
         <div @click="closeDialog"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
       </div>
       <SkeletonView v-if="loading" />
       <template v-else>
-        <form v-if="allBookshelf.length">
-          <div class="overflow-x-auto">
-            <table class="table">
+        <form v-if="allTag.length" class="flex-1 overflow-auto relative scrollbar-thin">
+          <div class="overflow-y-auto ">
+            <table class="table table-auto table-pin-rows table-pin-cols">
               <thead>
                 <tr>
                   <th></th>
-                  <th>书架名</th>
-                  <th>书籍数量</th>
+                  <th>标签名</th>
+                  <th>笔记数量</th>
                   <th>操作</th>
                 </tr>
               </thead>
               <tbody>
-                <tr class="hover" v-for="item, index in allBookshelf">
+                <tr class="hover" v-for="item, index in allTag">
                   <th>{{ index + 1 }}</th>
-                  <td>{{ item.name }}</td>
-                  <td>{{ bookMap.get(item.id)?.count || 0 }}</td>
+                  <td>{{ item.tagName }}</td>
+                  <td>{{ noteMap.get(item.id)?.count || 0 }}</td>
                   <td>
                     <div class="join join-horizontal">
-                      <button class="btn btn-sm btn-outline join-item" @click="editBookshelf(item)">
+                      <button class="btn btn-sm btn-outline join-item" @click="onEdit(item)">
                         修改
                       </button>
                       <button class="btn btn-sm btn-outline btn-error join-item" @click="onRemove(item)">
@@ -161,15 +189,16 @@ init()
               </tbody>
             </table>
           </div>
-          <div class="modal-action justify-between">
-            <button class="btn  btn-success" @click="onClearEmpty()">一键清空空书架</button>
-            <button class="btn btn-outline" type="button" @click="closeDialog">{{ t('common.close') }}</button>
-          </div>
+
         </form>
         <div v-else class="flex justify-center my-20 w-full">
           <div class="btn">
             <div class="badge">{{ t('common.empty') }}</div>
           </div>
+        </div>
+        <div class="modal-action justify-between">
+          <button class="btn  btn-success" @click="onClearEmpty()">一键清空空标签</button>
+          <button class="btn btn-outline" type="button" @click="closeDialog">{{ t('common.close') }}</button>
         </div>
       </template>
 
@@ -181,7 +210,7 @@ init()
           </div>
           <form>
             <label class="input input-bordered flex items-center gap-2">
-              {{ t('book.bookshelf') }}
+              {{ t('tag.name') }}
               <input type="text" class="grow" :placeholder="t('book.needBookshelfName')" v-model="inputVal"
                 @keydown.enter="onRename" />
             </label>

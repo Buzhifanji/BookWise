@@ -1,4 +1,4 @@
-import { BookshelftMode, ReadMode } from '@renderer/enum'
+import { BookshelftMode, NoteMode, ReadMode } from '@renderer/enum'
 import { computed } from 'vue'
 import { t } from './language'
 
@@ -9,7 +9,6 @@ export const readModeList = computed(() => {
     { id: ReadMode.double, value: t('readMode.double') }
   ]
 })
-
 export const getSelectReadMode = (readMode: ReadMode) => {
   return readModeList.value.find((item) => item.id === readMode)?.value
 }
@@ -21,7 +20,16 @@ export const bookshelfModeList = computed(() => {
     { id: BookshelftMode.list, value: t('bookMode.list') }
   ]
 })
-
 export const getSelectBookshelfMode = (bookshelfMode: BookshelftMode) => {
   return bookshelfModeList.value.find((item) => item.id === bookshelfMode)?.value
+}
+
+export const nodeModeList = computed(() => {
+  return [
+    { id: NoteMode.card, value: '卡片模式' },
+    { id: NoteMode.list, value: '列表模式' }
+  ]
+})
+export const selectNodeMode = (nodeMode: NoteMode) => {
+  return nodeModeList.value.find((item) => item.id === nodeMode)?.value
 }

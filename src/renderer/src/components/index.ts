@@ -13,6 +13,7 @@ import SkeletonView from './loading/Skeleton.vue'
 import NoteListView from './note/NoteList.vue'
 import { NoteAction, NoteText } from './note/action'
 import NoteNavbarView from './note/navbar/Navbar.vue'
+import NoteNavbarSetting from './note/navbar/Setting.vue'
 import Select from './select/Select.vue'
 import SelectSearchView from './select/SelectSearch.vue'
 import SelectView from './select/SelectView.vue'
@@ -50,6 +51,7 @@ export {
   List,
   NoteAction,
   NoteListView,
+  NoteNavbarSetting,
   NoteNavbarView,
   RingLoadingView,
   ScoreInputView,

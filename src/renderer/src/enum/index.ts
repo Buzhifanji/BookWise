@@ -18,3 +18,8 @@ export enum BookshelftMode {
   /** 书架模式 */
   bookshelf = 'bookshelf'
 }
+
+export enum NoteMode {
+  card = 'card',
+  list = 'list'
+}

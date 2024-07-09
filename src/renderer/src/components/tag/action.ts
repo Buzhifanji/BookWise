@@ -22,6 +22,24 @@ export class TagAction {
     }
   }
 
+  static async update(id: string, tagName: string) {
+    try {
+      await db.tag.update(id, { tagName, updateTime: now() })
+    } catch (error) {
+      toastError('更新标签失败' + error)
+      return Promise.reject(error)
+    }
+  }
+
+  static async removeByIds(ids: string[]) {
+    try {
+      await db.tag.bulkDelete(ids)
+    } catch (error) {
+      toastError('删除书签失败' + error)
+      return Promise.reject(error)
+    }
+  }
+
   static observable(isDelete = false) {
     try {
       return useObservable<Tag[], Tag[]>(
@@ -45,6 +63,10 @@ export class TagAction {
       toastError('读取图书列表失败' + error)
       return [] as Tag[]
     }
+  }
+
+  static getAll() {
+    return db.tag.toArray()
   }
 
   static findByIds(ids: string) {
