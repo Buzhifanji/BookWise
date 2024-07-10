@@ -7,7 +7,6 @@ import { setI18nLanguage } from './data';
 import './dayjs';
 import { bookPositionStore, bookReadTimeStore, settingStore, useBookshelfStore, useBookStore, useNoteStore, useTagStore } from './store';
 
-
 watchEffect(() => {
   const theme = settingStore.value.theme
   document.querySelector('html')?.setAttribute('data-theme', theme)

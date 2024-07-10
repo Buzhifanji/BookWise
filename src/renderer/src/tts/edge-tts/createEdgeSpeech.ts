@@ -1,9 +1,10 @@
 import qs from 'query-string'
-import { v4 as uuidv4 } from 'uuid'
 
 import { type SsmlOptions, genSSML, genSendContent, getHeadersAndData } from '../shared'
 
 export interface EdgeSpeechPayload {
+  connectId: string
+
   /**
    * @title 语音合成的文本
    */
@@ -52,13 +53,15 @@ export interface CreateEdgeSpeechCompletionOptions {
   payload: EdgeSpeechPayload
 }
 
+let ws: WebSocket | null = null
+let timer: NodeJS.Timeout | null = null
+
 export const createEdgeSpeech = async (
   { payload }: CreateEdgeSpeechCompletionOptions,
   { proxyUrl, token }: { proxyUrl?: string; token?: string } = {}
 ): Promise<Response> => {
-  const { input, options } = payload
+  const { input, options, connectId } = payload
 
-  const connectId = uuidv4().replaceAll('-', '')
   const url = qs.stringifyUrl({
     query: {
       ConnectionId: connectId,
@@ -72,19 +75,30 @@ export const createEdgeSpeech = async (
   const content = genSendContent(contentHeader, genSSML(input, options))
 
   return new Promise((resolve, reject) => {
-    const ws = new WebSocket(url)
+    ws = ws || new WebSocket(url)
     ws.binaryType = 'arraybuffer'
     const onOpen = () => {
-      ws.send(config)
-      ws.send(content)
+      ws?.send(config)
+      ws?.send(content)
     }
+
+    const onClose = () => {
+      if (timer) clearTimeout(timer)
+
+      // 传送完后，10秒无消息发送就关闭ws
+      timer = setTimeout(() => {
+        ws?.close()
+        ws = null
+      }, 10 * 1000)
+    }
+
     let audioData = new ArrayBuffer(0)
     const onMessage = async (event: MessageEvent<any>) => {
       if (typeof event.data === 'string') {
         const { headers } = getHeadersAndData(event.data)
         switch (headers['Path']) {
           case 'turn.end': {
-            ws.close()
+            onClose()
             if (!audioData.byteLength) return
             const res = new Response(audioData)
             resolve(res)
@@ -92,6 +106,7 @@ export const createEdgeSpeech = async (
           }
         }
       } else if (event.data instanceof ArrayBuffer) {
+        if (timer) clearTimeout(timer)
         const dataview = new DataView(event.data)
         const headerLength = dataview.getInt16(0)
         if (event.data.byteLength > headerLength + 2) {
@@ -100,13 +115,17 @@ export const createEdgeSpeech = async (
           const mergedUint8Array = new Uint8Array(newAudioData)
           mergedUint8Array.set(new Uint8Array(audioData), 0)
           mergedUint8Array.set(new Uint8Array(newBody), audioData.byteLength)
+
           audioData = newAudioData
         }
+      } else {
+        reject(new Error('WebSocket error occurred. invalid data type.'))
+        ws?.close()
       }
     }
     const onError = () => {
       reject(new Error('WebSocket error occurred.'))
-      ws.close()
+      ws?.close()
     }
     ws.addEventListener('open', onOpen)
     ws.addEventListener('message', onMessage)

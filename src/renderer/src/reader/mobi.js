@@ -1293,7 +1293,7 @@ class KF8 {
   }
   async createDocument(section) {
     const str = await this.loadText(section)
-    const doc = this.parser.parseFromString(str, this.#type)
+    let doc = this.parser.parseFromString(str, this.#type)
 
     const replaced = await this.replaceResources(str)
 

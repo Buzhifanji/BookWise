@@ -2,13 +2,15 @@
 import { Book, Note, Tag } from '@renderer/batabase';
 import { NoteAction, NoteText, TagAction, TagListView } from '@renderer/components';
 import { t } from '@renderer/data';
-import { toastSuccess } from '@renderer/shared';
+import { toastError, toastSuccess } from '@renderer/shared';
 import { settingStore } from '@renderer/store';
 import { get, onClickOutside, set, useElementSize } from '@vueuse/core';
-import { Baseline, Copy, Highlighter, MessageSquareMore, SpellCheck2, Trash } from 'lucide-vue-next';
+import { Baseline, Copy, Headset, Highlighter, MessageSquareMore, SpellCheck2, Trash } from 'lucide-vue-next';
+
 import { Ref, computed, ref } from 'vue';
 import { highlighter } from '../highlight';
 import { HighlightType, highlightColor } from '../highlight-color';
+import { isAudioReadying, playAudioAction } from '../tts';
 import { getSectionContainer } from '../util';
 import NoteListView from './NoteList.vue';
 import { NoteBarStyle, NoteToolBarAction, ToolbarStyle } from './action';
@@ -129,6 +131,22 @@ const onRemove = () => {
   noteToolBar.remove()
   ToolbarStyle.close()
 }
+
+// 朗读高亮内容
+const onRead = async () => {
+  if (get(isAudioReadying)) return
+  try {
+    const input = ToolbarStyle.source.reduce((acc, cur) => acc + cur.text, '')
+    if (!input) return
+    set(isAudioReadying, true)
+    await playAudioAction({ voice: 'zh-CN-XiaoxiaoNeural', locale: 'zh-CN', input, })
+  } catch (err) {
+    toastError(`朗读失败：${err}`)
+  } finally {
+    set(isAudioReadying, false)
+  }
+}
+
 </script>
 
 <template>
@@ -147,6 +165,13 @@ const onRemove = () => {
           <div class="tooltip flex" :data-tip="t('setting.autoHighlight')">
             <input type="checkbox" class="toggle toggle-sm toggle-success" v-model="settingStore.isAutoHighlight"
               :checked="settingStore.isAutoHighlight" />
+          </div>
+        </div>
+        <div class="flex pr-2.5">
+          <div class="tooltip flex" data-tip="朗读文字">
+            <button class="btn btn-sm btn-ghost" @click="onRead()">
+              <Headset />
+            </button>
           </div>
         </div>
       </div>
