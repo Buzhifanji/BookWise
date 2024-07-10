@@ -1,11 +1,10 @@
 import { EdgeSpeechTTS } from '@renderer/tts'
-import { get } from '@vueuse/core'
+import { get, set } from '@vueuse/core'
 import { Howl } from 'howler'
 import { v4 as uuidv4 } from 'uuid'
 import { ref } from 'vue'
 
 const audioBuffer: { id: string; value: ArrayBuffer }[] = []
-let volume: number = 0.5 // 音量
 let activeURL: string = '' // 当前播放的音频URL
 let acitveText: string = '' // 当前播放的文本
 let sound: Howl
@@ -54,11 +53,15 @@ export function createAudio() {
     return false
   } else {
     activeURL = bufferToURL(audioBuffer[0].value)
-    sound = new Howl({ src: [activeURL], volume, html5: true })
+    sound = new Howl({ src: [activeURL], volume: 1, html5: true })
     sound.play()
+    set(isAudioPlaying, true)
     sound.on('load', () => {
       // 释放资源
       revokeURL()
+    })
+    sound.on('end', () => {
+      set(isAudioPlaying, false)
       // 播放下一个
       audioBuffer.shift()
       createAudio()

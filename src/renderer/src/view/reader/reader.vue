@@ -9,6 +9,7 @@ import { get, set, useCssVar, useToggle, useWindowSize } from '@vueuse/core';
 import { AArrowDown, AArrowUp, AlignJustify, Bolt, SkipBack, ZoomIn, ZoomOut } from 'lucide-vue-next';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
+import AudioView from './Audio.vue';
 import CatalogView from './Catalog.vue';
 import NoteView from './NoteContainer.vue';
 import { CONTINAER_ID, highlighter, initHighlight } from './highlight';
@@ -22,6 +23,7 @@ import { DPFUtil, render, unMountedBookRender } from './render';
 import NoteRichView from './toolbar/NoteRich.vue';
 import ToolbarView from './toolbar/Toolbar.vue';
 import { NoteBarStyle, ToolbarStyle } from './toolbar/action';
+import { isAudioPlaying, isAudioReadying } from './tts';
 import { Position } from './type';
 import { getSectionContainer, getSectionFirstChild, getSectionLeftFfirstChild } from './util';
 
@@ -533,6 +535,9 @@ onBeforeUnmount(() => {
       <div class="hidden lg:block">
         <NoteView :book="bookInfo" :read-time="readTime" @jump="noteJump" :class="{ 'hide': isNote }" />
       </div>
+
+      <!-- 控制播放音频 -->
+      <AudioView v-if="isAudioPlaying || isAudioReadying" />
     </template>
     <ErrorView v-else />
   </template>
