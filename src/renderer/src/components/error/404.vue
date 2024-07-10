@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { t } from '@renderer/data';
 import { RouterName } from '@renderer/route';
-import { t } from '@renderer/view/setting';
 
 </script>
 

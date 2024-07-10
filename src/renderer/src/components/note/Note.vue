@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { t } from '@renderer/view/setting';
+import { t } from '@renderer/data';
 import dayjs from 'dayjs';
 import { NoteText } from './action';
 

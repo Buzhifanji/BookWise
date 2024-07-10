@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { Book, BookContent, Note } from '@renderer/batabase';
-import { BookAction, BookContentAction, DrawerView, DropdownView, ErrorView, List, NoteAction, RingLoadingView, useToggleDrawer } from '@renderer/components';
-import { ReadMode } from '@renderer/enum';
+import { BookAction, BookContentAction, DrawerView, DropdownView, ErrorView, List, NoteAction, RingLoadingView, useToggleDrawer, } from '@renderer/components';
+import { ReadMode, getSelectReadMode, readModeList, t, themes } from '@renderer/data';
 import { $, $$, arrayBufferToFile, getInterval, isElectron, now, toastSuccess } from '@renderer/shared';
 import { isReload } from '@renderer/shared/navigation';
 import { bookPositionStore, bookReadTimeStore, settingStore, useBookPageStore, useBookStore } from '@renderer/store';
-import { getSelectReadMode, readModeList, t, themes } from '@renderer/view/setting';
 import { get, set, useCssVar, useToggle, useWindowSize } from '@vueuse/core';
 import { AArrowDown, AArrowUp, AlignJustify, Bolt, SkipBack, ZoomIn, ZoomOut } from 'lucide-vue-next';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watchEffect } from 'vue';

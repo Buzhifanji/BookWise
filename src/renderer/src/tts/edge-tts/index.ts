@@ -1,4 +1,4 @@
-import { getVoiceLocaleOptions } from '@/core/utils/getVoiceList'
+import { langs } from '@renderer/data'
 
 import { voiceList } from '../data'
 import { arrayBufferConvert } from '../shared'
@@ -28,7 +28,7 @@ export class EdgeSpeechTTS {
     return getEdgeVoiceOptions(this.locale)
   }
 
-  static localeOptions = getVoiceLocaleOptions()
+  static localeOptions = langs
   static voiceList = edgeVoiceList
   static voiceName = voiceList
   static createRequest = createEdgeSpeech

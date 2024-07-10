@@ -1,5 +1,4 @@
 import en from '@renderer/assets/locales/en.json'
-import { SelectItem } from '@renderer/components'
 import { nextTick } from 'vue'
 import { createI18n } from 'vue-i18n'
 
@@ -61,7 +60,7 @@ const languageMap = {
   zh_hant: '繁体中文'
 }
 
-export const langs: SelectItem[] = Object.keys(languageMap).map((key) => ({
+export const langs: { id: string; value: string }[] = Object.keys(languageMap).map((key) => ({
   id: key,
   value: languageMap[key]
 }))

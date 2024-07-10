@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
+import { t } from '@renderer/data';
 import { useDialog } from '@renderer/hooks';
 import { convertUint8ArrayToURL, fileToUint8Array, toastError } from '@renderer/shared';
-import { t } from '@renderer/view/setting';
 import { vOnClickOutside } from '@vueuse/components';
 import { get, set } from '@vueuse/core';
 import { useForm } from 'vee-validate';

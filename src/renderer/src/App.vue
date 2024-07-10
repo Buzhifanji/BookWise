@@ -3,9 +3,9 @@ import favicon from '@renderer/assets/favicon.ico';
 import { get, set, useFavicon } from '@vueuse/core';
 import { watchEffect } from 'vue';
 import { BookAction, BookReadTimeAction, BookshelfAction, NoteAction, TagAction } from './components';
+import { setI18nLanguage } from './data';
 import './dayjs';
 import { bookPositionStore, bookReadTimeStore, settingStore, useBookshelfStore, useBookStore, useNoteStore, useTagStore } from './store';
-import { setI18nLanguage } from './view/setting/language';
 
 
 watchEffect(() => {

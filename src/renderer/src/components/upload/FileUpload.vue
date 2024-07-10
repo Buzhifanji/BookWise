@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
+import { t } from '@renderer/data';
 import { useDialog } from '@renderer/hooks';
 import { Reader } from '@renderer/reader';
 import { cloneBuffer, convertBlobToUint8Array, isElectron, now, toastSuccess, toastWarning } from '@renderer/shared';
-import { t } from '@renderer/view/setting';
 import { useToggle } from '@vueuse/core';
 import { Upload } from 'lucide-vue-next';
 // import { PDFPageProxy, getDocument } from 'pdfjs-dist';
+import { BookType } from '@renderer/data';
 import * as PDFLib from '@renderer/reader/pdf-lib';
 import { useBookStore } from '@renderer/store';
 import { v4 as uuidv4 } from 'uuid';
 import { defineExpose, ref } from 'vue';
 import { BookAction, BookContentAction } from '../book/action';
-import { BookType } from '../book/enum';
 import { readFiles } from './read-file';
 
 const { dialogRef, openDialog, closeDialog } = useDialog();

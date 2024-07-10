@@ -1,4 +1,4 @@
-import { BookshelftMode, NoteMode, ReadMode } from '@renderer/enum'
+import { BookshelftMode, NoteMode, ReadMode } from '@renderer/data'
 import { useStorage } from '@vueuse/core'
 
 interface SettingState {

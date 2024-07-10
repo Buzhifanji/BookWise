@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { t } from '@renderer/data';
 import { useDialog } from '@renderer/hooks';
 import { router, RouterName } from '@renderer/route';
 import { useBookFilterStore, useBookshelfStore, useBookStore, useFilterNoteStore, useNoteStore, useTagStore } from '@renderer/store';
-import { t } from '@renderer/view/setting';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { vOnClickOutside } from '@vueuse/components';
 import { get, set, useDebounceFn } from '@vueuse/core';

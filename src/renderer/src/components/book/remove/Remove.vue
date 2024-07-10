@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
+import { t } from '@renderer/data';
 import { useDialog } from '@renderer/hooks';
 import { settingStore } from '@renderer/store';
-import { t } from '@renderer/view/setting';
 import { vOnClickOutside } from '@vueuse/components';
 import { nextTick } from 'vue';
 import { BookAction } from '../action';

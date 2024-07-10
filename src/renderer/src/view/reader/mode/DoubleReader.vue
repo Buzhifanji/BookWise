@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { RingLoadingView } from '@renderer/components';
+import { t } from '@renderer/data';
 import { $, formatDecimal, toastWarning, wait } from '@renderer/shared';
 import { useBookPageStore } from '@renderer/store';
-import { t } from '@renderer/view/setting';
 import { get, onKeyStroke, set, useDebounceFn, useResizeObserver, useScroll, useThrottleFn, useToggle } from '@vueuse/core';
 import { nextTick, onMounted, ref, watchEffect } from 'vue';
 import { CONTINAER_ID } from '../highlight';

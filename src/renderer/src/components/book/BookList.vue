@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
 import { FileUploadView } from '@renderer/components';
-import { BookshelftMode } from '@renderer/enum';
+import { BookshelftMode, t } from '@renderer/data';
 import { useRightClick } from '@renderer/hooks';
 import { sort, toastSuccess } from '@renderer/shared';
 import { bookSortStore, settingStore, useBookFilterStore } from '@renderer/store';
-import { t } from '@renderer/view/setting';
 import { vOnClickOutside } from '@vueuse/components';
 import { get, set } from '@vueuse/core';
 import { BellElectric, Heart, HeartOff, PencilLine, Plus, SquareLibrary, Star, Trash2, UndoDot } from 'lucide-vue-next';

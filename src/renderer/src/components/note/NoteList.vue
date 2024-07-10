@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { Note } from '@renderer/batabase';
-import { NoteMode } from '@renderer/enum';
+import { NoteMode, t } from '@renderer/data';
 import { RouterName } from '@renderer/route';
 import { haveIntersection, sort } from '@renderer/shared';
 import { noteSortStore, settingStore, useFilterNoteStore } from '@renderer/store';
-import { t } from '@renderer/view/setting';
 import { get } from '@vueuse/core';
 import { Flag } from 'lucide-vue-next';
 import { computed, defineProps, toRaw, withDefaults } from 'vue';
@@ -56,7 +55,6 @@ const list = computed(() => {
 
   return data
 })
-
 </script>
 
 <template>

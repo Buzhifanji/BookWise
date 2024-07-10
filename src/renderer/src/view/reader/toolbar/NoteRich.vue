@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Book, Note, Tag } from '@renderer/batabase';
 import { NoteAction, NoteText, SkeletonView, TagAction, TagInputView } from '@renderer/components';
+import { t } from '@renderer/data';
 import { toastError, toastWarning } from '@renderer/shared';
-import { t } from '@renderer/view/setting';
 import { get, onClickOutside, onKeyStroke, set, useElementBounding, useParentElement, useToggle } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
 import { computed, onMounted, ref } from 'vue';

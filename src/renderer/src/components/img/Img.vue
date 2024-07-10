@@ -3,7 +3,7 @@ import { convertUint8ArrayToURL, wait } from '@renderer/shared';
 import { onMounted, ref } from 'vue';
 import loadingBookCover from '../../assets/bookmark.png';
 
-import { t } from '@renderer/view/setting';
+import { t } from '@renderer/data';
 import { get } from '@vueuse/core';
 
 defineProps<{

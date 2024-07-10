@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { nodeModeList, selectNodeMode, t } from '@renderer/data';
 import { settingStore } from '@renderer/store';
-import { nodeModeList, selectNodeMode, t } from '@renderer/view/setting';
 import { Bolt, SquareArrowUpLeft } from 'lucide-vue-next';
 import DropdownView from '../../dropdown/Dropdown.vue';
 import List from '../../list/List.vue';

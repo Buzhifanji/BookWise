@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Note } from '@renderer/batabase';
-import { t } from '@renderer/view/setting';
+import { t } from '@renderer/data';
 import dayjs from 'dayjs';
 import TagListView from '../../tag/TagList.vue';
 import { TagAction } from '../../tag/action';

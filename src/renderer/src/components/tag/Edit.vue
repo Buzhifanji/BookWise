@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Tag } from '@renderer/batabase';
+import { t } from '@renderer/data';
 import { useDialog } from '@renderer/hooks';
 import { toastError } from '@renderer/shared';
 import { useNoteStore, useTagStore } from '@renderer/store';
-import { t } from '@renderer/view/setting';
 import { vOnClickOutside } from '@vueuse/components';
 import { get, set, useToggle } from '@vueuse/core';
 import { nextTick, ref } from 'vue';

@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { t } from '@renderer/data';
 import { changNoteSortStore, noteSortStore, useFilterNoteStore } from '@renderer/store';
-import { t } from '@renderer/view/setting';
 import { get, set } from '@vueuse/core';
 import { ArrowDownNarrowWide, Check, Filter } from 'lucide-vue-next';
 import { ref, watchEffect } from 'vue';

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { t } from '@renderer/view/setting';
+import { t } from '@renderer/data';
 import { onClickOutside, set, useStorage } from '@vueuse/core';
 import { Minus, Plus } from 'lucide-vue-next';
 import { computed, ref } from 'vue';

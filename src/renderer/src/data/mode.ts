@@ -1,5 +1,5 @@
-import { BookshelftMode, NoteMode, ReadMode } from '@renderer/enum'
 import { computed } from 'vue'
+import { BookshelftMode, NoteMode, ReadMode } from './enum'
 import { t } from './language'
 
 export const readModeList = computed(() => {

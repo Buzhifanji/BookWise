@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Book, Note } from '@renderer/batabase';
 import { BookReadTimeAction, ScoreInputView, editDialog, scroreDialog } from '@renderer/components';
+import { t } from '@renderer/data';
 import { convertUint8ArrayToURL, formatDecimal, formatFileSize, getInterval, isUndefined, toastSuccess } from '@renderer/shared';
-import { t } from '@renderer/view/setting';
 import { useClipboard } from '@vueuse/core';
 import dayjs from 'dayjs';
 import { Copy } from 'lucide-vue-next';

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Note } from '@renderer/batabase';
+import { t } from '@renderer/data';
 import { settingStore } from '@renderer/store';
-import { t } from '@renderer/view/setting';
 import dayjs from 'dayjs';
 import { BellElectric, Ellipsis, Trash2 } from 'lucide-vue-next';
 import { computed, defineProps, ref } from 'vue';

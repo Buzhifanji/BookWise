@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { t } from '@renderer/data';
 import { RouterName } from '@renderer/route';
-import { t } from '@renderer/view/setting';
 import { Book, PencilLine, Settings, Trash2 } from 'lucide-vue-next';
 import { ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';

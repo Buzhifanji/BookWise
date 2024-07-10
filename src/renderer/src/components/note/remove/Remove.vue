@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Note } from '@renderer/batabase';
+import { t } from '@renderer/data';
 import { useDialog } from '@renderer/hooks';
 import { toastSuccess } from '@renderer/shared';
-import { t } from '@renderer/view/setting';
 import { vOnClickOutside } from '@vueuse/components';
 import { set } from '@vueuse/core';
 import { nextTick, ref } from 'vue';

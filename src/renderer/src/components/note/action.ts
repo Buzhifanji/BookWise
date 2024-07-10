@@ -1,6 +1,6 @@
 import { Note, db } from '@renderer/batabase'
+import { t } from '@renderer/data'
 import { now, toastError } from '@renderer/shared'
-import { t } from '@renderer/view/setting'
 import { DomSource } from '@renderer/web-highlight'
 import { useObservable } from '@vueuse/rxjs'
 import { liveQuery } from 'dexie'

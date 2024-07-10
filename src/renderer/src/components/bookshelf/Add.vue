@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
 import { BookshelfAction, TagItem } from '@renderer/components';
+import { t } from '@renderer/data';
 import { useDialog } from '@renderer/hooks';
 import { toastError, toastSuccess } from '@renderer/shared';
-import { t } from '@renderer/view/setting';
 import { vOnClickOutside } from '@vueuse/components';
 import { get, set, useToggle } from '@vueuse/core';
 import { computed, nextTick, ref } from 'vue';

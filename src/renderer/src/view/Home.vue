@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
 import { bookJump, BookReadTimeAction, ImgView } from '@renderer/components';
+import { t } from '@renderer/data';
 import { getInterval, remToPx } from '@renderer/shared';
 import { useBookStore, useContentCantianerStore, useNoteStore } from '@renderer/store';
-import { t } from '@renderer/view/setting';
 import { get, set, useToggle } from '@vueuse/core';
 import dayjs from 'dayjs';
 import { Annoyed, CircleCheckBig, Clock, MoveUp, NotebookPen } from 'lucide-vue-next';

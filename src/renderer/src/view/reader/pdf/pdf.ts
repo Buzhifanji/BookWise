@@ -17,7 +17,7 @@ import {
 } from '@renderer/reader/pdf-lib/web'
 
 import { NoteAction } from '@renderer/components'
-import { ReadMode } from '@renderer/enum'
+import { ReadMode } from '@renderer/data'
 import { settingStore } from '@renderer/store'
 
 // import {

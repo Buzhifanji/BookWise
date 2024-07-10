@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Book, Note, Tag } from '@renderer/batabase';
 import { NoteAction, NoteText, TagAction, TagListView } from '@renderer/components';
+import { t } from '@renderer/data';
 import { toastSuccess } from '@renderer/shared';
 import { settingStore } from '@renderer/store';
-import { t } from '@renderer/view/setting';
 import { get, onClickOutside, set, useElementSize } from '@vueuse/core';
 import { Baseline, Copy, Highlighter, MessageSquareMore, SpellCheck2, Trash } from 'lucide-vue-next';
 import { Ref, computed, ref } from 'vue';

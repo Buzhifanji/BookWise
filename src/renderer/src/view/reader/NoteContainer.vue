@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { Book, Note, Tag } from '@renderer/batabase';
 import { NoteAction, NoteText, TagAction, TagInputView, TagListView } from '@renderer/components';
+import { t } from '@renderer/data';
 import { useBgOpacity } from '@renderer/hooks';
 import { $, toastError } from '@renderer/shared';
 import { useNoteStore } from '@renderer/store';
-import { t } from '@renderer/view/setting';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { get, onClickOutside, onKeyStroke, set, useElementSize, useThrottleFn, useToggle, useWindowSize } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';

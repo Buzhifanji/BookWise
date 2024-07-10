@@ -23,7 +23,7 @@ import 'dayjs/locale/zh-cn'
 import 'dayjs/locale/zh-hk'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import { watchEffect } from 'vue'
-import { i18n } from './view/setting'
+import { i18n } from './data'
 
 dayjs.extend(localizedFormat)
 

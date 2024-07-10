@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import { CheckBoxView, Select, SelectView } from '@renderer/components';
+import { CheckBoxView, Select, SelectView, } from '@renderer/components';
+import { bookshelfModeList, langs, nodeModeList, readModeList, t, themes } from '@renderer/data';
 import { settingStore } from '@renderer/store';
-import { t } from '@renderer/view/setting';
-import { langs } from './language';
-import { bookshelfModeList, nodeModeList, readModeList } from './mode';
-import { themes } from './theme';
 
 const textOpacity = { '--tw-text-opacity': 0.6 };
 

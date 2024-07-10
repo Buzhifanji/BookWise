@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { bookshelfModeList, getSelectBookshelfMode, t } from '@renderer/data';
 import { settingStore } from '@renderer/store';
-import { bookshelfModeList, getSelectBookshelfMode, t } from '@renderer/view/setting';
 import { Bolt, SquareArrowUpLeft } from 'lucide-vue-next';
 import { editBookshelfDialog } from '../../bookshelf';
 import DropdownView from '../../dropdown/Dropdown.vue';

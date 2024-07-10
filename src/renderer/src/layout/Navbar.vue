@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { BookNavbarSetting, BookNavBarView, FileUploadView, NoteNavbarSetting, NoteNavbarView, searchDialog } from '@renderer/components';
-import { t } from '@renderer/view/setting';
+import { t } from '@renderer/data';
 import { useWindowSize } from '@vueuse/core';
 import { AlignJustify, Search } from 'lucide-vue-next';
 import { computed, ref } from 'vue';

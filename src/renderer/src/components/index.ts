@@ -29,7 +29,6 @@ export * from './toast/type'
 
 export * from './book/action'
 export * from './book/edit'
-export * from './book/enum'
 export * from './book/score'
 export * from './bookshelf/action'
 export * from './drawer/toggle'

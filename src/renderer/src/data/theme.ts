@@ -1,5 +1,3 @@
-import { SelectItem } from '@renderer/components'
-
 const data = [
   'light',
   'dark',
@@ -35,4 +33,7 @@ const data = [
   'sunset'
 ]
 
-export const themes: SelectItem[] = data.map((item) => ({ id: item, value: item }))
+export const themes: { id: string; value: string }[] = data.map((item) => ({
+  id: item,
+  value: item
+}))

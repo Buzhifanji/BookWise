@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Tag } from '@renderer/batabase';
-import { t } from '@renderer/view/setting';
+import { t } from '@renderer/data';
 import { get } from '@vueuse/core';
 import { computed, defineProps, withDefaults } from 'vue';
 import SelectSearchView from '../select/SelectSearch.vue';
