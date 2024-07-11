@@ -1,5 +1,5 @@
-import { concatArrayBuffers, genSendContent, genSSML, getHeadersAndData } from '@renderer/shared'
-import { SsmlOptions } from './ssml'
+import { concatArrayBuffers } from '@renderer/shared'
+import { genSendContent, genSSML, getHeadersAndData, SsmlOptions } from './ssml'
 
 export interface EdgeSpeechPayload {
   connectId: string
@@ -82,21 +82,23 @@ function createWebSocket(connectId: string): Promise<WebSocket> {
     const onMessage = async (event: MessageEvent<any>) => {
       if (typeof event.data === 'string') {
         const { headers } = getHeadersAndData(event.data)
+        const id = headers['X-RequestId']
         switch (headers['Path']) {
           case 'turn.start': {
-            bufferMap.set(connectId, new ArrayBuffer(0))
-            console.info(`开始传输：${connectId}`)
+            bufferMap.set(id, new ArrayBuffer(0))
+            console.info(`开始传输：${id}`)
             break
           }
           case 'turn.end': {
-            const executor = executorMap.get(connectId)
+            const executor = executorMap.get(id)
             if (executor) {
-              executorMap.delete(connectId)
-              const res = bufferMap.get(connectId)
+              executorMap.delete(id)
+              const res = bufferMap.get(id)
+              bufferMap.delete(id)
               executor.resolve(res)
-              console.info(`传输完成：${connectId}`)
+              console.info(`传输完成：${id}`)
             } else {
-              console.info(`请求已被丢弃：${connectId}`)
+              console.info(`请求已被丢弃：${id}`)
             }
             break
           }
@@ -105,13 +107,17 @@ function createWebSocket(connectId: string): Promise<WebSocket> {
         const dataview = new DataView(event.data)
         const headerLength = dataview.getInt16(0)
         if (event.data.byteLength > headerLength + 2) {
-          const buffer = bufferMap.get(connectId)
+          const val = new TextDecoder('utf-8').decode(event.data)
+          const start = val.indexOf('X-RequestId:')
+          const end = val.indexOf('Content-Type')
+          const id = val.substring(start + 'X-RequestId:'.length, end).trim()
+          const buffer = bufferMap.get(id)
           if (buffer) {
             const newBody = event.data.slice(2 + headerLength)
             const newAudioData = concatArrayBuffers(buffer, newBody)
-            bufferMap.set(connectId, newAudioData)
+            bufferMap.set(id, newAudioData)
           } else {
-            console.info(`请求已被丢弃：${connectId}`)
+            console.info(`请求已被丢弃：${id}`)
           }
         }
       }
@@ -159,6 +165,7 @@ async function convert({ payload }: CreateEdgeSpeechCompletionOptions) {
   // 设置定时器，超过10秒没有收到请求，主动断开连接
   timer = setTimeout(() => {
     if (ws && ws.readyState === WebSocket.OPEN) {
+      console.info(`连接超时，主动断开连接：${connectId}`)
       ws.close(1000)
       timer = null
     }
@@ -174,12 +181,15 @@ async function reconnect(fn: Function, times: number, errorFn: Function, failedM
     errors: []
   }
 
+  let index = 0
+
   for (let i = 0; i < times; i++) {
+    index = i
     try {
       return await fn()
     } catch (error) {
       if (errorFn) {
-        errorFn(i, error)
+        errorFn(index, error)
       }
       reason.errors.push(error)
     }

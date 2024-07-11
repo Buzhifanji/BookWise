@@ -3,7 +3,7 @@ import { set } from '@vueuse/core';
 import { Howler } from 'howler';
 import { Triangle, X } from 'lucide-vue-next';
 import { ref, watchEffect } from 'vue';
-import { clearAudio, isAudioPlaying, isAudioReadying } from './tts';
+import { changeAudio, clearAudio, isAudioPlaying, isAudioReadying } from './tts';
 
 const volume = ref(100)
 
@@ -33,11 +33,13 @@ const onClose = () => {
         </button>
       </div>
       <div class="flex flex-col items-center gap-4 ">
-        <div class="avatar placeholder ">
+        <div class="avatar placeholder" @click="changeAudio()">
           <div
             class="bg-neutral text-neutral-content ring-primary ring-offset-base-100 w-16 rounded-full ring ring-offset-2 ">
-            <Triangle class="animate-spin" v-if="isAudioPlaying" />
-            <span class="loading loading-ring" v-else></span>
+
+            <span class="loading loading-ring" v-if="isAudioReadying"></span>
+            <Triangle :class="{ 'animate-spin': isAudioPlaying }" v-else />
+
           </div>
         </div>
         <div class="w-full" v-if="!isAudioReadying">
@@ -50,5 +52,3 @@ const onClose = () => {
     </div>
   </div>
 </template>
-
-<style scoped></style>

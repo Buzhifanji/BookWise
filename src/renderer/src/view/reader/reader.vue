@@ -23,7 +23,7 @@ import { DPFUtil, render, unMountedBookRender } from './render';
 import NoteRichView from './toolbar/NoteRich.vue';
 import ToolbarView from './toolbar/Toolbar.vue';
 import { NoteBarStyle, ToolbarStyle } from './toolbar/action';
-import { isAudioPlaying, isAudioReadying } from './tts';
+import { hasAudio, isAudioReadying } from './tts';
 import { Position } from './type';
 import { getSectionContainer, getSectionFirstChild, getSectionLeftFfirstChild } from './util';
 
@@ -537,7 +537,7 @@ onBeforeUnmount(() => {
       </div>
 
       <!-- 控制播放音频 -->
-      <AudioView v-if="isAudioPlaying || isAudioReadying" />
+      <AudioView v-if="hasAudio || isAudioReadying" />
     </template>
     <ErrorView v-else />
   </template>

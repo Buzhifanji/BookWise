@@ -4,11 +4,9 @@ import { bookJump, BookReadTimeAction, ImgView } from '@renderer/components';
 import { t } from '@renderer/data';
 import { getInterval, remToPx } from '@renderer/shared';
 import { useBookStore, useContentCantianerStore, useNoteStore } from '@renderer/store';
-import { EdgeSpeechTTS } from '@renderer/tts';
 import { get, set, useToggle } from '@vueuse/core';
 import dayjs from 'dayjs';
 import { Annoyed, CircleCheckBig, Clock, MoveUp, NotebookPen } from 'lucide-vue-next';
-import { v4 as uuidv4 } from 'uuid';
 import { computed, ref } from 'vue';
 
 const bookshelfWidht = 120
@@ -156,17 +154,6 @@ const loveBook = computed(() => {
   return get(totalLoveBook).slice(0, count)
 })
 
-async function test() {
-  const connectId = uuidv4().replaceAll('-', '')
-  const tts = new EdgeSpeechTTS({ locale: 'zh-CN' });
-  const input = `“当你被送进这个书写小屋，从门被关上的那一刻起，我想邀请你连续地书写一段人生当中让你感到最不安、最具创伤性的经历。不要担心你书写的语法、拼写，以及你所采取的句子结构。在你的书写当中，我想邀请你讨论对于这段经历，你内心最深处的想法和感受。你可以书写任何你想写的内容。但是无论你选择写什么，我希望写的是对你影响很深很深的经历。理想的情况下，它应该是那些你从来不愿意对他人谈论细节的经历。然而，在书写当中，能够让自己释放并且去碰触内心最深处的想法和感受是非常关键的。换句话说，你可以写一写发生了什么，你当时的感受是什么，你现在的感受又是什么。在这四次书写中，你可以写不同的创伤，也可以四次都写同一个经历。这四次书写你想怎么安排，完全取决于自己。”`
-  const response = await tts.createAudio({ input, connectId, options: { voice: 'zh-CN-XiaoxiaoNeural' } });
-  const audioCtx = new AudioContext();
-  const source = audioCtx.createBufferSource();
-  source.buffer = response;
-  source.connect(audioCtx.destination);
-  source.start();
-}
 
 init()
 </script>
@@ -267,9 +254,6 @@ init()
           </template>
         </div>
       </div>
-    </div>
-    <div class="mt-6">
-      <button class="btn" @click="test()">test</button>
     </div>
   </div>
 </template>

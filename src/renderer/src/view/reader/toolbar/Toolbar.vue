@@ -10,7 +10,7 @@ import { Baseline, Copy, Headset, Highlighter, MessageSquareMore, SpellCheck2, T
 import { Ref, computed, ref } from 'vue';
 import { highlighter } from '../highlight';
 import { HighlightType, highlightColor } from '../highlight-color';
-import { isAudioReadying, playAudioAction } from '../tts';
+import { isAudioReadying, playAudioOnce } from '../tts';
 import { getSectionContainer } from '../util';
 import NoteListView from './NoteList.vue';
 import { NoteBarStyle, NoteToolBarAction, ToolbarStyle } from './action';
@@ -139,7 +139,7 @@ const onRead = async () => {
     const input = ToolbarStyle.source.reduce((acc, cur) => acc + cur.text, '')
     if (!input) return
     set(isAudioReadying, true)
-    await playAudioAction({ voice: 'zh-CN-XiaoxiaoNeural', locale: 'zh-CN', input, })
+    await playAudioOnce({ voice: 'zh-CN-XiaoxiaoNeural', input, })
   } catch (err) {
     toastError(`朗读失败：${err}`)
   } finally {
