@@ -58,11 +58,6 @@ export function findPositionDom(page: number, position: Position) {
   return null
 }
 
-/**
- * 获取上下滑动的与顶部相交的元素第一个元素的位置信息
- * @param page
- * @returns
- */
 export function getSectionFirstChild(page: number) {
   const contianer = getSectionContainer(page)
   if (!contianer) return null
@@ -83,14 +78,43 @@ export function getSectionFirstChild(page: number) {
     return getSectionFirstChild(page - 1)
   } else if (n === 0) {
     // 正好找到了
-    return getDomPosition(contianer, firstElement, page)
+    return firstElement
   } else {
     const doms = lastElementsToArray(contianer)
     for (const dom of doms) {
       if (isFirstInView(dom, offsetTop)) {
-        return getDomPosition(contianer, dom, page)
+        return dom
       }
     }
+    return null
+  }
+}
+
+/**
+ * 获取上下滑动的与顶部相交的元素第一个元素的位置信息
+ * @param page
+ * @returns
+ */
+export function getSectionFirstChildPosition(page: number) {
+  const contianer = getSectionContainer(page)
+  if (!contianer) return null
+  const dom = getSectionFirstChild(page)
+  if (dom) {
+    return getDomPosition(contianer, dom, page)
+  }
+  return null
+}
+
+export function getSectionLeftFfirstChild(contianer: HTMLElement) {
+  const rect = contianer.getBoundingClientRect()
+  const doms = lastElementsToArray(contianer)
+  const firstElement = doms.find((item) => {
+    const { left, width } = item.getBoundingClientRect()
+    return left > rect.left && left < rect.left + width
+  })
+  if (firstElement) {
+    return firstElement
+  } else {
     return null
   }
 }
@@ -101,15 +125,10 @@ export function getSectionFirstChild(page: number) {
  * @param page
  * @returns
  */
-export function getSectionLeftFfirstChild(contianer: HTMLElement, page: number) {
-  const rect = contianer.getBoundingClientRect()
-  const doms = lastElementsToArray(contianer)
-  const firstElement = doms.find((item) => {
-    const { left, width } = item.getBoundingClientRect()
-    return left > rect.left && left < rect.left + width
-  })
-  if (firstElement) {
-    return getDomPosition(contianer, firstElement, page)
+export function getSectionLeftFfirstChildPosition(contianer: HTMLElement, page: number) {
+  const dom = getSectionLeftFfirstChild(contianer)
+  if (dom) {
+    return getDomPosition(contianer, dom, page)
   } else {
     return null
   }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { domScrollToView } from '@renderer/shared';
 import { useBookPageStore } from '@renderer/store';
-import { useDebounceFn } from '@vueuse/core';
-import scrollIntoView from 'scroll-into-view-if-needed';
+import { get, useDebounceFn } from '@vueuse/core';
 import { defineProps, ref, watchEffect, withDefaults } from 'vue';
 
 interface Props {
@@ -17,18 +17,12 @@ const handleClick = (e: any) => {
   emit('click', e)
 }
 
-const container = ref<HTMLElement | null>(null)
+const container = ref<HTMLElement>()
 
 const bookPageStore = useBookPageStore()
 
 const scroll = useDebounceFn((_: number) => {
-  const dom = container.value
-  if (dom) {
-    const acitveDom = dom.querySelector('a.active')
-    if (acitveDom) {
-      scrollIntoView(acitveDom, { behavior: 'smooth', scrollMode: 'if-needed' })
-    }
-  }
+  domScrollToView(get(container), 'a.active')
 }, 100)
 
 watchEffect(() => {

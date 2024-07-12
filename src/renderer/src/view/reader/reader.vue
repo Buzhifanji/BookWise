@@ -6,9 +6,10 @@ import { $, $$, arrayBufferToFile, getInterval, isElectron, now, toastSuccess } 
 import { isReload } from '@renderer/shared/navigation';
 import { bookPositionStore, bookReadTimeStore, settingStore, useBookPageStore, useBookStore } from '@renderer/store';
 import { get, set, useCssVar, useToggle, useWindowSize } from '@vueuse/core';
-import { AArrowDown, AArrowUp, AlignJustify, Bolt, SkipBack, ZoomIn, ZoomOut } from 'lucide-vue-next';
+import { AArrowDown, AArrowUp, AlignJustify, Bolt, Headset, SkipBack, ZoomIn, ZoomOut } from 'lucide-vue-next';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
+import ReaderListenBookView from '../listenBook/ReaderListenBook.vue';
 import AudioView from './Audio.vue';
 import CatalogView from './Catalog.vue';
 import NoteView from './NoteContainer.vue';
@@ -25,7 +26,7 @@ import ToolbarView from './toolbar/Toolbar.vue';
 import { NoteBarStyle, ToolbarStyle } from './toolbar/action';
 import { hasAudio, isAudioReadying } from './tts';
 import { Position } from './type';
-import { getSectionContainer, getSectionFirstChild, getSectionLeftFfirstChild } from './util';
+import { getSectionContainer, getSectionFirstChildPosition, getSectionLeftFfirstChildPosition } from './util';
 
 const props = defineProps({
   id: String,
@@ -60,6 +61,8 @@ const readMode = ref(settingStore.value.readMode) // 阅读模式
 const scrollReaderViewRef = ref<InstanceType<typeof ScrollReaderView>>() // 滚动视图
 const sectionReaderViewRef = ref<InstanceType<typeof SectionReaderView>>() // 章节视图
 const doubleReaderViewRef = ref<InstanceType<typeof DoubleReaderView>>() // 双栏视图
+const readerListenBookViewRef = ref<InstanceType<typeof ReaderListenBookView>>() // 朗读视图
+
 
 const isPDF = DPFUtil.isPDF
 
@@ -272,10 +275,10 @@ async function recordPosition() {
     if (!contianer) return
     if (get(readMode) === ReadMode.double) {
       // 双栏模式左右滑动
-      postion = getSectionLeftFfirstChild(contianer, page)
+      postion = getSectionLeftFfirstChildPosition(contianer, page)
 
     } else {
-      postion = getSectionFirstChild(page)
+      postion = getSectionFirstChildPosition(page)
     }
     postion = postion || { page, index: -1, tagName: '' }
   }
@@ -369,6 +372,15 @@ const viewVisibityChange = () => {
   // }
 }
 
+// 朗读
+const readBook = () => {
+  if (get(isPDF)) {
+    // todo support PDF reading
+  } else {
+    readerListenBookViewRef.value?.open()
+  }
+}
+
 function recordAction() {
   recordPosition()
   recordReadTime()
@@ -436,6 +448,12 @@ onBeforeUnmount(() => {
             <div>
             </div>
             <div class="flex gap-4">
+              <!-- 朗读书籍 -->
+              <button class="btn btn-sm btn-ghost" v-if="!isPDF" @click="readBook()">
+                <Headset />
+              </button>
+              <ReaderListenBookView ref="readerListenBookViewRef" :toc="tocList" :page="bookPageStore.page"
+                :section="section" :book-id="bookInfo.id" />
               <!-- pdf控制缩放 -->
               <PDFToolbarView v-if="isPDF" />
               <!-- 操作 -->

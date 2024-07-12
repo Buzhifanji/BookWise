@@ -1,5 +1,6 @@
 import Dexie, { type EntityTable } from 'dexie'
 import { Book, schemaBook } from './book'
+import { BookAudio, schemaBookAudio } from './book-audio'
 import { BookContent, schemaBookContent } from './book-content'
 import { Bookshelf, schemaBookshelf } from './bookshelf'
 import { Note, schemaNote } from './note'
@@ -13,6 +14,7 @@ const db = new Dexie('__BookWiseDatabase__') as Dexie & {
   readTime: EntityTable<ReadTime, 'id'>
   tag: EntityTable<Tag, 'id'>
   bookshelf: EntityTable<Bookshelf, 'id'>
+  bookAudio: EntityTable<BookAudio, 'id'>
 }
 
 db.version(1).stores({
@@ -22,6 +24,7 @@ db.version(1).stores({
   readTime: schemeReadTime, // 阅读时间
   tag: schemaTag, // 标签
   bookshelf: schemaBookshelf, // 书架
+  bookAudio: schemaBookAudio // 音频
 })
 
 // db.version(3)
@@ -50,7 +53,8 @@ export const clearDB = () => {
   db.readTime.clear()
   db.tag.clear()
   db.bookshelf.clear()
+  db.bookAudio.clear()
 }
 
 export { db }
-export type { Book, BookContent, Bookshelf, Note, Tag }
+export type { Book, BookAudio, BookContent, Bookshelf, Note, Tag }

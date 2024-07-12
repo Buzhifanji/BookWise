@@ -1,3 +1,5 @@
+import scrollIntoView from 'scroll-into-view-if-needed'
+
 export const $ = document.querySelector.bind(document)
 
 export const $$ = document.querySelectorAll.bind(document)
@@ -59,4 +61,13 @@ export function getFirstLastElementChild(node: HTMLElement) {
 export function findDomIndex(root: HTMLElement, target: HTMLElement) {
   const nodes = root.querySelectorAll(target.tagName)
   return Array.from(nodes).indexOf(target)
+}
+
+export function domScrollToView(dom: HTMLElement | undefined, classSelector: string) {
+  if (dom) {
+    const acitveDom = dom.querySelector(classSelector)
+    if (acitveDom) {
+      scrollIntoView(acitveDom, { behavior: 'smooth', scrollMode: 'if-needed' })
+    }
+  }
 }
