@@ -1,6 +1,7 @@
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { BrowserWindow, app, ipcMain } from 'electron'
 import { join } from 'path'
+import { initSettingStore } from './store'
 import { createWindow, openWindows } from './win'
 
 // if (require('electron-squirrel-startup')) app.quit()
@@ -45,6 +46,8 @@ app.whenReady().then(() => {
   ipcMain.on('ping', () => console.log('pong'))
 
   createMainWindow()
+
+  initSettingStore()
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the

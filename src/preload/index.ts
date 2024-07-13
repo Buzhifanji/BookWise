@@ -1,6 +1,7 @@
 import { electronAPI } from '@electron-toolkit/preload'
 import { contextBridge } from 'electron'
 import { getFilePath, readFile } from './file'
+import { store } from './store'
 
 // Custom APIs for renderer
 const api = {
@@ -15,6 +16,7 @@ if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
+    contextBridge.exposeInMainWorld('store', store)
     contextBridge.exposeInMainWorld
   } catch (error) {
     console.error(error)

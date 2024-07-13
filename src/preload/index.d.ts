@@ -5,9 +5,17 @@ export interface API {
   getFilePath: (value: File) => Promise<string>
 }
 
+export interface Store {
+  get: (key: string) => any
+  set: (key: string, value: any) => void
+  clear: () => void
+  watch: (val: Function) => any
+}
+
 declare global {
   interface Window {
     electron: ElectronAPI
     api: API
+    store: Store
   }
 }

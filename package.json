@@ -38,6 +38,7 @@
     "@vueuse/rxjs": "^10.11.0",
     "dayjs": "^1.11.11",
     "dexie": "^4.0.7",
+    "electron-store": "^10.0.0",
     "electron-updater": "^6.1.7",
     "howler": "^2.2.4",
     "lucide-vue-next": "^0.400.0",

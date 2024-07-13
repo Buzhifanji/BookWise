@@ -1,5 +1,7 @@
 import { BookshelftMode, NoteMode, ReadMode } from '@renderer/data'
-import { useStorage } from '@vueuse/core'
+import { isElectron } from '@renderer/shared'
+import { get, set, useStorage } from '@vueuse/core'
+import { watchEffect } from 'vue'
 
 interface SettingState {
   isOpenNew: boolean // 是否打开新页面
@@ -40,3 +42,13 @@ export const settingStore = useStorage<SettingState>(
   localStorage,
   { mergeDefaults: true }
 )
+
+if (isElectron) {
+  set(settingStore, window.store.get('setting'))
+  watchEffect(() => {
+    for (const key in defaultState) {
+      const val = get(settingStore)[key]
+      window.store.set(`setting.${key}`, val)
+    }
+  })
+}
