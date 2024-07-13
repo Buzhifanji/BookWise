@@ -21,7 +21,7 @@ export enum BookType {
  */
 export enum ReadMode {
   /** 滚动模式 */
-  sroll = 'sroll',
+  scroll = 'scroll',
   /** 章节模式 */
   section = 'section',
   /**双栏 */

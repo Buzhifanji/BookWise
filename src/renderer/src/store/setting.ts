@@ -21,7 +21,7 @@ interface SettingState {
 const defaultState: SettingState = {
   isOpenNew: true,
   isFoldCatalog: false,
-  readMode: ReadMode.sroll,
+  readMode: ReadMode.scroll,
   bookshelf: BookshelftMode.bookshelf,
   noteMode: NoteMode.card,
   isOpenRecycleBin: true,

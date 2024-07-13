@@ -147,7 +147,7 @@ async function jumpAction(index: number, id?: string, position?: Position) {
     await PDF.pageJump(index, id)
   } else {
     const mode = get(readMode)
-    if (mode === ReadMode.sroll) {
+    if (mode === ReadMode.scroll) {
       scrollReaderViewRef.value?.jump(index, id, position)
     } else if (mode === ReadMode.section) {
       sectionReaderViewRef.value?.jump(index, id, position)
@@ -532,7 +532,7 @@ onBeforeUnmount(() => {
             <template v-else>
               <!-- 滚动条模式 -->
               <ScrollReaderView :section="section" :isScrollLocked="isScrollLocked" ref="scrollReaderViewRef"
-                v-if="readMode === ReadMode.sroll" @progress="updateProgress" />
+                v-if="readMode === ReadMode.scroll" @progress="updateProgress" />
               <!-- 章节模式 -->
               <SectionReaderView :section="section" :isScrollLocked="isScrollLocked" ref="sectionReaderViewRef"
                 v-if="readMode === ReadMode.section" @progress="updateProgress" />

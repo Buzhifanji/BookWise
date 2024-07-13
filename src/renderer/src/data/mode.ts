@@ -4,7 +4,7 @@ import { t } from './language'
 
 export const readModeList = computed(() => {
   return [
-    { id: ReadMode.sroll, value: t('readMode.scroll') },
+    { id: ReadMode.scroll, value: t('readMode.scroll') },
     { id: ReadMode.section, value: t('readMode.section') },
     { id: ReadMode.double, value: t('readMode.double') }
   ]

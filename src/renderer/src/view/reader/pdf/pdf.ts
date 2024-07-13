@@ -257,7 +257,7 @@ class PDFTool {
 export const PDF = new PDFTool()
 
 export function setSpreadMode(mode: ReadMode) {
-  if (mode === ReadMode.sroll) {
+  if (mode === ReadMode.scroll) {
     PDF.setSpreadMode(0)
   } else if (mode === ReadMode.section) {
     PDF.setSpreadMode(2)
