@@ -2,7 +2,7 @@ import { Book, BookContent, db } from '@renderer/batabase'
 import { ReadTime } from '@renderer/batabase/read-time'
 import { t } from '@renderer/data'
 import { RouterName, router } from '@renderer/route'
-import { isElectron, now, toastError } from '@renderer/shared'
+import { now, toastError } from '@renderer/shared'
 import { settingStore } from '@renderer/store'
 import { useObservable } from '@vueuse/rxjs'
 import { liveQuery } from 'dexie'
@@ -79,29 +79,27 @@ export class BookAction {
   }
 }
 
+function jump(params: any, name: string) {
+  const isBlank = settingStore.value.isOpenNew
+  const res = { name, params: params }
+  if (isBlank) {
+    const { href } = router.resolve(res)
+    window.open(href, '_blank')
+  } else {
+    router.push(res)
+  }
+}
+
 /**
  * 图书跳转
  * @param id
  */
 export function bookJump(id: string) {
-  const isBlank = settingStore.value.isOpenNew
-  if (isElectron) {
-    // 桌面版
-    if (isBlank) {
-      const { href } = router.resolve({ name: RouterName.Reader, params: { id } })
-      window.open(href, '_blank')
-    } else {
-      router.push({ name: RouterName.Reader, params: { id } })
-    }
-  } else {
-    // 网页版
-    if (isBlank) {
-      const { href } = router.resolve({ name: RouterName.Reader, params: { id } })
-      window.open(href, '_blank')
-    } else {
-      router.push({ name: RouterName.Reader, params: { id } })
-    }
-  }
+  jump({ id }, RouterName.Reader)
+}
+
+export function listenBookJump(id: string) {
+  jump({ id }, RouterName.ListenBook)
 }
 
 /**

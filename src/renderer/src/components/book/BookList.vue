@@ -7,10 +7,10 @@ import { sort, toastSuccess } from '@renderer/shared';
 import { bookSortStore, settingStore, useBookFilterStore } from '@renderer/store';
 import { vOnClickOutside } from '@vueuse/components';
 import { get, set } from '@vueuse/core';
-import { BellElectric, Heart, HeartOff, PencilLine, Plus, SquareLibrary, Star, Trash2, UndoDot } from 'lucide-vue-next';
+import { BellElectric, Headset, Heart, HeartOff, PencilLine, Plus, SquareLibrary, Star, Trash2, UndoDot } from 'lucide-vue-next';
 import { defineProps, ref, toRaw, watchEffect, withDefaults } from 'vue';
 import { addBookshelfDialog } from '../bookshelf';
-import { BookAction, BookReadTimeAction } from './action';
+import { BookAction, BookReadTimeAction, listenBookJump } from './action';
 import { detailDialog } from './detail';
 import { editDialog } from './edit';
 import BookShelfMode from './mode/Bookshelf.vue';
@@ -155,6 +155,14 @@ function onLove() {
 // 书架
 const onBookshelf = () => dialogAction(addBookshelfDialog)
 
+// 朗读
+const toListen = () => {
+  const data = selectData.value
+  if (data) {
+    listenBookJump(data.id)
+  }
+}
+
 const onClick = (val: Book) => emit('click', val)
 
 </script>
@@ -202,6 +210,11 @@ const onClick = (val: Book) => emit('click', val)
         <li @click="onEdite()">
           <a>
             <PencilLine class="h-5 w-5" />{{ t('common.edit') }}
+          </a>
+        </li>
+        <li @click="toListen()">
+          <a>
+            <Headset class="h-5 w-5" />朗读
           </a>
         </li>
         <li @click="onScore()">

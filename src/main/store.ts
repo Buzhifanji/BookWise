@@ -43,7 +43,6 @@ export function initSettingStore() {
   })
 
   ipcMain.on('setStore', (_, value) => {
-    console.log(value)
     store.set(value.key, value.value)
   })
 
