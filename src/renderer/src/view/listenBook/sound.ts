@@ -1,7 +1,7 @@
 import { TTSbus } from '@renderer/hooks'
-import { set } from '@vueuse/core'
+import { get, set } from '@vueuse/core'
 import { Howl } from 'howler'
-import { ref } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 
 class BufferToURL {
   public url = ''
@@ -55,4 +55,15 @@ export class Sound {
     this.bufferToURL.revoke()
     this.sound?.unload()
   }
+}
+
+export const useSoundVolume = () => {
+  const volume = ref<number>(100) // 音量
+  const isMute = computed(() => (+get(volume) === 0 ? true : false)) // 是否静音
+
+  watchEffect(() => {
+    Howler.volume(+(+volume.value / 100).toFixed(1))
+  })
+
+  return { volume, isMute }
 }

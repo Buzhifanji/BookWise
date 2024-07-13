@@ -68,7 +68,8 @@ const isPDF = DPFUtil.isPDF
 
 const isNoteRichShow = NoteBarStyle.show
 const isShowToolBar = ToolbarStyle.show
-const isScrollLocked = computed(() => get(isNoteRichShow) || get(isShowToolBar)) // 打开高亮工具栏的时候，锁住滚动条
+const [isReadBook, setReadBook] = useToggle(false)
+const isScrollLocked = computed(() => get(isNoteRichShow) || get(isShowToolBar) || get(isReadBook)) // 打开高亮工具栏的时候，锁住滚动条
 
 // 获取书本内容
 async function getBookContent(bookId: string, url: string) {
@@ -377,7 +378,11 @@ const readBook = () => {
   if (get(isPDF)) {
     // todo support PDF reading
   } else {
-    readerListenBookViewRef.value?.open()
+    const dom = get(readerListenBookViewRef)
+    if (dom) {
+      dom.open()
+      setReadBook(true)
+    }
   }
 }
 
@@ -452,8 +457,8 @@ onBeforeUnmount(() => {
               <button class="btn btn-sm btn-ghost" v-if="!isPDF" @click="readBook()">
                 <Headset />
               </button>
-              <ReaderListenBookView ref="readerListenBookViewRef" :toc="tocList" :page="bookPageStore.page"
-                :section="section" :book-id="bookInfo.id" />
+              <ReaderListenBookView ref="readerListenBookViewRef" :close="() => setReadBook(false)" :toc="tocList"
+                :page="bookPageStore.page" :section="section" :book-id="bookInfo.id" />
               <!-- pdf控制缩放 -->
               <PDFToolbarView v-if="isPDF" />
               <!-- 操作 -->

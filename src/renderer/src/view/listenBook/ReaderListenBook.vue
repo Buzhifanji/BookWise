@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { t } from '@renderer/data';
 import { useDialog } from '@renderer/hooks';
 import { vOnClickOutside } from '@vueuse/components';
 import { set } from '@vueuse/core';
@@ -11,9 +10,10 @@ interface Props {
   toc: any[],
   bookId: string,
   page: number,
+  close: Function
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   section: () => [],
   toc: () => [],
 })
@@ -28,6 +28,7 @@ function open() {
 
 function clsoe() {
   set(show, false)
+  props.close()
   closeDialog()
 }
 
@@ -42,11 +43,8 @@ defineExpose({ open })
         <h3 class="font-bold text-lg ">朗读书籍</h3>
         <div @click="clsoe()"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
       </div>
-      <div class="flex-1 flex flex-row overflow-hidden" v-if="show">
+      <div class="flex-1 flex flex-col h-full overflow-hidden" v-if="show">
         <ListenBookContent :book-id="bookId" :section="section" :toc="toc" />
-      </div>
-      <div class="modal-action">
-        <button class="btn btn-outline " @click="clsoe()">{{ t('common.close') }}</button>
       </div>
     </div>
   </dialog>

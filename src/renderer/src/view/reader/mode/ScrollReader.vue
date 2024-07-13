@@ -8,11 +8,6 @@ import { Position } from '../type';
 import { findPositionDom, getNavbarRect, getSourceTarget, toNextView, toPrewView } from '../util';
 import SectionView from './Section.vue';
 
-const debouncedFn = useDebounceFn(() => {
-  // do something
-}, 1000)
-
-window.addEventListener('resize', debouncedFn)
 interface Props {
   section: any[],
   isScrollLocked: boolean,

@@ -5,12 +5,14 @@ import { TTSbus } from '@renderer/hooks';
 import { domScrollToView, spliteSentence } from '@renderer/shared';
 import { useBookPageStore, useTTSStore } from '@renderer/store';
 import { edgeTSS } from '@renderer/tts';
-import { get, set, useDebounceFn, useToggle } from '@vueuse/core';
+import { get, onKeyStroke, set, useDebounceFn, useToggle } from '@vueuse/core';
 import { Howler } from 'howler';
+import { FastForward, Rewind, StepBack, StepForward, Triangle, Volume1, VolumeX } from 'lucide-vue-next';
 import SparkMD5 from 'spark-md5';
 import { v4 as uuidv4 } from 'uuid';
 import { defineProps, onUnmounted, ref, watchEffect, withDefaults } from 'vue';
-import { Sound } from './sound';
+import { Sound, useSoundVolume } from './sound';
+
 interface Props {
   section: any[],
   toc: any[],
@@ -36,9 +38,10 @@ const activePage = ref(props.page) // 当前选中的目录
 const catalogRef = ref<HTMLDivElement>() // 目录容器
 const contentRef = ref<HTMLDivElement>() // 内容容器
 const sound = new Sound()
+const isPlaying = sound.isPlaying
 
+const { volume, isMute } = useSoundVolume()
 const audiosMap = new Map<string, BookAudio>()
-
 const hasNextCatalog = () => get(activePage) < props.section.length - 1 // 是否有下章节
 
 async function loadAudioFromBD() {
@@ -78,6 +81,7 @@ async function loadSectionAudio(data: string[], isPlay = false) {
     if (isPlay && index === 0) {
       const buffer = audiosMap.get(hash)?.content
       if (buffer) {
+        sound.clear()
         sound.play(buffer)
         setLoading(false)
       } else {
@@ -89,17 +93,8 @@ async function loadSectionAudio(data: string[], isPlay = false) {
 
 
 // 目录
-const jumpPage = (page: number) => {
-  sound.clear()
-  set(activePage, page)
-  set(activeText, 0)
-  const val = handleText(page)
-  set(textList, val)
-  loadSectionAudio(val, true)
-}
 const onCatalog = (e: any) => {
-  sound.clear()
-  jumpPage(e.page)
+  changeActionSection(e.page)
 }
 const catalogScroll = useDebounceFn((_: number) => {
   domScrollToView(get(catalogRef), 'a.active')
@@ -116,11 +111,7 @@ watchEffect(() => {
   contentScroll(get(activeText))
 })
 
-function changeActiveText(index: number) {
-  sound.clear()
-  set(activeText, index)
-  playIndex(index)
-}
+
 
 function extractText(htmlString: string): string {
   return htmlString
@@ -162,6 +153,64 @@ function loadNextSection() {
   }
 }
 
+// 根据索引切换句子
+function changeActiveSentence(index: number) {
+  sound.clear()
+  set(activeText, index)
+  playIndex(index)
+}
+
+// 下一句
+function nextSentence() {
+  const index = get(activeText)
+  if (index >= get(textList).length - 1) {
+    // 到末尾了，需要跳转到下一章
+    nextSection()
+  } else {
+    changeActiveSentence(index + 1)
+  }
+
+}
+
+// 上一句
+function prewSentence() {
+  const index = get(activeText)
+  if (index <= 0) {
+    prewSection()
+  } else {
+    changeActiveSentence(index - 1)
+  }
+}
+
+// 切换章节
+function changeActionSection(index: number) {
+  sound.clear()
+  set(activePage, index)
+  set(activeText, 0)
+  const val = handleText(index)
+  set(textList, val)
+  loadSectionAudio(val, true)
+}
+
+// 上一章
+function prewSection() {
+  const index = get(activePage)
+  if (index <= 0) return
+  changeActionSection(get(index) - 1)
+}
+
+// 下一章
+function nextSection() {
+  const index = get(activePage)
+  if (index >= props.section.length - 1) return
+  changeActionSection(get(index) + 1)
+}
+
+onKeyStroke(['ArrowLeft'], prewSection)
+onKeyStroke(['ArrowRight'], nextSection)
+onKeyStroke(['ArrowUp'], prewSentence)
+onKeyStroke(['ArrowDown'], nextSentence)
+
 const zeroPoint = 10
 TTSbus.on((val) => {
   if (val === 'next') {
@@ -172,16 +221,7 @@ TTSbus.on((val) => {
       loadNextSection()
     }
 
-    if (index >= total - 1) {
-      // 本章最后一句，需要跳转到下一章
-      const page = get(activePage)
-      if (page < props.section.length - 1) {
-        jumpPage(page + 1)
-      }
-    } else {
-      set(activeText, get(activeText) + 1)
-      playIndex(get(activeText))
-    }
+    nextSentence()
   }
 })
 
@@ -226,13 +266,61 @@ onUnmounted(() => {
   <template v-else>
     <RingLoadingView v-if="loading" />
     <template v-else>
-      <div class="catalog-wrapper bg-base-100 overflow-auto hover:scrollbar-thin scrollbar-none" ref="catalogRef">
-        <ExpandTreeView :data="toc" :active="activePage" @click="onCatalog" />
+      <div class="flex-1  h-full overflow-hidden">
+        <div class="flex flex-row h-full overflow-hidden">
+          <div class="catalog-wrapper bg-base-100 overflow-auto hover:scrollbar-thin scrollbar-none" ref="catalogRef">
+            <ExpandTreeView :data="toc" :active="activePage" @click="onCatalog" />
+          </div>
+          <div class="prose px-2 w-full max-w-full overflow-auto hover:scrollbar-thin scrollbar-none cursor-pointer"
+            ref="contentRef">
+            <p v-for="item, index in textList" class="px-2 hover:bg-base-300/60"
+              :class="{ 'selection-info': index === activeText }" @click="changeActiveSentence(index)">{{ item }}</p>
+          </div>
+        </div>
       </div>
-      <div class="prose px-2 w-full max-w-full overflow-auto hover:scrollbar-thin scrollbar-none cursor-pointer"
-        ref="contentRef">
-        <p v-for="item, index in textList" class="px-2 hover:bg-base-300/60"
-          :class="{ 'selection-info': index === activeText }" @click="changeActiveText(index)">{{ item }}</p>
+      <div class="px-4 pt-8 flex flex-row justify-center items-center">
+        <div class="flex flex-row items-center gap-4 h-16">
+          <div class="dropdown dropdown-top dropdown-hover">
+            <div tabindex="0" role="button" class="btn">
+              <VolumeX v-if="isMute" />
+              <Volume1 v-else />
+            </div>
+            <div class="dropdown-content">
+              <input type="range" min="0" max="100" v-model="volume" value="40"
+                class="range range-xs range-info w-52" />
+            </div>
+          </div>
+          <div class="tooltip" data-tip="上一章">
+            <button class="btn btn-accent " @click="prewSection()">
+              <StepBack />
+            </button>
+          </div>
+          <div class="tooltip" data-tip="上一句">
+            <button class="btn btn-primary " @click="prewSentence()">
+              <Rewind />
+            </button>
+          </div>
+          <div class="tooltip" :data-tip="isPlaying ? '暂停' : '播放'">
+            <div class="avatar placeholder" @click="sound.toggle()">
+              <div
+                class="bg-neutral text-neutral-content ring-primary ring-offset-base-100 w-12 rounded-full ring ring-offset-2 ">
+                <span class="loading loading-ring" v-if="isPlaying"></span>
+                <Triangle :class="{ 'animate-spin': isPlaying }" v-else />
+              </div>
+            </div>
+          </div>
+          <div class="tooltip" data-tip="下一章">
+            <button class="btn btn-primary " @click="nextSentence()">
+              <FastForward />
+            </button>
+          </div>
+          <div class="tooltip" data-tip="下一句">
+            <button class="btn btn-accent " @click="nextSection()">
+              <StepForward />
+            </button>
+          </div>
+
+        </div>
       </div>
     </template>
   </template>
