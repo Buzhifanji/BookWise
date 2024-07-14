@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
-import { t } from '@renderer/data';
+import { getLanguageName, t } from '@renderer/data';
 import { useDialog } from '@renderer/hooks';
 import { convertUint8ArrayToURL, formatDecimal, formatFileSize, getInterval, isUndefined, toastError } from '@renderer/shared';
 import { vOnClickOutside } from '@vueuse/components';
@@ -80,6 +80,10 @@ initEdite()
             <div class="flex gap-4 mb-3">
               <div>{{ t('book.page') }}</div>
               <div class="stat-title">{{ book.pages }}</div>
+            </div>
+            <div class="flex gap-4 mb-3">
+              <div>{{ t('setting.language') }}</div>
+              <div class="stat-title">{{ getLanguageName(book.language) }}</div>
             </div>
             <div class="flex gap-4 mb-3">
               <div>{{ t('book.publisher') }}</div>

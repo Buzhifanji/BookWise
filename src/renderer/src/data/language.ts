@@ -60,6 +60,15 @@ const languageMap = {
   zh_hant: '繁体中文'
 }
 
+export function getLanguageName(val: string) {
+  if (!val) return t('common.unknown')
+
+  if (val.includes('zh')) {
+    return '中文'
+  }
+  return languageMap[val] || val
+}
+
 export const langs: { id: string; value: string }[] = Object.keys(languageMap).map((key) => ({
   id: key,
   value: languageMap[key]

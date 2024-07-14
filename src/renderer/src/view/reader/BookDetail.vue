@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Book, Note } from '@renderer/batabase';
 import { BookReadTimeAction, ScoreInputView, editDialog, scroreDialog } from '@renderer/components';
-import { t } from '@renderer/data';
+import { getLanguageName, t } from '@renderer/data';
 import { convertUint8ArrayToURL, formatDecimal, formatFileSize, getInterval, isUndefined, toastSuccess } from '@renderer/shared';
 import { useClipboard } from '@vueuse/core';
 import dayjs from 'dayjs';
@@ -83,6 +83,10 @@ const getScore = (val: unknown) => isUndefined(val) || val === -1 ? t('common.un
     <div class="flex gap-4 ml-3 mb-2">
       <div>{{ t('book.page') }}</div>
       <div class="stat-title">{{ book.pages }}</div>
+    </div>
+    <div class="flex gap-4 ml-3 mb-2">
+      <div>{{ t('setting.language') }}</div>
+      <div class="stat-title">{{ getLanguageName(book.language) }}</div>
     </div>
     <div class="flex gap-1 ml-3 mb-2 cursor-pointer" @click="openBookScore()">
       <div>{{ t('book.score') }}</div>
