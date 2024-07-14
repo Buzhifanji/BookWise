@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { BookAudio } from '@renderer/batabase';
-import { BookAudioAction, RingLoadingView } from '@renderer/components';
+import { BookAudioAction, RingLoadingView, Select } from '@renderer/components';
+import { langs } from '@renderer/data';
 import { TTSbus } from '@renderer/hooks';
 import { domScrollToView, spliteSentence } from '@renderer/shared';
 import { useBookPageStore, useTTSStore } from '@renderer/store';
 import { edgeTSS } from '@renderer/tts';
+import { voiceList } from '@renderer/tts/data';
 import { get, onKeyStroke, set, useDebounceFn, useToggle } from '@vueuse/core';
 import { Howler } from 'howler';
 import { FastForward, Rewind, StepBack, StepForward, Triangle, Volume1, VolumeX } from 'lucide-vue-next';
 import SparkMD5 from 'spark-md5';
 import { v4 as uuidv4 } from 'uuid';
-import { defineProps, onUnmounted, ref, watchEffect, withDefaults } from 'vue';
-import { Sound, useSoundVolume } from './sound';
+import { computed, defineProps, onUnmounted, ref, watchEffect, withDefaults } from 'vue';
+import { Sound } from './sound';
 
 interface Props {
   section: any[],
@@ -37,10 +39,38 @@ const activeText = ref(0) // 当前选中的文本
 const activePage = ref(props.page) // 当前选中的目录
 const catalogRef = ref<HTMLDivElement>() // 目录容器
 const contentRef = ref<HTMLDivElement>() // 内容容器
+const language = ref('') // 语言
+const languageList = langs.slice(0, langs.length - 2)
+languageList.push({ id: 'zh', value: '中文' })
 const sound = new Sound()
 const isPlaying = sound.isPlaying
+const volume = sound.volume
+const isMute = sound.isMute
+const textOpacity = { '--tw-text-opacity': 0.6 };
 
-const { volume, isMute } = useSoundVolume()
+const voice = ref('')
+const voices = computed(() => {
+  const lang = get(language)
+  if (lang) {
+    const list = Object.keys(voiceList).map(key => ({ id: key, value: voiceList[key] }))
+    const res = list.filter(item => item.id.startsWith(lang.toLocaleLowerCase()))
+    if (res.length) {
+      set(voice, res[0].id)
+      return res
+    } else {
+      const res = window.speechSynthesis.getVoices().filter((v) => v.lang.includes(lang)).map((v) => {
+        return { id: v.name, value: v.name }
+      })
+      if (res.length) {
+        set(voice, res[0].id)
+      }
+      return res
+    }
+
+  }
+  return []
+})
+
 const audiosMap = new Map<string, BookAudio>()
 const hasNextCatalog = () => get(activePage) < props.section.length - 1 // 是否有下章节
 
@@ -82,7 +112,8 @@ async function loadSectionAudio(data: string[], isPlay = false) {
       const buffer = audiosMap.get(hash)?.content
       if (buffer) {
         sound.clear()
-        sound.play(buffer)
+        sound.play(get(textList)[get(activeText)])
+        // sound.play(buffer)
         setLoading(false)
       } else {
         console.warn('数据丢失了')
@@ -134,7 +165,8 @@ async function playIndex(index: number) {
   const hash = SparkMD5.hash(textList.value[index])
   const buffer = audiosMap.get(hash)?.content
   if (buffer) {
-    sound.play(buffer)
+    // sound.play(buffer)
+    sound.play(get(textList)[get(activeText)])
   } else {
     await loadAudioFromNet(hash, textList.value[index], TTSStore.voice)
     const res = audiosMap.get(hash)?.content
@@ -280,7 +312,8 @@ onUnmounted(() => {
       </div>
       <div class="px-4 pt-8 flex flex-row justify-center items-center">
         <div class="flex flex-row items-center gap-4 h-16">
-          <div class="dropdown dropdown-top dropdown-hover">
+
+          <div class=" dropdown dropdown-top dropdown-hover">
             <div tabindex="0" role="button" class="btn">
               <VolumeX v-if="isMute" />
               <Volume1 v-else />
@@ -319,7 +352,11 @@ onUnmounted(() => {
               <StepForward />
             </button>
           </div>
-
+          <div class="join justify-center items-center ml-6">
+            <button class="btn join-item " :style="textOpacity">声音模型</button>
+            <Select :list="languageList" v-model="language" class-name="!w-40 join-item " />
+            <Select :list="voices" v-model="voice" class-name="!min-w-44  join-item" />
+          </div>
         </div>
       </div>
     </template>

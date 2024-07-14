@@ -35,27 +35,27 @@ export const setI18nLanguage = async (id: string) => {
   }
 }
 
-const languageMap = {
+export const languageMap = {
   en: 'English',
   ar: 'العربية',
   de: 'Deutsch',
   es: 'Español',
-  fa: 'فارسی',
+  fa: 'فارسی', // none
   fr: 'Français',
-  id: 'Bahasa Indonesia',
-  it: 'Italiano',
+  id: 'Bahasa Indonesia', // none
+  it: 'Italiano', // none
   ja: '日本語',
   ko: '한국어',
-  ms: 'Bahasa Melayu',
-  nl: 'Nederlands',
-  no: 'Norsk',
-  pl: 'Polski',
+  ms: 'Bahasa Melayu', // none
+  nl: 'Nederlands', // none
+  no: 'Norsk', // none
+  pl: 'Polski', // none
   pt: 'Português',
   ru: 'Русский',
-  sv: 'Svenska',
-  tr: 'Türkçe',
-  uk: 'Українська',
-  vi: 'Tiếng Việt',
+  sv: 'Svenska', // none
+  tr: 'Türkçe', // none
+  uk: 'Українська', // none
+  vi: 'Tiếng Việt', // none
   zh_hans: '简体中文',
   zh_hant: '繁体中文'
 }

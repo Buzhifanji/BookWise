@@ -142,7 +142,7 @@ export const voiceList = {
   'zh-CN-liaoning-YunbiaoNeural': '云彪',
   'zh-CN-shaanxi-XiaoniNeural': '晓妮',
   'zh-CN-shandong-YunxiangNeural': '云翔',
-  'zh-CN-sichuan-YunxiNeural': '云希',
+  'zh-CN-sichuan-YunxiNeural': '四川云希',
   'zh-TW-HsiaoChenNeural': '曉臻',
   'zh-TW-HsiaoYuNeural': '曉雨',
   'zh-TW-YunJheNeural': '雲哲'
