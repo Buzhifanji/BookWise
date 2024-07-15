@@ -1,6 +1,7 @@
 import { Book } from '@renderer/batabase'
 import { router, RouterName } from '@renderer/route'
 import { settingStore } from '@renderer/store'
+import { toRaw } from 'vue'
 import { beforeOpenBook } from './use-render-book'
 
 function jump(params: any, name: string) {
@@ -19,7 +20,7 @@ function jump(params: any, name: string) {
  * @param id
  */
 export function bookJump(id: string, val?: Book) {
-  if (val) beforeOpenBook(val)
+  if (val) beforeOpenBook(toRaw(val))
   jump({ id }, RouterName.Reader)
 }
 

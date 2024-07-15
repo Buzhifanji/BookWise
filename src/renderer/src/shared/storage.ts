@@ -22,6 +22,6 @@ export class StorageAction {
   }
 
   clear() {
-    this.store.clear()
+    this.store.removeItem(this.key)
   }
 }

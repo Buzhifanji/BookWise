@@ -1,9 +1,7 @@
 import { Book, BookContent, db } from '@renderer/batabase'
 import { ReadTime } from '@renderer/batabase/read-time'
 import { t } from '@renderer/data'
-import { RouterName, router } from '@renderer/route'
 import { now, toastError } from '@renderer/shared'
-import { settingStore } from '@renderer/store'
 import { useObservable } from '@vueuse/rxjs'
 import { liveQuery } from 'dexie'
 import { v4 as uuidv4 } from 'uuid'
@@ -77,29 +75,6 @@ export class BookAction {
       return [] as Book[]
     }
   }
-}
-
-function jump(params: any, name: string) {
-  const isBlank = settingStore.value.isOpenNew
-  const res = { name, params: params }
-  if (isBlank) {
-    const { href } = router.resolve(res)
-    window.open(href, '_blank')
-  } else {
-    router.push(res)
-  }
-}
-
-/**
- * 图书跳转
- * @param id
- */
-export function bookJump(id: string) {
-  jump({ id }, RouterName.Reader)
-}
-
-export function listenBookJump(id: string) {
-  jump({ id }, RouterName.ListenBook)
 }
 
 /**

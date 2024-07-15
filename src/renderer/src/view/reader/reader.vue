@@ -114,7 +114,7 @@ async function loadData() {
 
     // 更新打开次数
     const count = (data.bookInfo.count || 0) + 1
-    BookAction.update(data.bookInfo.id, { count })
+    BookAction.update(bookId, { count })
   } catch (err) {
     console.log(err)
   } finally {

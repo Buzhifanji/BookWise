@@ -78,13 +78,3 @@ export const useBookStore = defineStore('useBookStore', () => {
 
   return { bookList, setBookList }
 })
-
-// 打开的书籍
-export const useOpenBookStore = useStorage<{ [key: string]: Book }>(
-  'book-wise_open_book',
-  null,
-  localStorage,
-  {
-    mergeDefaults: true
-  }
-)

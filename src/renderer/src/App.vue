@@ -10,7 +10,9 @@ import { bookPositionStore, bookReadTimeStore, settingStore, useBookshelfStore, 
 watchEffect(() => {
   const theme = settingStore.value.theme
   document.querySelector('html')?.setAttribute('data-theme', theme)
+})
 
+watchEffect(() => {
   const lang = settingStore.value.lang
   setI18nLanguage(lang)
 })

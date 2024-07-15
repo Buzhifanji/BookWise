@@ -8,6 +8,7 @@ import { computed } from 'vue';
 const bookStore = useBookStore()
 
 async function onClick(val: Book) {
+  console.log(val)
   bookJump(val.id, val)
 }
 const books = computed(() => bookStore.bookList.filter(item => !item.isDelete))

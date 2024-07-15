@@ -2,6 +2,7 @@ import { Book } from '@renderer/batabase'
 import { BookAction, BookContentAction } from '@renderer/components'
 import { Reader } from '@renderer/reader'
 import { arrayBufferToFile, isElectron, StorageAction } from '@renderer/shared'
+import { toRaw } from 'vue'
 
 const KEY = 'book-wise_open_book'
 
@@ -13,12 +14,13 @@ const bookRefreshStore = new StorageAction(KEY, sessionStorage)
 export function beforeOpenBook(val: Book) {
   if (!val) return
   const data = bookJumpStore.get()
-  data[val.id] = val
+  data[val.id] = { ...val, cover: '' }
   bookJumpStore.set(data)
 }
 
 export function cahceRefreshBook(val: Book) {
-  bookRefreshStore.set(val)
+  const res = { ...toRaw(val), cover: '' }
+  bookRefreshStore.set(res)
 }
 
 async function getBookInfo(id: string) {
@@ -56,12 +58,10 @@ export async function renderBook(id: string) {
   const file = arrayBufferToFile(bookContent.content, bookInfo.name)
 
   bookRender = new Reader()
-
   await bookRender.open(file)
 
   const toc = bookRender.book.toc || []
   handleToc(toc)
-
   const sections = (bookRender.book.sections || []).length
 
   return { bookInfo, bookContent, sections, toc }

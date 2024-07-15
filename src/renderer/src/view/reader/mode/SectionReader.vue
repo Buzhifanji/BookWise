@@ -2,7 +2,7 @@
 import { BookRender } from '@renderer/hooks';
 import { formatDecimal, wait } from '@renderer/shared';
 import { useBookPageStore } from '@renderer/store';
-import { get, onKeyStroke, set, useDebounceFn, useScroll, useThrottleFn, useToggle } from '@vueuse/core';
+import { get, onKeyStroke, set, useDebounceFn, useScroll, useThrottleFn } from '@vueuse/core';
 import { nextTick, ref, watchEffect } from 'vue';
 import { CONTINAER_ID } from '../highlight';
 import { Position } from '../type';
@@ -24,7 +24,6 @@ defineExpose({ jump })
 const emit = defineEmits(['progress'])
 
 const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
-const [loadig, setLoading] = useToggle(false)
 
 const index = ref<number>(0)
 const bookPageStore = useBookPageStore()
