@@ -124,17 +124,17 @@ async function loadData() {
 
 
 // 目录跳转
-async function jumpAction(index: number, id?: string, position?: Position) {
+async function jumpAction(page: number, id?: string, position?: Position) {
   if (get(isPDF)) {
-    await PDF.pageJump(index, id)
+    await PDF.pageJump(page, id)
   } else {
     const mode = get(readMode)
     if (mode === ReadMode.scroll) {
-      scrollReaderViewRef.value?.jump(index, id, position)
+      scrollReaderViewRef.value?.jump(page, id, position)
     } else if (mode === ReadMode.section) {
-      sectionReaderViewRef.value?.jump(index, id, position)
+      sectionReaderViewRef.value?.jump(page, id, position)
     } else {
-      doubleReaderViewRef.value?.jump(index, id, position)
+      doubleReaderViewRef.value?.jump(page, id, position)
     }
   }
 }
@@ -265,6 +265,7 @@ async function recordPosition() {
     }
     postion = postion || { page, index: -1, tagName: '' }
   }
+
 
   const lastReadPosition = JSON.stringify(postion)
   // 当页面刷新的时候，保存到数据库的数据是异步，所以得用sessionStorage同步存储

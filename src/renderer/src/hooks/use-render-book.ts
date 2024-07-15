@@ -3,6 +3,7 @@ import { BookAction, BookContentAction } from '@renderer/components'
 import { Reader } from '@renderer/reader'
 import { arrayBufferToFile, isElectron, StorageAction } from '@renderer/shared'
 import { toRaw } from 'vue'
+import { bookLoadedSetionBus } from './use-event-bus'
 
 const KEY = 'book-wise_open_book'
 
@@ -107,6 +108,7 @@ export class BookRender {
       const res = await bookRender.getSections()
       this.section.length = 0
       this.section.push(...res)
+      bookLoadedSetionBus.emit('loaded', true)
     }
     return []
   }

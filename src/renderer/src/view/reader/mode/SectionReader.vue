@@ -23,6 +23,8 @@ const props = withDefaults(defineProps<Props>(), {
 defineExpose({ jump })
 const emit = defineEmits(['progress'])
 
+let position: Position | undefined = undefined;
+let highlightId: string | undefined = undefined;
 const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
 
 const index = ref<number>(0)
@@ -58,26 +60,41 @@ watchEffect(async () => {
   }
 })
 
+function sectionLoaded(i: number) {
+  if (i === get(index)) {
+    if (position) {
+      const target = findPositionDom(i, position)
+      if (!target) return
+      const { top } = target.getBoundingClientRect()
+      containerRef.value?.scrollTo({ top: top, behavior: 'smooth' })
+    }
+
+    if (highlightId) {
+      const target = getSourceTarget(i, highlightId)
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+    }
+  }
+
+}
+
 
 // 目录跳转
-async function jump(i: number, id?: string, position?: Position) {
+async function jump(i: number, id?: string, _position?: Position) {
   if (containerRef.value && !id) {
     containerRef.value.scrollTop = 0
   }
-
+  position = _position
   index.value = i
 
   if (id) {
-    await wait(100)
-    getSourceTarget(i, id)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-  }
-
-  if (position) {
-    await wait(100)
-    const target = findPositionDom(i, position)
-    if (!target) return
-    const { top } = target.getBoundingClientRect()
-    containerRef.value?.scrollTo({ top: top, behavior: 'smooth' })
+    const target = getSourceTarget(i, id)
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    } else {
+      highlightId = id
+    }
   }
 }
 
@@ -213,7 +230,7 @@ onKeyStroke(['ArrowDown'], littleNextView)
       <div class="py-8">
         <button class="btn btn-active btn-neutral" @click="prevSection">上一章</button>
       </div>
-      <SectionView :key="index" :index="index" @link-click="linkClick"></SectionView>
+      <SectionView :key="index" :index="index" :loaded="sectionLoaded" @link-click="linkClick"></SectionView>
       <div class="text-center py-10">
         <button class="btn  btn-active  btn-primary btn-wide" @click="nextSection">下一章</button>
       </div>

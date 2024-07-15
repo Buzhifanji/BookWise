@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { BookRender } from '@renderer/hooks';
+import { bookLoadedSetionBus, BookRender } from '@renderer/hooks';
 import { formatDecimal } from '@renderer/shared';
 import { observeElementOffset, useVirtualizer } from '@tanstack/vue-virtual';
-import { get, onKeyStroke, useDebounceFn, useThrottleFn } from '@vueuse/core';
-import { computed, ref } from 'vue';
+import { get, onKeyStroke, set, useDebounceFn, useThrottleFn } from '@vueuse/core';
+import scrollIntoView from 'scroll-into-view-if-needed';
+import { computed, nextTick, ref } from 'vue';
 import { Position } from '../type';
 import { findPositionDom, getNavbarRect, getSourceTarget, toNextView, toPrewView } from '../util';
 import SectionView from './Section.vue';
@@ -23,6 +24,8 @@ defineExpose({ jump })
 const emit = defineEmits(['progress'])
 
 const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
+const total = ref(props.sections)
+let loadedSection = false // 章节内容是否加载完成
 
 let isJump = false
 let highlightId: string | undefined = undefined // 高亮跳转id
@@ -35,26 +38,23 @@ let jumpPage: number = -1 // 跳转的页面
  * @param id  高亮内容id
  * @param position 上次阅读位置
  */
-async function jump(index: number, id?: string, position?: Position) {
-  rowVirtualizer.value.scrollToIndex(index, { align: 'start', behavior: 'smooth' })
+async function jump(page: number, id?: string, position?: Position) {
+  rowVirtualizer.value.scrollToIndex(page, { align: 'start', behavior: 'smooth' })
 
-  jumpPage = index
+  jumpPage = page
   highlightId = id
   lastReadPosition = position
   isJump = true
+
+  // 处理点击同一章的高亮
+  jumpToHighlight()
 }
 
 function jumpToHighlight() {
   if (highlightId && jumpPage !== -1) {
     const target = getSourceTarget(jumpPage, highlightId)
     if (!target) return
-
-    const rect = target.getBoundingClientRect()
-    const scrollTop = get(containerRef)?.scrollTop || 0
-
-    if (scrollTop) {
-      rowVirtualizer.value.scrollToOffset(scrollTop + rect.top, { align: 'center', behavior: 'smooth' })
-    }
+    scrollIntoView(target, { behavior: 'smooth', scrollMode: 'if-needed', block: 'center' })
   }
 }
 
@@ -63,10 +63,15 @@ function jumpToPosition() {
     const scrollTop = get(containerRef)?.scrollTop || 0
     const target = findPositionDom(jumpPage, lastReadPosition)
     if (!target) return
+
     const navBarRect = getNavbarRect()?.height || 0
     const { top } = target.getBoundingClientRect()
     rowVirtualizer.value.scrollToOffset(scrollTop + top - navBarRect, { align: 'start', behavior: 'smooth' })
+
+    resetJump()
+    loadedSection = false
   }
+
 }
 
 function resetJump() {
@@ -86,10 +91,18 @@ const calculateProgress = useDebounceFn((offset: number) => {
   }
 }, 200)
 
+bookLoadedSetionBus.on(async () => {
+  set(total, get(total) + 1)
+  await nextTick()
+  set(total, get(total) - 1)
+  loadedSection = true
+  rowVirtualizer.value.scrollToIndex(jumpPage, { align: 'start', behavior: 'smooth' })
+})
+
 // 虚拟列表
 const rowVirtualizerOptions = computed(() => {
   return {
-    count: props.sections,
+    count: get(total),
     overscan: 5,
     getScrollElement: () => containerRef.value,
     estimateSize: (i: number) => BookRender.section[i]?.height || 1000,
@@ -99,8 +112,10 @@ const rowVirtualizerOptions = computed(() => {
       // 滚动停止
       if (!isScrolling && isJump) {
         jumpToHighlight()
-        jumpToPosition()
-        resetJump()
+
+        if (loadedSection) {
+          jumpToPosition()
+        }
       }
     })
   }

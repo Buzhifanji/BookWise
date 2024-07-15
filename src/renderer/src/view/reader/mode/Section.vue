@@ -4,25 +4,27 @@ import { BookRender } from '@renderer/hooks';
 import { $ } from '@renderer/shared';
 import { useBookPageStore } from '@renderer/store';
 import { get, set } from '@vueuse/core';
-import { useRouteParams } from '@vueuse/router';
 import { nextTick, onBeforeMount, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { highlighter } from '../highlight';
 
 interface Props {
   index: number
+  loaded?: (i: number) => void
 }
 
 const props = withDefaults(defineProps<Props>(), {
   index: 0,
+  loaded: () => { }
 })
 
 const emit = defineEmits(['linkClick'])
 const contianer = ref<HTMLElement | null>(null)
 const data = ref<{ height: number, html: string, id: string }>()
 
-const bookParam = useRouteParams<string>('id')
+const route = useRoute();
+const id = route.params.id as string;
 const bookPageStore = useBookPageStore()
-
 
 // 链接绑定点击事件
 function handleLink() {
@@ -37,7 +39,7 @@ function handleLink() {
 }
 
 async function drawHighlight() {
-  const notes = await NoteAction.findBookPageNotes(get(bookParam), props.index.toString())
+  const notes = await NoteAction.findBookPageNotes(id, props.index.toString())
   const domSource = notes.map(note => NoteAction.noteToDomSource(note))
   highlighter?.fromSource(domSource)
 }
@@ -74,6 +76,7 @@ async function loadSection() {
   const res = await BookRender.getSection(props.index)
   set(data, res)
   await nextTick()
+  props?.loaded(props.index)
   handleLink()
   drawHighlight()
   observeDom()

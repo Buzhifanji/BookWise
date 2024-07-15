@@ -78,12 +78,12 @@ export function getSectionFirstChild(page: number) {
     return getSectionFirstChild(page - 1)
   } else if (n === 0) {
     // 正好找到了
-    return firstElement
+    return { dom: firstElement, page }
   } else {
     const doms = lastElementsToArray(contianer)
     for (const dom of doms) {
       if (isFirstInView(dom, offsetTop)) {
-        return dom
+        return { dom, page }
       }
     }
     return null
@@ -96,11 +96,10 @@ export function getSectionFirstChild(page: number) {
  * @returns
  */
 export function getSectionFirstChildPosition(page: number) {
-  const contianer = getSectionContainer(page)
-  if (!contianer) return null
-  const dom = getSectionFirstChild(page)
-  if (dom) {
-    return getDomPosition(contianer, dom, page)
+  const res = getSectionFirstChild(page)
+  if (res) {
+    const { dom, page } = res
+    return getDomPosition(getSectionContainer(page), dom, page)
   }
   return null
 }

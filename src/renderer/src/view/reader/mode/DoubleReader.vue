@@ -25,6 +25,8 @@ const emit = defineEmits(['progress'])
 defineExpose({ jump })
 
 let currentIndex = 0;
+let position: Position | undefined = undefined;
+let highlightId: string | undefined = undefined;
 
 const [isLoading, setLoading] = useToggle(false)
 const bookPageStore = useBookPageStore()
@@ -69,6 +71,7 @@ watchEffect(async () => {
   }
 })
 
+const getHightlight = (id: string) => containerRef.value?.querySelector(`span[data-web-highlight_id='${id}']`) as HTMLElement
 
 // 更新章节内容
 async function updateSection() {
@@ -98,6 +101,27 @@ function setHeight() {
 onMounted(() => {
   setHeight()
 })
+
+function sectionLoaded(i: number) {
+  if(index.value !== i) return
+  // 恢复阅读位置
+  if (position) {
+      const target = findPositionDom(i, position)
+      if (target) {
+        domToView(target)
+      }
+      position = undefined
+  }
+
+  // 高亮跳转
+  if (highlightId) {
+    const target = getHightlight(highlightId)
+    if (target) {
+      domToView(target)
+      highlightId = undefined
+    }
+  }
+}
 
 /**
  * 当窗口变化的时候，需要重置滚动条的位置
@@ -135,27 +159,20 @@ function domToView(target: HTMLElement) {
 
 
 // 目录跳转
-async function jump(i: number, id?: string, position?: Position) {
+async function jump(i: number, id?: string, _position?: Position) {
+  position = _position
   index.value = i
   await updateSection()
 
   if (id) {
     await nextTick()
-    const dom = containerRef.value!
-    const target = dom?.querySelector(`span[data-web-highlight_id='${id}']`) as HTMLElement
+    const target = getHightlight(id)
     if (target) {
       domToView(target)
+    } else {
+      highlightId = id
     }
   }
-
-  if (position) {
-    await nextTick()
-    const target = findPositionDom(i, position)
-    if (target) {
-      domToView(target)
-    }
-  }
-
 }
 
 
@@ -260,7 +277,7 @@ function linkClick(href: string) {
         <template v-else>
           <div ref="containerRef" :data-page-number="index"
             class="columns-1 scroll-smooth transition ease-in-out lg:columns-2 gap-x-16 h-full overflow-auto scrollbar-none p-8 pb-12 double-container relative">
-            <SectionView :key="index" :index="index" @link-click="linkClick">
+            <SectionView :key="index" :loaded="sectionLoaded" :index="index" @link-click="linkClick">
             </SectionView>
             <div ref="remendyRef" :style="style"></div>
           </div>
