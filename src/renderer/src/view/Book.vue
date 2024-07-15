@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
-import { bookJump, BookListView } from '@renderer/components';
+import { BookListView } from '@renderer/components';
+import { bookJump } from '@renderer/hooks';
 import { useBookStore } from '@renderer/store';
 import { computed } from 'vue';
 
 const bookStore = useBookStore()
 
-async function onClick({ id }: Book) {
-  bookJump(id)
+async function onClick(val: Book) {
+  bookJump(val.id, val)
 }
 const books = computed(() => bookStore.bookList.filter(item => !item.isDelete))
 </script>

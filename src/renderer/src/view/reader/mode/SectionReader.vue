@@ -1,22 +1,22 @@
 <script setup lang="ts">
+import { BookRender } from '@renderer/hooks';
 import { formatDecimal, wait } from '@renderer/shared';
 import { useBookPageStore } from '@renderer/store';
-import { get, onKeyStroke, set, useDebounceFn, useScroll, useThrottleFn } from '@vueuse/core';
-import { computed, nextTick, ref, watchEffect } from 'vue';
+import { get, onKeyStroke, set, useDebounceFn, useScroll, useThrottleFn, useToggle } from '@vueuse/core';
+import { nextTick, ref, watchEffect } from 'vue';
 import { CONTINAER_ID } from '../highlight';
-import { getBookHref, isExternal, openExternal } from '../render';
 import { Position } from '../type';
 import { findPositionDom, getSectionSize, getSourceTarget, toNextView, toPrewView } from '../util';
 import SectionView from './Section.vue';
 
 interface Props {
-  section: any[],
   isScrollLocked: boolean,
+  sections: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  section: () => [],
   isScrollLocked: false,
+  sections: 0
 })
 
 
@@ -24,10 +24,10 @@ defineExpose({ jump })
 const emit = defineEmits(['progress'])
 
 const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
+const [loadig, setLoading] = useToggle(false)
 
 const index = ref<number>(0)
 const bookPageStore = useBookPageStore()
-const section = computed(() => props.section[index.value])
 
 const { y } = useScroll(containerRef)
 
@@ -58,7 +58,6 @@ watchEffect(async () => {
     }
   }
 })
-
 
 
 // 目录跳转
@@ -101,17 +100,17 @@ function nextSection() {
     })
     containerRef.value.scrollTop = 0
   }
-  if (index.value < props.section.length - 1) {
+  if (index.value < props.sections - 1) {
     index.value += 1
   }
 }
 
 // 点击书本链接
 function linkClick(href: string) {
-  if (isExternal(href)) {
-    openExternal(href)
+  if (BookRender.isExternal(href)) {
+    BookRender.openExternal(href)
   } else {
-    const value = getBookHref(href)
+    const value = BookRender.getBookHref(href)
     if (value) {
       jump(value.index)
     }
@@ -156,7 +155,7 @@ onKeyStroke(['ArrowLeft'], prewView)
 
 // 下一页
 const jumpToNextView = async () => {
-  if (get(index) === props.section.length - 1) return
+  if (get(index) === props.sections - 1) return
 
   set(index, get(index) + 1)
   await wait(100)
@@ -215,7 +214,7 @@ onKeyStroke(['ArrowDown'], littleNextView)
       <div class="py-8">
         <button class="btn btn-active btn-neutral" @click="prevSection">上一章</button>
       </div>
-      <SectionView :key="index" :index="index" :data="section" @link-click="linkClick"></SectionView>
+      <SectionView :key="index" :index="index" @link-click="linkClick"></SectionView>
       <div class="text-center py-10">
         <button class="btn  btn-active  btn-primary btn-wide" @click="nextSection">下一章</button>
       </div>

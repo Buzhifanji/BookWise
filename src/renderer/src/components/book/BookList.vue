@@ -2,7 +2,7 @@
 import { Book } from '@renderer/batabase';
 import { FileUploadView } from '@renderer/components';
 import { BookshelftMode, t } from '@renderer/data';
-import { useRightClick } from '@renderer/hooks';
+import { listenBookJump, useRightClick } from '@renderer/hooks';
 import { sort, toastSuccess } from '@renderer/shared';
 import { bookSortStore, settingStore, useBookFilterStore } from '@renderer/store';
 import { vOnClickOutside } from '@vueuse/components';
@@ -10,7 +10,7 @@ import { get, set } from '@vueuse/core';
 import { BellElectric, Headset, Heart, HeartOff, PencilLine, Plus, SquareLibrary, Star, Trash2, UndoDot } from 'lucide-vue-next';
 import { defineProps, ref, toRaw, watchEffect, withDefaults } from 'vue';
 import { addBookshelfDialog } from '../bookshelf';
-import { BookAction, BookReadTimeAction, listenBookJump } from './action';
+import { BookAction, BookReadTimeAction } from './action';
 import { detailDialog } from './detail';
 import { editDialog } from './edit';
 import BookShelfMode from './mode/Bookshelf.vue';
@@ -159,7 +159,7 @@ const onBookshelf = () => dialogAction(addBookshelfDialog)
 const toListen = () => {
   const data = selectData.value
   if (data) {
-    listenBookJump(data.id)
+    listenBookJump(data.id, data)
   }
 }
 

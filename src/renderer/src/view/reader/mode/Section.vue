@@ -1,27 +1,28 @@
 <script setup lang="ts">
 import { NoteAction } from '@renderer/components';
+import { BookRender } from '@renderer/hooks';
 import { $ } from '@renderer/shared';
 import { useBookPageStore } from '@renderer/store';
-import { get } from '@vueuse/core';
+import { get, set } from '@vueuse/core';
 import { useRouteParams } from '@vueuse/router';
-import { onBeforeMount, onMounted, ref } from 'vue';
+import { nextTick, onBeforeMount, ref } from 'vue';
 import { highlighter } from '../highlight';
 
 interface Props {
-  data: any,
   index: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  data: '',
   index: 0,
 })
 
 const emit = defineEmits(['linkClick'])
 const contianer = ref<HTMLElement | null>(null)
+const data = ref<{ height: number, html: string, id: string }>()
 
 const bookParam = useRouteParams<string>('id')
 const bookPageStore = useBookPageStore()
+
 
 // 链接绑定点击事件
 function handleLink() {
@@ -69,12 +70,17 @@ function observeDom() {
 }
 
 
-onMounted(() => {
+async function loadSection() {
+  const res = await BookRender.getSection(props.index)
+  set(data, res)
+  await nextTick()
   handleLink()
   drawHighlight()
   observeDom()
   observe?.observe(get(contianer)!)
-})
+}
+
+loadSection()
 
 onBeforeMount(() => {
   observe?.unobserve(get(contianer)!)
@@ -83,5 +89,8 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div ref="contianer" v-html="data.html"></div>
+  <div v-if="data" v-html="data.html"></div>
+  <div class="h-[1000px] flex justify-center items-center" v-else>
+    <span class="loading loading-spinner text-warning loading-lg"></span>
+  </div>
 </template>

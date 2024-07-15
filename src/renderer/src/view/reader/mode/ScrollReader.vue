@@ -1,20 +1,20 @@
 <script setup lang="ts">
+import { BookRender } from '@renderer/hooks';
 import { formatDecimal } from '@renderer/shared';
 import { observeElementOffset, useVirtualizer } from '@tanstack/vue-virtual';
 import { get, onKeyStroke, useDebounceFn, useThrottleFn } from '@vueuse/core';
 import { computed, ref } from 'vue';
-import { getBookHref, isExternal, openExternal } from '../render';
 import { Position } from '../type';
 import { findPositionDom, getNavbarRect, getSourceTarget, toNextView, toPrewView } from '../util';
 import SectionView from './Section.vue';
 
 interface Props {
-  section: any[],
+  sections: number
   isScrollLocked: boolean,
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  section: () => [],
+  sections: 0,
   isScrollLocked: false,
 })
 
@@ -89,10 +89,10 @@ const calculateProgress = useDebounceFn((offset: number) => {
 // 虚拟列表
 const rowVirtualizerOptions = computed(() => {
   return {
-    count: props.section.length,
+    count: props.sections,
     overscan: 5,
     getScrollElement: () => containerRef.value,
-    estimateSize: (i: number) => props.section[i].height,
+    estimateSize: (i: number) => BookRender.section[i]?.height || 1000,
     observeElementOffset: (instance: any, cb: any) => observeElementOffset(instance, (offset, isScrolling) => {
       cb(offset, isScrolling)
       calculateProgress(offset)
@@ -120,10 +120,10 @@ const measureElement = (element: any) => {
 
 // 点击书本链接
 function linkClick(href: string) {
-  if (isExternal(href)) {
-    openExternal(href)
+  if (BookRender.isExternal(href)) {
+    BookRender.openExternal(href)
   } else {
-    const value = getBookHref(href)
+    const value = BookRender.getBookHref(href)
     if (value) {
       jump(value.index)
     }
@@ -193,7 +193,7 @@ onKeyStroke(['ArrowDown'], littleNextView)
       <div class="absolute top-0 left-0 w-full " :style="{ transform: `translateY(${virtualRows[0]?.start ?? 0}px)` }">
         <div v-for="virtualRow in virtualRows" :key="virtualRow.key" :data-index="virtualRow.index"
           :data-page-number="virtualRow.index" :ref="measureElement" class="prose mx-auto my-0 mb-12 prose-width">
-          <SectionView :data="section[virtualRow.index]" :index="virtualRow.index" @link-click="linkClick">
+          <SectionView :index="virtualRow.index" @link-click="linkClick">
           </SectionView>
         </div>
       </div>

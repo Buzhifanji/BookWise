@@ -20,6 +20,8 @@ export class Reader {
 
   getSections(): Promise<string[]>
 
+  handSection(index: number): Promise<{ height: number; html: any; id: any }>
+
   resolveNavigation(value: any): { index: number }
 
   isExternal(value: string): boolean

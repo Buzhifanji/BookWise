@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { t } from '@renderer/data';
-import { useDialog } from '@renderer/hooks';
+import { bookJump, useDialog } from '@renderer/hooks';
 import { router, RouterName } from '@renderer/route';
 import { useBookFilterStore, useBookshelfStore, useBookStore, useFilterNoteStore, useNoteStore, useTagStore } from '@renderer/store';
 import { useVirtualizer } from '@tanstack/vue-virtual';
@@ -8,7 +8,6 @@ import { vOnClickOutside } from '@vueuse/components';
 import { get, set, useDebounceFn } from '@vueuse/core';
 import { Search } from 'lucide-vue-next';
 import { computed, nextTick, ref, toRaw } from 'vue';
-import { bookJump } from '../book/action';
 import { NoteAction } from '../note/action';
 import TextView from './Text.vue';
 

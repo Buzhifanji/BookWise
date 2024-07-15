@@ -1,23 +1,23 @@
 <script setup lang="ts">
 import { RingLoadingView } from '@renderer/components';
 import { t } from '@renderer/data';
+import { BookRender } from '@renderer/hooks';
 import { $, formatDecimal, toastWarning, wait } from '@renderer/shared';
 import { useBookPageStore } from '@renderer/store';
 import { get, onKeyStroke, set, useDebounceFn, useResizeObserver, useScroll, useThrottleFn, useToggle } from '@vueuse/core';
 import { nextTick, onMounted, ref, watchEffect } from 'vue';
 import { CONTINAER_ID } from '../highlight';
-import { getBookHref, isExternal, openExternal } from '../render';
 import { Position } from '../type';
 import { findPositionDom, getSectionSize } from '../util';
 import SectionView from './Section.vue';
 
 interface Props {
-  section: any[],
+  sections: number,
   isScrollLocked: boolean,
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  section: () => [],
+  sections: 0,
   isScrollLocked: false,
 })
 const emit = defineEmits(['progress'])
@@ -174,7 +174,7 @@ async function prev() {
 }
 
 async function next() {
-  if (index.value < props.section.length - 1) {
+  if (index.value < props.sections - 1) {
     index.value += 1
     await updateSection()
 
@@ -239,10 +239,10 @@ onKeyStroke(['ArrowUp', 'ArrowLeft'], prewView)
 
 // 点击书本链接
 function linkClick(href: string) {
-  if (isExternal(href)) {
-    openExternal(href)
+  if (BookRender.isExternal(href)) {
+    BookRender.openExternal(href)
   } else {
-    const value = getBookHref(href)
+    const value = BookRender.getBookHref(href)
     if (value) {
       jump(value.index)
     }
@@ -260,7 +260,7 @@ function linkClick(href: string) {
         <template v-else>
           <div ref="containerRef" :data-page-number="index"
             class="columns-1 scroll-smooth transition ease-in-out lg:columns-2 gap-x-16 h-full overflow-auto scrollbar-none p-8 pb-12 double-container relative">
-            <SectionView :key="index" :index="index" :data="section[index]" @link-click="linkClick">
+            <SectionView :key="index" :index="index" @link-click="linkClick">
             </SectionView>
             <div ref="remendyRef" :style="style"></div>
           </div>

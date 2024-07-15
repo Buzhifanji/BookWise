@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Book } from '@renderer/batabase';
-import { bookJump, BookReadTimeAction, ImgView } from '@renderer/components';
+import { BookReadTimeAction, ImgView } from '@renderer/components';
 import { t } from '@renderer/data';
+import { bookJump } from '@renderer/hooks';
 import { getInterval, remToPx } from '@renderer/shared';
 import { useBookStore, useContentCantianerStore, useNoteStore } from '@renderer/store';
 import { get, set, useToggle } from '@vueuse/core';
@@ -210,7 +211,7 @@ init()
           </template>
           <template v-else>
             <template v-if="recentBook.length > 0">
-              <div v-for="item in recentBook" class="cursor-pointer" @click="bookJump(item.id)">
+              <div v-for="item in recentBook" class="cursor-pointer" @click="bookJump(item.id, item)">
                 <div class="rounded over-hidden "
                   :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight + remToPx(3.5)}px` }">
                   <ImgView :data="item.cover" />
@@ -237,7 +238,7 @@ init()
           </template>
           <template v-else>
             <template v-if="loveBook.length > 0">
-              <div v-for="item in loveBook" class="cursor-pointer" @click="bookJump(item.id)">
+              <div v-for="item in loveBook" class="cursor-pointer" @click="bookJump(item.id, item)">
                 <div class="rounded over-hidden "
                   :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight + remToPx(3.5)}px` }">
                   <ImgView :data="item.cover" />

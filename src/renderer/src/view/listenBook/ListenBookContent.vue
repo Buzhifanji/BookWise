@@ -2,7 +2,7 @@
 import { BookAudio } from '@renderer/batabase';
 import { BookAudioAction, RingLoadingView, Select } from '@renderer/components';
 import { langs } from '@renderer/data';
-import { TTSbus } from '@renderer/hooks';
+import { BookRender, TTSbus } from '@renderer/hooks';
 import { domScrollToView, spliteSentence } from '@renderer/shared';
 import { useBookPageStore, useTTSStore } from '@renderer/store';
 import { edgeTSS } from '@renderer/tts';
@@ -16,14 +16,14 @@ import { computed, defineProps, onUnmounted, ref, watchEffect, withDefaults } fr
 import { Sound } from './sound';
 
 interface Props {
-  section: any[],
+  sections: number,
   toc: any[],
   bookId: string,
   page?: number,
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  section: () => [],
+  sections: 0,
   toc: () => [],
   bookId: '',
   page: 0,
@@ -33,7 +33,7 @@ const TTSStore = useTTSStore()
 const bookPageStore = useBookPageStore()
 const [loading, setLoading] = useToggle(false)
 
-const isSupport = ref(props.section.length > 0) // 是否支持朗读
+const isSupport = ref(props.sections > 0) // 是否支持朗读
 const textList = ref<string[]>([]) // 文本列表
 const activeText = ref(0) // 当前选中的文本
 const activePage = ref(props.page) // 当前选中的目录
@@ -72,7 +72,7 @@ const voices = computed(() => {
 })
 
 const audiosMap = new Map<string, BookAudio>()
-const hasNextCatalog = () => get(activePage) < props.section.length - 1 // 是否有下章节
+const hasNextCatalog = () => get(activePage) < props.sections - 1 // 是否有下章节
 
 async function loadAudioFromBD() {
   try {
@@ -152,8 +152,8 @@ function extractText(htmlString: string): string {
     .trim();
 }
 
-function handleText(index: number) {
-  const data = props.section[index]
+async function handleText(index: number) {
+  const data = await BookRender.getSection(index)
   if (data) {
     return spliteSentence(extractText(data.html))
   }
@@ -178,9 +178,9 @@ async function playIndex(index: number) {
   }
 }
 
-function loadNextSection() {
+async function loadNextSection() {
   if (hasNextCatalog()) {
-    const nextText = handleText(get(activePage) + 1)
+    const nextText = await handleText(get(activePage) + 1)
     loadSectionAudio(nextText, false)
   }
 }
@@ -215,11 +215,11 @@ function prewSentence() {
 }
 
 // 切换章节
-function changeActionSection(index: number) {
+async function changeActionSection(index: number) {
   sound.clear()
   set(activePage, index)
   set(activeText, 0)
-  const val = handleText(index)
+  const val = await handleText(index)
   set(textList, val)
   loadSectionAudio(val, true)
 }
@@ -234,7 +234,7 @@ function prewSection() {
 // 下一章
 function nextSection() {
   const index = get(activePage)
-  if (index >= props.section.length - 1) return
+  if (index >= props.sections - 1) return
   changeActionSection(get(index) + 1)
 }
 
@@ -262,7 +262,8 @@ async function init() {
   try {
     Howler.unload()
     set(activePage, get(bookPageStore.page))
-    set(textList, handleText(get(activePage))) // 加载并切割文本内容
+    const text = await handleText(get(activePage))
+    set(textList, text) // 加载并切割文本内容
     await loadAudioFromBD() // 加载本地音频
     await loadSectionAudio(get(textList), true) // 加载章节音频
     // 预先加载下一章内容

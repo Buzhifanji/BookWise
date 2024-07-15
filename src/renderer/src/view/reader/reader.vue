@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { Book, BookContent, Note } from '@renderer/batabase';
-import { BookAction, BookContentAction, DrawerView, DropdownView, ErrorView, List, NoteAction, RingLoadingView, useToggleDrawer, } from '@renderer/components';
+import { Book, Note } from '@renderer/batabase';
+import { BookAction, DrawerView, DropdownView, ErrorView, List, NoteAction, RingLoadingView, useToggleDrawer } from '@renderer/components';
 import { ReadMode, getSelectReadMode, readModeList, t, themes } from '@renderer/data';
-import { $, $$, arrayBufferToFile, getInterval, isElectron, now, toastSuccess } from '@renderer/shared';
+import { BookRender, cahceRefreshBook, renderBook } from '@renderer/hooks';
+import { $, $$, getInterval, now, toastSuccess } from '@renderer/shared';
 import { isReload } from '@renderer/shared/navigation';
 import { bookPositionStore, bookReadTimeStore, settingStore, useBookPageStore, useBookStore } from '@renderer/store';
 import { get, set, useCssVar, useToggle, useWindowSize } from '@vueuse/core';
@@ -20,7 +21,6 @@ import SectionReaderView from './mode/SectionReader.vue';
 import PDFReadView from './pdf/ReadView.vue';
 import PDFToolbarView from './pdf/Toobar.vue';
 import { PDF } from './pdf/pdf';
-import { DPFUtil, render, unMountedBookRender } from './render';
 import NoteRichView from './toolbar/NoteRich.vue';
 import ToolbarView from './toolbar/Toolbar.vue';
 import { NoteBarStyle, ToolbarStyle } from './toolbar/action';
@@ -45,11 +45,12 @@ watchEffect(() => {
   }
 })
 
-const bookContent = ref<BookContent>() // 书籍内容
+const hasBook = ref(false)
 
 const [isLoading, setLoading] = useToggle(false)
 const section = ref<any[]>([]) // 章节内容
-const tocList = ref<any[]>([]) // 目录
+const sections = ref(0);
+const bookToc = ref<any[]>([]) // 目录
 
 const { width } = useWindowSize(); // 适配不能尺寸窗口
 const isSM = computed(() => width.value < 1024);
@@ -63,61 +64,42 @@ const sectionReaderViewRef = ref<InstanceType<typeof SectionReaderView>>() // �
 const doubleReaderViewRef = ref<InstanceType<typeof DoubleReaderView>>() // 双栏视图
 const readerListenBookViewRef = ref<InstanceType<typeof ReaderListenBookView>>() // 朗读视图
 
-
-const isPDF = DPFUtil.isPDF
+const isPDF = ref(false)
 
 const isNoteRichShow = NoteBarStyle.show
 const isShowToolBar = ToolbarStyle.show
 const [isReadBook, setReadBook] = useToggle(false)
 const isScrollLocked = computed(() => get(isNoteRichShow) || get(isShowToolBar) || get(isReadBook)) // 打开高亮工具栏的时候，锁住滚动条
 
-// 获取书本内容
-async function getBookContent(bookId: string, url: string) {
-  try {
-    if (isElectron) {
-      const content = await window.api.readFile(url)
-      return { content, bookId }
-    } else {
-      // 网页从数据库中获取
-      return BookContentAction.findOne(bookId)
-    }
-  } catch (err) {
-    return null
-  }
-}
-
 async function loadData() {
   try {
     setLoading(true)
     const bookId = props.id
     if (!bookId) return
-    // 获取书本信息
-    const info = await BookAction.fineOne(bookId)
-    if (!info) return
-    // 获取书本内容
-    const content = await getBookContent(bookId, info.path)
-    if (!content) return
-    const file = arrayBufferToFile(content.content, info.name || '');
 
-    // 获取书本渲染器
-    const { sections, toc } = await render(file)
+    const data = await renderBook(bookId)
+    if (!data) return
 
-    set(bookContent, content)
-    set(section, sections)
-    set(tocList, toc)
-    set(bookInfo, info)
+    BookRender.handleBookSection()
+
+    set(isPDF, data.bookInfo.book?.type === 'pdf')
+    set(bookInfo, data.bookInfo)
+    set(hasBook, true)
+    set(bookToc, data.toc)
+    set(sections, data.sections)
+
     setLoading(false)
 
     await nextTick()
 
     if (get(isPDF)) {
-      await PDF.render(content.content, props.id)
+      await PDF.render(data.bookContent.content, props.id)
       const outline = await PDF.getOutline()
-      set(tocList, outline)
+      set(bookToc, outline)
     }
 
 
-    initHighlight(info);
+    initHighlight(data.bookInfo);
     // 笔记跳转
     const note = localStorage.getItem('__note__')
     if (note) {
@@ -131,8 +113,8 @@ async function loadData() {
     }
 
     // 更新打开次数
-    const count = (info.count || 0) + 1
-    BookAction.update(info.id, { count })
+    const count = (data.bookInfo.count || 0) + 1
+    BookAction.update(data.bookInfo.id, { count })
   } catch (err) {
     console.log(err)
   } finally {
@@ -389,6 +371,9 @@ const readBook = () => {
 function recordAction() {
   recordPosition()
   recordReadTime()
+  if (get(bookInfo)) {
+    cahceRefreshBook(get(bookInfo)!)
+  }
 }
 
 onMounted(() => {
@@ -406,7 +391,7 @@ onBeforeUnmount(() => {
   if (timer) {
     clearInterval(timer)
   }
-  unMountedBookRender()
+  BookRender.clear()
   highlighter?.dispose()
 })
 
@@ -415,15 +400,15 @@ onBeforeUnmount(() => {
 <template>
   <RingLoadingView class="min-h-screen" v-if="isLoading" />
   <template v-else>
-    <template v-if="bookInfo && bookContent">
+    <template v-if="bookInfo && hasBook">
       <!-- 目录 -->
       <div class="block lg:hidden">
         <DrawerView id="catalog-drawer">
-          <CatalogView :data="tocList" @click="catalogJump" />
+          <CatalogView :data="bookToc" @click="catalogJump" />
         </DrawerView>
       </div>
       <div class="hidden lg:block ">
-        <CatalogView :class="{ 'hide': isCatalog }" :data="tocList" @click="catalogJump" />
+        <CatalogView :class="{ 'hide': isCatalog }" :data="bookToc" @click="catalogJump" />
       </div>
       <div class="w-full max-w-full h-screen ">
         <progress v-if="bookInfo.progress"
@@ -457,7 +442,7 @@ onBeforeUnmount(() => {
               <button class="btn btn-sm btn-ghost" v-if="!isPDF" @click="readBook()">
                 <Headset />
               </button>
-              <ReaderListenBookView ref="readerListenBookViewRef" :close="() => setReadBook(false)" :toc="tocList"
+              <ReaderListenBookView ref="readerListenBookViewRef" :close="() => setReadBook(false)" :toc="bookToc"
                 :page="bookPageStore.page" :section="section" :book-id="bookInfo.id" />
               <!-- pdf控制缩放 -->
               <PDFToolbarView v-if="isPDF" />
@@ -531,14 +516,14 @@ onBeforeUnmount(() => {
             <PDFReadView v-if="isPDF" :isScrollLocked="isScrollLocked" />
             <template v-else>
               <!-- 滚动条模式 -->
-              <ScrollReaderView :section="section" :isScrollLocked="isScrollLocked" ref="scrollReaderViewRef"
-                v-if="readMode === ReadMode.scroll" @progress="updateProgress" />
+              <ScrollReaderView :section="section" :sections="sections" :isScrollLocked="isScrollLocked"
+                ref="scrollReaderViewRef" v-if="readMode === ReadMode.scroll" @progress="updateProgress" />
               <!-- 章节模式 -->
-              <SectionReaderView :section="section" :isScrollLocked="isScrollLocked" ref="sectionReaderViewRef"
-                v-if="readMode === ReadMode.section" @progress="updateProgress" />
+              <SectionReaderView :section="section" :sections="sections" :isScrollLocked="isScrollLocked"
+                ref="sectionReaderViewRef" v-if="readMode === ReadMode.section" @progress="updateProgress" />
               <!-- 双栏模式 -->
-              <DoubleReaderView :section="section" :isScrollLocked="isScrollLocked" ref="doubleReaderViewRef"
-                v-if="readMode === ReadMode.double" @progress="updateProgress" />
+              <DoubleReaderView :section="section" :sections="sections" :isScrollLocked="isScrollLocked"
+                ref="doubleReaderViewRef" v-if="readMode === ReadMode.double" @progress="updateProgress" />
             </template>
 
             <!-- 工具栏 -->

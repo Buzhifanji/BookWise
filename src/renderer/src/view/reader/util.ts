@@ -1,3 +1,4 @@
+import { BookRender } from '@renderer/hooks'
 import {
   $,
   findDomIndex,
@@ -5,7 +6,6 @@ import {
   getFirstLastElementChild,
   lastElementsToArray
 } from '@renderer/shared'
-import { bookRender } from './render'
 import { Position } from './type'
 
 export function getSectionContainer(page: string | number) {
@@ -139,6 +139,7 @@ export function getSectionSize(page: number) {
   if (cache.length) {
     return cache[page]
   } else {
+    const bookRender = BookRender.getBook()
     if (!bookRender) return null
 
     const sections = bookRender.book.sections
