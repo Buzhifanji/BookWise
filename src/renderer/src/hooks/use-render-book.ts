@@ -50,6 +50,7 @@ async function getBookContent(bookId: string, url: string) {
 
 export async function renderBook(id: string) {
   const bookInfo = await getBookInfo(id)
+  // console.log('bookInfo', bookInfo)
   bookJumpStore.clear()
   if (!bookInfo) return null
 
@@ -60,9 +61,13 @@ export async function renderBook(id: string) {
 
   bookRender = new Reader()
   await bookRender.open(file)
+  // console.log('bookRender', bookRender)
 
   const toc = bookRender.book.toc || []
   handleToc(toc)
+  BookRender.bookToc.length = 0
+  BookRender.bookToc.push(...toc)
+
   const sections = (bookRender.book.sections || []).length
 
   return { bookInfo, bookContent, sections, toc }
@@ -83,20 +88,12 @@ function handleToc(toc: any[]) {
   list.forEach((item: any) => {
     item.page = BookRender.getBookHref(item.href)!.index
   })
-
-  for (let i = 0; i < list.length; i++) {
-    const currunt = list[i]
-    const next = list[i + 1]
-    if (next) {
-      currunt.nextPage = next.page
-    } else {
-      currunt.nextPage = currunt.page * 2
-    }
-  }
 }
 
 export class BookRender {
-  static section: any[] = []
+  static section: any[] = [] // 处理后的章节内容
+
+  static bookToc: any[] = [] // 目录
 
   static getBook() {
     return bookRender
@@ -124,6 +121,10 @@ export class BookRender {
 
   static getBookHref(href: string) {
     return bookRender?.resolveNavigation(href)
+  }
+
+  static getBookType() {
+    return bookRender?.bookType || ''
   }
 
   static async openExternal(href: string) {

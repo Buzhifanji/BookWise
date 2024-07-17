@@ -4,7 +4,7 @@
 interface Props {
   data: any[],
   deps?: number,
-  active: number,
+  active: number | string,
 }
 
 withDefaults(defineProps<Props>(), {
@@ -19,7 +19,13 @@ const handleClick = (e: any) => {
   emit('click', e)
 }
 
-const isActive = (item: any, active: number) => active >= item.page && active < item.nextPage
+const isActive = (item: any, active: number | string) => {
+  if (typeof active === 'number') {
+    return item.page === active
+  }
+
+  return active === item.href
+}
 </script>
 
 <template>

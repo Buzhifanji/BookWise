@@ -83,35 +83,43 @@ const isFBZ = ({ name, type }) =>
 
 const getBook = async (file) => {
   let book
+  let bookType = ''
   if (file.isDirectory) {
     const loader = await makeDirectoryLoader(file)
     book = await new EPUB(loader).init()
+    bookType = 'epub'
   } else if (!file.size) throw new Error('File not found')
   else if (await isZip(file)) {
     const loader = await makeZipLoader(file)
     if (isCBZ(file)) {
       book = makeComicBook(loader, file)
+      bookType = 'cbz'
     } else if (isFBZ(file)) {
       const { entries } = loader
       const entry = entries.find((entry) => entry.filename.endsWith('.fb2'))
       const blob = await loader.loadBlob((entry ?? entries[0]).filename)
       book = await makeFB2(blob)
+      bookType = 'fb2'
     } else {
       book = await new EPUB(loader).init()
+      bookType = 'epub'
     }
   } else if (await isPDF(file)) {
     const { makePDF } = await import('./pdf.js')
     book = await makePDF(file)
+    bookType = 'pdf'
   } else {
     if (await isMOBI(file)) {
       book = await new MOBI({ unzlib: fflate.unzlibSync }).open(file)
+      bookType = 'mobi'
     } else if (isFB2(file)) {
       book = await makeFB2(file)
+      bookType = 'fb2'
     }
   }
   if (!book) throw new Error('File type not supported')
 
-  return book
+  return { book, bookType }
 }
 
 // 预估高度
@@ -126,6 +134,7 @@ const estimatedHeight = (node) => {
 export class Reader {
   blobs = new Map() // 保存图片 blob内容
   book
+  bookType
 
   constructor() {
     this.#handleLinks.bind(this)
@@ -140,7 +149,9 @@ export class Reader {
    * @returns
    */
   open = async (file) => {
-    this.book = await getBook(file)
+    const res = await getBook(file)
+    this.book = res.book
+    this.bookType = res.bookType
   }
 
   /**
@@ -210,8 +221,12 @@ export class Reader {
   resolveNavigation = (target) => {
     try {
       if (typeof target === 'number') return { index: target }
+      // if (typeof target.fraction === 'number') {
+      //   const [index, anchor] = this.#sectionProgress.getSection(target.fraction)
+      //   return { index, anchor }
+      // }
       if (CFI.isCFI.test(target)) return this.resolveCFI(target)
-      return this.book.resolveHref(target)
+      return this.book.resolveTocHref(target)
     } catch (e) {
       console.error(e)
       console.error(`Could not resolve target ${target}`)
@@ -224,9 +239,11 @@ export class Reader {
   }
 
   #resolveCFI(cfi) {
+    console.log('cfi', cfi)
     if (this.book.resolveCFI) return this.book.resolveCFI(cfi)
     else {
       const parts = CFI.parse(cfi)
+      console.log('parts', parts)
       const index = CFI.fake.toIndex((parts.parent ?? parts).shift())
       const anchor = (doc) => CFI.toRange(doc, parts)
       return { index, anchor }

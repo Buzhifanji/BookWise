@@ -1045,6 +1045,18 @@ ${doc.querySelector('parsererror').innerText}`)
   resolveCFI(cfi) {
     return this.resources.resolveCFI(cfi)
   }
+
+  //目录跳转
+  resolveTocHref(href) {
+    const [path, hash] = href.split('#')
+    const item = this.resources.getItemByHref(decodeURI(path))
+    if (!item) return null
+
+    const index = this.resources.spine.findIndex(({ idref }) => idref === item.id)
+    const anchor = hash ? (doc) => doc.querySelector(`#${hash}`) : () => null
+    return { index, anchor }
+  }
+
   resolveHref(href) {
     const [path, hash] = href.split('#')
     const item = this.resources.getItemByHref(decodeURI(path))

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { clearDB } from '@renderer/batabase';
 import { CheckBoxView, Select, SelectView, } from '@renderer/components';
 import { bookshelfModeList, langs, nodeModeList, readModeList, t, themes } from '@renderer/data';
 import { settingStore } from '@renderer/store';
@@ -50,6 +51,9 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
               :desc="t('setting.autoHighlightDesc')" />
             <CheckBoxView v-model="settingStore.isRemeberPosition" :title="t('setting.rememberPositionTitle')"
               :desc="t('setting.rememberPositionDesc')" />
+            <div>
+              <button class="btn btn-error" @click="clearDB()">清空所有数据</button>
+            </div>
           </div>
         </div>
       </div>

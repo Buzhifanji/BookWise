@@ -69,7 +69,7 @@ const handleFiles = async (files: FileList) => {
                 path = await window.api.getFilePath(file)
             }
 
-            if (reader.book.type === 'pdf') {
+            if (reader.bookType === 'pdf') {
                 const pdf = await PDFLib.getDocument({ data: cloneBuffer(data) }).promise
                 const info = (await pdf.getMetadata())?.info as any
                 const blob = await getPDFCover(await pdf.getPage(1)) as Blob
@@ -86,13 +86,13 @@ const handleFiles = async (files: FileList) => {
                 const pages = pdf.numPages || 0
 
                 return {
-                    ...metadata, md5: hash, cover: cover, path, data, size, pages
+                    ...metadata, md5: hash, cover: cover, path, data, size, pages, format: 'pdf',
                 }
             } else {
                 const cover = await reader.getCover()
                 const pages = reader.book.sections.length
                 return {
-                    ...reader.getMetadata(), md5: hash, cover: await convertBlobToUint8Array(cover), path, data, size, pages
+                    ...reader.getMetadata(), md5: hash, cover: await convertBlobToUint8Array(cover), path, data, size, pages, format: reader.bookType
                 }
             }
 

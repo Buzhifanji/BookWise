@@ -9,7 +9,7 @@ interface Props {
   section: any[],
   toc: any[],
   bookId: string,
-  page: number,
+  // page: number,
   close: Function
 }
 

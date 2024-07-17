@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 
-defineExpose({ jump })
+defineExpose({ catalogJump, noteJump, positionJump })
 const emit = defineEmits(['progress'])
 
 let position: Position | undefined = undefined;
@@ -68,34 +68,44 @@ function sectionLoaded(i: number) {
       const { top } = target.getBoundingClientRect()
       containerRef.value?.scrollTo({ top: top, behavior: 'smooth' })
     }
-
-    if (highlightId) {
-      const target = getSourceTarget(i, highlightId)
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'center' })
-      }
-    }
   }
-
 }
 
+function noteLoaded(i: number) {
+  if (get(index) !== i) return
 
-// 目录跳转
-async function jump(i: number, id?: string, _position?: Position) {
-  if (containerRef.value && !id) {
+  // 高亮跳转
+  if (highlightId) {
+    const target = getSourceTarget(i, highlightId)
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }
+}
+
+function catalogJump(page: number) {
+  if (containerRef.value) {
+    containerRef.value.scrollTop = 0
+  }
+  index.value = page
+}
+
+function noteJump(page: number, id: string) {
+  index.value = page
+  const target = getSourceTarget(page, id)
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  } else {
+    highlightId = id
+  }
+}
+
+function positionJump(_position: Position) {
+  if (containerRef.value) {
     containerRef.value.scrollTop = 0
   }
   position = _position
-  index.value = i
-
-  if (id) {
-    const target = getSourceTarget(i, id)
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    } else {
-      highlightId = id
-    }
-  }
+  index.value = _position.page
 }
 
 
@@ -128,7 +138,7 @@ function linkClick(href: string) {
   } else {
     const value = BookRender.getBookHref(href)
     if (value) {
-      jump(value.index)
+      catalogJump(value.index)
     }
   }
 }
@@ -230,7 +240,8 @@ onKeyStroke(['ArrowDown'], littleNextView)
       <div class="py-8">
         <button class="btn btn-active btn-neutral" @click="prevSection">上一章</button>
       </div>
-      <SectionView :key="index" :index="index" :loaded="sectionLoaded" @link-click="linkClick"></SectionView>
+      <SectionView :key="index" :index="index" :loaded="sectionLoaded" :noteLoaded="noteLoaded" @link-click="linkClick">
+      </SectionView>
       <div class="text-center py-10">
         <button class="btn  btn-active  btn-primary btn-wide" @click="nextSection">下一章</button>
       </div>

@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { NoteAction } from '@renderer/components';
 import { BookRender } from '@renderer/hooks';
-import { $ } from '@renderer/shared';
-import { useBookPageStore } from '@renderer/store';
-import { get, set } from '@vueuse/core';
-import { nextTick, onBeforeMount, ref } from 'vue';
+import { set } from '@vueuse/core';
+import { nextTick, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { highlighter } from '../highlight';
 
 interface Props {
   index: number
-  loaded?: (i: number) => void
+  loaded?: (i: number) => void // dom 渲染完成
+  noteLoaded?: (i: number) => void // 笔记渲染完成
 }
 
 const props = withDefaults(defineProps<Props>(), {
   index: 0,
-  loaded: () => { }
+  loaded: () => { },
+  noteLoaded: () => { },
 })
 
 const emit = defineEmits(['linkClick'])
@@ -24,7 +24,6 @@ const data = ref<{ height: number, html: string, id: string }>()
 
 const route = useRoute();
 const id = route.params.id as string;
-const bookPageStore = useBookPageStore()
 
 // 链接绑定点击事件
 function handleLink() {
@@ -42,33 +41,7 @@ async function drawHighlight() {
   const notes = await NoteAction.findBookPageNotes(id, props.index.toString())
   const domSource = notes.map(note => NoteAction.noteToDomSource(note))
   highlighter?.fromSource(domSource)
-}
-
-const getThreshold = (step = 0.1) => {
-  const result: number[] = []
-  for (let i = 0; i < 1; i += step) {
-    result.push(+i.toFixed(1))
-  }
-  return result
-}
-
-let observe: IntersectionObserver
-
-function observeDom() {
-  const root = $('#reader-container')
-  const dom = get(contianer)
-  if (!dom) return
-  observe = new IntersectionObserver((entries) => {
-    entries.forEach(({ isIntersecting }) => {
-      if (isIntersecting) {
-        bookPageStore.setPage(props.index)
-      }
-    })
-
-  }, {
-    root,
-    threshold: getThreshold()
-  })
+  props?.noteLoaded(props.index)
 }
 
 
@@ -79,15 +52,11 @@ async function loadSection() {
   props?.loaded(props.index)
   handleLink()
   drawHighlight()
-  observeDom()
-  observe?.observe(get(contianer)!)
 }
 
 loadSection()
 
-onBeforeMount(() => {
-  observe?.unobserve(get(contianer)!)
-})
+
 
 </script>
 

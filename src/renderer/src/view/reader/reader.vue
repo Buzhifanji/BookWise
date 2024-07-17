@@ -26,7 +26,7 @@ import ToolbarView from './toolbar/Toolbar.vue';
 import { NoteBarStyle, ToolbarStyle } from './toolbar/action';
 import { hasAudio, isAudioReadying } from './tts';
 import { Position } from './type';
-import { getSectionContainer, getSectionFirstChildPosition, getSectionLeftFfirstChildPosition } from './util';
+import { findCatalogSection, getSectionContainer, getSectionFirstChildPosition, getSectionLeftFfirstChildPosition } from './util';
 
 const props = defineProps({
   id: String,
@@ -79,7 +79,6 @@ async function loadData() {
 
     const data = await renderBook(bookId)
     if (!data) return
-
     BookRender.handleBookSection()
 
     set(isPDF, data.bookInfo.book?.type === 'pdf')
@@ -123,27 +122,38 @@ async function loadData() {
 }
 
 
-// 目录跳转
-async function jumpAction(page: number, id?: string, position?: Position) {
+// // 目录跳转
+// async function jumpAction(page: number | string, highlightId?: string, position?: Position) {
+//   if (get(isPDF)) {
+//     await PDF.pageJump(+page, highlightId)
+//   } else {
+//     const mode = get(readMode)
+//     if (mode === ReadMode.scroll) {
+//       scrollReaderViewRef.value?.jump(page as string, highlightId, position)
+//     } else if (mode === ReadMode.section) {
+//       sectionReaderViewRef.value?.jump(page as number, highlightId, position)
+//     } else {
+//       doubleReaderViewRef.value?.jump(page as number, highlightId, position)
+//     }
+//   }
+// }
+async function catalogJump({ page, href }: any) {
   if (get(isPDF)) {
-    await PDF.pageJump(page, id)
+    await PDF.pageJump(+page)
   } else {
     const mode = get(readMode)
     if (mode === ReadMode.scroll) {
-      scrollReaderViewRef.value?.jump(page, id, position)
+      scrollReaderViewRef.value?.catalogJump(href)
     } else if (mode === ReadMode.section) {
-      sectionReaderViewRef.value?.jump(page, id, position)
+      sectionReaderViewRef.value?.catalogJump(page)
     } else {
-      doubleReaderViewRef.value?.jump(page, id, position)
+      doubleReaderViewRef.value?.catalogJump(page)
     }
   }
 }
-async function catalogJump({ page }: any) {
-  if (get(isPDF)) {
-    await jumpAction(page)
-  } else {
-    jumpAction(page || 0)
-  }
+
+function test() {
+  recordPosition()
 }
 
 async function noteJump(note: Note) {
@@ -153,7 +163,19 @@ async function noteJump(note: Note) {
   const { page, id } = source[0]
   if (page === '-1') return
 
-  jumpAction(+page, id)
+  if (get(isPDF)) {
+    await PDF.pageJump(+page, id)
+  } else {
+    const mode = get(readMode)
+    if (mode === ReadMode.scroll) {
+      scrollReaderViewRef.value?.noteJump(+page, id)
+    } else if (mode === ReadMode.section) {
+      sectionReaderViewRef.value?.noteJump(+page, id)
+    } else {
+      doubleReaderViewRef.value?.noteJump(+page, id)
+    }
+  }
+  // jumpAction(page, id)
 }
 
 // 返回
@@ -177,7 +199,6 @@ function zoomIn() {
 
   if (width < sectionWidth - 200) {
     const val = +get(zoomSize.value).replace('ch', '')
-    console.log(val)
     set(zoomSize, `${val + 2}ch`)
   }
 }
@@ -253,17 +274,24 @@ async function recordPosition() {
     const page = PDF.getCurrentPageNumber() || 0
     postion = { page, index: -1, tagName: '' }
   } else {
-    const page = get(bookPageStore.page)
-    const contianer = getSectionContainer(page)
-    if (!contianer) return
     if (get(readMode) === ReadMode.double) {
       // 双栏模式左右滑动
-      postion = getSectionLeftFfirstChildPosition(contianer, page)
+      const page = get(bookPageStore.page)
+      const contianer = getSectionContainer(page)
+      if (!contianer) return
+      postion = getSectionLeftFfirstChildPosition(contianer, +page)
 
+    } else if (get(readMode) === ReadMode.section) {
+      const page = get(bookPageStore.page)
+      const contianer = getSectionContainer(page)
+      if (!contianer) return
+      postion = getSectionFirstChildPosition(+page)
     } else {
-      postion = getSectionFirstChildPosition(page)
+      const pageContainer = findCatalogSection()
+      if (!pageContainer) return
+      const index = +pageContainer.getAttribute('data-index')!
+      postion = getSectionFirstChildPosition(+index)
     }
-    postion = postion || { page, index: -1, tagName: '' }
   }
 
 
@@ -300,7 +328,15 @@ function restorePostion() {
     PDF.pageJump(data.page)
     return
   } else {
-    jumpAction(data.page, undefined, data)
+    const mode = get(readMode)
+    if (mode === ReadMode.scroll) {
+      scrollReaderViewRef.value?.positionJump(data)
+    } else if (mode === ReadMode.section) {
+      sectionReaderViewRef.value?.positionJump(data)
+    } else {
+      doubleReaderViewRef.value?.positionJump(data)
+    }
+    // jumpAction(data.page, undefined, data)
   }
 }
 
@@ -439,6 +475,7 @@ onBeforeUnmount(() => {
             <div>
             </div>
             <div class="flex gap-4">
+              <button class="btn" @click="test()">test</button>
               <!-- 朗读书籍 -->
               <button class="btn btn-sm btn-ghost" v-if="!isPDF" @click="readBook()">
                 <Headset />

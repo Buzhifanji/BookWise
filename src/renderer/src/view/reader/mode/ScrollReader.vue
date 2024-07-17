@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { bookLoadedSetionBus, BookRender } from '@renderer/hooks';
-import { formatDecimal } from '@renderer/shared';
+import { $, formatDecimal } from '@renderer/shared';
+import { useBookPageStore } from '@renderer/store';
 import { observeElementOffset, useVirtualizer } from '@tanstack/vue-virtual';
 import { get, onKeyStroke, set, useDebounceFn, useThrottleFn } from '@vueuse/core';
 import scrollIntoView from 'scroll-into-view-if-needed';
 import { computed, nextTick, ref } from 'vue';
+import { CONTINAER_ID } from '../highlight';
 import { Position } from '../type';
-import { findPositionDom, getNavbarRect, getSourceTarget, toNextView, toPrewView } from '../util';
+import { findActiveCatalog, findPositionDom, getNavbarRect, getSectionContainer, getSourceTarget, toNextView, toPrewView } from '../util';
 import SectionView from './Section.vue';
 
 interface Props {
@@ -20,66 +22,54 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 
-defineExpose({ jump })
+defineExpose({ catalogJump, noteJump, positionJump })
 const emit = defineEmits(['progress'])
+
+const bookPageStore = useBookPageStore()
 
 const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
 const total = ref(props.sections)
-let loadedSection = false // 章节内容是否加载完成
 
 let isJump = false
 let highlightId: string | undefined = undefined // 高亮跳转id
 let lastReadPosition: Position | undefined = undefined // 上次阅读位置
 let jumpPage: number = -1 // 跳转的页面
+let anchor: ((doc: HTMLElement) => HTMLElement) | undefined = undefined
+let isFinishedRender = false // 是否完成渲染
+let cacheDomToview: (() => void) | undefined = undefined // 缓存dom跳转到视图的函数
 
-/**
- * 目录跳转
- * @param index page index
- * @param id  高亮内容id
- * @param position 上次阅读位置
- */
-async function jump(page: number, id?: string, position?: Position) {
-  rowVirtualizer.value.scrollToIndex(page, { align: 'start', behavior: 'smooth' })
+const toPage = () => {
+  if (jumpPage !== -1) {
+    rowVirtualizer.value.scrollToIndex(jumpPage, { align: 'start', behavior: 'smooth' })
+  }
+}
 
+
+function catalogJump(href: string) {
+  const resolved = BookRender.getBookHref(href)
+  if (resolved) {
+    const { index, anchor: _anchor } = resolved
+    anchor = _anchor
+    jumpPage = index
+    isJump = true
+    toPage()
+  }
+}
+
+function noteJump(page: number, id: string) {
   jumpPage = page
   highlightId = id
+  isJump = true
+  toPage()
+  highlightToView()
+}
+
+async function positionJump(position: Position) {
+  if (!position) return
+  jumpPage = +position.page
   lastReadPosition = position
   isJump = true
-
-  // 处理点击同一章的高亮
-  jumpToHighlight()
 }
-
-function jumpToHighlight() {
-  if (highlightId && jumpPage !== -1) {
-    const target = getSourceTarget(jumpPage, highlightId)
-    if (!target) return
-    scrollIntoView(target, { behavior: 'smooth', scrollMode: 'if-needed', block: 'center' })
-  }
-}
-
-function jumpToPosition() {
-  if (lastReadPosition && jumpPage !== -1) {
-    const scrollTop = get(containerRef)?.scrollTop || 0
-    const target = findPositionDom(jumpPage, lastReadPosition)
-    if (!target) return
-
-    const navBarRect = getNavbarRect()?.height || 0
-    const { top } = target.getBoundingClientRect()
-    rowVirtualizer.value.scrollToOffset(scrollTop + top - navBarRect, { align: 'start', behavior: 'smooth' })
-
-    resetJump()
-    loadedSection = false
-  }
-
-}
-
-function resetJump() {
-  highlightId = undefined
-  jumpPage = -1
-  lastReadPosition = undefined
-}
-
 
 // 计算进度
 const calculateProgress = useDebounceFn((offset: number) => {
@@ -91,12 +81,18 @@ const calculateProgress = useDebounceFn((offset: number) => {
   }
 }, 200)
 
+// 处理的文本内容加载完成
 bookLoadedSetionBus.on(async () => {
   set(total, get(total) + 1)
   await nextTick()
   set(total, get(total) - 1)
-  loadedSection = true
-  rowVirtualizer.value.scrollToIndex(jumpPage, { align: 'start', behavior: 'smooth' })
+  await nextTick()
+  toPage()
+  isFinishedRender = true
+  if (cacheDomToview) {
+    await nextTick()
+    cacheDomToview()
+  }
 })
 
 // 虚拟列表
@@ -111,11 +107,37 @@ const rowVirtualizerOptions = computed(() => {
       calculateProgress(offset)
       // 滚动停止
       if (!isScrolling && isJump) {
-        jumpToHighlight()
-
-        if (loadedSection) {
-          jumpToPosition()
+        if (jumpPage !== -1) {
+          if (highlightId) {
+            highlightToView()
+          } else if (lastReadPosition) {
+            positionToView()
+          } else if (anchor) {
+            const container = $('#' + CONTINAER_ID) as HTMLElement
+            if (container) {
+              const dom = anchor(container)
+              if (dom) {
+                domToView(dom)
+              } else {
+                const container = getSectionContainer(jumpPage)
+                if (container) {
+                  domToView(container)
+                }
+              }
+            }
+            anchor = undefined
+          } else {
+            const container = getSectionContainer(jumpPage)
+            if (container) {
+              domToView(container)
+            }
+          }
         }
+        isJump = false
+      }
+
+      if (!isScrolling) {
+        bookPageStore.page = findActiveCatalog()
       }
     })
   }
@@ -140,8 +162,49 @@ function linkClick(href: string) {
   } else {
     const value = BookRender.getBookHref(href)
     if (value) {
-      jump(value.index)
+      jumpPage = value.index
+      anchor = value.anchor
+      isJump = true
+      toPage()
+      jumpPage = -1
     }
+  }
+}
+
+function positionToView() {
+  if (lastReadPosition && jumpPage !== -1) {
+    const target = findPositionDom(jumpPage, lastReadPosition)
+    if (target) {
+      domToView(target)
+      if (isFinishedRender) {
+        lastReadPosition = undefined
+        jumpPage = -1
+      }
+    }
+  }
+}
+
+// 高亮内容跳转
+function highlightToView() {
+  if (highlightId && jumpPage !== -1) {
+    const target = getSourceTarget(jumpPage, highlightId)
+    if (target) {
+      domToView(target, 'center')
+      if (isFinishedRender) {
+        highlightId = undefined
+        jumpPage = -1
+      }
+    }
+  }
+}
+
+// 指定dom滚动到顶部
+async function domToView(dom: HTMLElement, block: ScrollLogicalPosition = 'start') {
+  if (isFinishedRender) {
+    scrollIntoView(dom, { behavior: 'smooth', scrollMode: 'always', block })
+    cacheDomToview = undefined
+  } else {
+    cacheDomToview = () => domToView(dom, block)
   }
 }
 
@@ -205,7 +268,8 @@ onKeyStroke(['ArrowDown'], littleNextView)
   <!-- 书籍内容 -->
   <div class=" bg-base-100 h-full cursor-pointer  overflow-auto  scrollbar-thin" ref="containerRef">
     <div class="relative w-full" :style="{ height: `${totalSize}px` }">
-      <div class="absolute top-0 left-0 w-full " :style="{ transform: `translateY(${virtualRows[0]?.start ?? 0}px)` }">
+      <div class="absolute top-0 left-0 w-full " :style="{ transform: `translateY(${virtualRows[0]?.start ?? 0}px)` }"
+        id="scrollConatinerWise">
         <div v-for="virtualRow in virtualRows" :key="virtualRow.key" :data-index="virtualRow.index"
           :data-page-number="virtualRow.index" :ref="measureElement" class="prose mx-auto my-0 mb-12 prose-width">
           <SectionView :index="virtualRow.index" @link-click="linkClick">

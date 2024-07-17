@@ -1,6 +1,7 @@
 export class Reader {
   blobs: Map<string, Blob>
   book: any
+  bookType: string
 
   viewport: { width: number; height: number } // pdf 格式独有
   scale: number // pdf 格式独有
@@ -22,7 +23,7 @@ export class Reader {
 
   handSection(index: number): Promise<{ height: number; html: any; id: any }>
 
-  resolveNavigation(value: any): { index: number }
+  resolveNavigation(value: any): { index: number; anchor?: (doc: HTMLElement) => HTMLElement }
 
   isExternal(value: string): boolean
 

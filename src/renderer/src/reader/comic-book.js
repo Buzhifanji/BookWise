@@ -34,6 +34,7 @@ export const makeComicBook = ({ entries, loadBlob, getSize }, file) => {
   book.toc = files.map((name) => ({ label: name, href: name }))
   book.rendition = { layout: 'pre-paginated' }
   book.resolveHref = (href) => ({ index: book.sections.findIndex((s) => s.id === href) })
+  book.resolveTocHref = (href) => ({ index: book.sections.findIndex((s) => s.id === href) }) // 待测试目录跳转
   book.splitTOCHref = (href) => [href, null]
   book.getTOCFragment = (doc) => doc.documentElement
   book.destroy = () => {

@@ -4,7 +4,8 @@ import {
   findDomIndex,
   formatDecimal,
   getFirstLastElementChild,
-  lastElementsToArray
+  lastElementsToArray,
+  remToPx
 } from '@renderer/shared'
 import { Position } from './type'
 
@@ -33,8 +34,13 @@ export function toNextView(node: HTMLElement, top: number, height: number, total
 }
 
 function isFirstInView(node: HTMLElement, offsetTop: number = 0) {
-  const { top, bottom } = node.getBoundingClientRect()
-  return top - offsetTop <= 0 && bottom > 0
+  const { top, bottom, height } = node.getBoundingClientRect()
+  const toTop = top - offsetTop
+  if (height > offsetTop) {
+    return toTop < 10 && bottom > 0
+  } else {
+    return toTop > 0 && toTop < 10 && bottom > 0
+  }
 }
 
 function getDomPosition(contianer: HTMLElement, target: HTMLElement, page: number) {
@@ -74,17 +80,26 @@ export function getSectionFirstChild(page: number) {
   const { top } = firstElement.getBoundingClientRect()
   const n = top - offsetTop
   if (n > 0) {
+    if (n < 10) {
+      return { dom: firstElement, page }
+    }
     // 第一个元素还没有与顶部相交，所有还得查找上一页内容
     return getSectionFirstChild(page - 1)
   } else if (n === 0) {
     // 正好找到了
     return { dom: firstElement, page }
   } else {
+    let res: HTMLElement | null = null
     const doms = lastElementsToArray(contianer)
     for (const dom of doms) {
-      if (isFirstInView(dom, offsetTop)) {
-        return { dom, page }
+      if (isDomIntersect(dom)) {
+        return { dom: res!, page }
+      } else {
+        res = dom
       }
+      // if (isFirstInView(dom, offsetTop)) {
+      //   return { dom, page }
+      // }
     }
     return null
   }
@@ -155,4 +170,88 @@ export function getSectionSize(page: number) {
     }
     return cache[page]
   }
+}
+
+function tocTreeToArray(list: any[]) {
+  const result: any[] = []
+  for (const item of list) {
+    result.push(item)
+    if (Array.isArray(item.subitems)) {
+      result.push(...tocTreeToArray(item.subitems))
+    }
+  }
+  return result
+}
+
+export function findCatalogSection() {
+  const nodes = $('#scrollConatinerWise')?.children || []
+  let result: HTMLElement | null = null
+  // 找到当前章节
+  for (const item of nodes) {
+    if (isDomIntersect(item as HTMLElement)) {
+      break
+    } else {
+      result = item as HTMLElement
+    }
+  }
+
+  return result
+}
+
+function isDomIntersect(target: HTMLElement) {
+  const barHeight = getNavbarRect()!.height
+  return target.getBoundingClientRect().top - barHeight > remToPx(3)
+}
+
+function findIntersectPage(catalogs: any[]) {
+  const container = $('#scrollConatinerWise') as HTMLElement
+  let result: string = ''
+  for (let i = 0; i < catalogs.length; i++) {
+    const item = catalogs[i]
+    const resolved = BookRender.getBookHref(item.href)
+    const anchor = resolved?.anchor
+    if (anchor) {
+      const target = anchor(container)
+      if (target) {
+        // 3 为每章节的间隔距离
+        if (isDomIntersect(target)) {
+          return result
+        } else {
+          result = item.href
+        }
+      } else {
+        if (i === 0) {
+          result = item.href
+        }
+      }
+    }
+  }
+  return result
+}
+
+function handleCatalog(page: number, catalogs: any[]) {
+  const catalog = catalogs.find((item) => item.page === page)
+  if (catalog) {
+    const rangeCatalog = tocTreeToArray([catalog])
+    return findIntersectPage(rangeCatalog)
+  } else {
+    const index = page - 1
+    const rangeCatalog = tocTreeToArray(catalogs)
+    const start = Math.max(0, index - 3)
+    const end = Math.min(rangeCatalog.length - 1, index + 1)
+    const catalog = rangeCatalog.slice(start, end)
+    return findIntersectPage(catalog)
+  }
+}
+
+export function findActiveCatalog() {
+  if (BookRender.bookToc.length === 0) return ''
+
+  const pageContainer = findCatalogSection()
+  if (pageContainer) {
+    const index = +pageContainer.getAttribute('data-index')!
+    return handleCatalog(index, BookRender.bookToc)
+  }
+
+  return ''
 }

@@ -21,7 +21,7 @@ const container = ref<HTMLElement>()
 
 const bookPageStore = useBookPageStore()
 
-const scroll = useDebounceFn((_: number) => {
+const scroll = useDebounceFn((_: number | string) => {
   domScrollToView(get(container), 'a.active')
 }, 100)
 

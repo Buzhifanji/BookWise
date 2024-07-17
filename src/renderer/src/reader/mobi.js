@@ -987,6 +987,15 @@ class MOBI6 {
     this.#cache.set(section, url)
     return url
   }
+
+  resolveTocHref(href) {
+    const filepos = href.match(/filepos:(.*)/)[1]
+    const number = Number(filepos)
+    const index = this.#sections.findIndex((section) => section.end > number)
+    const anchor = (doc) => doc.querySelector(`#filepos${filepos}`)
+    return { index, anchor }
+  }
+
   resolveHref(href) {
     const filepos = href.match(/filepos:(.*)/)[1]
     const number = Number(filepos)
