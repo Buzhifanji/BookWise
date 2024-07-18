@@ -1,7 +1,13 @@
 import { Book } from '@renderer/batabase'
 import { BookAction, BookContentAction } from '@renderer/components'
 import { Reader } from '@renderer/reader'
-import { arrayBufferToFile, isElectron, StorageAction } from '@renderer/shared'
+import {
+  arrayBufferToFile,
+  isElectron,
+  isNumber,
+  StorageAction,
+  tocTreeToArray
+} from '@renderer/shared'
 import { toRaw } from 'vue'
 import { bookLoadedSetionBus } from './use-event-bus'
 
@@ -65,8 +71,11 @@ export async function renderBook(id: string) {
 
   const toc = bookRender.book.toc || []
   handleToc(toc)
+  BookRender.isInOneCatalog = sureBookCatalog(toc)
   BookRender.bookToc.length = 0
   BookRender.bookToc.push(...toc)
+  BookRender.bookArrayToc.length = 0
+  BookRender.bookArrayToc.push(...tocTreeToArray(toc))
 
   const sections = (bookRender.book.sections || []).length
 
@@ -90,10 +99,33 @@ function handleToc(toc: any[]) {
   })
 }
 
+function sureBookCatalog(toc: any[]) {
+  let result = false
+  for (const item of toc) {
+    const page = item.page
+    if (Array.isArray(item.subitems)) {
+      for (const subItem of item.subitems) {
+        if (isNumber(subItem.page)) {
+          if (subItem.page === page) {
+            result = true
+            break
+          } else {
+            result = false
+            break
+          }
+        }
+      }
+    }
+  }
+  return result
+}
+
 export class BookRender {
   static section: any[] = [] // 处理后的章节内容
 
   static bookToc: any[] = [] // 目录
+  static bookArrayToc: any[] = [] // 数组目录
+  static isInOneCatalog = false // 子目录内容是否在同一目录下
 
   static getBook() {
     return bookRender

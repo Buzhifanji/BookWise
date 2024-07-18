@@ -4,12 +4,12 @@ import { $, formatDecimal } from '@renderer/shared';
 import { useBookPageStore } from '@renderer/store';
 import { observeElementOffset, useVirtualizer } from '@tanstack/vue-virtual';
 import { get, onKeyStroke, set, useDebounceFn, useThrottleFn } from '@vueuse/core';
-import scrollIntoView from 'scroll-into-view-if-needed';
 import { computed, nextTick, ref } from 'vue';
 import { CONTINAER_ID } from '../highlight';
 import { Position } from '../type';
 import { findActiveCatalog, findPositionDom, getNavbarRect, getSectionContainer, getSourceTarget, toNextView, toPrewView } from '../util';
 import SectionView from './Section.vue';
+import { jumpAction, setFinishedRender } from './action';
 
 interface Props {
   sections: number
@@ -30,17 +30,16 @@ const bookPageStore = useBookPageStore()
 const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
 const total = ref(props.sections)
 
+const jumpPage = ref(-1)
+const hightlightJump = new jumpAction<string>() // 高亮跳转
+const readPositionJump = new jumpAction<Position>() // 上次阅读位置
+const anchorJump = new jumpAction<((doc: HTMLElement) => HTMLElement)>()
+
 let isJump = false
-let highlightId: string | undefined = undefined // 高亮跳转id
-let lastReadPosition: Position | undefined = undefined // 上次阅读位置
-let jumpPage: number = -1 // 跳转的页面
-let anchor: ((doc: HTMLElement) => HTMLElement) | undefined = undefined
-let isFinishedRender = false // 是否完成渲染
-let cacheDomToview: (() => void) | undefined = undefined // 缓存dom跳转到视图的函数
 
 const toPage = () => {
-  if (jumpPage !== -1) {
-    rowVirtualizer.value.scrollToIndex(jumpPage, { align: 'start', behavior: 'smooth' })
+  if (get(jumpPage) !== -1) {
+    rowVirtualizer.value.scrollToIndex(get(jumpPage), { align: 'start', behavior: 'smooth' })
   }
 }
 
@@ -48,17 +47,17 @@ const toPage = () => {
 function catalogJump(href: string) {
   const resolved = BookRender.getBookHref(href)
   if (resolved) {
-    const { index, anchor: _anchor } = resolved
-    anchor = _anchor
-    jumpPage = index
+    const { index, anchor } = resolved
+    anchorJump.set(anchor)
+    set(jumpPage, index)
     isJump = true
     toPage()
   }
 }
 
 function noteJump(page: number, id: string) {
-  jumpPage = page
-  highlightId = id
+  set(jumpPage, page)
+  hightlightJump.set(id)
   isJump = true
   toPage()
   highlightToView()
@@ -66,8 +65,8 @@ function noteJump(page: number, id: string) {
 
 async function positionJump(position: Position) {
   if (!position) return
-  jumpPage = +position.page
-  lastReadPosition = position
+  set(jumpPage, +position.page)
+  readPositionJump.set(position)
   isJump = true
 }
 
@@ -88,11 +87,10 @@ bookLoadedSetionBus.on(async () => {
   set(total, get(total) - 1)
   await nextTick()
   toPage()
-  isFinishedRender = true
-  if (cacheDomToview) {
-    await nextTick()
-    cacheDomToview()
-  }
+  setFinishedRender(true)
+  hightlightJump.runCache()
+  readPositionJump.runCache()
+  anchorJump.runCache()
 })
 
 // 虚拟列表
@@ -107,29 +105,29 @@ const rowVirtualizerOptions = computed(() => {
       calculateProgress(offset)
       // 滚动停止
       if (!isScrolling && isJump) {
-        if (jumpPage !== -1) {
-          if (highlightId) {
+        if (get(jumpPage) !== -1) {
+          if (hightlightJump.has()) {
             highlightToView()
-          } else if (lastReadPosition) {
+          } else if (readPositionJump.has()) {
             positionToView()
-          } else if (anchor) {
+          } else if (anchorJump.has()) {
             const container = $('#' + CONTINAER_ID) as HTMLElement
             if (container) {
-              const dom = anchor(container)
+              const dom = anchorJump.get()!((container))
               if (dom) {
-                domToView(dom)
+                anchorJump.domToView(dom)
               } else {
-                const container = getSectionContainer(jumpPage)
+                const container = getSectionContainer(get(jumpPage))
                 if (container) {
-                  domToView(container)
+                  anchorJump.domToView(container)
                 }
               }
             }
-            anchor = undefined
+            anchorJump.set(undefined)
           } else {
-            const container = getSectionContainer(jumpPage)
+            const container = getSectionContainer(get(jumpPage))
             if (container) {
-              domToView(container)
+              anchorJump.domToView(container)
             }
           }
         }
@@ -162,51 +160,37 @@ function linkClick(href: string) {
   } else {
     const value = BookRender.getBookHref(href)
     if (value) {
-      jumpPage = value.index
-      anchor = value.anchor
+      set(jumpPage, value.index)
+      anchorJump.set(value.anchor)
       isJump = true
       toPage()
-      jumpPage = -1
+      set(jumpPage, -1)
     }
   }
 }
 
 function positionToView() {
-  if (lastReadPosition && jumpPage !== -1) {
-    const target = findPositionDom(jumpPage, lastReadPosition)
-    if (target) {
-      domToView(target)
-      if (isFinishedRender) {
-        lastReadPosition = undefined
-        jumpPage = -1
-      }
-    }
-  }
+  const position = readPositionJump.get()!
+  const target = findPositionDom(get(jumpPage), position)
+  readPositionJump.toView(jumpPage, target)
 }
 
 // 高亮内容跳转
 function highlightToView() {
-  if (highlightId && jumpPage !== -1) {
-    const target = getSourceTarget(jumpPage, highlightId)
-    if (target) {
-      domToView(target, 'center')
-      if (isFinishedRender) {
-        highlightId = undefined
-        jumpPage = -1
-      }
-    }
-  }
+  const highlightId = hightlightJump.get()!
+  const target = getSourceTarget(get(jumpPage), highlightId)
+  hightlightJump.toView(jumpPage, target, 'center')
 }
 
 // 指定dom滚动到顶部
-async function domToView(dom: HTMLElement, block: ScrollLogicalPosition = 'start') {
-  if (isFinishedRender) {
-    scrollIntoView(dom, { behavior: 'smooth', scrollMode: 'always', block })
-    cacheDomToview = undefined
-  } else {
-    cacheDomToview = () => domToView(dom, block)
-  }
-}
+// function domToView(dom: HTMLElement, block: ScrollLogicalPosition = 'start') {
+//   if (isFinishedRender) {
+//     scrollIntoView(dom, { behavior: 'smooth', scrollMode: 'always', block })
+//     cacheDomToview = undefined
+//   } else {
+//     cacheDomToview = () => domToView(dom, block)
+//   }
+// }
 
 const getHeight = (h?: number) => {
   const dom = containerRef.value!

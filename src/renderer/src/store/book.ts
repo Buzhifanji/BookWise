@@ -17,7 +17,7 @@ export const bookReadTimeStore = useStorage('book-wise_book_read_time', {}, loca
 export const useBookPageStore = defineStore('useBookPageStore', () => {
   const page = ref<string | number>(0)
 
-  function setPage(value: number) {
+  function setPage(value: string | number) {
     page.value = value
   }
 

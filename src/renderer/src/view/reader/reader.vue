@@ -81,7 +81,7 @@ async function loadData() {
     if (!data) return
     BookRender.handleBookSection()
 
-    set(isPDF, data.bookInfo.book?.type === 'pdf')
+    set(isPDF, data.bookInfo.bookType === 'pdf')
     set(bookInfo, data.bookInfo)
     set(hasBook, true)
     set(bookToc, data.toc)
@@ -121,22 +121,6 @@ async function loadData() {
   }
 }
 
-
-// // 目录跳转
-// async function jumpAction(page: number | string, highlightId?: string, position?: Position) {
-//   if (get(isPDF)) {
-//     await PDF.pageJump(+page, highlightId)
-//   } else {
-//     const mode = get(readMode)
-//     if (mode === ReadMode.scroll) {
-//       scrollReaderViewRef.value?.jump(page as string, highlightId, position)
-//     } else if (mode === ReadMode.section) {
-//       sectionReaderViewRef.value?.jump(page as number, highlightId, position)
-//     } else {
-//       doubleReaderViewRef.value?.jump(page as number, highlightId, position)
-//     }
-//   }
-// }
 async function catalogJump({ page, href }: any) {
   if (get(isPDF)) {
     await PDF.pageJump(+page)
@@ -145,7 +129,7 @@ async function catalogJump({ page, href }: any) {
     if (mode === ReadMode.scroll) {
       scrollReaderViewRef.value?.catalogJump(href)
     } else if (mode === ReadMode.section) {
-      sectionReaderViewRef.value?.catalogJump(page)
+      sectionReaderViewRef.value?.catalogJump(page, href)
     } else {
       doubleReaderViewRef.value?.catalogJump(page)
     }
@@ -175,7 +159,6 @@ async function noteJump(note: Note) {
       doubleReaderViewRef.value?.noteJump(+page, id)
     }
   }
-  // jumpAction(page, id)
 }
 
 // 返回
@@ -336,7 +319,6 @@ function restorePostion() {
     } else {
       doubleReaderViewRef.value?.positionJump(data)
     }
-    // jumpAction(data.page, undefined, data)
   }
 }
 

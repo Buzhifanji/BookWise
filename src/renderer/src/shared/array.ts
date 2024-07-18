@@ -77,3 +77,14 @@ export function flatten<T>(array: T[], depth = 1) {
   }
   return result
 }
+
+export function tocTreeToArray(list: any[]) {
+  const result: any[] = []
+  for (const item of list) {
+    result.push(item)
+    if (Array.isArray(item.subitems)) {
+      result.push(...tocTreeToArray(item.subitems))
+    }
+  }
+  return result
+}

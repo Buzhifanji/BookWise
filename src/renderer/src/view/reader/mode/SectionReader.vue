@@ -2,8 +2,8 @@
 import { BookRender } from '@renderer/hooks';
 import { formatDecimal, wait } from '@renderer/shared';
 import { useBookPageStore } from '@renderer/store';
-import { get, onKeyStroke, set, useDebounceFn, useScroll, useThrottleFn } from '@vueuse/core';
-import { nextTick, ref, watchEffect } from 'vue';
+import { get, onKeyStroke, set, useDebounceFn, useScroll, useThrottleFn, useToggle } from '@vueuse/core';
+import { ref } from 'vue';
 import { CONTINAER_ID } from '../highlight';
 import { Position } from '../type';
 import { findPositionDom, getSectionSize, getSourceTarget, toNextView, toPrewView } from '../util';
@@ -25,9 +25,15 @@ const emit = defineEmits(['progress'])
 
 let position: Position | undefined = undefined;
 let highlightId: string | undefined = undefined;
+let href: string | undefined = undefined
+
+console.log(BookRender.isInOneCatalog)
+
+const [isLoad, setLoad] = useToggle(false)
+
 const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
 
-const index = ref<number>(0)
+const currentPage = ref<number>(0)
 const bookPageStore = useBookPageStore()
 
 const { y } = useScroll(containerRef)
@@ -37,42 +43,82 @@ const calculateProgress = useDebounceFn((progress: number) => {
   emit('progress', progress)
 }, 200)
 
-watchEffect(async () => {
-  let dom = get(containerRef)
-  const page = get(index)
-  bookPageStore.setPage(page)
+// watchEffect(async () => {
+//   let dom = get(containerRef)
+//   const page = get(currentPage)
+
+//   if (BookRender.isInOneCatalog) {
+//     bookPageStore.setPage(href || '')
+//   } else {
+//     bookPageStore.setPage(page)
+//   }
+//   const top = get(y)
+//   await nextTick()
+//   dom = get(containerRef)
+//   if (dom) {
+//     const size = getSectionSize(page)
+//     if (size) {
+//       // 是否有滚动条
+//       const { offsetHeight, scrollHeight, firstElementChild } = dom
+//       if (firstElementChild!.clientHeight > offsetHeight) {
+//         const progress = formatDecimal((top + offsetHeight) / scrollHeight, 4)
+//         const res = formatDecimal(size.progress - size.current + progress * size.current, 4)
+//         calculateProgress(res)
+//       } else {
+//         emit('progress', size.progress)
+//       }
+//     }
+//   }
+// })
+
+function changePage(page: number) {
+  setLoad(false)
+  set(currentPage, page)
+}
+
+function onProgress() {
+  const dom = get(containerRef)
+  if (!dom) return
+
+  const size = getSectionSize(get(currentPage))
+  if (!size) return
   const top = get(y)
-  await nextTick()
-  dom = get(containerRef)
-  if (dom) {
-    const size = getSectionSize(page)
-    if (size) {
-      // 是否有滚动条
-      const { offsetHeight, scrollHeight, firstElementChild } = dom
-      if (firstElementChild!.clientHeight > offsetHeight) {
-        const progress = formatDecimal((top + offsetHeight) / scrollHeight, 4)
-        const res = formatDecimal(size.progress - size.current + progress * size.current, 4)
-        calculateProgress(res)
-      } else {
-        emit('progress', size.progress)
-      }
-    }
+  // 是否有滚动条
+  const { offsetHeight, scrollHeight, firstElementChild } = dom
+  if (firstElementChild!.clientHeight > offsetHeight) {
+    const progress = formatDecimal((top + offsetHeight) / scrollHeight, 4)
+    const res = formatDecimal(size.progress - size.current + progress * size.current, 4)
+    calculateProgress(res)
+  } else {
+    emit('progress', size.progress)
   }
-})
+}
 
 function sectionLoaded(i: number) {
-  if (i === get(index)) {
-    if (position) {
-      const target = findPositionDom(i, position)
-      if (!target) return
-      const { top } = target.getBoundingClientRect()
-      containerRef.value?.scrollTo({ top: top, behavior: 'smooth' })
-    }
+  if (i === get(currentPage)) {
+    setLoad(true)
+    positionToView()
+  }
+}
+
+function positionToView() {
+  if (position) {
+    const target = findPositionDom(get(currentPage), position)
+    if (!target) return
+    const { top } = target.getBoundingClientRect()
+    containerRef.value?.scrollTo({ top: top, behavior: 'smooth' })
+    position = undefined
+  }
+}
+
+function clearScroll() {
+  if (containerRef.value) {
+    containerRef.value.scrollTop = 0
   }
 }
 
 function noteLoaded(i: number) {
-  if (get(index) !== i) return
+  if (get(currentPage) !== i) return
 
   // 高亮跳转
   if (highlightId) {
@@ -83,15 +129,17 @@ function noteLoaded(i: number) {
   }
 }
 
-function catalogJump(page: number) {
-  if (containerRef.value) {
-    containerRef.value.scrollTop = 0
+function catalogJump(page: number, _href?: string) {
+  if (page !== get(currentPage)) {
+    clearScroll()
+    changePage(page)
   }
-  index.value = page
+  // currentPage.value = page
+  // href = _href
 }
 
 function noteJump(page: number, id: string) {
-  index.value = page
+  currentPage.value = page
   const target = getSourceTarget(page, id)
   if (target) {
     target.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -101,18 +149,18 @@ function noteJump(page: number, id: string) {
 }
 
 function positionJump(_position: Position) {
-  if (containerRef.value) {
-    containerRef.value.scrollTop = 0
-  }
+  if (!_position) return
+
+  clearScroll()
   position = _position
-  index.value = _position.page
+  currentPage.value = _position.page
 }
 
 
 // 上一章
 function prevSection() {
-  if (index.value > 0) {
-    index.value -= 1
+  if (currentPage.value > 0) {
+    currentPage.value -= 1
   }
 }
 
@@ -126,8 +174,8 @@ function nextSection() {
     })
     containerRef.value.scrollTop = 0
   }
-  if (index.value < props.sections - 1) {
-    index.value += 1
+  if (currentPage.value < props.sections - 1) {
+    currentPage.value += 1
   }
 }
 
@@ -138,16 +186,16 @@ function linkClick(href: string) {
   } else {
     const value = BookRender.getBookHref(href)
     if (value) {
-      catalogJump(value.index)
+      catalogJump(value.currentPage)
     }
   }
 }
 
 // 上一页
 const jumpToPrewView = async () => {
-  if (get(index) === 0) return
+  if (get(currentPage) === 0) return
 
-  set(index, get(index) - 1)
+  set(currentPage, get(currentPage) - 1)
 
   await wait(100)
 
@@ -181,9 +229,9 @@ onKeyStroke(['ArrowLeft'], prewView)
 
 // 下一页
 const jumpToNextView = async () => {
-  if (get(index) === props.sections - 1) return
+  if (get(currentPage) === props.sections - 1) return
 
-  set(index, get(index) + 1)
+  set(currentPage, get(currentPage) + 1)
   await wait(100)
 
   containerRef.value!.scrollTo({ top: 0 })
@@ -236,11 +284,12 @@ onKeyStroke(['ArrowDown'], littleNextView)
 <template>
   <!-- 书籍内容 -->
   <div class=" bg-base-100 h-full cursor-pointer  overflow-auto scrollbar-thin" ref="containerRef" :id="CONTINAER_ID">
-    <div class="prose mx-auto my-0 prose-width" :data-page-number="index">
+    <div class="prose mx-auto my-0 prose-width" :data-page-number="currentPage">
       <div class="py-8">
         <button class="btn btn-active btn-neutral" @click="prevSection">上一章</button>
       </div>
-      <SectionView :key="index" :index="index" :loaded="sectionLoaded" :noteLoaded="noteLoaded" @link-click="linkClick">
+      <SectionView :key="currentPage" :index="currentPage" :loaded="sectionLoaded" :noteLoaded="noteLoaded"
+        @link-click="linkClick">
       </SectionView>
       <div class="text-center py-10">
         <button class="btn  btn-active  btn-primary btn-wide" @click="nextSection">下一章</button>

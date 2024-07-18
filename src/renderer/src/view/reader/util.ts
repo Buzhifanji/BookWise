@@ -5,7 +5,8 @@ import {
   formatDecimal,
   getFirstLastElementChild,
   lastElementsToArray,
-  remToPx
+  remToPx,
+  tocTreeToArray
 } from '@renderer/shared'
 import { Position } from './type'
 
@@ -31,16 +32,6 @@ export function toNextView(node: HTMLElement, top: number, height: number, total
   if (val > total) val = total
 
   node.scrollTo({ top: val, behavior: 'smooth' })
-}
-
-function isFirstInView(node: HTMLElement, offsetTop: number = 0) {
-  const { top, bottom, height } = node.getBoundingClientRect()
-  const toTop = top - offsetTop
-  if (height > offsetTop) {
-    return toTop < 10 && bottom > 0
-  } else {
-    return toTop > 0 && toTop < 10 && bottom > 0
-  }
 }
 
 function getDomPosition(contianer: HTMLElement, target: HTMLElement, page: number) {
@@ -97,9 +88,6 @@ export function getSectionFirstChild(page: number) {
       } else {
         res = dom
       }
-      // if (isFirstInView(dom, offsetTop)) {
-      //   return { dom, page }
-      // }
     }
     return null
   }
@@ -172,17 +160,6 @@ export function getSectionSize(page: number) {
   }
 }
 
-function tocTreeToArray(list: any[]) {
-  const result: any[] = []
-  for (const item of list) {
-    result.push(item)
-    if (Array.isArray(item.subitems)) {
-      result.push(...tocTreeToArray(item.subitems))
-    }
-  }
-  return result
-}
-
 export function findCatalogSection() {
   const nodes = $('#scrollConatinerWise')?.children || []
   let result: HTMLElement | null = null
@@ -231,12 +208,12 @@ function findIntersectPage(catalogs: any[]) {
 
 function handleCatalog(page: number, catalogs: any[]) {
   const catalog = catalogs.find((item) => item.page === page)
-  if (catalog) {
+  if (BookRender.isInOneCatalog) {
     const rangeCatalog = tocTreeToArray([catalog])
     return findIntersectPage(rangeCatalog)
   } else {
     const index = page - 1
-    const rangeCatalog = tocTreeToArray(catalogs)
+    const rangeCatalog = BookRender.bookArrayToc
     const start = Math.max(0, index - 3)
     const end = Math.min(rangeCatalog.length - 1, index + 1)
     const catalog = rangeCatalog.slice(start, end)
