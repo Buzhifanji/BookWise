@@ -280,7 +280,7 @@ function linkClick(href: string) {
 <template>
   <!-- 书籍内容 -->
   <div class="bg-base-300 h-full cursor-pointer p-10 overflow-hidden">
-    <div class="prose prose-width  mx-auto my-0 bg-base-100 rounded-3xl h-full relative">
+    <div class="prose prose-width  mx-auto my-0 bg-base-100 rounded-3xl h-full relative" id="scrollConatinerWise">
       <div class="absolute inset-0">
         <RingLoadingView v-if="isLoading" class="rounded-3xl" />
         <template v-else>

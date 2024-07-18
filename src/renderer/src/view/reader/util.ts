@@ -180,7 +180,7 @@ function isDomIntersect(target: HTMLElement) {
   return target.getBoundingClientRect().top - barHeight > remToPx(3)
 }
 
-function findIntersectPage(catalogs: any[]) {
+export function findIntersectPage(catalogs: any[]) {
   const container = $('#scrollConatinerWise') as HTMLElement
   let result: string = ''
   for (let i = 0; i < catalogs.length; i++) {
@@ -206,7 +206,7 @@ function findIntersectPage(catalogs: any[]) {
   return result
 }
 
-function handleCatalog(page: number, catalogs: any[]) {
+export function handleCatalog(page: number, catalogs: any[]) {
   const catalog = catalogs.find((item) => item.page === page)
   if (BookRender.isInOneCatalog) {
     const rangeCatalog = tocTreeToArray([catalog])

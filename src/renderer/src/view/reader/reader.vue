@@ -248,6 +248,8 @@ function sizeIn() {
 
 // 阅读位置
 const bookPageStore = useBookPageStore()
+
+
 async function recordPosition() {
   const info = get(bookInfo)
   if (!info) return
@@ -265,14 +267,14 @@ async function recordPosition() {
       postion = getSectionLeftFfirstChildPosition(contianer, +page)
 
     } else if (get(readMode) === ReadMode.section) {
-      const page = get(bookPageStore.page)
-      const contianer = getSectionContainer(page)
+      const contianer = $('#scrollConatinerWise')
       if (!contianer) return
-      postion = getSectionFirstChildPosition(+page)
+      const index = +contianer.getAttribute('data-page-number')!
+      postion = getSectionFirstChildPosition(+index)
     } else {
       const pageContainer = findCatalogSection()
       if (!pageContainer) return
-      const index = +pageContainer.getAttribute('data-index')!
+      const index = +pageContainer.getAttribute('data-page-number')!
       postion = getSectionFirstChildPosition(+index)
     }
   }
