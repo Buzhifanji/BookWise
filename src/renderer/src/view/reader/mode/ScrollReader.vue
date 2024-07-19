@@ -182,16 +182,6 @@ function highlightToView() {
   hightlightJump.toView(jumpPage, target, 'center')
 }
 
-// 指定dom滚动到顶部
-// function domToView(dom: HTMLElement, block: ScrollLogicalPosition = 'start') {
-//   if (isFinishedRender) {
-//     scrollIntoView(dom, { behavior: 'smooth', scrollMode: 'always', block })
-//     cacheDomToview = undefined
-//   } else {
-//     cacheDomToview = () => domToView(dom, block)
-//   }
-// }
-
 const getHeight = (h?: number) => {
   const dom = containerRef.value!
   let result = 0

@@ -131,7 +131,7 @@ async function catalogJump({ page, href }: any) {
     } else if (mode === ReadMode.section) {
       sectionReaderViewRef.value?.catalogJump(page, href)
     } else {
-      doubleReaderViewRef.value?.catalogJump(page)
+      doubleReaderViewRef.value?.catalogJump(page, href)
     }
   }
 }

@@ -4,11 +4,10 @@ import { t } from '@renderer/data';
 import { BookRender } from '@renderer/hooks';
 import { $, formatDecimal, toastWarning, wait } from '@renderer/shared';
 import { useBookPageStore } from '@renderer/store';
-import { get, onKeyStroke, set, useDebounceFn, useResizeObserver, useScroll, useThrottleFn, useToggle } from '@vueuse/core';
+import { get, onKeyStroke, set, useResizeObserver, useScroll, useThrottleFn, useToggle } from '@vueuse/core';
 import { nextTick, onMounted, ref, watchEffect } from 'vue';
-import { CONTINAER_ID } from '../highlight';
 import { Position } from '../type';
-import { findPositionDom, getSectionSize } from '../util';
+import { findPositionDom, getSectionSize, getSourceTarget } from '../util';
 import SectionView from './Section.vue';
 
 interface Props {
@@ -27,6 +26,7 @@ defineExpose({ catalogJump, noteJump, positionJump })
 let currentIndex = 0;
 let position: Position | undefined = undefined;
 let highlightId: string | undefined = undefined;
+let href: string | undefined = undefined
 
 const [isLoading, setLoading] = useToggle(false)
 const bookPageStore = useBookPageStore()
@@ -41,37 +41,49 @@ const resize = useThrottleFn(async () => {
 
 useResizeObserver(containerRef, resize)
 
-const index = ref<number>(0)
+const currentPage = ref<number>(0)
 
 // 进度
-const { x } = useScroll(containerRef)
-const calculateProgress = useDebounceFn((progress: number) => {
-  emit('progress', progress)
-}, 200)
-watchEffect(async () => {
-  let dom = get(containerRef)
-  const page = get(index)
-  bookPageStore.setPage(page)
-  const left = get(x)
-  await nextTick()
-  dom = get(containerRef)
-  if (dom) {
-    const size = getSectionSize(page)
-    if (size) {
-      // 是否有滚动条
-      const { offsetWidth, scrollWidth, firstElementChild } = dom
-      if (firstElementChild!.clientHeight > offsetWidth) {
-        const progress = formatDecimal((left + offsetWidth) / scrollWidth, 4)
-        const res = formatDecimal(size.progress - size.current + Math.min(progress, 1) * size.current, 4)
-        calculateProgress(res)
-      } else {
-        emit('progress', size.progress)
-      }
-    }
+const { x, isScrolling } = useScroll(containerRef)
+watchEffect(() => {
+  if (!isScrolling.value) {
+    // 滚动结束
+    getActiveCatalog()
+    onProgress()
   }
 })
 
-const getHightlight = (id: string) => containerRef.value?.querySelector(`span[data-web-highlight_id='${id}']`) as HTMLElement
+function onProgress() {
+  const dom = get(containerRef)
+  if (!dom) return
+
+  const size = getSectionSize(get(currentPage))
+  if (!size) return
+  const top = get(x)
+  // 是否有滚动条
+  const { offsetHeight, scrollHeight, firstElementChild } = dom
+  if (firstElementChild!.clientHeight > offsetHeight) {
+    const progress = formatDecimal((top + offsetHeight) / scrollHeight, 4)
+    const res = formatDecimal(size.progress - size.current + progress * size.current, 4)
+    emit('progress', res)
+  } else {
+    emit('progress', size.progress)
+  }
+}
+
+const getPageWidth = () => {
+  const containerParent = $('#scrollConatinerWise') as HTMLElement
+  console.log(containerParent)
+  console.log(containerParent.getBoundingClientRect().width)
+  return containerParent.getBoundingClientRect().width
+}
+
+function clearScroll() {
+  if (containerRef.value) {
+    containerRef.value.scrollTop = 0
+  }
+  currentIndex = 0
+}
 
 // 更新章节内容
 async function updateSection() {
@@ -87,11 +99,12 @@ function setHeight() {
   const dom = containerRef.value
   if (dom) {
     let result = 0;
-    const { scrollWidth, offsetWidth } = dom
-    if (scrollWidth > offsetWidth) {
-      const remainder = scrollWidth % offsetWidth
+    const width = getPageWidth()
+    const scrollWidth = dom.scrollWidth
+    if (scrollWidth > width) {
+      const remainder = scrollWidth % width
       if (remainder > 0) {
-        result = offsetWidth - remainder
+        result = width - remainder
       }
     }
     set(style, { height: `${result}px` })
@@ -104,18 +117,37 @@ onMounted(() => {
 
 function highlightToView() {
   if (highlightId) {
-    const target = getHightlight(highlightId)
+    const target = getSourceTarget(get(currentPage), highlightId)
+    console.log(target)
     if (target) {
+      currentIndex = 0
       domToView(target)
       highlightId = undefined
     }
   }
 }
 
-async function sectionLoaded(i: number) {
-  if (index.value !== i) return
+function anchorJump() {
+  if (!href) return
+  const container = $('#scrollConatinerWise') as HTMLElement
+  if (!container) return
 
-  await nextTick()
+  bookPageStore.setPage(href)
+  const value = BookRender.getBookHref(href)
+  const anchor = value?.anchor
+  if (anchor) {
+    const target = anchor(container)
+    if (target) {
+      domToView(target)
+      href = undefined
+    } else {
+      clearScroll()
+    }
+  }
+}
+
+async function sectionLoaded(i: number) {
+  if (currentPage.value !== i) return
 
   // 恢复阅读位置
   if (position) {
@@ -125,10 +157,15 @@ async function sectionLoaded(i: number) {
     }
     position = undefined
   }
+
+  anchorJump()
+  getActiveCatalog()
+  onProgress()
+  setHeight()
 }
 
 function noteLoaded(i: number) {
-  if (index.value !== i) return
+  if (currentPage.value !== i) return
 
   // 高亮跳转
   highlightToView()
@@ -141,53 +178,68 @@ function resetScrollLeft() {
   if (currentIndex > 0) {
     const dom = containerRef.value
     if (!dom) return
+    const width = getPageWidth()
 
-    const { scrollWidth, offsetWidth, scrollLeft } = dom
+    const { scrollWidth, scrollLeft } = dom
     if (scrollLeft === 0) return
 
-    if (scrollWidth <= offsetWidth) {
+    if (scrollWidth <= width) {
       dom.scrollLeft = 0
     } else {
-      dom.scrollLeft = currentIndex * offsetWidth
+      dom.scrollLeft = currentIndex * width
     }
   }
 }
 
 function domToView(target: HTMLElement) {
   const dom = containerRef.value!
-  const { left } = target.getBoundingClientRect()
-  const container = $(`#${CONTINAER_ID}`) as HTMLElement
-  const content = container.querySelector('.prose') as HTMLElement
-  const { left: cLeft } = content.getBoundingClientRect()
-  const { offsetWidth } = dom
-
-  const l = left - cLeft
-  const remainder = +(l / offsetWidth).toFixed(0)
-  if (dom.scrollLeft !== remainder * offsetWidth) {
-    containerRef.value!.scrollLeft = remainder * offsetWidth
+  const width = getPageWidth()
+  const { offsetWidth, scrollLeft } = dom
+  const remainder = +(target.offsetLeft / width).toFixed(0)
+  const res = remainder * offsetWidth
+  if (scrollLeft !== res) {
+    containerRef.value!.scrollLeft = res
   }
 }
 
-async function catalogJump(page: number) {
-  index.value = page
-  await updateSection()
-}
+// 点击目录跳转
+async function catalogJump(page: number, _href: string) {
+  if (page !== get(currentPage)) {
+    clearScroll()
+    set(currentPage, page)
+  }
 
+  href = _href
+  anchorJump()
+}
 async function noteJump(page: number, id: string) {
-  index.value = page
+  set(currentPage, page)
   highlightId = id
-  currentIndex = 0
+  await nextTick()
   highlightToView()
 }
-
 async function positionJump(_position: Position) {
-  index.value = +_position.page
+  if (!position) return
+  clearScroll()
+  set(currentPage, +_position.page)
   position = _position
 }
 
+function getActiveCatalog() {
+  // const page = get(currentPage)
+  // if (BookRender.isInOneCatalog) {
+  //   const catalog = BookRender.bookToc.find((item) => item.page === page)
+  //   const rangeCatalog = tocTreeToArray([catalog])
+  //   bookPageStore.setPage(findIntersectPage(rangeCatalog) || '')
+  // } else {
+  //   const href = BookRender.bookArrayToc.find(item => item.page === page)?.href || ''
+  //   bookPageStore.setPage(href)
+  // }
+}
+
 async function prev() {
-  if (index.value > 0) {
-    index.value -= 1
+  if (currentPage.value > 0) {
+    currentPage.value -= 1
     await updateSection()
     // 需要等待 弥补的空div渲染完成
     await wait(20)
@@ -200,10 +252,12 @@ async function prev() {
 }
 
 async function next() {
-  if (index.value < props.sections - 1) {
-    index.value += 1
+  if (currentPage.value < props.sections - 1) {
+    currentPage.value += 1
     await updateSection()
-
+    // 需要等待 弥补的空div渲染完成
+    await wait(20)
+    clearScroll()
   } else {
     toastWarning(t('common.getLastView'))
   }
@@ -214,21 +268,22 @@ const prewView = useThrottleFn(() => {
 
   const dom = containerRef.value
   if (dom) {
-    const { scrollWidth, offsetWidth, scrollLeft } = dom
+    const width = getPageWidth()
+    const { scrollWidth, scrollLeft } = dom
 
-    if (scrollWidth <= offsetWidth) {
+    if (scrollWidth <= width) {
       // 只有一页的情况
       prev()
-    } else if (scrollLeft + offsetWidth >= scrollWidth) {
+    } else if (scrollLeft + width >= scrollWidth) {
       // 已经滚动到最右端了
       currentIndex -= 1
-      dom.scrollLeft -= offsetWidth
+      dom.scrollLeft -= width
     } else if (scrollLeft === 0) {
       // 已经滚动到最左端
       prev()
     } else {
       currentIndex -= 1
-      dom.scrollLeft -= offsetWidth
+      dom.scrollLeft -= width
     }
   } else {
     console.warn('dom is null')
@@ -242,16 +297,17 @@ const nextView = useThrottleFn(() => {
 
   const dom = containerRef.value
   if (dom) {
-    const { scrollWidth, offsetWidth, scrollLeft } = dom
-    if (scrollWidth <= offsetWidth) {
+    const width = getPageWidth()
+    const { scrollWidth, scrollLeft } = dom
+    if (scrollWidth <= width) {
       // 只有一页的情况
       next()
-    } else if (scrollLeft + offsetWidth >= scrollWidth) {
+    } else if (scrollLeft + width >= scrollWidth) {
       // 已经滚动到最右端了
       next()
     } else {
       currentIndex += 1
-      dom.scrollLeft += offsetWidth
+      dom.scrollLeft += width
     }
   } else {
     console.warn('dom is null')
@@ -270,7 +326,7 @@ function linkClick(href: string) {
   } else {
     const value = BookRender.getBookHref(href)
     if (value) {
-      catalogJump(value.index)
+      catalogJump(value.index, '')
     }
   }
 }
@@ -284,9 +340,9 @@ function linkClick(href: string) {
       <div class="absolute inset-0">
         <RingLoadingView v-if="isLoading" class="rounded-3xl" />
         <template v-else>
-          <div ref="containerRef" :data-page-number="index"
-            class="columns-1 scroll-smooth transition ease-in-out lg:columns-2 gap-x-16 h-full overflow-auto scrollbar-none p-8 pb-12 double-container relative">
-            <SectionView :key="index" :loaded="sectionLoaded" :noteLoaded="noteLoaded" :index="index"
+          <div ref="containerRef" :data-page-number="currentPage"
+            class="columns-1 scroll-smooth transition ease-in-out lg:columns-2 gap-x-16 h-full overflow-auto p-8 pb-12 double-container relative">
+            <SectionView :key="currentPage" :loaded="sectionLoaded" :noteLoaded="noteLoaded" :index="currentPage"
               @link-click="linkClick">
             </SectionView>
             <div ref="remendyRef" :style="style"></div>

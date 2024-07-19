@@ -2,7 +2,7 @@
 import { BookRender } from '@renderer/hooks';
 import { $, formatDecimal, tocTreeToArray, wait } from '@renderer/shared';
 import { useBookPageStore } from '@renderer/store';
-import { get, onKeyStroke, set, useDebounceFn, useScroll, useThrottleFn } from '@vueuse/core';
+import { get, onKeyStroke, set, useScroll, useThrottleFn } from '@vueuse/core';
 import { ref, watchEffect } from 'vue';
 import { CONTINAER_ID } from '../highlight';
 import { Position } from '../type';
@@ -43,10 +43,7 @@ watchEffect(() => {
   }
 })
 
-// 计算进度
-const calculateProgress = useDebounceFn((progress: number) => {
-  emit('progress', progress)
-}, 200)
+
 
 
 function getActiveCatalog() {
@@ -61,6 +58,7 @@ function getActiveCatalog() {
   }
 }
 
+// 计算进度
 function onProgress() {
   const dom = get(containerRef)
   if (!dom) return
@@ -73,7 +71,7 @@ function onProgress() {
   if (firstElementChild!.clientHeight > offsetHeight) {
     const progress = formatDecimal((top + offsetHeight) / scrollHeight, 4)
     const res = formatDecimal(size.progress - size.current + progress * size.current, 4)
-    calculateProgress(res)
+    emit('progress', res)
   } else {
     emit('progress', size.progress)
   }
@@ -93,6 +91,14 @@ function sectionLoaded(i: number) {
     getActiveCatalog()
     onProgress()
   }
+}
+function noteLoaded(i: number) {
+  if (get(currentPage) !== i) return
+
+  // 高亮跳转
+  const highlightId = hightlightJump.get()!
+  const target = getSourceTarget(i, highlightId)
+  hightlightJump.toView(ref(0), target, 'center')
 }
 
 function anchorJump() {
@@ -121,14 +127,7 @@ function clearScroll() {
   }
 }
 
-function noteLoaded(i: number) {
-  if (get(currentPage) !== i) return
 
-  // 高亮跳转
-  const highlightId = hightlightJump.get()!
-  const target = getSourceTarget(i, highlightId)
-  hightlightJump.toView(ref(0), target, 'center')
-}
 
 function catalogJump(page: number, href: string) {
   if (page !== get(currentPage)) {
