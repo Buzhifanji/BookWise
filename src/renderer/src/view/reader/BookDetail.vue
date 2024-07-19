@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Book, Note } from '@renderer/batabase';
-import { BookReadTimeAction, ScoreInputView, editDialog, scroreDialog } from '@renderer/components';
+import { BookReadTimeAction, ImgView, ScoreInputView, editDialog, scroreDialog } from '@renderer/components';
 import { getLanguageName, t } from '@renderer/data';
-import { convertUint8ArrayToURL, formatDecimal, formatFileSize, getInterval, isUndefined, toastSuccess } from '@renderer/shared';
+import { formatDecimal, formatFileSize, getInterval, isUndefined, toastSuccess } from '@renderer/shared';
 import { useClipboard } from '@vueuse/core';
 import dayjs from 'dayjs';
 import { Copy } from 'lucide-vue-next';
@@ -19,7 +19,6 @@ const copyAction = (val: string) => {
     toastSuccess(t('common.copySuccess'))
   }
 }
-
 const openBookScore = () => scroreDialog(props.book)
 const openBookEdite = () => editDialog(props.book)
 
@@ -41,7 +40,7 @@ const getScore = (val: unknown) => isUndefined(val) || val === -1 ? t('common.un
     <div class="flex flex-row gap-3">
       <div class="avatar">
         <div class="w-28 min-h-36 rounded" @click="openBookEdite()">
-          <img :src="convertUint8ArrayToURL(book.cover)" />
+          <ImgView :id="book.id" />
         </div>
       </div>
       <div class="flex-1 flex flex-col gap-2 overflow-hidden">

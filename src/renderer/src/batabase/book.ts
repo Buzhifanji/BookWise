@@ -2,7 +2,7 @@ export interface Book {
   id: string
   name: string // 书名
   author: string // 作者
-  cover: Uint8Array // 封面
+  // cover: Uint8Array // 封面
   description: string // 描述
   category: number // 分类
   status: number // 状态

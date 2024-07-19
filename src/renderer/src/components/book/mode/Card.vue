@@ -82,7 +82,7 @@ const measureElement = (el: HTMLElement) => {
             @click="emit('click', item)" @contextmenu="emit('right', $event, item)"
             :style="{ width: `${bookCardWidth}px` }">
             <figure :style="{ width: `${84}px`, height: `${121}px` }">
-              <ImgView :data="item.cover" />
+              <ImgView :id="item.id" />
             </figure>
             <div class="flex flex-1 flex-col gap-2">
               <p class="line-clamp-2">{{ item.name }}</p>

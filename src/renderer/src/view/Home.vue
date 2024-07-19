@@ -214,7 +214,7 @@ init()
               <div v-for="item in recentBook" class="cursor-pointer" @click="bookJump(item.id, item)">
                 <div class="rounded over-hidden "
                   :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight + remToPx(3.5)}px` }">
-                  <ImgView :data="item.cover" />
+                  <ImgView :id="item.id" />
                 </div>
                 <div class="line-clamp-2 mx-1 mb-1 text-sm" :style="{ width: `${bookshelfWidht}px`, }">{{ item.name }}
                 </div>
@@ -241,7 +241,7 @@ init()
               <div v-for="item in loveBook" class="cursor-pointer" @click="bookJump(item.id, item)">
                 <div class="rounded over-hidden "
                   :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight + remToPx(3.5)}px` }">
-                  <ImgView :data="item.cover" />
+                  <ImgView :id="item.id" />
                 </div>
                 <div class="line-clamp-2 mx-1 mb-1 text-sm" :style="{ width: `${bookshelfWidht}px`, }">{{ item.name }}
                 </div>

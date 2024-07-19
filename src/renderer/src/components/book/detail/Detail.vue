@@ -2,15 +2,17 @@
 import { Book } from '@renderer/batabase';
 import { getLanguageName, t } from '@renderer/data';
 import { useDialog } from '@renderer/hooks';
-import { convertUint8ArrayToURL, formatDecimal, formatFileSize, getInterval, isUndefined, toastError } from '@renderer/shared';
+import { formatDecimal, formatFileSize, getInterval, isUndefined, toastError } from '@renderer/shared';
 import { vOnClickOutside } from '@vueuse/components';
 import { useToggle } from '@vueuse/core';
 import dayjs from 'dayjs';
 import { nextTick, ref } from 'vue';
+import ImgView from '../../img/Img.vue';
 import SkeletonView from '../../loading/Skeleton.vue';
 import { NoteAction } from '../../note/action';
 import { BookReadTimeAction } from '../action';
 import ScoreInputView from '../score/ScoreInput.vue';
+
 
 const props = defineProps<{ book: Book }>()
 
@@ -62,7 +64,7 @@ initEdite()
       <div class="hero " v-else>
         <div class="hero-content flex-col lg:flex-row">
           <div class="w-32 min-h-44 rounded mr-4">
-            <img :src="convertUint8ArrayToURL(book.cover)" />
+            <ImgView :id="book.id" />
           </div>
           <div class="columns-1 lg:columns-2 gap-x-8 gap-y-6 flex-1">
             <div class="flex gap-4 mb-3">

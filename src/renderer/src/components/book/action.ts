@@ -1,4 +1,4 @@
-import { Book, BookContent, db } from '@renderer/batabase'
+import { Book, BookContent, BookCover, db } from '@renderer/batabase'
 import { ReadTime } from '@renderer/batabase/read-time'
 import { t } from '@renderer/data'
 import { now, toastError } from '@renderer/shared'
@@ -145,5 +145,36 @@ export class BookReadTimeAction {
       toastError(t('book.getBookReadTimeListFail') + error)
       return []
     }
+  }
+}
+
+export class BookCoverAction {
+  static add(value: BookCover) {
+    try {
+      return db.bookCover.put(value)
+    } catch (error) {
+      // toastError(t('book.addBookCoverFail') + error)
+      return Promise.reject(error)
+    }
+  }
+
+  static bulkAdd(value: BookCover[]) {
+    try {
+      return db.bookCover.bulkPut(value)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
+  static update(bookId: string, cover: Uint8Array) {
+    try {
+      return db.bookCover.update(bookId, { cover })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
+  static async findOne(bookId: string) {
+    return await db.bookCover.where('bookId').equals(bookId).first()
   }
 }

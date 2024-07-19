@@ -73,7 +73,7 @@ const measureElement = (el: HTMLElement) => {
           @click="emit('click', data[virtualRow.index])"
           @contextmenu="emit('right', $event, data[virtualRow.index] as Book)">
           <figure :style="{ width: `${84}px`, height: `${121}px` }">
-            <ImgView :data="data[virtualRow.index].cover" />
+            <ImgView :id="data[virtualRow.index].id" />
           </figure>
           <div class="flexflex-col flex-1 py-2">
             <p class="line-clamp-1">{{ data[virtualRow.index].name }}</p>

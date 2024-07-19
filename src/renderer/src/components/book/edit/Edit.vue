@@ -8,7 +8,7 @@ import { get, set } from '@vueuse/core';
 import { useForm } from 'vee-validate';
 import { nextTick, ref } from 'vue';
 import { NoteAction } from '../../note/action';
-import { BookAction } from '../action';
+import { BookCoverAction } from '../action';
 
 const props = defineProps<{ book: Book }>()
 
@@ -27,12 +27,17 @@ const initEdite = async () => {
   name.value = props.book.name
   author.value = props.book.author
   openDialog()
+  BookCoverAction.findOne(props.book.id).then(res => {
+    if (res?.cover) {
+      set(cover, res.cover)
+    }
+  })
   await nextTick()
   openDialog()
 }
 
 const inputRef = ref<HTMLInputElement | null>(null)
-const cover = ref(props.book.cover)
+const cover = ref()
 async function uploadCover(event: Event) {
   try {
     const files = (event.target as HTMLInputElement).files;
@@ -51,8 +56,7 @@ async function uploadCover(event: Event) {
 
 const submitEdite = handleSubmit(values => {
   const { id, name } = props.book
-
-  BookAction.update(id, { ...values, cover: get(cover) })
+  BookCoverAction.update(id, get(cover))
 
   // 更新了书名
   if (name !== values.name) {

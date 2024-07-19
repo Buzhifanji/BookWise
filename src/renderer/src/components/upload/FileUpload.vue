@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Book } from '@renderer/batabase';
+import { Book, BookContent, BookCover } from '@renderer/batabase';
 import { t } from '@renderer/data';
 import { useDialog } from '@renderer/hooks';
 import { Reader } from '@renderer/reader';
@@ -12,7 +12,7 @@ import * as PDFLib from '@renderer/reader/pdf-lib';
 import { useBookStore } from '@renderer/store';
 import { v4 as uuidv4 } from 'uuid';
 import { defineExpose, ref } from 'vue';
-import { BookAction, BookContentAction } from '../book/action';
+import { BookAction, BookContentAction, BookCoverAction } from '../book/action';
 import { readFiles } from './read-file';
 
 const { dialogRef, openDialog, closeDialog } = useDialog();
@@ -98,11 +98,17 @@ const handleFiles = async (files: FileList) => {
 
         }))
 
+        const coverData: BookCover[] = [] // 封面
+        const contentData: BookContent[] = [] // 内容
+
         // 添加到数据库
         const newBook: Book[] = bookMetadata.map(item => {
             const { author, description, language, published, publisher, title, md5, cover, path, size, pages } = item
+            const id = uuidv4()
+            coverData.push({ bookId: id, cover: cover })
+            contentData.push({ bookId: id, content: item.data })
             return {
-                id: uuidv4(),
+                id,
                 md5: md5,
                 name: title,
                 author: Reader.handleAuthor(author),
@@ -110,7 +116,6 @@ const handleFiles = async (files: FileList) => {
                 language: Reader.handleAuthor(language),
                 publishTime: published || '',
                 publisher: publisher || '',
-                cover: cover,
                 path: path,
                 size,
                 pages,
@@ -132,19 +137,18 @@ const handleFiles = async (files: FileList) => {
         })
 
         if (newBook.length) {
-            await BookAction.bulkAdd(newBook)
-
-            // 网页版,不能获取文件路径，需要保存上传内容
-            if (!isElectron) {
-                const bookContents = bookMetadata.map(item => {
-                    return {
-                        bookId: newBook.find(e => e.md5 === item.md5)!.id,
-                        content: item.data,
-                        id: uuidv4(),
-                    }
-                })
-
-                await BookContentAction.bulkAdd(bookContents)
+            if (isElectron) {
+                await Promise.all([
+                    BookAction.bulkAdd(newBook),
+                    BookCoverAction.bulkAdd(coverData),
+                ])
+            } else {
+                // 网页版,不能获取文件路径，需要保存上传内容
+                await Promise.all([
+                    BookAction.bulkAdd(newBook),
+                    BookCoverAction.bulkAdd(coverData),
+                    BookContentAction.bulkAdd(contentData)
+                ])
             }
 
             newBook.map(item => toastSuccess(`${t('file.uploadSuccess')}: ${item.name}`))

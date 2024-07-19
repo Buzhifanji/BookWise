@@ -1,32 +1,35 @@
 <script setup lang="ts">
-import { convertUint8ArrayToURL, wait } from '@renderer/shared';
+import { convertUint8ArrayToURL } from '@renderer/shared';
 import { onMounted, ref } from 'vue';
 import loadingBookCover from '../../assets/bookmark.png';
 
 import { t } from '@renderer/data';
-import { get } from '@vueuse/core';
+import { set } from '@vueuse/core';
+import { BookCoverAction } from '../book/action';
 
-defineProps<{
-  data: Uint8Array
+const props = defineProps<{
+  id: string
 }>()
 
-const contianerRef = ref<HTMLImageElement | null>(null)
+const bookCover = ref<string>(loadingBookCover)
+
+async function getBookCover() {
+  try {
+    const res = await BookCoverAction.findOne(props.id)
+    if (res?.cover) {
+      set(bookCover, convertUint8ArrayToURL(res.cover))
+
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 onMounted(async () => {
-  const imgDom = get(contianerRef)
-  if (imgDom) {
-    await wait(100)
-    imgDom.onload = () => {
-      imgDom.src = imgDom.dataset.src!;
-    }
-    if (imgDom.complete) {
-      imgDom.src = imgDom.dataset.src!;
-    }
-  }
+  getBookCover()
 })
 </script>
 
 <template>
-  <img :src="loadingBookCover" :data-src="convertUint8ArrayToURL(data)" ref="contianerRef"
-    class="w-full rounded h-full object-cover" :alt="t('book.cover')" loading="lazy">
+  <img :src="bookCover" class="w-full rounded h-full object-cover" :alt="t('book.cover')" loading="lazy">
 </template>

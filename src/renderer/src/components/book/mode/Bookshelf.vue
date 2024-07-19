@@ -86,7 +86,7 @@ const measureElement = (el: HTMLElement) => {
               :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight + remToPx(3.5)}px` }"
               @contextmenu="emit('right', $event, item)">
               <figure :style="{ width: `${bookshelfWidht}px`, height: `${bookshelfHeight}px` }" class="rounded">
-                <ImgView :data="item.cover" />
+                <ImgView :id="item.id" />
               </figure>
               <div class="line-clamp-2 mx-1 mb-1 text-sm">{{ item.name }}</div>
             </div>
