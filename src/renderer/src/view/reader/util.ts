@@ -208,7 +208,7 @@ export function findIntersectPage(catalogs: any[]) {
 
 export function handleCatalog(page: number, catalogs: any[]) {
   const catalog = catalogs.find((item) => item.page === page)
-  if (BookRender.isInOneCatalog) {
+  if (catalog) {
     const rangeCatalog = tocTreeToArray([catalog])
     return findIntersectPage(rangeCatalog)
   } else {
