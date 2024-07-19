@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { clearDB } from '@renderer/batabase';
 import { CheckBoxView, Select, SelectView, } from '@renderer/components';
-import { bookshelfModeList, langs, nodeModeList, readModeList, t, themes } from '@renderer/data';
+import { bookshelfModeList, langs, nodeModeList, t, themes } from '@renderer/data';
 import { settingStore } from '@renderer/store';
 
 const textOpacity = { '--tw-text-opacity': 0.6 };
@@ -33,7 +33,7 @@ const textOpacity = { '--tw-text-opacity': 0.6 };
           <div class="card-body">
             <h2 class="card-title">{{ t('setting.mode') }}</h2>
             <SelectView v-model="settingStore.bookshelf" :list="bookshelfModeList" :label="t('setting.bookMode')" />
-            <SelectView v-model="settingStore.readMode" :list="readModeList" :label="t('setting.readMode')" />
+            <!-- <SelectView v-model="settingStore.readMode" :list="readModeList" :label="t('setting.readMode')" /> -->
             <SelectView v-model="settingStore.noteMode" :list="nodeModeList" :label="t('note.mode')" />
           </div>
         </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Book, Note } from '@renderer/batabase';
 import { BookAction, DrawerView, DropdownView, ErrorView, List, NoteAction, RingLoadingView, useToggleDrawer } from '@renderer/components';
-import { ReadMode, getSelectReadMode, readModeList, t, themes } from '@renderer/data';
+import { ReadMode, t, themes } from '@renderer/data';
 import { BookRender, cahceRefreshBook, renderBook } from '@renderer/hooks';
 import { $, $$, getInterval, now, toastSuccess } from '@renderer/shared';
 import { isReload } from '@renderer/shared/navigation';
@@ -510,7 +510,7 @@ onBeforeUnmount(() => {
                     </a>
                   </li>
                   <!-- 阅读模式 -->
-                  <li>
+                  <!-- <li>
                     <a class="!p-0 my-1">
                       <DropdownView summary-class="flex flex-row justify-between w-72 dropdown-left px-4 py-2">
                         <template v-slot:summary>
@@ -522,7 +522,7 @@ onBeforeUnmount(() => {
                           :list="readModeList" v-model="settingStore.readMode" />
                       </DropdownView>
                     </a>
-                  </li>
+                  </li> -->
                 </ul>
               </DropdownView>
               <label for="note-drawer" class="cursor-pointer " v-if="isSM">
