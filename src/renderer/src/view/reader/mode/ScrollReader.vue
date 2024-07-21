@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { bookLoadedSetionBus, BookRender } from '@renderer/hooks';
-import { $, formatDecimal } from '@renderer/shared';
+import { formatDecimal } from '@renderer/shared';
 import { useBookPageStore } from '@renderer/store';
 import { observeElementOffset, useVirtualizer } from '@tanstack/vue-virtual';
 import { get, onKeyStroke, set, useDebounceFn, useThrottleFn } from '@vueuse/core';
 import { computed, nextTick, ref } from 'vue';
-import { CONTINAER_ID } from '../highlight';
 import { Position } from '../type';
 import { findActiveCatalog, findPositionDom, getNavbarRect, getSectionContainer, getSourceTarget, toNextView, toPrewView } from '../util';
 import SectionView from './Section.vue';
@@ -105,19 +104,22 @@ const rowVirtualizerOptions = computed(() => {
       calculateProgress(offset)
       // 滚动停止
       if (!isScrolling && isJump) {
-        if (get(jumpPage) !== -1) {
+        const page = get(jumpPage)
+        if (page !== -1) {
           if (hightlightJump.has()) {
             highlightToView()
           } else if (readPositionJump.has()) {
             positionToView()
           } else if (anchorJump.has()) {
-            const container = $('#' + CONTINAER_ID) as HTMLElement
+            const container = getSectionContainer(page)
             if (container) {
               const dom = anchorJump.get()!((container))
+              console.log('dom', dom)
+              console.log('jumpPage', jumpPage.value)
               if (dom) {
                 anchorJump.domToView(dom)
               } else {
-                const container = getSectionContainer(get(jumpPage))
+                const container = getSectionContainer(page)
                 if (container) {
                   anchorJump.domToView(container)
                 }
@@ -125,7 +127,7 @@ const rowVirtualizerOptions = computed(() => {
             }
             anchorJump.set(undefined)
           } else {
-            const container = getSectionContainer(get(jumpPage))
+            const container = getSectionContainer(page)
             if (container) {
               anchorJump.domToView(container)
             }

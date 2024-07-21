@@ -183,15 +183,20 @@ export class Reader {
   }
 
   getSections = async () => {
-    if (this.book.type !== 'pdf') {
-      const result = await Promise.all(
-        this.book.sections.map(async (_, index) => {
-          return this.handSection(index)
-        })
-      )
-      return result
+    const sections = this.book.sections || []
+    if (this.bookType !== 'pdf') {
+      if (sections.length) {
+        const result = await Promise.all(
+          sections.map(async (_, index) => {
+            return this.handSection(index)
+          })
+        )
+        return result
+      } else {
+        return []
+      }
     } else {
-      return this.book.sections
+      return sections
     }
   }
 

@@ -5,8 +5,7 @@ import {
   formatDecimal,
   getFirstLastElementChild,
   lastElementsToArray,
-  remToPx,
-  tocTreeToArray
+  remToPx
 } from '@renderer/shared'
 import { Position } from './type'
 
@@ -181,12 +180,13 @@ function isDomIntersect(target: HTMLElement) {
 }
 
 export function findIntersectPage(catalogs: any[]) {
-  const container = $('#scrollConatinerWise') as HTMLElement
   let result: string = ''
   for (let i = 0; i < catalogs.length; i++) {
     const item = catalogs[i]
     const resolved = BookRender.getBookHref(item.href)
     const anchor = resolved?.anchor
+    const container = getSectionContainer(item.page)
+    if (!container) continue
     if (anchor) {
       const target = anchor(container)
       if (target) {
@@ -206,28 +206,14 @@ export function findIntersectPage(catalogs: any[]) {
   return result
 }
 
-export function handleCatalog(page: number, catalogs: any[]) {
-  const catalog = catalogs.find((item) => item.page === page)
-  if (catalog) {
-    const rangeCatalog = tocTreeToArray([catalog])
-    return findIntersectPage(rangeCatalog)
-  } else {
-    const index = page - 1
-    const rangeCatalog = BookRender.bookArrayToc
-    const start = Math.max(0, index - 3)
-    const end = Math.min(rangeCatalog.length - 1, index + 1)
-    const catalog = rangeCatalog.slice(start, end)
-    return findIntersectPage(catalog)
-  }
-}
-
 export function findActiveCatalog() {
   if (BookRender.bookToc.length === 0) return ''
 
   const pageContainer = findCatalogSection()
   if (pageContainer) {
     const index = +pageContainer.getAttribute('data-index')!
-    return handleCatalog(index, BookRender.bookToc)
+    const list = BookRender.bookArrayToc.filter((item) => item.page === index)
+    return findIntersectPage(list)
   }
 
   return ''

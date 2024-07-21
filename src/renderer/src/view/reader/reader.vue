@@ -81,7 +81,7 @@ async function loadData() {
     if (!data) return
     BookRender.handleBookSection()
 
-    set(isPDF, data.bookInfo.bookType === 'pdf')
+    set(isPDF, BookRender.getBook()?.bookType === 'pdf')
     set(bookInfo, data.bookInfo)
     set(hasBook, true)
     set(bookToc, data.toc)
@@ -122,6 +122,8 @@ async function loadData() {
 }
 
 async function catalogJump({ page, href }: any) {
+  console.log(page, href)
+  if (page === '-1') return
   if (get(isPDF)) {
     await PDF.pageJump(+page)
   } else {
