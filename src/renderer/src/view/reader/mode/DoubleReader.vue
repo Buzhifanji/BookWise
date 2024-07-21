@@ -11,12 +11,10 @@ import { findPositionDom, getSectionSize, getSourceTarget } from '../util';
 import SectionView from './Section.vue';
 
 interface Props {
-  sections: number,
   isScrollLocked: boolean,
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  sections: 0,
   isScrollLocked: false,
 })
 const emit = defineEmits(['progress'])
@@ -252,7 +250,7 @@ async function prev() {
 }
 
 async function next() {
-  if (currentPage.value < props.sections - 1) {
+  if (currentPage.value < get(BookRender.sectionNum) - 1) {
     currentPage.value += 1
     await updateSection()
     // 需要等待 弥补的空div渲染完成

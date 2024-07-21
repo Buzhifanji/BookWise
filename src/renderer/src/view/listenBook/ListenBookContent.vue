@@ -16,15 +16,11 @@ import { computed, defineProps, onUnmounted, ref, watchEffect, withDefaults } fr
 import { Sound } from './sound';
 
 interface Props {
-  sections: number,
-  toc: any[],
   bookId: string,
   page?: number,
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  sections: 0,
-  toc: () => [],
   bookId: '',
   page: 0,
 })
@@ -33,7 +29,8 @@ const TTSStore = useTTSStore()
 const bookPageStore = useBookPageStore()
 const [loading, setLoading] = useToggle(false)
 
-const isSupport = ref(props.sections > 0) // 是否支持朗读
+const toc = BookRender.bookToc
+const isSupport = computed(() => get(BookRender.sectionNum) > 0) // 是否支持朗读
 const textList = ref<string[]>([]) // 文本列表
 const activeText = ref(0) // 当前选中的文本
 const activePage = ref(props.page) // 当前选中的目录
@@ -72,7 +69,7 @@ const voices = computed(() => {
 })
 
 const audiosMap = new Map<string, BookAudio>()
-const hasNextCatalog = () => get(activePage) < props.sections - 1 // 是否有下章节
+const hasNextCatalog = () => get(activePage) < get(BookRender.sectionNum) - 1 // 是否有下章节
 
 async function loadAudioFromBD() {
   try {
@@ -234,7 +231,7 @@ function prewSection() {
 // 下一章
 function nextSection() {
   const index = get(activePage)
-  if (index >= props.sections - 1) return
+  if (index >= get(BookRender.sectionNum) - 1) return
   changeActionSection(get(index) + 1)
 }
 

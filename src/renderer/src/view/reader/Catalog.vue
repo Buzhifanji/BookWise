@@ -1,16 +1,9 @@
 <script setup lang="ts">
+import { BookRender } from '@renderer/hooks';
 import { domScrollToView } from '@renderer/shared';
 import { useBookPageStore } from '@renderer/store';
 import { get, useDebounceFn } from '@vueuse/core';
-import { defineProps, ref, watchEffect, withDefaults } from 'vue';
-
-interface Props {
-  data: any[],
-}
-
-withDefaults(defineProps<Props>(), {
-  data: () => [],
-})
+import { computed, ref, watchEffect } from 'vue';
 
 const emit = defineEmits(['click'])
 const handleClick = (e: any) => {
@@ -20,6 +13,7 @@ const handleClick = (e: any) => {
 const container = ref<HTMLElement>()
 
 const bookPageStore = useBookPageStore()
+const bookToc = computed(() => get(BookRender.bookToc))
 
 const scroll = useDebounceFn((_: number | string) => {
   domScrollToView(get(container), 'a.active')
@@ -33,7 +27,7 @@ watchEffect(() => {
 <template>
   <div class="catalog-wrapper bg-base-100 overflow-auto hover:scrollbar-thin scrollbar-none" ref="container">
     <!-- <FoldTreeView :data="data" v-if="settingStore.isFoldCatalog" /> -->
-    <ExpandTreeView :data="data" :active="bookPageStore.page" @click="handleClick" />
+    <ExpandTreeView :data="bookToc" :active="bookPageStore.page" @click="handleClick" />
   </div>
 </template>
 

@@ -12,12 +12,10 @@ import { jumpAction, setFinishedRender } from './action';
 
 interface Props {
   isScrollLocked: boolean,
-  sections: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
   isScrollLocked: false,
-  sections: 0
 })
 
 
@@ -49,7 +47,7 @@ watchEffect(() => {
 function getActiveCatalog() {
   const page = get(currentPage)
   if (BookRender.isInOneCatalog) {
-    const catalog = BookRender.bookToc.find((item) => item.page === page)
+    const catalog = get(BookRender.bookToc).find((item) => item.page === page)
     const rangeCatalog = tocTreeToArray([catalog])
     bookPageStore.setPage(findIntersectPage(rangeCatalog) || '')
   } else {
@@ -176,7 +174,7 @@ function nextSection() {
     })
     containerRef.value.scrollTop = 0
   }
-  if (currentPage.value < props.sections - 1) {
+  if (currentPage.value < get(BookRender.sectionNum) - 1) {
     currentPage.value += 1
   }
 }
@@ -231,7 +229,7 @@ onKeyStroke(['ArrowLeft'], prewView)
 
 // 下一页
 const jumpToNextView = async () => {
-  if (get(currentPage) === props.sections - 1) return
+  if (get(currentPage) === get(BookRender.sectionNum) - 1) return
 
   set(currentPage, get(currentPage) + 1)
   await wait(100)

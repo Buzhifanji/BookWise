@@ -11,12 +11,10 @@ import SectionView from './Section.vue';
 import { jumpAction, setFinishedRender } from './action';
 
 interface Props {
-  sections: number
   isScrollLocked: boolean,
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  sections: 0,
   isScrollLocked: false,
 })
 
@@ -27,7 +25,7 @@ const emit = defineEmits(['progress'])
 const bookPageStore = useBookPageStore()
 
 const containerRef = ref<HTMLElement | null>(null) // 监听dom变化
-const total = ref(props.sections)
+const total = computed(() => get(BookRender.sectionNum))
 
 const jumpPage = ref(-1)
 const hightlightJump = new jumpAction<string>() // 高亮跳转

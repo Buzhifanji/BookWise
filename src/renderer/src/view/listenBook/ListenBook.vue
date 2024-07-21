@@ -10,8 +10,6 @@ const props = defineProps({
 })
 
 const bookInfo = ref<Book>()
-const sections = ref(0) // 章节内容
-const bookToc = ref<any[]>([]) // 目录
 
 async function loadData() {
   try {
@@ -22,8 +20,6 @@ async function loadData() {
     BookRender.handleBookSection()
 
     if (!data) return
-    set(sections, data.sections)
-    set(bookToc, data.toc)
     set(bookInfo, data.bookInfo)
   } catch (err) {
     console.log(err)
@@ -39,7 +35,7 @@ loadData()
     <div v-if="bookInfo"
       class="w-full max-w-screen-2xl h-full flex flex-col bg-base-100 rounded-lg py-4  overflow-hidden">
       <h3 class="text-center text-2xl font-bold mb-4 line-clamp-1 px-3">{{ bookInfo.name }} </h3>
-      <ListenBookContent ref="readerListenBookViewRef" :toc="bookToc" :sections="sections" :book-id="bookInfo.id" />
+      <ListenBookContent ref="readerListenBookViewRef" :book-id="bookInfo.id" />
     </div>
   </div>
 </template>

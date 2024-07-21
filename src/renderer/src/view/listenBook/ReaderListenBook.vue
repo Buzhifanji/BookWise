@@ -2,24 +2,19 @@
 import { useDialog } from '@renderer/hooks';
 import { vOnClickOutside } from '@vueuse/components';
 import { set } from '@vueuse/core';
-import { defineProps, ref, withDefaults } from 'vue';
+import { defineProps, ref } from 'vue';
 import ListenBookContent from './ListenBookContent.vue';
 
 interface Props {
-  section: any[],
-  toc: any[],
   bookId: string,
-  // page: number,
   close: Function
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  section: () => [],
-  toc: () => [],
-})
+const props = defineProps<Props>()
 
 const { dialogRef, openDialog, closeDialog } = useDialog();
 const show = ref(false)
+
 
 function open() {
   set(show, true)
@@ -44,7 +39,7 @@ defineExpose({ open })
         <div @click="clsoe()"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
       </div>
       <div class="flex-1 flex flex-col h-full overflow-hidden" v-if="show">
-        <ListenBookContent :book-id="bookId" :section="section" :toc="toc" />
+        <ListenBookContent :book-id="bookId" />
       </div>
     </div>
   </dialog>

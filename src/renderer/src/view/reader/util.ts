@@ -7,6 +7,7 @@ import {
   lastElementsToArray,
   remToPx
 } from '@renderer/shared'
+import { get } from '@vueuse/core'
 import { Position } from './type'
 
 export function getSectionContainer(page: string | number) {
@@ -207,7 +208,7 @@ export function findIntersectPage(catalogs: any[]) {
 }
 
 export function findActiveCatalog() {
-  if (BookRender.bookToc.length === 0) return ''
+  if (get(BookRender.bookToc).length === 0) return ''
 
   const pageContainer = findCatalogSection()
   if (pageContainer) {

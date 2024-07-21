@@ -48,9 +48,6 @@ watchEffect(() => {
 const hasBook = ref(false)
 
 const [isLoading, setLoading] = useToggle(false)
-const section = ref<any[]>([]) // 章节内容
-const sections = ref(0);
-const bookToc = ref<any[]>([]) // 目录
 
 const { width } = useWindowSize(); // 适配不能尺寸窗口
 const isSM = computed(() => width.value < 1024);
@@ -84,19 +81,10 @@ async function loadData() {
     set(isPDF, BookRender.getBook()?.bookType === 'pdf')
     set(bookInfo, data.bookInfo)
     set(hasBook, true)
-    set(bookToc, data.toc)
-    set(sections, data.sections)
 
     setLoading(false)
 
     await nextTick()
-
-    if (get(isPDF)) {
-      await PDF.render(data.bookContent.content, props.id)
-      const outline = await PDF.getOutline()
-      set(bookToc, outline)
-    }
-
 
     initHighlight(data.bookInfo);
     // 笔记跳转
@@ -122,7 +110,6 @@ async function loadData() {
 }
 
 async function catalogJump({ page, href }: any) {
-  console.log(page, href)
   if (page === '-1') return
   if (get(isPDF)) {
     await PDF.pageJump(+page)
@@ -425,11 +412,11 @@ onBeforeUnmount(() => {
       <!-- 目录 -->
       <div class="block lg:hidden">
         <DrawerView id="catalog-drawer">
-          <CatalogView :data="bookToc" @click="catalogJump" />
+          <CatalogView @click="catalogJump" />
         </DrawerView>
       </div>
       <div class="hidden lg:block ">
-        <CatalogView :class="{ 'hide': isCatalog }" :data="bookToc" @click="catalogJump" />
+        <CatalogView :class="{ 'hide': isCatalog }" @click="catalogJump" />
       </div>
       <div class="w-full max-w-full h-screen ">
         <progress v-if="bookInfo.progress"
@@ -464,8 +451,8 @@ onBeforeUnmount(() => {
               <button class="btn btn-sm btn-ghost" v-if="!isPDF" @click="readBook()">
                 <Headset />
               </button>
-              <ReaderListenBookView ref="readerListenBookViewRef" :close="() => setReadBook(false)" :toc="bookToc"
-                :page="bookPageStore.page" :section="section" :book-id="bookInfo.id" />
+              <ReaderListenBookView ref="readerListenBookViewRef" :close="() => setReadBook(false)"
+                :page="bookPageStore.page" :book-id="bookInfo.id" />
               <!-- pdf控制缩放 -->
               <PDFToolbarView v-if="isPDF" />
               <!-- 操作 -->
@@ -538,14 +525,14 @@ onBeforeUnmount(() => {
             <PDFReadView v-if="isPDF" :isScrollLocked="isScrollLocked" />
             <template v-else>
               <!-- 滚动条模式 -->
-              <ScrollReaderView :section="section" :sections="sections" :isScrollLocked="isScrollLocked"
-                ref="scrollReaderViewRef" v-if="readMode === ReadMode.scroll" @progress="updateProgress" />
+              <ScrollReaderView :isScrollLocked="isScrollLocked" ref="scrollReaderViewRef"
+                v-if="readMode === ReadMode.scroll" @progress="updateProgress" />
               <!-- 章节模式 -->
-              <SectionReaderView :section="section" :sections="sections" :isScrollLocked="isScrollLocked"
-                ref="sectionReaderViewRef" v-if="readMode === ReadMode.section" @progress="updateProgress" />
+              <SectionReaderView :isScrollLocked="isScrollLocked" ref="sectionReaderViewRef"
+                v-if="readMode === ReadMode.section" @progress="updateProgress" />
               <!-- 双栏模式 -->
-              <DoubleReaderView :section="section" :sections="sections" :isScrollLocked="isScrollLocked"
-                ref="doubleReaderViewRef" v-if="readMode === ReadMode.double" @progress="updateProgress" />
+              <DoubleReaderView :isScrollLocked="isScrollLocked" ref="doubleReaderViewRef"
+                v-if="readMode === ReadMode.double" @progress="updateProgress" />
             </template>
 
             <!-- 工具栏 -->

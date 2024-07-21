@@ -8,7 +8,8 @@ import {
   StorageAction,
   tocTreeToArray
 } from '@renderer/shared'
-import { toRaw } from 'vue'
+import { PDF } from '@renderer/view/reader/pdf/pdf'
+import { ref, toRaw } from 'vue'
 import { bookLoadedSetionBus } from './use-event-bus'
 
 const KEY = 'book-wise_open_book'
@@ -56,7 +57,6 @@ async function getBookContent(bookId: string, url: string) {
 
 export async function renderBook(id: string) {
   const bookInfo = await getBookInfo(id)
-  // console.log('bookInfo', bookInfo)
   bookJumpStore.clear()
   if (!bookInfo) return null
 
@@ -68,18 +68,21 @@ export async function renderBook(id: string) {
   bookRender = new Reader()
   await bookRender.open(file)
   // console.log('bookRender', bookRender)
+  if (bookRender.bookType === 'pdf') {
+    const outline = await PDF.getOutline()
+    BookRender.bookToc.value = outline
+  } else {
+    const toc = bookRender.book.toc || []
+    handleToc(toc)
+    BookRender.isInOneCatalog = sureBookCatalog(toc)
+    BookRender.bookArrayToc.length = 0
+    BookRender.bookArrayToc.push(...tocTreeToArray(toc))
 
-  const toc = bookRender.book.toc || []
-  handleToc(toc)
-  BookRender.isInOneCatalog = sureBookCatalog(toc)
-  BookRender.bookToc.length = 0
-  BookRender.bookToc.push(...toc)
-  BookRender.bookArrayToc.length = 0
-  BookRender.bookArrayToc.push(...tocTreeToArray(toc))
+    BookRender.sectionNum = bookRender.book.sections?.length || 0
+    BookRender.bookToc.value = toc
+  }
 
-  const sections = (bookRender.book.sections || []).length
-
-  return { bookInfo, bookContent, sections, toc }
+  return { bookInfo, bookContent }
 }
 
 function handleToc(toc: any[]) {
@@ -121,9 +124,10 @@ function sureBookCatalog(toc: any[]) {
 }
 
 export class BookRender {
+  static sectionNum = ref(0) // 章节数量
   static section: any[] = [] // 处理后的章节内容
 
-  static bookToc: any[] = [] // 目录
+  static bookToc = ref<any[]>([]) // 目录
   static bookArrayToc: any[] = [] // 数组目录
   static isInOneCatalog = false // 子目录内容是否在同一目录下
 
