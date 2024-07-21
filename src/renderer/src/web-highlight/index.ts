@@ -240,7 +240,7 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
   }
 
   // 双击直接整个段落文本高亮
-  dbclick = (event: MouseOrTouchEvent) => {
+  dblclick = (event: MouseOrTouchEvent) => {
     const target = event.target as HTMLElement
     if (target && !isHighlightWrapNode(target)) {
       if (target.firstChild && target.lastChild && target.lastChild.textContent) {
@@ -289,7 +289,7 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
       listener(root, this._event.PointerTap, this.click as EventListenerOrEventListenerObject)
 
       listener(root, this._event.PointerEnd, this._handleSelection)
-      listener(root, this._event.PinterDb, this.dbclick as EventListenerOrEventListenerObject)
+      listener(root, this._event.PinterDb, this.dblclick as EventListenerOrEventListenerObject)
     }
   }
 
@@ -299,7 +299,7 @@ export class WebHighlight extends EventEmitter<EventHandlerMap<WebHighlight>> {
     unListener(root, this._event.PointerOver, this.hover as EventListenerOrEventListenerObject)
 
     unListener(root, this._event.PointerTap, this.click as EventListenerOrEventListenerObject)
-    unListener(root, this._event.PinterDb, this.dbclick as EventListenerOrEventListenerObject)
+    unListener(root, this._event.PinterDb, this.dblclick as EventListenerOrEventListenerObject)
 
     unListener(root, this._event.PointerEnd, this._handleSelection)
   }

@@ -61,8 +61,8 @@ loadSection()
 </script>
 
 <template>
-  <div v-if="data" v-html="data.html" ref="contianer" </div>
-    <div class="h-[1000px] flex justify-center items-center" v-else>
-      <span class="loading loading-spinner text-warning loading-lg"></span>
-    </div>
+  <div v-if="data" v-html="data.html" ref="contianer"> </div>
+  <div class="h-[1000px] flex justify-center items-center" v-else>
+    <span class="loading loading-spinner text-warning loading-lg"></span>
+  </div>
 </template>

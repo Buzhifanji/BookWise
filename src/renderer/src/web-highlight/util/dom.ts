@@ -1,4 +1,5 @@
 import { Doc } from '../interface'
+import { getOption } from '../option'
 import { from, indexOf } from './array'
 
 export function selector(selector: string, doc?: Doc) {
@@ -15,7 +16,8 @@ export function selctorAll(selector: string, doc?: Doc) {
  * 在doms列表中查找制定dom的索引
  */
 export function queryDomIndex(node: HTMLElement, root: Doc): number {
-  const nodeList = selctorAll(node.tagName, root)
+  const ignore = getOption().ignore
+  const nodeList = selctorAll(node.tagName, root).filter((item) => !ignore.includes(item.className))
   return indexOf(nodeList, node)
 }
 
