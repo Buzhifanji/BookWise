@@ -60,19 +60,19 @@ const measureElement = (el: HTMLElement) => {
 <template>
   <div class="relative w-full" ref="containerRef" :style="{ height: `${totalSize}px` }">
     <div v-for="virtualRow in virtualRows" :key="virtualRow.key" :ref="measureElement" :data-index="virtualRow.index"
-      class="absolute top-0 left-0  w-full pb-4" :style="{
+      class="absolute top-0 left-0  w-full pb-3" :style="{
         transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin
           }px)`,
       }">
       <div>
         <!-- 列表模式 -->
         <div
-          class="card flex flex-row bg-base-100 p-2 gap-4 cursor-pointer shadow hover:bg-primary hover:text-primary-content"
+          class="card rounded-md flex flex-row bg-base-100 p-2 gap-4 cursor-pointer shadow hover:bg-primary hover:text-primary-content"
           :style="{ '--tw-bg-opacity': indexBgOpacity(virtualRow.index) }"
           @mouseenter="hoverAction(0.3, virtualRow.index)" @mouseleave="hoverAction(1, -1)"
           @click="emit('click', data[virtualRow.index])"
           @contextmenu="emit('right', $event, data[virtualRow.index] as Book)">
-          <figure :style="{ width: `${84}px`, height: `${121}px` }">
+          <figure :style="{ width: `${84}px`, height: `${121}px` }" class="rounded-sm">
             <ImgView :id="data[virtualRow.index].id" />
           </figure>
           <div class="flexflex-col flex-1 py-2">

@@ -65,6 +65,8 @@ export async function renderBook(id: string) {
 
   const file = arrayBufferToFile(bookContent.content, bookInfo.name)
 
+  BookRender.bookInfo.value = bookInfo
+
   bookRender = new Reader()
   await bookRender.open(file)
   // console.log('bookRender', bookRender)
@@ -82,7 +84,7 @@ export async function renderBook(id: string) {
     BookRender.bookToc.value = toc
   }
 
-  return { bookInfo, bookContent }
+  return { bookContent }
 }
 
 function handleToc(toc: any[]) {
@@ -124,6 +126,8 @@ function sureBookCatalog(toc: any[]) {
 }
 
 export class BookRender {
+  static bookInfo = ref<Book>() // 书籍信息
+
   static sectionNum = ref(0) // 章节数量
   static section: any[] = [] // 处理后的章节内容
 

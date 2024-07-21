@@ -13,7 +13,6 @@ import { NoteAction } from '../../note/action';
 import { BookReadTimeAction } from '../action';
 import ScoreInputView from '../score/ScoreInput.vue';
 
-
 const props = defineProps<{ book: Book }>()
 
 const { dialogRef, openDialog, closeDialog } = useDialog();

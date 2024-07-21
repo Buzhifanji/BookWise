@@ -1,15 +1,12 @@
 <script setup lang="ts">
-import { Book } from '@renderer/batabase';
 import { BookRender, renderBook } from '@renderer/hooks';
-import { set } from '@vueuse/core';
-import { ref, } from 'vue';
 import ListenBookContent from './ListenBookContent.vue';
 
 const props = defineProps({
   id: String,
 })
 
-const bookInfo = ref<Book>()
+const bookInfo = BookRender.bookInfo
 
 async function loadData() {
   try {
@@ -20,7 +17,6 @@ async function loadData() {
     BookRender.handleBookSection()
 
     if (!data) return
-    set(bookInfo, data.bookInfo)
   } catch (err) {
     console.log(err)
   } finally {

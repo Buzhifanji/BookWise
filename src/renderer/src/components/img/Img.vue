@@ -31,5 +31,5 @@ onMounted(async () => {
 </script>
 
 <template>
-  <img :src="bookCover" class="w-full rounded h-full object-cover" :alt="t('book.cover')" loading="lazy">
+  <img :src="bookCover" class="w-full rounded-sm h-full object-cover" :alt="t('book.cover')" loading="lazy">
 </template>

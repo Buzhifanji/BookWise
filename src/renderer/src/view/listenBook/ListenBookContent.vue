@@ -4,7 +4,7 @@ import { BookAudioAction, RingLoadingView, Select } from '@renderer/components';
 import { langs } from '@renderer/data';
 import { BookRender, TTSbus } from '@renderer/hooks';
 import { domScrollToView, spliteSentence } from '@renderer/shared';
-import { useBookPageStore, useTTSStore } from '@renderer/store';
+import { useBookPageStore, useBookStore, useTTSStore } from '@renderer/store';
 import { edgeTSS } from '@renderer/tts';
 import { voiceList } from '@renderer/tts/data';
 import { get, onKeyStroke, set, useDebounceFn, useToggle } from '@vueuse/core';
@@ -27,9 +27,11 @@ const props = withDefaults(defineProps<Props>(), {
 
 const TTSStore = useTTSStore()
 const bookPageStore = useBookPageStore()
+const bookStore = useBookStore()
 const [loading, setLoading] = useToggle(false)
 
-const toc = BookRender.bookToc
+const bookInfo = computed(() => bookStore.bookList.find(item => item.id === props.bookId))
+const toc = computed(() => handleToc(get(BookRender.bookToc)))
 const isSupport = computed(() => get(BookRender.sectionNum) > 0) // 是否支持朗读
 const textList = ref<string[]>([]) // 文本列表
 const activeText = ref(0) // 当前选中的文本
@@ -67,6 +69,7 @@ const voices = computed(() => {
   }
   return []
 })
+
 
 const audiosMap = new Map<string, BookAudio>()
 const hasNextCatalog = () => get(activePage) < get(BookRender.sectionNum) - 1 // 是否有下章节
@@ -109,8 +112,8 @@ async function loadSectionAudio(data: string[], isPlay = false) {
       const buffer = audiosMap.get(hash)?.content
       if (buffer) {
         sound.clear()
-        sound.play(get(textList)[get(activeText)])
-        // sound.play(buffer)
+        // sound.play(get(textList)[get(activeText)])
+        sound.play(buffer)
         setLoading(false)
       } else {
         console.warn('数据丢失了')
@@ -121,6 +124,26 @@ async function loadSectionAudio(data: string[], isPlay = false) {
 
 
 // 目录
+function handleToc(toc: any[]) {
+  const result: any[] = JSON.parse(JSON.stringify(toc));
+  const pageSet = new Set<string>()
+  const eachToc = (data: any[]) => {
+    for (const item of data) {
+      if (pageSet.has(item.page)) {
+        item.subitems = null
+      } else {
+        pageSet.add(item.page)
+        if (Array.isArray(item.subitems)) {
+          eachToc(item.subitems)
+        }
+      }
+
+    }
+  }
+  eachToc(result)
+
+  return result
+}
 const onCatalog = (e: any) => {
   changeActionSection(e.page)
 }
@@ -138,8 +161,6 @@ const contentScroll = useDebounceFn((_: number) => {
 watchEffect(() => {
   contentScroll(get(activeText))
 })
-
-
 
 function extractText(htmlString: string): string {
   return htmlString
@@ -162,8 +183,8 @@ async function playIndex(index: number) {
   const hash = SparkMD5.hash(textList.value[index])
   const buffer = audiosMap.get(hash)?.content
   if (buffer) {
-    // sound.play(buffer)
-    sound.play(get(textList)[get(activeText)])
+    sound.play(buffer)
+    // sound.play(get(textList)[get(activeText)])
   } else {
     await loadAudioFromNet(hash, textList.value[index], TTSStore.voice)
     const res = audiosMap.get(hash)?.content
@@ -258,7 +279,7 @@ async function init() {
   setLoading(true)
   try {
     Howler.unload()
-    set(activePage, get(bookPageStore.page))
+    // set(activePage, get(bookPageStore.page))
     const text = await handleText(get(activePage))
     set(textList, text) // 加载并切割文本内容
     await loadAudioFromBD() // 加载本地音频

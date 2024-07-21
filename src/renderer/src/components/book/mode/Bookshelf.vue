@@ -79,7 +79,7 @@ const measureElement = (el: HTMLElement) => {
       }">
       <div class="relative w-full" key="bookshelf">
         <!-- 书架模式 -->
-        <div class="flex w-full justify-start pb-[1.125rem] px-5 gap-10 class ">
+        <div class="flex w-full justify-start pb-[1.125rem] px-5 gap-10  ">
           <template v-for="item in books[virtualRow.index]" :key="item.id">
             <div class="card bg-base-100  rounded shadow cursor-pointer gap-2 bookshelf transition ease-in-out"
               @click="emit('click', item)"

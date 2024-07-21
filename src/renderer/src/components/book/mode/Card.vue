@@ -70,18 +70,18 @@ const measureElement = (el: HTMLElement) => {
     height: `${totalSize}px`,
   }">
     <div v-for="virtualRow in virtualRows" :key="virtualRow.key" :ref="measureElement" :data-index="virtualRow.index"
-      class="absolute top-0 left-0  w-full pb-5" :style="{
+      class="absolute top-0 left-0  w-full pb-3" :style="{
         transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin
           }px)`,
       }">
-      <div class="flex w-full justify-start  gap-8">
+      <div class="flex w-full justify-start  gap-4">
         <!-- 卡片模式 -->
         <template v-for="item in books[virtualRow.index]" :key="item.id">
           <div
-            class="card flex-row items-center gap-4 p-4 bg-base-100 shadow-md cursor-pointer transition ease-in-out duration-150  hover:scale-110"
+            class="card rounded flex-row items-center gap-4 p-4 bg-base-100 shadow-md cursor-pointer transition ease-in-out duration-150  hover:scale-105"
             @click="emit('click', item)" @contextmenu="emit('right', $event, item)"
             :style="{ width: `${bookCardWidth}px` }">
-            <figure :style="{ width: `${84}px`, height: `${121}px` }">
+            <figure :style="{ width: `${84}px`, height: `${121}px` }" class="rounded-sm">
               <ImgView :id="item.id" />
             </figure>
             <div class="flex flex-1 flex-col gap-2">

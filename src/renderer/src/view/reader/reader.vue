@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Book, Note } from '@renderer/batabase';
+import { Note } from '@renderer/batabase';
 import { BookAction, DrawerView, DropdownView, ErrorView, List, NoteAction, RingLoadingView, useToggleDrawer } from '@renderer/components';
 import { ReadMode, t, themes } from '@renderer/data';
 import { BookRender, cahceRefreshBook, renderBook } from '@renderer/hooks';
@@ -36,7 +36,7 @@ const router = useRouter()
 
 const bookStore = useBookStore()
 
-const bookInfo = ref<Book>()
+const bookInfo = BookRender.bookInfo
 
 watchEffect(() => {
   const data = bookStore.bookList.find(item => item.id === props.id)
@@ -77,16 +77,16 @@ async function loadData() {
     const data = await renderBook(bookId)
     if (!data) return
     BookRender.handleBookSection()
+    const book = get(bookInfo)
 
     set(isPDF, BookRender.getBook()?.bookType === 'pdf')
-    set(bookInfo, data.bookInfo)
     set(hasBook, true)
 
     setLoading(false)
 
     await nextTick()
 
-    initHighlight(data.bookInfo);
+    initHighlight(book!);
     // 笔记跳转
     const note = localStorage.getItem('__note__')
     if (note) {
@@ -100,7 +100,7 @@ async function loadData() {
     }
 
     // 更新打开次数
-    const count = (data.bookInfo.count || 0) + 1
+    const count = (book!.count || 0) + 1
     BookAction.update(bookId, { count })
   } catch (err) {
     console.log(err)
