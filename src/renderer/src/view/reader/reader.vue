@@ -365,17 +365,12 @@ function recordReadTime() {
 
 // 页面是否可见
 const viewVisibityChange = () => {
-  recordReadTime()
-  resetReadTime()
-  // if (document.hidden) {
-  //   if (timer) {
-  //     // 页面不可见，暂停阅读时长记录
-  //     clearInterval(timer)
-  //   }
-  // } else {
-  //   recordReadTime()
-  //   resetReadTime()
-  // }
+  if (document.hidden) {
+    recordReadTime()
+    resetReadTime()
+  } else {
+    resetReadTime()
+  }
 }
 
 // 朗读
@@ -399,17 +394,20 @@ function recordAction() {
   }
 }
 
+
 onMounted(() => {
   loadData()
   resetReadTime()
   // 监听 浏览器窗口关闭、刷新
   window.addEventListener("beforeunload", recordAction);
+  window.addEventListener('blur', recordReadTime)
   document.addEventListener('visibilitychange', viewVisibityChange)
 })
 
 onBeforeUnmount(() => {
   recordAction()
   window.removeEventListener("beforeunload", recordAction);
+  window.removeEventListener('blur', recordReadTime)
   document.removeEventListener('visibilitychange', viewVisibityChange)
   if (timer) {
     clearInterval(timer)

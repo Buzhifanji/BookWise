@@ -76,7 +76,7 @@ const measureElement = (el: HTMLElement) => {
       }">
       <div class="flex w-full justify-start  gap-8">
         <!-- 卡片模式 -->
-        <template v-for="item in books[virtualRow.index]">
+        <template v-for="item in books[virtualRow.index]" :key="item.id">
           <div
             class="card flex-row items-center gap-4 p-4 bg-base-100 shadow-md cursor-pointer transition ease-in-out duration-150  hover:scale-110"
             @click="emit('click', item)" @contextmenu="emit('right', $event, item)"
