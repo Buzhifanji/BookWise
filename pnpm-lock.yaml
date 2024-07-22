@@ -14,6 +14,9 @@ importers:
       '@electron-toolkit/utils':
         specifier: ^3.0.0
         version: 3.0.0(electron@31.1.0)
+      '@formkit/auto-animate':
+        specifier: ^0.8.2
+        version: 0.8.2
       '@tanstack/vue-virtual':
         specifier: ^3.8.1
         version: 3.8.1(vue@3.4.31(typescript@5.5.3))
@@ -477,6 +480,9 @@ packages:
   '@eslint/js@8.57.0':
     resolution: {integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
+  '@formkit/auto-animate@0.8.2':
+    resolution: {integrity: sha512-SwPWfeRa5veb1hOIBMdzI+73te5puUBHmqqaF1Bu7FjvxlYSz/kJcZKSa9Cg60zL0uRNeJL2SbRxV6Jp6Q1nFQ==}
 
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -3184,6 +3190,8 @@ snapshots:
       - supports-color
 
   '@eslint/js@8.57.0': {}
+
+  '@formkit/auto-animate@0.8.2': {}
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:

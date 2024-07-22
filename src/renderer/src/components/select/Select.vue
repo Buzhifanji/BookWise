@@ -55,7 +55,7 @@ function getModelValue(modelValue: SelectItem | string) {
 </script>
 
 <template>
-  <details class="dropdown " :class="position" ref="detailsRef">
+  <details class="dropdown flex" :class="position" ref="detailsRef">
     <summary ref="summaryRef" class="cursor-pointer select select-bordered items-center w-full" :class="className">
       {{ getModelValue(modelValue!) }}
     </summary>

@@ -3,9 +3,9 @@ import { Note } from '@renderer/batabase';
 import { BookAction, DrawerView, DropdownView, ErrorView, List, NoteAction, RingLoadingView, useToggleDrawer } from '@renderer/components';
 import { ReadMode, t, themes } from '@renderer/data';
 import { BookRender, cahceRefreshBook, renderBook } from '@renderer/hooks';
-import { $, $$, getInterval, now, toastSuccess } from '@renderer/shared';
+import { $, $$, getInterval, now, toastSuccess, toastWarning } from '@renderer/shared';
 import { isReload } from '@renderer/shared/navigation';
-import { bookPositionStore, bookReadTimeStore, settingStore, useBookPageStore, useBookStore } from '@renderer/store';
+import { bookPositionStore, bookReadTimeStore, settingStore, useBookPageStore, useBookStore, useUserStore } from '@renderer/store';
 import { get, set, useCssVar, useToggle, useWindowSize } from '@vueuse/core';
 import { AArrowDown, AArrowUp, AlignJustify, Bolt, Headset, SkipBack, ZoomIn, ZoomOut } from 'lucide-vue-next';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watchEffect } from 'vue';
@@ -35,7 +35,7 @@ const props = defineProps({
 const router = useRouter()
 
 const bookStore = useBookStore()
-
+const stateStore = useUserStore()
 const bookInfo = BookRender.bookInfo
 
 watchEffect(() => {
@@ -362,6 +362,11 @@ const viewVisibityChange = () => {
 
 // 朗读
 const readBook = () => {
+  if (!stateStore.isGood) {
+    toastWarning('您还不是VIP会员!')
+    return
+  }
+
   if (get(isPDF)) {
     // todo support PDF reading
   } else {
@@ -448,9 +453,12 @@ onBeforeUnmount(() => {
             <div class="flex gap-4">
               <button class="btn" @click="test()">test</button>
               <!-- 朗读书籍 -->
-              <button class="btn btn-sm btn-ghost" v-if="!isPDF" @click="readBook()">
-                <Headset />
-              </button>
+              <div class="indicator">
+                <span class="indicator-item badge badge-warning" v-if="!stateStore.isGood">VIP</span>
+                <button class="btn btn-sm btn-ghost" v-if="!isPDF" @click="readBook()">
+                  <Headset />
+                </button>
+              </div>
               <ReaderListenBookView ref="readerListenBookViewRef" :close="() => setReadBook(false)"
                 :page="bookPageStore.page" :book-id="bookInfo.id" />
               <!-- pdf控制缩放 -->

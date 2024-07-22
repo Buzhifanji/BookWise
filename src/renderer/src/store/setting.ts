@@ -16,6 +16,7 @@ interface SettingState {
   theme: string // 主题
   lang: string // 语言
   pdfScale: number // PDF展示比例
+  listenMode: string // 听书音频模型
 }
 
 const defaultState: SettingState = {
@@ -30,7 +31,8 @@ const defaultState: SettingState = {
   isRemeberPosition: true,
   theme: 'light',
   lang: 'en',
-  pdfScale: 1 * window.devicePixelRatio
+  pdfScale: 1 * window.devicePixelRatio,
+  listenMode: ''
 }
 
 /**
@@ -51,4 +53,33 @@ if (isElectron) {
       window.store.set(`setting.${key}`, val)
     }
   })
+}
+
+export class ListenMode {
+  static set(val: { id: string; value: string }) {
+    const data = get(settingStore).listenMode
+    if (data) {
+      let obj = {}
+      try {
+        obj = JSON.parse(data)
+      } catch (error) {}
+      Object.assign(obj, val)
+      settingStore.value.listenMode = JSON.stringify(obj)
+    } else {
+      settingStore.value.listenMode = JSON.stringify(val)
+    }
+  }
+
+  static get(id: string) {
+    const data = get(settingStore).listenMode
+    if (data) {
+      let obj = {}
+      try {
+        obj = JSON.parse(data)
+      } catch (error) {}
+      return obj[id] || ''
+    } else {
+      return ''
+    }
+  }
 }

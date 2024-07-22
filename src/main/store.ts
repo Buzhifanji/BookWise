@@ -14,6 +14,7 @@ interface SettingState {
   theme: string // 主题
   lang: string // 语言
   pdfScale: number // PDF展示比例
+  listenMode: string // 听书音频模型
 }
 
 const schemaSetting: SettingState = {
@@ -28,7 +29,8 @@ const schemaSetting: SettingState = {
   isRemeberPosition: true,
   theme: 'light',
   lang: 'en',
-  pdfScale: 1
+  pdfScale: 1,
+  listenMode: ''
 }
 
 const store: any = new Store<{ settting: SettingState }>({

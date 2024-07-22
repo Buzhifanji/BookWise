@@ -4,7 +4,7 @@ import { BookAudioAction, RingLoadingView, Select } from '@renderer/components';
 import { langs } from '@renderer/data';
 import { BookRender, TTSbus } from '@renderer/hooks';
 import { domScrollToView, spliteSentence } from '@renderer/shared';
-import { useBookPageStore, useBookStore, useTTSStore } from '@renderer/store';
+import { useBookStore, useTTSStore } from '@renderer/store';
 import { edgeTSS } from '@renderer/tts';
 import { voiceList } from '@renderer/tts/data';
 import { get, onKeyStroke, set, useDebounceFn, useToggle } from '@vueuse/core';
@@ -13,6 +13,7 @@ import { FastForward, Rewind, StepBack, StepForward, Triangle, Volume1, VolumeX 
 import SparkMD5 from 'spark-md5';
 import { v4 as uuidv4 } from 'uuid';
 import { computed, defineProps, onUnmounted, ref, watchEffect, withDefaults } from 'vue';
+import BookLanguage from './bookLanguage.vue';
 import { Sound } from './sound';
 
 interface Props {
@@ -26,7 +27,6 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const TTSStore = useTTSStore()
-const bookPageStore = useBookPageStore()
 const bookStore = useBookStore()
 const [loading, setLoading] = useToggle(false)
 
@@ -46,6 +46,27 @@ const isPlaying = sound.isPlaying
 const volume = sound.volume
 const isMute = sound.isMute
 const textOpacity = { '--tw-text-opacity': 0.6 };
+
+// 选择书本语言
+const bookLanguageRef = ref<InstanceType<typeof BookLanguage>>()
+const closeBookLanguage = (id: string) => {
+  if (id.startsWith('zh')) {
+    set(language, 'zh')
+  } else {
+    set(language, id)
+  }
+}
+watchEffect(() => {
+  const book = get(bookInfo)
+  if (book && book.language) {
+    if (book.language) {
+      closeBookLanguage(book.language)
+    } else {
+      bookLanguageRef.value?.open()
+    }
+  }
+})
+
 
 const voice = ref('')
 const voices = computed(() => {
@@ -73,6 +94,8 @@ const voices = computed(() => {
 
 const audiosMap = new Map<string, BookAudio>()
 const hasNextCatalog = () => get(activePage) < get(BookRender.sectionNum) - 1 // 是否有下章节
+const hasVoice = () => {
+}
 
 async function loadAudioFromBD() {
   try {
@@ -110,13 +133,13 @@ async function loadSectionAudio(data: string[], isPlay = false) {
     // 第一次需要播放音频
     if (isPlay && index === 0) {
       const buffer = audiosMap.get(hash)?.content
+      sound.clear()
       if (buffer) {
-        sound.clear()
-        // sound.play(get(textList)[get(activeText)])
         sound.play(buffer)
         setLoading(false)
       } else {
-        console.warn('数据丢失了')
+        sound.play(get(textList)[get(activeText)])
+        // console.warn('数据丢失了')
       }
     }
   }
@@ -184,15 +207,23 @@ async function playIndex(index: number) {
   const buffer = audiosMap.get(hash)?.content
   if (buffer) {
     sound.play(buffer)
-    // sound.play(get(textList)[get(activeText)])
   } else {
     await loadAudioFromNet(hash, textList.value[index], TTSStore.voice)
     const res = audiosMap.get(hash)?.content
     if (res) {
       sound.play(res)
     } else {
-      console.warn('数据丢失了')
+      sound.play(get(textList)[get(activeText)])
+      // console.warn('数据丢失了')
     }
+  }
+}
+
+function playAction() {
+  if (get(isPlaying)) {
+    sound.toggle()
+  } else {
+
   }
 }
 
@@ -219,7 +250,6 @@ function nextSentence() {
   } else {
     changeActiveSentence(index + 1)
   }
-
 }
 
 // 上一句
@@ -324,8 +354,9 @@ onUnmounted(() => {
           </div>
           <div class="prose px-2 w-full max-w-full overflow-auto hover:scrollbar-thin scrollbar-none cursor-pointer"
             ref="contentRef">
-            <p v-for="item, index in textList" class="px-2 hover:bg-base-300/60"
-              :class="{ 'selection-info': index === activeText }" @click="changeActiveSentence(index)">{{ item }}</p>
+            <p v-for="item, index in textList" class="px-2 rounded"
+              :class="[index === activeText ? 'selection-info' : 'hover:bg-base-300/60']"
+              @click="changeActiveSentence(index)">{{ item }}</p>
           </div>
         </div>
       </div>
@@ -378,6 +409,7 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
+      <BookLanguage ref="bookLanguageRef" :id="bookInfo!.id" :close="closeBookLanguage" />
     </template>
   </template>
 </template>
