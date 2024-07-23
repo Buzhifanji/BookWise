@@ -3,10 +3,11 @@ import { BookAudio } from '@renderer/batabase';
 import { BookAudioAction, RingLoadingView, Select } from '@renderer/components';
 import { langs } from '@renderer/data';
 import { BookRender, TTSbus } from '@renderer/hooks';
-import { domScrollToView, spliteSentence } from '@renderer/shared';
-import { useBookStore, useTTSStore } from '@renderer/store';
+import { domScrollToView, spliteSentence, toastError } from '@renderer/shared';
+import { ListenMode, useBookStore } from '@renderer/store';
 import { edgeTSS } from '@renderer/tts';
 import { voiceList } from '@renderer/tts/data';
+import { edgeVoiceList } from '@renderer/tts/edge-tts/edgeVoiceList';
 import { get, onKeyStroke, set, useDebounceFn, useToggle } from '@vueuse/core';
 import { Howler } from 'howler';
 import { FastForward, Rewind, StepBack, StepForward, Triangle, Volume1, VolumeX } from 'lucide-vue-next';
@@ -18,7 +19,6 @@ import { Sound } from './sound';
 
 interface Props {
   bookId: string,
-  page?: number,
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -26,7 +26,6 @@ const props = withDefaults(defineProps<Props>(), {
   page: 0,
 })
 
-const TTSStore = useTTSStore()
 const bookStore = useBookStore()
 const [loading, setLoading] = useToggle(false)
 
@@ -35,7 +34,7 @@ const toc = computed(() => handleToc(get(BookRender.bookToc)))
 const isSupport = computed(() => get(BookRender.sectionNum) > 0) // 是否支持朗读
 const textList = ref<string[]>([]) // 文本列表
 const activeText = ref(0) // 当前选中的文本
-const activePage = ref(props.page) // 当前选中的目录
+const activePage = ref(0) // 当前选中的目录
 const catalogRef = ref<HTMLDivElement>() // 目录容器
 const contentRef = ref<HTMLDivElement>() // 内容容器
 const language = ref('') // 语言
@@ -68,21 +67,32 @@ watchEffect(() => {
 })
 
 
+const getVoiceList = () => {
+  const lang = get(language)
+  const voices: string[] = []
+  for (const key in edgeVoiceList) {
+    if (key.startsWith(lang)) {
+      voices.push(...edgeVoiceList[key])
+    }
+  }
+  return voices.map(key => ({ id: key, value: voiceList[key] }))
+}
 const voice = ref('')
 const voices = computed(() => {
   const lang = get(language)
   if (lang) {
-    const list = Object.keys(voiceList).map(key => ({ id: key, value: voiceList[key] }))
-    const res = list.filter(item => item.id.startsWith(lang.toLocaleLowerCase()))
+    const res = getVoiceList()
     if (res.length) {
-      set(voice, res[0].id)
+      const data = ListenMode.get(lang) || res[0].id
+      set(voice, data)
       return res
     } else {
       const res = window.speechSynthesis.getVoices().filter((v) => v.lang.includes(lang)).map((v) => {
         return { id: v.name, value: v.name }
       })
       if (res.length) {
-        set(voice, res[0].id)
+        const data = ListenMode.get(lang) || res[0].id
+        set(voice, data)
       }
       return res
     }
@@ -90,16 +100,30 @@ const voices = computed(() => {
   }
   return []
 })
-
-
+const changeVoice = (data: string) => {
+  ListenMode.set({ id: get(language), value: data })
+  resetVoice()
+}
+async function resetVoice() {
+  sound.clear()
+  audiosMap.clear()
+  const text = get(textList).slice(get(activeText))
+  await loadSectionAudio(text, true)
+}
 const audiosMap = new Map<string, BookAudio>()
 const hasNextCatalog = () => get(activePage) < get(BookRender.sectionNum) - 1 // 是否有下章节
 const hasVoice = () => {
+  if (get(voice) && get(language)) {
+    return true
+  } else {
+    toastError('请选择声音模型')
+    return false
+  }
 }
 
 async function loadAudioFromBD() {
   try {
-    const res = (await BookAudioAction.findByBookId(props.bookId)).filter(item => item.voice === get(TTSStore.voice))
+    const res = (await BookAudioAction.findByBookId(props.bookId)).filter(item => item.voice === get(voice))
     for (const item of res) {
       audiosMap.set(item.textHash, item)
     }
@@ -128,7 +152,7 @@ async function loadSectionAudio(data: string[], isPlay = false) {
 
   for (const [index, item] of data.entries()) {
     const hash = SparkMD5.hash(item)
-    await loadAudioFromNet(hash, item, TTSStore.voice)
+    await loadAudioFromNet(hash, item, get(voice))
 
     // 第一次需要播放音频
     if (isPlay && index === 0) {
@@ -208,7 +232,7 @@ async function playIndex(index: number) {
   if (buffer) {
     sound.play(buffer)
   } else {
-    await loadAudioFromNet(hash, textList.value[index], TTSStore.voice)
+    await loadAudioFromNet(hash, textList.value[index], get(voice))
     const res = audiosMap.get(hash)?.content
     if (res) {
       sound.play(res)
@@ -216,14 +240,6 @@ async function playIndex(index: number) {
       sound.play(get(textList)[get(activeText)])
       // console.warn('数据丢失了')
     }
-  }
-}
-
-function playAction() {
-  if (get(isPlaying)) {
-    sound.toggle()
-  } else {
-
   }
 }
 
@@ -264,6 +280,8 @@ function prewSentence() {
 
 // 切换章节
 async function changeActionSection(index: number) {
+  if (!hasVoice()) return
+
   sound.clear()
   set(activePage, index)
   set(activeText, 0)
@@ -309,11 +327,13 @@ async function init() {
   setLoading(true)
   try {
     Howler.unload()
-    // set(activePage, get(bookPageStore.page))
     const text = await handleText(get(activePage))
     set(textList, text) // 加载并切割文本内容
     await loadAudioFromBD() // 加载本地音频
     await loadSectionAudio(get(textList), true) // 加载章节音频
+    if (get(toc).length) {
+      onCatalog(get(toc)[0])
+    }
     // 预先加载下一章内容
     loadNextSection()
   } catch (err) {
@@ -405,7 +425,8 @@ onUnmounted(() => {
           <div class="join justify-center items-center ml-6">
             <button class="btn join-item " :style="textOpacity">声音模型</button>
             <Select :list="languageList" v-model="language" class-name="!w-40 join-item " />
-            <Select :list="voices" v-model="voice" class-name="!min-w-44  join-item" />
+            <Select :list="voices" v-model="voice" @update:model-value="changeVoice"
+              class-name="!min-w-44  join-item" />
           </div>
         </div>
       </div>

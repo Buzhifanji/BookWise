@@ -56,17 +56,17 @@ if (isElectron) {
 }
 
 export class ListenMode {
-  static set(val: { id: string; value: string }) {
+  static set({ id, value }: { id: string; value: string }) {
     const data = get(settingStore).listenMode
     if (data) {
       let obj = {}
       try {
         obj = JSON.parse(data)
       } catch (error) {}
-      Object.assign(obj, val)
+      obj[id] = value
       settingStore.value.listenMode = JSON.stringify(obj)
     } else {
-      settingStore.value.listenMode = JSON.stringify(val)
+      settingStore.value.listenMode = JSON.stringify({ [id]: value })
     }
   }
 
