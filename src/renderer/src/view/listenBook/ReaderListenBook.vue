@@ -1,10 +1,9 @@
 <script setup lang="ts">
+import { ListenBookContentView } from '@renderer/components';
 import { useDialog } from '@renderer/hooks';
 import { vOnClickOutside } from '@vueuse/components';
 import { set } from '@vueuse/core';
 import { defineProps, ref } from 'vue';
-import ListenBookContent from './ListenBookContent.vue';
-
 interface Props {
   bookId: string,
   close: Function
@@ -39,7 +38,7 @@ defineExpose({ open })
         <div @click="clsoe()"> <kbd class="kbd cursor-pointer">Esc</kbd></div>
       </div>
       <div class="flex-1 flex flex-col h-full overflow-hidden" v-if="show">
-        <ListenBookContent :book-id="bookId" />
+        <ListenBookContentView :book-id="bookId" />
       </div>
     </div>
   </dialog>

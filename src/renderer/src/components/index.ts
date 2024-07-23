@@ -8,6 +8,7 @@ import DropdownView from './dropdown/Dropdown.vue'
 import ErrorView from './error/404.vue'
 import ImgView from './img/Img.vue'
 import List from './list/List.vue'
+import ListenBookContentView from './listenBook/content.vue'
 import RingLoadingView from './loading/RingLoading.vue'
 import SkeletonView from './loading/Skeleton.vue'
 import NoteListView from './note/NoteList.vue'
@@ -50,6 +51,7 @@ export {
   FoldTreeView,
   ImgView,
   List,
+  ListenBookContentView,
   NoteAction,
   NoteListView,
   NoteNavbarSetting,

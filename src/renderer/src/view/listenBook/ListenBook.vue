@@ -1,7 +1,6 @@
 <script setup lang="ts">
+import { ListenBookContentView } from '@renderer/components';
 import { BookRender, renderBook } from '@renderer/hooks';
-import ListenBookContent from './ListenBookContent.vue';
-
 const props = defineProps({
   id: String,
 })
@@ -31,7 +30,7 @@ loadData()
     <div v-if="bookInfo"
       class="w-full max-w-screen-2xl h-full flex flex-col bg-base-100 rounded-lg py-4  overflow-hidden">
       <h3 class="text-center text-2xl font-bold mb-4 line-clamp-1 px-3">{{ bookInfo.name }} </h3>
-      <ListenBookContent ref="readerListenBookViewRef" :book-id="bookInfo.id" />
+      <ListenBookContentView :book-id="bookInfo.id" />
     </div>
   </div>
 </template>

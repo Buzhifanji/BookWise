@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BookAction } from '@renderer/components';
+import { BookAction } from '../book/action';
 import { langs } from '@renderer/data';
 import { useDialog } from '@renderer/hooks';
 import { vOnClickOutside } from '@vueuse/components';

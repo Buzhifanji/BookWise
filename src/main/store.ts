@@ -35,6 +35,11 @@ const schemaSetting: SettingState = {
 
 const store: any = new Store<{ settting: SettingState }>({
   defaults: { setting: schemaSetting },
+  migrations: {
+    '0.0.2': (store) => {
+      store.set('setting.listenMode', schemaSetting.listenMode)
+    }
+  },
   watch: true
 })
 
