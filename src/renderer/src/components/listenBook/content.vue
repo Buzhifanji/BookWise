@@ -35,6 +35,7 @@ const isSupport = computed(() => get(BookRender.sectionNum) > 0) // 是否支持
 const textList = ref<string[]>([]) // 文本列表
 const activeText = ref(0) // 当前选中的文本
 const activePage = ref(0) // 当前选中的目录
+
 const catalogRef = ref<HTMLDivElement>() // 目录容器
 const contentRef = ref<HTMLDivElement>() // 内容容器
 const language = ref('') // 语言
@@ -108,6 +109,7 @@ async function resetVoice() {
   sound.clear()
   audiosMap.clear()
   const text = get(textList).slice(get(activeText))
+  await loadAudioFromBD()
   await loadSectionAudio(text, true)
 }
 const audiosMap = new Map<string, BookAudio>()
@@ -331,9 +333,13 @@ async function init() {
     set(textList, text) // 加载并切割文本内容
     await loadAudioFromBD() // 加载本地音频
     await loadSectionAudio(get(textList), true) // 加载章节音频
-    if (get(toc).length) {
-      onCatalog(get(toc)[0])
-    }
+    // await nextTick()
+    // if (get(toc).length) {
+    //   changeActionSection(0)
+    //   // const page = get(toc)[0].page
+    //   // set(activePage, page)
+    //   // changeActionSection(page)
+    // }
     // 预先加载下一章内容
     loadNextSection()
   } catch (err) {
@@ -354,7 +360,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="hero bg-base-200 rounded-md h-full" v-if="!isSupport">
+  <div class="hero bg-base-100 rounded-md h-full" v-if="!isSupport">
     <div class="hero-content text-center">
       <div class="max-w-md">
         <h1 class="text-5xl font-bold">朗读错误</h1>

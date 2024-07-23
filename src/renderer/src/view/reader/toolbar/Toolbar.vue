@@ -7,10 +7,10 @@ import { settingStore } from '@renderer/store';
 import { get, onClickOutside, set, useElementSize } from '@vueuse/core';
 import { Baseline, Copy, Headset, Highlighter, MessageSquareMore, SpellCheck2, Trash } from 'lucide-vue-next';
 
+import { BookRender, listenBookBus } from '@renderer/hooks';
 import { Ref, computed, ref } from 'vue';
 import { highlighter } from '../highlight';
 import { HighlightType, highlightColor } from '../highlight-color';
-import { isAudioReadying, playAudioOnce } from '../tts';
 import { getSectionContainer } from '../util';
 import NoteListView from './NoteList.vue';
 import { NoteBarStyle, NoteToolBarAction, ToolbarStyle } from './action';
@@ -134,16 +134,18 @@ const onRemove = () => {
 
 // 朗读高亮内容
 const onRead = async () => {
-  if (get(isAudioReadying)) return
   try {
     const input = ToolbarStyle.source.reduce((acc, cur) => acc + cur.text, '')
     if (!input) return
-    set(isAudioReadying, true)
-    await playAudioOnce({ voice: 'zh-CN-XiaoxiaoNeural', input, })
+    const book = get(BookRender.bookInfo)
+    if (book) {
+      listenBookBus.emit(input)
+    } else {
+      listenBookBus.emit('')
+    }
   } catch (err) {
     toastError(`朗读失败：${err}`)
   } finally {
-    set(isAudioReadying, false)
   }
 }
 

@@ -8,7 +8,9 @@ import DropdownView from './dropdown/Dropdown.vue'
 import ErrorView from './error/404.vue'
 import ImgView from './img/Img.vue'
 import List from './list/List.vue'
+import ListenBookLanguageView from './listenBook/bookLanguage.vue'
 import ListenBookContentView from './listenBook/content.vue'
+import { Sound } from './listenBook/sound'
 import RingLoadingView from './loading/RingLoading.vue'
 import SkeletonView from './loading/Skeleton.vue'
 import NoteListView from './note/NoteList.vue'
@@ -52,6 +54,7 @@ export {
   ImgView,
   List,
   ListenBookContentView,
+  ListenBookLanguageView,
   NoteAction,
   NoteListView,
   NoteNavbarSetting,
@@ -62,6 +65,7 @@ export {
   SelectSearchView,
   SelectView,
   SkeletonView,
+  Sound,
   TagInputView,
   TagListView
 }

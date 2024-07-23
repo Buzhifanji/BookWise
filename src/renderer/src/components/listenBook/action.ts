@@ -15,6 +15,10 @@ export class BookAudioAction {
     }
   }
 
+  static findByBookIdAndVoice(bookId: string, voice: string) {
+    return db.bookAudio.where({ bookId, voice }).first()
+  }
+
   static findByBookId(bookId: string) {
     return db.bookAudio.where('bookId').equals(bookId).toArray()
   }

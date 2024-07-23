@@ -10,8 +10,8 @@ import { get, set, useCssVar, useToggle, useWindowSize } from '@vueuse/core';
 import { AArrowDown, AArrowUp, AlignJustify, Bolt, Headset, SkipBack, ZoomIn, ZoomOut } from 'lucide-vue-next';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
+import AudioView from '../listenBook/Audio.vue';
 import ReaderListenBookView from '../listenBook/ReaderListenBook.vue';
-import AudioView from './Audio.vue';
 import CatalogView from './Catalog.vue';
 import NoteView from './NoteContainer.vue';
 import { CONTINAER_ID, highlighter, initHighlight } from './highlight';
@@ -24,7 +24,6 @@ import { PDF } from './pdf/pdf';
 import NoteRichView from './toolbar/NoteRich.vue';
 import ToolbarView from './toolbar/Toolbar.vue';
 import { NoteBarStyle, ToolbarStyle } from './toolbar/action';
-import { hasAudio, isAudioReadying } from './tts';
 import { Position } from './type';
 import { findCatalogSection, getSectionContainer, getSectionFirstChildPosition, getSectionLeftFfirstChildPosition } from './util';
 
@@ -562,7 +561,7 @@ onBeforeUnmount(() => {
       </div>
 
       <!-- 控制播放音频 -->
-      <AudioView v-if="hasAudio || isAudioReadying" />
+      <AudioView />
     </template>
     <ErrorView v-else />
   </template>

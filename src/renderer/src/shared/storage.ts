@@ -6,10 +6,15 @@ export class StorageAction {
   ) {}
 
   get() {
+    const data = this.store.getItem(this.key)
     if (this.isObject) {
-      return JSON.parse(this.store.getItem(this.key) || '{}')
+      if (data) {
+        return JSON.parse(data)
+      } else {
+        return null
+      }
     } else {
-      return this.store.getItem(this.key)
+      return data
     }
   }
 

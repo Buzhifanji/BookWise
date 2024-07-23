@@ -32,7 +32,7 @@ export function cahceRefreshBook(val: Book) {
 }
 
 async function getBookInfo(id: string) {
-  const val = bookJumpStore.get()[id] || bookRefreshStore.get()
+  const val = bookJumpStore.get()?.[id] || bookRefreshStore.get()
   if (!val) {
     return await BookAction.fineOne(id)
   }
